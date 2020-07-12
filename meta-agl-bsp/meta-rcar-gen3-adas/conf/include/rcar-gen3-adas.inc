@@ -4,6 +4,8 @@
 
 PREFERRED_RPROVIDER_virtual/gpsd-conf ?= "gpsd-kingfisher-conf"
 
+IMAGE_NAME = "${IMAGE_BASENAME}-${MACHINE}-kf${IMAGE_VERSION_SUFFIX}"
+
 # Radio packages
 IMAGE_INSTALL_append_rcar-gen3 += " \
     si-tools \
