@@ -3,8 +3,6 @@ LICENSE = "MIT"
 LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/MIT;md5=0835ade698e0bcf8506ecda2f7b4f302"
 
 SRC_URI = "file://core.cfg \
-           file://ivishell.cfg \
-           file://id-agent.cfg \
            file://shell.cfg \
            file://hdmi-a-1-270.cfg \
           "
