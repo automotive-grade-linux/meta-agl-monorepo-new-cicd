@@ -3,7 +3,7 @@ HOMEPAGE = "https://git.automotivelinux.org/apps/agl-service-data-persistence/"
 SECTION = "base"
 
 LICENSE = "MIT"
-LIC_FILES_CHKSUM = "file://LICENSE;md5=8089a3c40cff9caffd1b9ba5aa3dfd67"
+LIC_FILES_CHKSUM = "file://LICENSE;md5=ae6497158920d9524cf208c09cc4c984"
 
 SRC_URI = "git://gerrit.automotivelinux.org/gerrit/apps/agl-service-data-persistence;protocol=https;branch=${AGL_BRANCH}"
 SRCREV  = "${AGL_APP_REVISION}"
