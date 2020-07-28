@@ -5,9 +5,6 @@ SRC_URI_append_ulcb = " \
     file://disable_most.cfg \
 "
 
-# disable the perf fix as the cogent layer contains it
-perfFIX = ""
-
 KERNEL_DEVICETREE_remove_h3ulcb = " \
     renesas/r8a7795-es1-h3ulcb-view.dtb \
     renesas/r8a7795-es1-h3ulcb-had-alfa.dtb \
