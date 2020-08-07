@@ -22,7 +22,8 @@ do_compile () {
 	if [ -f "${DEPLOY_DIR_IMAGE}/bcm2710-rpi-3-b.dtb" ]; then
 		fdtoverlay -v -i ${DEPLOY_DIR_IMAGE}/bcm2710-rpi-3-b.dtb -o bcm2710-rpi-3-b+vc4+ft5406.dtb ${DEPLOY_DIR_IMAGE}/rpi-ft5406.dtbo ${DEPLOY_DIR_IMAGE}/${VC4DTBO}.dtbo
 	fi
-	if [ -f "${DEPLOY_DIR_IMAGE}/bcm2711-rpi-4-b.dtb" ]; then
+	# NOTE: meta-updater currently disables rpi-ft5406.dtbo on rpi4, so need to check if it is present
+	if [ -f "${DEPLOY_DIR_IMAGE}/bcm2711-rpi-4-b.dtb" -a -f "${DEPLOY_DIR_IMAGE}/rpi-ft5406.dtbo" ]; then
 		fdtoverlay -v -i ${DEPLOY_DIR_IMAGE}/bcm2711-rpi-4-b.dtb -o bcm2711-rpi-4-b+vc4+ft5406.dtb ${DEPLOY_DIR_IMAGE}/rpi-ft5406.dtbo ${DEPLOY_DIR_IMAGE}/${VC4DTBO}.dtbo
 	fi
 
