@@ -19,13 +19,13 @@ PROVIDES += "virtual/webruntime"
 RPROVIDES_${PN} += "virtual/webruntime"
 
 SRC_URI = "\
-    git://github.com/igalia/${PN}.git;branch=@6.agl.jellyfish;protocol=https \
+    git://github.com/igalia/${PN}.git;branch=WIP@6.agl.compositor;protocol=https \
     file://WebAppMgr@.service \
     file://WebAppMgr.env \
     file://trunc-webapp-roles.patch \
 "
 S = "${WORKDIR}/git"
-SRCREV = "d012dbe03f23dd87a4e77bd3eec1fe9d227a5085"
+SRCREV = "7fe85fd505f3246e0448bc92348b9b7126ae943c"
 
 do_install_append() {
     install -d ${D}${sysconfdir}/wam
