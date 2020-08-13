@@ -24,12 +24,3 @@ SRC_URI_append = "\
     file://0010-Added-manifest-file-according-to-smack-3-domain-mode.patch \
     "
 
-AGL_DEFAULT_WM_SHELL ?= "xdg-shell"
-AFM_CONF_DIR = "${D}${sysconfdir}/afm/unit.env.d"
-QT_SHELL_FILE = "${AFM_CONF_DIR}/qt-shell"
-
-do_install_append_class-target() {
-	mkdir -p ${AFM_CONF_DIR}
-	echo "QT_WAYLAND_SHELL_INTEGRATION=${AGL_DEFAULT_WM_SHELL}" > ${QT_SHELL_FILE}
-	echo "QT_WAYLAND_RESIZE_AFTER_SWAP=1" >> ${QT_SHELL_FILE}
-}
