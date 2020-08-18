@@ -24,6 +24,7 @@ SRC_URI = "\
     file://30-dra7xx-audio-sink.endpoint \
     file://30-dra7xx-audio-source.endpoint \
     file://30-rpi3-audio-sink.endpoint \
+    file://30-imx8mq-audio-sink.endpoint \
     file://40-fiberdyne-amp.endpoint \
     file://40-microchip-mic.endpoint \
     file://70-usb-audio-sink.endpoint \
