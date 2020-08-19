@@ -15,7 +15,6 @@ RDEPENDS_${PN} += " \
                   weston-ini-conf \
                   weston-examples \
                   agl-login-manager \
-                  agl-desktop-config \
                   agl-compositor \
                   "
 
