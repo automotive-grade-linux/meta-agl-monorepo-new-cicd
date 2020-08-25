@@ -66,9 +66,9 @@ SRC_URI_append_netboot = " file://nbd.cfg \
 	file://ramdisk.cfg"
 KERNEL_CONFIG_FRAGMENTS_append_netboot = " ${WORKDIR}/nbd.cfg ${WORKDIR}/ramdisk.cfg"
 
-# Enable support for TP-Link TL-W722N USB Wifi adapter
-SRC_URI_append = " file://ath9k_htc.cfg"
-KERNEL_CONFIG_FRAGMENTS_append = " ${WORKDIR}/ath9k_htc.cfg"
+# Enable support for TP-Link TL-W722N USB Wifi adapter (rev 1 and 2)
+SRC_URI_append = " file://wifi.cfg"
+KERNEL_CONFIG_FRAGMENTS_append = " ${WORKDIR}/wifi.cfg"
 
 # Enable support for RTLSDR
 SRC_URI_append = " file://rtl_sdr.cfg"
