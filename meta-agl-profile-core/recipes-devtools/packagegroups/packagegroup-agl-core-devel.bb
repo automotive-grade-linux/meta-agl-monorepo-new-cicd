@@ -24,4 +24,5 @@ RDEPENDS_${PN} = "\
         libxslt-bin \
         agl-service-network-tools \
         gcc-sanitizers \
+        pciutils \
         "
