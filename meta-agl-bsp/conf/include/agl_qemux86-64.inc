@@ -20,6 +20,16 @@ QB_KERNEL_CMDLINE_APPEND_append = " quiet"
 # Build updatable image. Only takes effect when sota.bbclass is inherited
 DISTRO_FEATURES_append = " sota"
 
+# Add firmware required by Up^2 board and default Intel mPCIe wifi card
+# sold by upshop.org
+MACHINE_EXTRA_RRECOMMENDS_append = " \
+    linux-firmware-i915 \
+    linux-firmware-rtl8168 \
+    linux-firmware-ibt-hw-37-8 \
+    linux-firmware-iwlwifi-7265d \
+    wireless-regdb-static \
+"
+
 # Image support
 # NOTE: wic.{xz,bmap} are here since qemu targets override
 #       AGL_DEFAULT_IMAGE_FSTYPES to not include them, but for Intel
