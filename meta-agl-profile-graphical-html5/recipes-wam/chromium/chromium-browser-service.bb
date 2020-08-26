@@ -16,4 +16,4 @@ DEPENDS += "af-binder af-main-native chromium68"
 
 inherit cmake aglwgt
 
-RDEPENDS_${PN} += "chromium68-browser runxdg"
+RDEPENDS_${PN} += "chromium68-browser"
