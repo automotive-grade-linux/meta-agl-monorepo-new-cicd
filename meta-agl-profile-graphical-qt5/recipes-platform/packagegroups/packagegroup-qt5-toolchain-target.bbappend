@@ -16,8 +16,3 @@ RDEPENDS_${PN}_remove = " \
     qtwebkit-mkspecs \
     qtwebkit-qmlplugins \
 "
-
-# add QtAGLExtras
-RDEPENDS_${PN} += " \
-    ${@bb.utils.contains("DISTRO_FEATURES", "agl-hmi-framework", " qtaglextras-dev qtaglextras-mkspecs", "",d)} \
-"
