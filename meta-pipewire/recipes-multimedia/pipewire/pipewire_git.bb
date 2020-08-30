@@ -8,6 +8,8 @@ SRC_URI = "git://gitlab.freedesktop.org/pipewire/pipewire.git;protocol=https;bra
     file://0005-module-access-add-same-sec-label-mode.patch \
     file://0006-alsa-pcm-call-reuse_buffers-when-resetting-the-state.patch \
     file://0007-alsa-Set-period_size-depending-on-hardware.patch \
+    file://0008-alsa-add-warning-in-case-of-partial-read-write.patch \
+    file://0009-alsa-adjust-delay-depending-on-hardware.patch \
     "
 
 SRCREV = "b0932e687fc47e0872ca291531f2291d99042d70"
