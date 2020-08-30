@@ -1,4 +1,4 @@
-IMAGE_FEATURES =+ "debug-tweaks eclipse-debug tools-debug tools-profile"
+IMAGE_FEATURES =+ "debug-tweaks tools-debug tools-profile"
 
 IMAGE_INSTALL_append = " \
     packagegroup-agl-core-devel \
