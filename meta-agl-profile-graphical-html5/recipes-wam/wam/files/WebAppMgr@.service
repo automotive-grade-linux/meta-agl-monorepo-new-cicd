@@ -12,8 +12,9 @@
 
 [Unit]
 Description="WebAppMgr is responsible for running web apps and manage their lifecycle"
-After=afm-service-homescreen-service--0.1--main@%i.service
+After=afm-service-homescreen-service--0.1--main@%i.service weston@display.service
 Wants=afm-service-homescreen-service--0.1--main@%i.service
+BindsTo=weston@display.service
 
 [Service]
 Type=simple
