@@ -25,4 +25,5 @@ RDEPENDS_${PN} = "\
         agl-service-network-tools \
         gcc-sanitizers \
         pciutils \
+        pyagl \
         "
