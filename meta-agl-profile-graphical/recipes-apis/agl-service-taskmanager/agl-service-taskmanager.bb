@@ -13,7 +13,6 @@ PV = "1.0+git${SRCPV}"
 S  = "${WORKDIR}/git"
 
 DEPENDS = "json-c procps"
-RDEPENDS_${PN} = "qtwebsockets"
 
 inherit cmake aglwgt pkgconfig
 
