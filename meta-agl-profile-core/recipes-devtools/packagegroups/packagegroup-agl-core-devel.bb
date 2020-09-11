@@ -26,4 +26,5 @@ RDEPENDS_${PN} = "\
         gcc-sanitizers \
         pciutils \
         pyagl \
+        gcov \
         "
