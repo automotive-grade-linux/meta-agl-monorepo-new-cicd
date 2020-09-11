@@ -19,7 +19,7 @@ DEPENDS = "virtual/gettext wayland wayland-native pixman freetype glib-2.0 fontc
 PROVIDES = "${BROWSER_APPLICATION}"
 
 SRC_URI = "\
-    git://github.com/igalia/${PN};branch=WIP@39.agl.compositor;protocol=https;rev=${SRCREV_chromium68};name=chromium68 \
+    git://github.com/igalia/${BPN};branch=WIP@39.agl.compositor;protocol=https;rev=${SRCREV_chromium68};name=chromium68 \
     git://github.com/webosose/v8;destsuffix=git/src/v8;rev=${SRCREV_v8};name=v8 \
     file://v8-qemu-wrapper.patch \
 "

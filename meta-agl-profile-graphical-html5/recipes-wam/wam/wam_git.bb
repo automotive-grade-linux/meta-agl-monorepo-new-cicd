@@ -19,7 +19,7 @@ PROVIDES += "virtual/webruntime"
 RPROVIDES_${PN} += "virtual/webruntime"
 
 SRC_URI = "\
-    git://github.com/igalia/${PN}.git;branch=WIP@6.agl.compositor;protocol=https \
+    git://github.com/igalia/${BPN}.git;branch=WIP@6.agl.compositor;protocol=https \
     file://WebAppMgr@.service \
     file://WebAppMgr.env \
     file://trunc-webapp-roles.patch \
