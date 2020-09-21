@@ -27,4 +27,7 @@ RDEPENDS_${PN} = "\
         pciutils \
         pyagl \
         gcov \
+        gcov-symlinks \
+        gcovr \
+        gcovr-wrapper \
         "
