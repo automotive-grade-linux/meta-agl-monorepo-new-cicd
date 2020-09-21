@@ -36,6 +36,7 @@ SRC_URI_append = "\
             file://usbmodem.cfg \
             file://i2c-led.cfg \
             file://nfc.cfg \
+            file://overlayfs.cfg \
         "
 
 SRC_URI_append = " ${@bb.utils.contains('AGL_XEN_GUEST_WANTED','1','file://xen_domu.cfg','',d)}"
@@ -58,6 +59,8 @@ KERNEL_CONFIG_FRAGMENTS_append = " ${WORKDIR}/usbaudio.cfg"
 KERNEL_CONFIG_FRAGMENTS_append = " ${WORKDIR}/i2c-led.cfg"
 # Enable NFC devices
 KERNEL_CONFIG_FRAGMENTS_append = " ${WORKDIR}/nfc.cfg"
+# Enable overlayfs filesystem support
+KERNEL_CONFIG_FRAGMENTS_append = " ${WORKDIR}/overlayfs.cfg"
 # Enable XEN support of the guest
 KERNEL_CONFIG_FRAGMENTS_append = " ${@bb.utils.contains('AGL_XEN_GUEST_WANTED','1','${WORKDIR}/xen_domu.cfg','',d)}"
 
