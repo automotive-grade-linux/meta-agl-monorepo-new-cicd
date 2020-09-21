@@ -41,10 +41,6 @@ AGLWGT_CMAKE_CONFIGURE_ARGS ?= "-DCMAKE_TOOLCHAIN_FILE=${WORKDIR}/toolchain.cmak
 # building/packaging of the test widget for other widgets.
 AGLWGT_HAVE_TESTS ?= "0"
 
-# Warning on missing test/debug/coverage packages disabled by default
-# for now to reduce build output clutter.
-AGLWGT_PACKAGE_WARN ?= "0"
-
 # Whether the widget should be auto-installed on first boot
 AGLWGT_AUTOINSTALL ?= "1"
 
@@ -93,22 +89,17 @@ aglwgt_do_compile() {
         cd ${B}
     fi
 
-    if ! $bldcmd package BUILD_DIR=${B}/build-release ${AGLWGT_EXTRA_BUILD_ARGS}; then
-        bbwarn "Target: package failed"
-    fi
-
-    if ! $bldcmd package-debug BUILD_DIR_DEBUG=${B}/build-debug ${AGLWGT_EXTRA_BUILD_ARGS}; then
-        bbwarn "Target: package-debug failed"
-    fi
+    $bldcmd package BUILD_DIR=${B}/build-release ${AGLWGT_EXTRA_BUILD_ARGS}
+    $bldcmd package-debug BUILD_DIR_DEBUG=${B}/build-debug ${AGLWGT_EXTRA_BUILD_ARGS}
 
     if echo ${BPN} | grep -q '^agl-service-' || [ "${AGLWGT_HAVE_TESTS}" = "1" ]; then
-        if ! $bldcmd package-test BUILD_DIR_TEST=${B}/build-test ${AGLWGT_EXTRA_BUILD_ARGS}; then
-            bbwarn "Target: package-test failed"
+        # Only try building the test widget if there's source for it, to avoid spurious errors
+        if [ -f ${S}/test/CMakeLists.txt ]; then
+            $bldcmd package-test BUILD_DIR_TEST=${B}/build-test ${AGLWGT_EXTRA_BUILD_ARGS}
         fi
 
-        if ! $bldcmd package-coverage BUILD_DIR_COVERAGE=${B}/build-coverage ${AGLWGT_EXTRA_BUILD_ARGS}; then
-            bbwarn "Target: package-coverage failed"
-        fi
+        # The coverage widget should always build
+        $bldcmd package-coverage BUILD_DIR_COVERAGE=${B}/build-coverage ${AGLWGT_EXTRA_BUILD_ARGS}
     fi
 }
 
@@ -130,15 +121,15 @@ aglwgt_do_install() {
         bbfatal "no package found in widget directory"
     fi
 
-    for t in test debug coverage; do
+    for t in debug coverage test; do
         if [ "$(find ${B}/build-${t} -name *-${t}.wgt -maxdepth 1)" ]; then
             install -d ${D}/usr/AGL/apps/${t}
             install -m 0644 ${B}/build-${t}/*-${t}.wgt ${D}/usr/AGL/apps/${t}/
-        elif [ "${AGLWGT_PACKAGE_WARN}" = "1" ]; then
-            if [ "$t" != "test" -a "$t" != "coverage" ]; then
-                bbwarn "no package found in ${t} widget directory"
-            elif echo ${BPN} | grep -q '^agl-service-' || [ "${AGLWGT_HAVE_TESTS}" = "1" ]; then
-                bbwarn "no package found in ${t} widget directory"
+        elif [ "$t" = "debug" ]; then
+            bbfatal "no package found in ${t} widget directory"
+        elif echo ${BPN} | grep -q '^agl-service-' || [ "${AGLWGT_HAVE_TESTS}" = "1" ]; then
+            if [ "$t" = "coverage" -o -f ${S}/test/CMakeLists.txt ]; then
+                bbfatal "no package found in ${t} widget directory"
             fi
         fi
     done
