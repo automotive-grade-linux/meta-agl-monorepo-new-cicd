@@ -1,7 +1,7 @@
 #!/bin/bash
 
-ZIP_1="R-Car_Gen3_Series_Evaluation_Software_Package_for_Linux-weston8-20191206.zip"
-ZIP_2="R-Car_Gen3_Series_Evaluation_Software_Package_of_Linux_Drivers-weston8-20191021.zip"
+ZIP_1="R-Car_Gen3_Series_Evaluation_Software_Package_for_Linux-weston8-20200923.zip"
+ZIP_2="R-Car_Gen3_Series_Evaluation_Software_Package_of_Linux_Drivers-weston8-20200923.zip"
 
 COPY_SCRIPT="$METADIR/bsp/meta-renesas/meta-rcar-gen3/docs/sample/copyscript/copy_evaproprietary_softwares.sh"
 
@@ -50,11 +50,14 @@ function copy_mm_packages() {
         fi
         rm -r $EXTRACT_DIR
     fi
-
     if [ -f $DOWNLOAD_DIR/$ZIP_1 -a -f $DOWNLOAD_DIR/$ZIP_2 ]; then
         mkdir -p $EXTRACT_DIR
         cp --update $DOWNLOAD_DIR/$ZIP_1 $EXTRACT_DIR
         cp --update $DOWNLOAD_DIR/$ZIP_2 $EXTRACT_DIR
+        cd $EXTRACT_DIR
+        unzip -o $ZIP_1
+        unzip -o $ZIP_2
+        cd -
     else
         error "ERROR: FILES \""+$DOWNLOAD_DIR/$ZIP_1+"\" NOT EXTRACTING CORRECTLY"
         error "ERROR: FILES \""+$DOWNLOAD_DIR/$ZIP_2+"\" NOT EXTRACTING CORRECTLY"
