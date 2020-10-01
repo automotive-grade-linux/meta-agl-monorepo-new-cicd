@@ -114,19 +114,30 @@ aglwgt_do_install() {
         DEST=manualinstall
     fi
 
-    if [ "$(find ${B}/build-release -name '*.wgt' -maxdepth 1)" ]; then
+    wgt="$(find ${B}/build-release -maxdepth 1 -name '*.wgt'| head -n 1)"
+    if [ -n "$wgt" ]; then
         install -d ${D}/usr/AGL/apps/$DEST
-        install -m 0644 ${B}/build-release/*.wgt ${D}/usr/AGL/apps/$DEST/
+        install -m 0644 $wgt ${D}/usr/AGL/apps/$DEST/
     else
         bbfatal "no package found in widget directory"
     fi
 
     for t in debug coverage test; do
-        if [ "$(find ${B}/build-${t} -name *-${t}.wgt -maxdepth 1)" ]; then
+        if [ "$(find ${B}/build-${t} -maxdepth 1 -name *-${t}.wgt)" ]; then
             install -d ${D}/usr/AGL/apps/${t}
             install -m 0644 ${B}/build-${t}/*-${t}.wgt ${D}/usr/AGL/apps/${t}/
         elif [ "$t" = "debug" ]; then
-            bbfatal "no package found in ${t} widget directory"
+            # HTML5 widgets complicate things here, need to detect them and
+            # not error out in that case.  ATM this requires looking in the
+            # config.xml of the release widget.
+            rm -rf ${B}/tmp
+            unzip $wgt config.xml -d ${B}/tmp
+            if [ -f ${B}/tmp/config.xml -a \
+                 ! cat ${B}/tmp/config.xml | \
+                     grep -q '^[[:space:]]*<content[[:space:]]\+src="[^\"]*"[[:space:]]\+type="text/html"' ]; then
+                bbfatal "no package found in ${t} widget directory"
+            fi
+            rm -rf ${B}/tmp
         elif echo ${BPN} | grep -q '^agl-service-' || [ "${AGLWGT_HAVE_TESTS}" = "1" ]; then
             if [ "$t" = "coverage" -o -f ${S}/test/CMakeLists.txt ]; then
                 bbfatal "no package found in ${t} widget directory"
