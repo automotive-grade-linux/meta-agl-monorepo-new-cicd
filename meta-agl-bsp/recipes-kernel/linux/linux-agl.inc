@@ -111,6 +111,10 @@ KERNEL_CONFIG_FRAGMENTS_append_with-lsm-smack = "\
 SRC_URI_append = " file://sound.cfg"
 KERNEL_CONFIG_FRAGMENTS_append = " ${WORKDIR}/sound.cfg"
 
+# add hda audio for qemu
+SRC_URI_append_qemuall = " file://sound-hda.cfg"
+KERNEL_CONFIG_FRAGMENTS_append_qemuall = " ${WORKDIR}/sound-hda.cfg"
+
 # iio-dummy-device support for test iiodevice
 SRC_URI_append = " file://iiodevice.cfg"
 KERNEL_CONFIG_FRAGMENTS_append = " ${WORKDIR}/iiodevice.cfg"
