@@ -1,0 +1,106 @@
+From 4534fcab54409b08faf4445ed6780136b58afb63 Mon Sep 17 00:00:00 2001
+From: Marius Vlad <marius.vlad@collabora.com>
+Date: Mon, 28 Sep 2020 22:51:00 +0300
+Subject: [PATCH 1/2] libweston: Migrate weston_seat_init/release to public
+ headers
+
+weston_seat_init/release needed for creating weston plug-ins that want
+manage seat/input on their own.
+
+Signed-off-by: Marius Vlad <marius.vlad@collabora.com>
+---
+ include/libweston/libweston.h  | 25 +++++++++++++++++++++++++
+ libweston/libweston-internal.h | 31 +++----------------------------
+ 2 files changed, 28 insertions(+), 28 deletions(-)
+
+diff --git a/include/libweston/libweston.h b/include/libweston/libweston.h
+index 54ea008..59541f2 100644
+--- a/include/libweston/libweston.h
++++ b/include/libweston/libweston.h
+@@ -2053,6 +2053,31 @@ void
+ weston_timeline_refresh_subscription_objects(struct weston_compositor *wc,
+ 					     void *object);
+ 
++/* input, seat */
++void
++weston_seat_init(struct weston_seat *seat, struct weston_compositor *ec,
++		const char *seat_name);
++void
++weston_seat_release(struct weston_seat *seat);
++
++void
++weston_seat_init_pointer(struct weston_seat *seat);
++
++int
++weston_seat_init_keyboard(struct weston_seat *seat, struct xkb_keymap *keymap);
++
++void
++weston_seat_init_touch(struct weston_seat *seat);
++
++void
++weston_seat_release_keyboard(struct weston_seat *seat);
++
++void
++weston_seat_release_pointer(struct weston_seat *seat);
++
++void
++weston_seat_release_touch(struct weston_seat *seat);
++
+ #ifdef  __cplusplus
+ }
+ #endif
+diff --git a/libweston/libweston-internal.h b/libweston/libweston-internal.h
+index 66c38e8..f5c4c2c 100644
+--- a/libweston/libweston-internal.h
++++ b/libweston/libweston-internal.h
+@@ -168,44 +168,19 @@ weston_plane_init(struct weston_plane *plane,
+ void
+ weston_plane_release(struct weston_plane *plane);
+ 
+-/* weston_seat */
+-
+ struct clipboard *
+ clipboard_create(struct weston_seat *seat);
+ 
+-void
+-weston_seat_init(struct weston_seat *seat, struct weston_compositor *ec,
+-		 const char *seat_name);
+-
+-void
+-weston_seat_repick(struct weston_seat *seat);
++/* weston_seat */
+ 
+ void
+-weston_seat_release(struct weston_seat *seat);
++weston_seat_update_keymap(struct weston_seat *seat, struct xkb_keymap *keymap);
+ 
+ void
+ weston_seat_send_selection(struct weston_seat *seat, struct wl_client *client);
+ 
+ void
+-weston_seat_init_pointer(struct weston_seat *seat);
+-
+-int
+-weston_seat_init_keyboard(struct weston_seat *seat, struct xkb_keymap *keymap);
+-
+-void
+-weston_seat_init_touch(struct weston_seat *seat);
+-
+-void
+-weston_seat_release_keyboard(struct weston_seat *seat);
+-
+-void
+-weston_seat_release_pointer(struct weston_seat *seat);
+-
+-void
+-weston_seat_release_touch(struct weston_seat *seat);
+-
+-void
+-weston_seat_update_keymap(struct weston_seat *seat, struct xkb_keymap *keymap);
++weston_seat_repick(struct weston_seat *seat);
+ 
+ void
+ wl_data_device_set_keyboard_focus(struct weston_seat *seat);
+-- 
+2.28.0
+
