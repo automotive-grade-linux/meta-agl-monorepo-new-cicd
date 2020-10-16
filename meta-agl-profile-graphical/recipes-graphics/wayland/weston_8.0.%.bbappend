@@ -6,7 +6,6 @@ FILESEXTRAPATHS_append := ":${THISDIR}/${PN}"
 #    and waltham can take a look and update it.
 SRC_URI_append = "\
     file://0001-Allow-regular-users-to-launch-Weston_7.0.0.patch \
-    file://0002-ivi-shell-Fix-crash-due-no-transmitter-screen.patch \
     file://0001-libweston-Expose-weston_output_damage-in-libweston.patch \
     file://0004-main-change-remoting-initialization-timing.patch \
     file://smack-weston \
