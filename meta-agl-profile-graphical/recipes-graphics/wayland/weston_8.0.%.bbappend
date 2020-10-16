@@ -7,7 +7,6 @@ FILESEXTRAPATHS_append := ":${THISDIR}/${PN}"
 SRC_URI_append = "\
     file://0001-Allow-regular-users-to-launch-Weston_7.0.0.patch \
     file://0001-libweston-Expose-weston_output_damage-in-libweston.patch \
-    file://0004-main-change-remoting-initialization-timing.patch \
     file://smack-weston \
     "
 
