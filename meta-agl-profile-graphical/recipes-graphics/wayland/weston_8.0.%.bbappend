@@ -1,9 +1,5 @@
 FILESEXTRAPATHS_append := ":${THISDIR}/${PN}"
 
-# NOTE:
-#    file://0003-compositor-drm-introduce-drm_get_dmafd_from_view.patch
-#    has been removed until someone more familiar with weston internals
-#    and waltham can take a look and update it.
 SRC_URI_append = "\
     file://0001-Allow-regular-users-to-launch-Weston_7.0.0.patch \
     file://0001-libweston-Expose-weston_output_damage-in-libweston.patch \
