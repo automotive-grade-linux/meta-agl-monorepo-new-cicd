@@ -1,0 +1,70 @@
+From d30005429fe92daa14151c2a6175d5cf19506cac Mon Sep 17 00:00:00 2001
+From: Marius Vlad <marius.vlad@collabora.com>
+Date: Wed, 7 Oct 2020 16:36:38 +0300
+Subject: [PATCH 2/2] commandxml: Add support wthp_app_id interface
+
+With it, we hang off the app_id which we can use to pass it to the
+receiver side.
+
+Bug-AGL: SPEC-3601
+
+Signed-off-by: Marius Vlad <marius.vlad@collabora.com>
+---
+ data/command.xml                | 29 +++++++++++++++++++++++++++++
+ src/waltham/header-preamble.txt |  1 +
+ 2 files changed, 30 insertions(+)
+
+diff --git a/data/command.xml b/data/command.xml
+index a03082b..cb53f75 100644
+--- a/data/command.xml
++++ b/data/command.xml
+@@ -1814,6 +1814,35 @@
+ 
+   </interface>
+ 
++  <interface name="wthp_ivi_app_id" version="1">
++    <description summary="create ivi-style surfaces">
++      This interface is exposed as a global singleton.
++      This interface is implemented by servers that provide IVI-style user interfaces.
++      It allows clients to associate an ivi_surface with wthp_surface.
++    </description>
++
++    <enum name="error">
++      <entry name="role" value="0" summary="given wthp_surface has another role"/>
++    </enum>
++
++    <request name="surface_create">
++      <description summary="create ivi_surface with app_id in ivi compositor">
++        This request gives the wthp_surface the role of an IVI Surface. Creating more than
++        one ivi_surface for a wthp_surface is not allowed. Note, that this still allows the
++        following example:
++
++         1. create a wthp_surface
++         2. create ivi_surface for the wthp_surface
++         3. destroy the ivi_surface
++
++      </description>
++      <arg name="app_id" type="string"/>
++      <arg name="surface" type="object" interface="wthp_surface"/>
++      <arg name="id" type="new_id" interface="wthp_ivi_surface"/>
++    </request>
++
++  </interface>
++
+   <interface name="dummy" version="1">
+     <request name="dummy_request">
+     </request>
+diff --git a/src/waltham/header-preamble.txt b/src/waltham/header-preamble.txt
+index df765cc..2409859 100644
+--- a/src/waltham/header-preamble.txt
++++ b/src/waltham/header-preamble.txt
+@@ -50,5 +50,6 @@ struct wthp_touch;
+ 
+ struct wthp_ivi_surface;
+ struct wthp_ivi_application;
++struct wthp_ivi_app_id;
+ 
+ struct dummy;
+-- 
+2.28.0
+
