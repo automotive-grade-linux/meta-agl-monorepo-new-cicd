@@ -10,12 +10,6 @@ SRC_URI_append = " \
     file://0004-ADSP-enable-and-add-sound-hardware-abstraction.patch \
 "
 
-# Gcc 10 build fix
-SRC_URI_append = " \
-    file://0001-scripts-dtc-Remove-redundant-YYLOC-global-declaratio.patch \
-"
-
-
 # For Xen
 SRC_URI_append = " \
     ${@bb.utils.contains('AGL_XEN_WANTED','1','file://xen-be.cfg','',d)} \
