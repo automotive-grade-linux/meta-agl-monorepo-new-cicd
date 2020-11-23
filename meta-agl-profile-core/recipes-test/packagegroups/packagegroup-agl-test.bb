@@ -27,6 +27,7 @@ RDEPENDS_${PN} += "\
     linus-stress \
     lmbench \
     nbench-byte \
+    nmap \
     rt-tests \
     stress \
     "
