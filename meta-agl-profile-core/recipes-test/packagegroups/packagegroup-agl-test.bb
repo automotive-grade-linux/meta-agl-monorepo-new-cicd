@@ -17,6 +17,7 @@ RDEPENDS_${PN} += "\
     bc \
     dbench \
     ebizzy \
+    evtest \
     ffsb \
     interbench \
     iozone3 \
