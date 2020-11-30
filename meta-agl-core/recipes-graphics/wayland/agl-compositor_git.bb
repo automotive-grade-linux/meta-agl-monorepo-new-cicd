@@ -8,7 +8,8 @@ SECTION = "x11"
 LICENSE = "MIT"
 LIC_FILES_CHKSUM = "file://COPYING;md5=fac6abe0003c4d142ff8fa1f18316df0"
 
-DEPENDS = "wayland wayland-protocols wayland-native weston"
+DEPENDS = "wayland wayland-protocols wayland-native weston \
+	   ${@bb.utils.contains('AGL_FEATURES', 'waltham-remoting', 'waltham waltham-transmitter-plugin', '', d)}"
 
 SRC_URI = "git://gerrit.automotivelinux.org/gerrit/src/agl-compositor.git;protocol=https;branch=${AGL_BRANCH}"
 SRCREV = "e1e8c07e202ffccc7b56f8f116a2ef1624028f91"
@@ -28,3 +29,4 @@ FILES_${PN} = " \
                ${datadir}/${PN}/protocols/agl-shell.xml \
                ${datadir}/${PN}/protocols/agl-shell-desktop.xml \
               "
+RDEPENDS_${PN} += " ${@bb.utils.contains('AGL_FEATURES', 'waltham-remoting', 'waltham waltham-transmitter-plugin', '', d)}"
