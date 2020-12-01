@@ -1,0 +1,37 @@
+commit 5130a8c21a9deea54e8f7c96a3a5049e2d60a210
+Author: Marius Vlad <marius.vlad@collabora.com>
+Date:   Thu Jul 30 14:47:32 2020 +0300
+
+backend-drm: Correctly tear down the DRM backend
+    
+It seem that we skipped to put back in TEXT mode the tty, in case a DRM
+device node wasn't present at that time, or it isn't present at all. This
+orders the destroy part correctly as to handle that case as well.
+    
+As a side effect, as the tty will still be set to GRAPHICS mode we will
+require a manual change of the tty number, which might be not possible
+on all systems. Properly putting back the tty to TEXT mode should avoid
+that, and allows to re-use the same tty no in case the DRM device has
+been created at a later point in time.
+
+Upstream-Status: Backport    
+Signed-off-by: Marius Vlad <marius.vlad@collabora.com>
+Signed-off-by: Scott Murray <scott.murray@konsulko.com>
+
+diff --git a/libweston/backend-drm/drm.c b/libweston/backend-drm/drm.c
+index 980a12da..1cf61a33 100644
+--- a/libweston/backend-drm/drm.c
++++ b/libweston/backend-drm/drm.c
+@@ -3031,10 +3031,10 @@ err_sprite:
+ 	destroy_sprites(b);
+ err_udev_dev:
+ 	udev_device_unref(drm_device);
+-err_launcher:
+-	weston_launcher_destroy(compositor->launcher);
+ err_udev:
+ 	udev_unref(b->udev);
++err_launcher:
++	weston_launcher_destroy(compositor->launcher);
+ err_compositor:
+ 	weston_compositor_shutdown(compositor);
+ 	free(b);
