@@ -7,8 +7,16 @@ AGL_DEFAULT_WESTONSTART ??= "/usr/bin/agl-compositor --config ${sysconfdir}/xdg/
 WESTONSTART ??= "${AGL_DEFAULT_WESTONSTART} ${WESTONARGS}"
 WESTONSTART_append = " ${@bb.utils.contains("IMAGE_FEATURES", "debug-tweaks", " --log=${DISPLAY_XDG_RUNTIME_DIR}/compositor.log", "",d)}"
 
+# Systemd name of DRM device to have weston/agl-compositor startup depend
+# upon, if required.  Currently only x86-64 seems to need a dependency to
+# avoid failures due to racing with i915 driver init on e.g. UpSquared.
+# It seems safer for now to only apply it there rather than doing a blanket
+# default everywhere that might then need to be over-ridden for vendor BSPs.
+WESTON_DRM_DEVICE ?= ""
+
 WIFILES = " \
     file://weston.conf.in \
+    file://weston-dep.conf.in \
     file://tmpfiles.conf.in \
     file://zz-dri.rules.in \
     file://zz-input.rules.in \
@@ -37,6 +45,7 @@ do_install_append() {
                 -e "s,@WESTONGROUP@,${WESTONGROUP},g" \
                 -e "s,@XDG_RUNTIME_DIR@,${DISPLAY_XDG_RUNTIME_DIR},g" \
                 -e "s,@WESTONSTART@,${WESTONSTART},g" \
+                -e "s,@WESTON_DRM_DEVICE@,${WESTON_DRM_DEVICE},g" \
                     ${WORKDIR}/${f} > ${WORKDIR}/${g}
         fi
     done
@@ -44,6 +53,11 @@ do_install_append() {
     # Install weston drop-in
     install -d ${D}${systemd_system_unitdir}/weston@.service.d
     install -m644 ${WORKDIR}/weston.conf ${D}/${systemd_system_unitdir}/weston@.service.d/weston-init.conf
+
+    # Install weston DRM device dependency drop-in if required
+    if [ -n "${WESTON_DRM_DEVICE}" ]; then
+        install -m 0644 ${WORKDIR}/weston-dep.conf ${D}/${systemd_system_unitdir}/weston@.service.d/
+    fi
 
     # Install tmpfiles drop-in
     install -d ${D}${libdir}/tmpfiles.d

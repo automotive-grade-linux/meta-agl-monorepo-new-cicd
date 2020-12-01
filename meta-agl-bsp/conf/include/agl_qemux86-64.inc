@@ -43,5 +43,8 @@ ROOT_VM = "root=PARTUUID=${DISK_SIGNATURE}-02"
 # Force the virtio video device as 'vmware' doesn't always work
 QB_OPT_APPEND_append = " -vga virtio"
 
+# DRM device weston/compositor systemd unit should depend upon
+WESTON_DRM_DEVICE = "dev-dri-card0.device"
+
 # Use our own wks file
 WKS_FILE="systemd-intel-corei7-64-bootdisk.wks"
