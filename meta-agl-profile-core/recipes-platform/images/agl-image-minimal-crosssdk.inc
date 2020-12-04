@@ -15,5 +15,4 @@ TOOLCHAIN_TARGET_TASK += " \
     lua-staticdev \
     libafb-helpers-staticdev \
     libappcontroller-staticdev \
-    waltham-dev \
     "
