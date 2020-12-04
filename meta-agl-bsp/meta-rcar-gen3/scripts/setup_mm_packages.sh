@@ -1,7 +1,12 @@
 #!/bin/bash
 
 ZIP_1="R-Car_Gen3_Series_Evaluation_Software_Package_for_Linux-weston8-20200923.zip"
+ZIP_1_tmp="REN_R-Car_Gen3_Series_Evaluation_Software_Package_for_Linux-weston8-20200923__20200930.zip"
 ZIP_2="R-Car_Gen3_Series_Evaluation_Software_Package_of_Linux_Drivers-weston8-20200923.zip"
+ZIP_2_tmp="REN_R-Car_Gen3_Series_Evaluation_Software_Package_of_Linux_Drivers-weston8-20200923__20200930.zip"
+
+if [ -f "${XDG_DOWNLOAD_DIR}/${ZIP_1_tmp}" ]; then mv "${XDG_DOWNLOAD_DIR}/${ZIP_1_tmp}" "${XDG_DOWNLOAD_DIR}/${ZIP_1}"; fi
+if [ -f "${XDG_DOWNLOAD_DIR}/${ZIP_2_tmp}" ]; then mv "${XDG_DOWNLOAD_DIR}/${ZIP_2_tmp}" "${XDG_DOWNLOAD_DIR}/${ZIP_2}"; fi
 
 COPY_SCRIPT="$METADIR/bsp/meta-renesas/meta-rcar-gen3/docs/sample/copyscript/copy_evaproprietary_softwares.sh"
 
@@ -63,7 +68,7 @@ function copy_mm_packages() {
         error "ERROR: FILES \""+$DOWNLOAD_DIR/$ZIP_2+"\" NOT EXTRACTING CORRECTLY"
         log   "The graphics and multimedia acceleration packages for "
         log   "the R-Car Gen3 board BSP can be downloaded from:"
-        log   "<https://www.renesas.com/us/en/solutions/automotive/rcar-download/rcar-demoboard-2.html>"
+        log   "<https://www.renesas.com/us/en/application/automotive/r-car-h3-m3-documents-software>"
         log
         error  "These 2 files from there should be stored in your"
         error  "'$DOWNLOAD_DIR' directory."
@@ -81,3 +86,4 @@ function copy_mm_packages() {
         return 1
     fi
 }
+
