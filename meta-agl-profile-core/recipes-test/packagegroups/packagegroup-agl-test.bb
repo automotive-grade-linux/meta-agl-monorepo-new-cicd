@@ -19,6 +19,7 @@ RDEPENDS_${PN} += "\
     ebizzy \
     evtest \
     ffsb \
+    glmark2 \
     interbench \
     iozone3 \
     iperf3 \
