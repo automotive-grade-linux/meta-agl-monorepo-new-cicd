@@ -1,0 +1,7 @@
+This is meta-agl-bsp.
+
+This layer holds the 'impedance-mismatch' between AGL and the BSP's.
+
+/dream on
+In an ideal world, this would be empty!
+/dream off
