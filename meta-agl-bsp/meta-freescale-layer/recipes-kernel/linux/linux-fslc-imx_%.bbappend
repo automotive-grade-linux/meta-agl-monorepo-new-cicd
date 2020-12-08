@@ -8,8 +8,6 @@ require recipes-kernel/linux/linux-agl.inc
 SRC_URI_append_etnaviv = " \
     file://0001-enable-mhdp-with-etnaviv.patch \
     file://0002-dts-enable-etnaviv.patch \
-    file://0003-drm-etnaviv-fix-TS-cache-flushing-on-GPUs-with-BLT-e.patch \
-    file://0004-drm-sched-Fix-passing-zero-to-PTR_ERR-warning-v2.patch \
 "
 
 # Make sure these are enabled so that AGL configurations work
