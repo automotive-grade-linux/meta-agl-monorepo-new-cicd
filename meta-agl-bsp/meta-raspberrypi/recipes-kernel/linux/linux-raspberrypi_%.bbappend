@@ -20,7 +20,7 @@ CMDLINE_append = ' ${@bb.utils.contains('AGL_XEN_WANTED','1','modprobe.blacklist
 CMDLINE_append = " usbhid.mousepoll=0"
 
 # Add options to allow CMA to operate
-CMDLINE_append = ' ${@oe.utils.conditional("ENABLE_CMA", "1", "coherent_pool=6M smsc95xx.turbo_mode=N", "", d)}'
+CMDLINE_append = '${@oe.utils.conditional("ENABLE_CMA", "1", " coherent_pool=6M smsc95xx.turbo_mode=N", "", d)}'
 
 KERNEL_MODULE_AUTOLOAD += "snd-bcm2835"
 KERNEL_MODULE_AUTOLOAD += "hid-multitouch"

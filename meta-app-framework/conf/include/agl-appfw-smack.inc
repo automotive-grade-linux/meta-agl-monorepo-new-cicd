@@ -3,6 +3,8 @@ OVERRIDES .= ":with-lsm-smack"
 DISTRO_FEATURES_append = " smack xattr"
 DISTRO_FEATURES_NATIVE_append = " smack xattr"
 
+APPFW_ENABLED = "1"
+
 # use tar-native to support SMACK extended attributes independently of host config
 IMAGE_CMD_TAR = "tar --xattrs --xattrs-include='*'"
 do_image_tar[depends] += "tar-replacement-native:do_populate_sysroot"
@@ -17,3 +19,6 @@ PACKAGECONFIG_append_pn-shadow-native = " attr"
 
 # set the home directory for root
 ROOT_HOME = "/home/0"
+
+# include devel wgts in images
+IMAGE_FEATURES_append = " agl-devel-wgt"

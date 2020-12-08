@@ -1,1 +1,2 @@
-BBLAYERS =+ "${METADIR}/meta-agl/meta-netboot"
+BBLAYERS =+ " ${METADIR}/meta-agl/meta-netboot \
+            "

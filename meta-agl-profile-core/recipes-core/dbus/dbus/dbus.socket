@@ -1,9 +1,0 @@
-[Unit]
-Description=D-Bus User Message Bus Socket
-Before=sockets.target
-
-[Socket]
-ListenStream=%t/bus
-
-[Install]
-WantedBy=default.target

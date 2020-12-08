@@ -1,6 +1,1 @@
-FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
-
-SRC_URI += " \
-            file://enable_nbd.cfg \
-           "
-
+require ${@bb.utils.contains('NETBOOT_ENABLED', '1', 'busybox_netboot.inc', '', d)}

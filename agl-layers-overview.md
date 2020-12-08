@@ -14,7 +14,6 @@ This section provides information about the layers used by the AGL Project:
 
 * **`meta-agl`**: Minimal set of software needed to create an AGL distribution
   used to boot a system.
-  AGL profiles are built on top of this minimal set of software.
 
 * **`meta-agl-demo`**: Provides a reference or demo platform and applications
   for the AGL Distribution.

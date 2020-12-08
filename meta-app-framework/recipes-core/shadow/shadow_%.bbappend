@@ -1,6 +1,3 @@
-
-do_install_append() {
-	sed -i '/^UMASK/s:^.*$:UMASK 077:' ${D}${sysconfdir}/login.defs
-}
+require ${@bb.utils.contains('APPFW_ENABLED', '1', 'shadow_appfw.inc', '', d)}
 
 

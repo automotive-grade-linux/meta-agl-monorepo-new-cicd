@@ -1,3 +1,2 @@
-FILESEXTRAPATHS_prepend := "${THISDIR}/linux:"
-SRC_URI_append_with-lsm-smack = " file://audit.cfg"
+require ${@bb.utils.contains('APPFW_ENABLED', '1', 'linux-appfw.inc', '', d)}
 
