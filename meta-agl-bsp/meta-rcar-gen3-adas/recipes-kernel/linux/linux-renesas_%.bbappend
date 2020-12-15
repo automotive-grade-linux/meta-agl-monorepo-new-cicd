@@ -24,3 +24,7 @@ KERNEL_DEVICETREE_remove_h3ulcb = " \
     renesas/r8a7795-h3ulcb-4x2g-vb2.1.dtb \
     renesas/r8a7795-h3ulcb-4x2g-vbm.dtb \
 "
+
+# The meta-rcar layer actives by default the configuration MTD_RENESAS_RPC_HYPERFLASH
+# in the kernel. We need to set DISABLE_RPC_ACCESS to deactivate it.
+DISABLE_RPC_ACCESS ?= "1"
