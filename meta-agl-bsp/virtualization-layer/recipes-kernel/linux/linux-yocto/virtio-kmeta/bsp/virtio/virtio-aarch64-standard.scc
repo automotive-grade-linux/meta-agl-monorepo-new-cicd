@@ -3,7 +3,7 @@ define KMACHINE virtio-aarch64
 define KTYPE standard
 define KARCH arm64
 
-include ktypes/standard/standard.scc
+include ktypes/standard/standard.scc nopatch
 include arch/arm/aarch64.scc
 include cfg/8250.scc
 include cfg/virtio.scc
