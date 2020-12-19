@@ -1,0 +1,9 @@
+[Unit]
+Description=Bluetooth HCI UART support
+Requires=dev-ttymxc2.device
+After=dev-ttymxc2.device
+Before=bluetooth.service
+
+[Service]
+Type=forking
+ExecStart=/usr/sbin/hci-uart-helper.sh

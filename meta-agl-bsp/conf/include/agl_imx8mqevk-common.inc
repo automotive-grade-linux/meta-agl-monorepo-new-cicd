@@ -7,6 +7,9 @@ IMX_DEFAULT_KERNEL_imx8mqevk = "linux-fslc-imx"
 # For EVKB wifi support
 MACHINE_FEATURES_append = " bcm4356"
 
+# Add helper to drive setting up HCI UART device
+MACHINE_EXTRA_RRECOMMENDS_append = " hci-uart-helper"
+
 # Disable meta-freescale package architecure mangling, as it causes
 # issues with AGL's explicit setting of DEFAULTTUNE.
 INHERIT_remove = "fsl-dynamic-packagearch"
