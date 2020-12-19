@@ -26,6 +26,3 @@ IMAGE_INSTALL_append = " ${@bb.utils.contains('AGL_XEN_WANTED', '1', 'xen-tools 
 
 # Add xen-raspberry binary to boot files
 IMAGE_BOOT_FILES_append = " ${@bb.utils.contains('AGL_XEN_WANTED','1', 'xen-${MACHINE}', '',d)}"
-
-# pin the kernel to 4.19.x for SPEC-3702
-PREFERRED_VERSION_linux-raspberrypi ?= "4.19.%"
