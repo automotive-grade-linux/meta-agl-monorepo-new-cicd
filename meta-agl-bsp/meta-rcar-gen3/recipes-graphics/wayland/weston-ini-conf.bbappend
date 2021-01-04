@@ -1,12 +1,15 @@
-FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
+FILESEXTRAPATHS_prepend_rcar-gen3 := "${THISDIR}/${PN}:"
 
-SRC_URI_append_ulcb = " file://kingfisher_output.cfg"
-SRC_URI_append_ebisu = " file://ebisu_output.cfg"
-SRC_URI_append_salvator-x = " file://salvator-x_output.cfg"
+SRC_URI_append_rcar-gen3 = " \
+	file://kingfisher_output.cfg \
+	file://ebisu_output.cfg \
+	file://salvator-x_output.cfg \
+"
 
-do_configure() {
+WESTON_FRAGMENTS_append_ulcb = " kingfisher_output"
+WESTON_FRAGMENTS_append_ebisu = " ebisu_output"
+WESTON_FRAGMENTS_append_salvator-x = " salvator-x_output"
+
+do_configure_append_rcar-gen3() {
     echo repaint-window=34 >> ${WORKDIR}/core.cfg
-
-    echo transition-duration=300 >> ${WORKDIR}/ivishell.cfg
-    echo cursor-theme=default >> ${WORKDIR}/ivishell.cfg
 }
