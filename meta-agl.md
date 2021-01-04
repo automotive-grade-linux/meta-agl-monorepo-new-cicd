@@ -43,7 +43,7 @@ in `meta-agl`:
 * `docs`: Contains files that support AGL documentation.
 * `meta-agl-bsp`: Contains adaptations for recipes and required packages
   to boot an AGL distribution on targeted hardware and emulation (i.e. QEMU).
-* `meta-agl-core`: This is the core layer with essential recieps and the distro.
+* `meta-agl-core`: This is the core layer with essential recipes and the distro.
 * `meta-agl-core-test`: recipes supporting qa images (separate layer due to external dependencies)
 * `meta-agl-ic`: Instrument Cluster platform
 * `meta-agl-ivi`: IVI platform
