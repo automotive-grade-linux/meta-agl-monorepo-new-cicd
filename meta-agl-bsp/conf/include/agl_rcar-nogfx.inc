@@ -7,3 +7,7 @@ OSTREE_BOOTLOADER ?= "u-boot"
 WKS_FILE = "singlepart-noloader.wks"
 
 RENESAS_DATADIR = "/usr"
+
+IMAGE_INSTALL_append_rcar-gen3 = " \
+    kernel-devicetree \
+"

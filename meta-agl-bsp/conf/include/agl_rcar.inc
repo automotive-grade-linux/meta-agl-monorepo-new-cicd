@@ -45,7 +45,6 @@ BBMASK += "meta-renesas/meta-rcar-gen3/recipes-multimedia/gstreamer/gstreamer1.0
 
 
 IMAGE_INSTALL_append_rcar-gen3 = " \
-    kernel-devicetree \
     kernel-module-pvrsrvkm \
     kernel-module-vsp2 \
     kernel-module-vspm  \
