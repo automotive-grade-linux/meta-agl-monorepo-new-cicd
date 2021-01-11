@@ -4,6 +4,7 @@ require recipes-kernel/linux/linux-agl.inc
 
 SRC_URI_append = "\
     ${@oe.utils.conditional('USE_FAYTECH_MONITOR', '1', 'file://0002-faytech-fix-rpi.patch', '', d)} \
+    file://0001-mconf-menuconfig.patch \
 "
 #take in account that linux under xen should use the hvc0 console
 SERIAL_OPTION = "${@bb.utils.contains('AGL_XEN_WANTED','1','hvc0','115200;ttyS0',d)}"
