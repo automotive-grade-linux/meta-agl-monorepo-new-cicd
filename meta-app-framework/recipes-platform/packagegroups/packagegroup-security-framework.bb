@@ -18,6 +18,5 @@ RDEPENDS_${PN}_append_with-lsm-smack = " \
     cynagora \
     security-manager \
     security-manager-policy \
-    smacknet \
     smack-system-setup \
 "
