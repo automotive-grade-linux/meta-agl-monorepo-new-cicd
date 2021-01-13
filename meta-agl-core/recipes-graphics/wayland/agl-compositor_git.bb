@@ -17,7 +17,7 @@ PV = "0.0.10+git${SRCPV}"
 S = "${WORKDIR}/git"
 
 PACKAGECONFIG ?= ""
-PACKAGECONFIG[policy-rba] = "-Dpolicy-default=rba,,librba rba-config"
+PACKAGECONFIG[policy-rba] = "-Dpolicy-default=rba,,librba,librba rba-config"
 PACKAGECONFIG[policy-deny-all] = "-Dpolicy-default=deny-all,,"
 
 inherit meson pkgconfig python3native
