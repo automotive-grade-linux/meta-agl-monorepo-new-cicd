@@ -4,8 +4,6 @@ IMAGE_INSTALL_append = " \
     packagegroup-agl-core-devel \
 "
 
-IMAGE_INSTALL_append = "${@bb.utils.contains_any('IMAGE_FSTYPES', 'wic.vmdk wic.vmdk.xz', ' open-vm-tools vboxguestdrivers', '', d)}"
-
 # Install libdrm-test, including modetest, to images with GUI
 IMAGE_INSTALL_append = "${@bb.utils.contains('DISTRO_FEATURES', 'wayland', ' libdrm-tests', '', d)}"
 
