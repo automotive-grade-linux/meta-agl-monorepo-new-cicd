@@ -10,7 +10,7 @@ LIC_FILES_CHKSUM = "file://LICENSE;md5=13afa517927767fe9b7a65818a02bd8f"
 INHIBIT_PACKAGE_DEBUG_SPLIT = "1"
 
 SRC_URI = "git://gerrit.automotivelinux.org/gerrit/staging/rba;protocol=https;branch=master"
-SRCREV = "2cfe2c611be63ae4541abf4e13cfecff0f008f25"
+SRCREV = "87c0278dfbcf0953330330c28a8d48636dd4df7e"
 
 S = "${WORKDIR}/git"
 
