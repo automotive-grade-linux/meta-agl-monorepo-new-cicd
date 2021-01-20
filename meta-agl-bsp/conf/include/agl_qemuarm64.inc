@@ -1,17 +1,17 @@
-# Configuration for serial console
-#QB_KERNEL_CMDLINE_APPEND_append = " console=ttyAMA0,115200n8"
-
-# All boot message will be off
-QB_KERNEL_CMDLINE_APPEND_append = " quiet"
-
 # Build updatable image. Only takes effect when sota.bbclass is inherited
-DISTRO_FEATURES_append = " sota"
+#DISTRO_FEATURES_append = " sota"
 
 # Root device
 ROOT_VM = "root=PARTUUID=${DISK_SIGNATURE}-02"
 
-# Over-ride setting in oe-core's qemuarm64.conf
-QB_MEM_qemuarm64 = "-m 2048"
-
 # Use our own wks file
 WKS_FILE="directdisk.wks.in"
+
+# Over-ride setting in oe-core's qemuboot.bbclass
+QB_MEM_qemuarm64 = "-m 2048"
+
+# Changes to make runqemu work out-of-the-box
+QB_AUDIO_DRV_qemuarm64 := "alsa"
+QB_MACHINE_qemuarm64 := "-machine virt -smp 4"
+QB_OPT_APPEND_qemuarm64 := " -show-cursor -device VGA,vgamem_mb=64,edid=on -device qemu-xhci -device usb-tablet -device usb-kbd -object rng-random,filename=/dev/urandom,id=rng0 -device virtio-rng-pci,rng=rng0"
+QB_KERNEL_CMDLINE_APPEND_qemuarm64 := "console=ttyAMA0,115200n8 verbose"
