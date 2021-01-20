@@ -8,3 +8,7 @@ DTB_SUFFIX = "r8a7795-salvator-xs"
 BBMASK += "gles-user-module|kernel-module-gles|wayland-kms|libgbm"
 # Mask MMP recipes
 BBMASK += "kernel-module-uvcs-drv|omx-user-module"
+
+# do use software rendering to display the compositor
+# used for images w/o binary-only driver
+WESTON_USE_PIXMAN = "1"
