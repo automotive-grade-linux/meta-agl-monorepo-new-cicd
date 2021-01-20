@@ -270,6 +270,26 @@
 			"allocatable":[
 				"ApplicationArea:Area"
 			]
+		},
+		{
+			"name":"unknown_app",
+			"loserType":"NEVER_GIVEUP",
+			"size":[
+			{
+				"name":"ApplicationSize:Area",
+				"width":1080,
+				"height":1488
+			}
+			],
+			"states":[
+			{
+				"name":"NORMAL",
+				"priority":10
+			}
+			],
+			"allocatable":[
+				"ApplicationArea:Area"
+			]
 		}
 		],
 		"displays":[
