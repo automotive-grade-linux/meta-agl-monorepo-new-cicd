@@ -4,4 +4,4 @@ SRCREV = "784aca755a469b144acf3cae180b6e613b7b057a"
 SRC_URI_remove = "file://python3.patch"
 
 PACKAGECONFIG = "wayland-gles2"
-PACKAGECONFIG[wayland-gles2] = ",,virtual/egl virtual/libgles2 wayland wayland-native"
+PACKAGECONFIG[wayland-gles2] = ",,virtual/egl virtual/libgles2 wayland wayland-protocols wayland-native"
