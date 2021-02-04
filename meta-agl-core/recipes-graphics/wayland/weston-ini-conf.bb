@@ -5,12 +5,14 @@ LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/MIT;md5=0835ade698e0bcf8506ecda
 SRC_URI = " \
 	file://core.cfg \
 	file://shell.cfg \
+	file://hdmi-a-1-0.cfg \
 	file://hdmi-a-1-90.cfg \
 	file://hdmi-a-1-180.cfg \
 	file://hdmi-a-1-270.cfg \
 	file://remote-output.cfg \
-	file://virtual-270.cfg \
 	file://virtual-0.cfg \
+	file://virtual-180.cfg \
+	file://virtual-270.cfg \
 "
 
 S = "${WORKDIR}"
@@ -39,23 +41,32 @@ do_compile() {
     sed -i -e '$ d' ${WORKDIR}/weston.ini.default
 
     # Do it again, but filter fragments to configure for landscape
+    # and a corresponding landscape-inverted that is 180 degrees
+    # rotated.
     rm -f ${WORKDIR}/weston.ini.landscape
     for F in ${WESTON_FRAGMENTS}; do
+        INVF=$F
         if echo $F | grep '^hdmi-a-1-\(90\|270\)$'; then
-            F="hdmi-a-1-180"
+            F="hdmi-a-1-0"
+            INVF="hdmi-a-1-180"
         elif echo $F | grep '^virtual-270$'; then
             F="virtual-0"
+            INVF="virtual-180"
         fi
         cat ${WORKDIR}/${F}.cfg >> ${WORKDIR}/weston.ini.landscape
+        cat ${WORKDIR}/${INVF}.cfg >> ${WORKDIR}/weston.ini.landscape-inverted
         echo >> ${WORKDIR}/weston.ini.landscape
+        echo >> ${WORKDIR}/weston.ini.landscape-inverted
     done
     sed -i -e '$ d' ${WORKDIR}/weston.ini.landscape
+    sed -i -e '$ d' ${WORKDIR}/weston.ini.landscape-inverted
 }
 
 do_install_append() {
     install -d ${D}${weston_ini_dir}
     install -m 0644 ${WORKDIR}/weston.ini.default ${D}${weston_ini_dir}/
     install -m 0644 ${WORKDIR}/weston.ini.landscape ${D}${weston_ini_dir}/
+    install -m 0644 ${WORKDIR}/weston.ini.landscape-inverted ${D}${weston_ini_dir}/
 }
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
@@ -84,3 +95,13 @@ RPROVIDES_${PN}-landscape = "weston-ini"
 RCONFLICTS_${PN}-landscape = "${PN}"
 ALTERNATIVE_${PN}-landscape = "weston.ini"
 ALTERNATIVE_TARGET_${PN}-landscape = "${weston_ini_dir}/weston.ini.landscape"
+
+PACKAGE_BEFORE_PN += "${PN}-landscape-inverted"
+
+FILES_${PN}-landscape-inverted = "${weston_ini_dir}/weston.ini.landscape-inverted"
+
+RDEPENDS_${PN}-landscape-inverted = "weston-init"
+RPROVIDES_${PN}-landscape-inverted = "weston-ini"
+RCONFLICTS_${PN}-landscape-inverted = "${PN}"
+ALTERNATIVE_${PN}-landscape-inverted = "weston.ini"
+ALTERNATIVE_TARGET_${PN}-landscape-inverted = "${weston_ini_dir}/weston.ini.landscape-inverted"
