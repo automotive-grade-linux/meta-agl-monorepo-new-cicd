@@ -7,4 +7,4 @@ KERNEL_DEVICETREE_append = " renesas/r8a7795-agl-refhw.dtb"
 
 # Disable the meta-agl-refhw-gen3 arm-trusted-firmware bbappend as
 # it makes the firmware reference hardware specific.
-BBMASK = "meta-agl-refhw-gen3/recipes-bsp/arm-trusted-firmware"
+BBMASK += "meta-agl-refhw-gen3/recipes-bsp/arm-trusted-firmware"
