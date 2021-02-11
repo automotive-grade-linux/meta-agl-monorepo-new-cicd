@@ -7,34 +7,61 @@ SECTION     = "multimedia"
 LICENSE = "MIT"
 LIC_FILES_CHKSUM = "file://LICENSE;beginline=3;md5=e8ad01a5182f2c1b3a2640e9ea268264"
 
-inherit meson pkgconfig gobject-introspection
+inherit meson pkgconfig systemd
 
-DEPENDS = "glib-2.0 glib-2.0-native pipewire"
+DEPENDS = "glib-2.0 glib-2.0-native pipewire lua"
 
 SRC_URI = "\
     git://gitlab.freedesktop.org/pipewire/wireplumber.git;protocol=https;branch=master \
-    https://raw.githubusercontent.com/skystrife/cpptoml/fededad7169e538ca47e11a9ee9251bc361a9a65/include/cpptoml.h \
-    file://0001-Build-cpptoml-without-a-cmake-subproject.patch \
 "
-SRCREV = "0e98e4150b73d0bed9b72bf8d3eba49671962991"
-SRC_URI[sha256sum] = "3e4e1d315fa1229921c7a4297ead08775b5bb1220c18a7eac62db9ca7e79df0d"
+SRCREV = "bc1413e1cd718a407630903d9a50dabd6d781498"
 
-PV = "0.1.90+git${SRCPV}"
+PV = "0.3.70+git${SRCPV}"
 S  = "${WORKDIR}/git"
 
+WPAPI="0.4"
+
+# use shared lua from the system instead of the static bundled one
+EXTRA_OEMESON += "-Dsystem-lua=true"
+
+# introspection in practice is only used for generating API docs
+# API docs are available on the website and we don't need to build them
+# (plus they depend on hotdoc which is not available here)
+EXTRA_OEMESON += "-Dintrospection=disabled -Ddoc=disabled"
+
+PACKAGECONFIG = "\
+    ${@bb.utils.filter('DISTRO_FEATURES', 'systemd', d)} \
+"
+
+PACKAGECONFIG[systemd] = "-Dsystemd=enabled -Dsystemd-system-service=true -Dsystemd-user-service=false,-Dsystemd=disabled -Dsystemd-system-service=false -Dsystemd-user-service=false,systemd"
+
 do_configure_prepend() {
-    mkdir -p ${WORKDIR}/git/subprojects/cpptoml/include
-    cp -f ${WORKDIR}/cpptoml.h ${WORKDIR}/git/subprojects/cpptoml/include/
+    # relax meson version requirement
+    # we only need 0.54 when building with -Dsystem-lua=false
+    sed "s/meson_version : '>= 0.54.0'/meson_version : '>= 0.51.0'/" ${S}/meson.build > ${S}/tmp.build
+    mv -f ${S}/tmp.build ${S}/meson.build
 }
 
-PACKAGES =+ "${PN}-config"
+PACKAGES =+ "\
+    lib${PN}-${WPAPI} \
+    ${PN}-config \
+"
 
-FILES_${PN} += "\
-    ${libdir}/wireplumber-*/* \
+SYSTEMD_SERVICE_${PN} = "wireplumber.service"
+FILES_${PN} = "\
+    ${bindir}/wireplumber \
+    ${bindir}/wpctl \
+    ${bindir}/wpexec \
+    ${libdir}/wireplumber-${WPAPI}/* \
+    ${datadir}/wireplumber/* \
+    ${systemd_system_unitdir}/* \
 "
 RPROVIDES_${PN} += "virtual/pipewire-sessionmanager"
 RDEPENDS_${PN} += "virtual/wireplumber-config"
 
+FILES_lib${PN}-${WPAPI} = "\
+    ${libdir}/libwireplumber-${WPAPI}.so.* \
+"
 
 FILES_${PN}-config += "\
     ${sysconfdir}/wireplumber/* \
@@ -42,5 +69,4 @@ FILES_${PN}-config += "\
 CONFFILES_${PN}-config += "\
     ${sysconfdir}/wireplumber/* \
 "
-
 RPROVIDES_${PN}-config += "virtual/wireplumber-config"
