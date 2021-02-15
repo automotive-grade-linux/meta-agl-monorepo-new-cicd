@@ -1,12 +1,7 @@
 #!/bin/bash
 
-ZIP_1="R-Car_Gen3_Series_Evaluation_Software_Package_for_Linux-weston8-20200923.zip"
-ZIP_1_tmp="REN_R-Car_Gen3_Series_Evaluation_Software_Package_for_Linux-weston8-20200923__20200930.zip"
-ZIP_2="R-Car_Gen3_Series_Evaluation_Software_Package_of_Linux_Drivers-weston8-20200923.zip"
-ZIP_2_tmp="REN_R-Car_Gen3_Series_Evaluation_Software_Package_of_Linux_Drivers-weston8-20200923__20200930.zip"
-
-if [ -f "${XDG_DOWNLOAD_DIR}/${ZIP_1_tmp}" ]; then mv "${XDG_DOWNLOAD_DIR}/${ZIP_1_tmp}" "${XDG_DOWNLOAD_DIR}/${ZIP_1}"; fi
-if [ -f "${XDG_DOWNLOAD_DIR}/${ZIP_2_tmp}" ]; then mv "${XDG_DOWNLOAD_DIR}/${ZIP_2_tmp}" "${XDG_DOWNLOAD_DIR}/${ZIP_2}"; fi
+ZIP_1="R-Car_Gen3_Series_Evaluation_Software_Package_for_Linux-weston8-20210121.zip"
+ZIP_2="R-Car_Gen3_Series_Evaluation_Software_Package_of_Linux_Drivers-weston8-20210121.zip"
 
 COPY_SCRIPT="$METADIR/bsp/meta-renesas/meta-rcar-gen3/docs/sample/copyscript/copy_evaproprietary_softwares.sh"
 
