@@ -12,6 +12,7 @@ SRC_URI = " \
 	file://remote-output.cfg \
 	file://transmitter-output.cfg.in \
 	file://virtual-0.cfg \
+	file://virtual-90.cfg \
 	file://virtual-180.cfg \
 	file://virtual-270.cfg \
 "
@@ -21,7 +22,7 @@ S = "${WORKDIR}"
 inherit update-alternatives
 
 # Default primary display/orientation fragment
-WESTON_DISPLAYS ?= "hdmi-a-1-270"
+WESTON_DISPLAYS ?= "hdmi-a-1-90"
 
 # Configuration fragments to use in weston.ini.*
 # Note that some may be replaced/removed when building the landscape
@@ -63,7 +64,7 @@ do_compile() {
         if echo $F | grep '^hdmi-a-1-\(90\|270\)$'; then
             F="hdmi-a-1-0"
             INVF="hdmi-a-1-180"
-        elif echo $F | grep '^virtual-270$'; then
+        elif echo $F | grep '^virtual-90$'; then
             F="virtual-0"
             INVF="virtual-180"
         fi
