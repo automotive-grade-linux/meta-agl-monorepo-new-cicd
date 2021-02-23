@@ -1,7 +1,6 @@
 FILESEXTRAPATHS:prepend := "${THISDIR}/systemd:"
 
 SRC_URI += "\
-    file://0002-network-add-CAN-Termination-tristate-option.patch \
     file://e2fsck.conf \
     file://canbus-can.network \
     ${@bb.utils.contains('VIRTUAL-RUNTIME_net_manager','systemd','file://wired.network','',d)} \
