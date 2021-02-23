@@ -9,7 +9,7 @@ DEPENDS += "wayland wayland-native waltham weston"
 SRC_URI = "git://gerrit.automotivelinux.org/gerrit/src/waltham-transmitter-plugin.git;protocol=https;branch=${AGL_BRANCH}"
 SRCREV = "c9d23a045e6cb46c023c15f8189ef3ee8b1ddf20"
 
-S = "${WORKDIR}/git/"
+S = "${WORKDIR}/git"
 
 inherit meson pkgconfig python3native
 
