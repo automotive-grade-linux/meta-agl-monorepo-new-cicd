@@ -1,0 +1,53 @@
+Replace some TRUE/FALSE usage with stdbool.h definitions
+
+Newer versions of json-c dropped its previous #defines for TRUE and
+FALSE, update affected code to use the stdbool.h boolean definitions
+to fix compilation.
+
+Upstream-Status: Pending
+Signed-off-by: Scott Murray <scott.murray@konsulko.com>
+
+---
+diff --git a/json_regex.c b/json_regex.c
+index 2524c18..cdb6801 100644
+--- a/json_regex.c
++++ b/json_regex.c
+@@ -24,6 +24,7 @@
+ #endif
+ 
+ #include <json.h>
++#include <stdbool.h>
+ 
+ #include "json_regex.h"
+ #include "keys.h"
+@@ -64,7 +65,7 @@ void generate_trusted_json(void)
+ 	json_object_object_add(jregex_agent_response, "Username", json_object_new_string("^([[:print:]]*)$"));
+ 	json_object_object_add(jregex_agent_response, "Password", json_object_new_string("^([[:print:]]*)$"));
+ 
+-	jregex_agent_retry_response = json_object_new_boolean(TRUE);
++	jregex_agent_retry_response = json_object_new_boolean(true);
+ 
+ 	// See commands.c __cmd_config_service for a better idea of the format.
+ 	jregex_config_service = json_object_new_object();
+@@ -94,7 +95,7 @@ void generate_trusted_json(void)
+ 	json_object_array_add(arr, json_object_new_string("^([[:print:]]*)$"));
+ 	json_object_object_add(tmp, key_serv_proxy_excludes, arr);
+ 	json_object_object_add(opt, key_serv_proxy_config, tmp);
+-	json_object_object_add(opt, key_serv_autoconnect, json_object_new_boolean(TRUE));
++	json_object_object_add(opt, key_serv_autoconnect, json_object_new_boolean(true));
+ 	arr = json_object_new_array();
+ 	json_object_array_add(arr, json_object_new_string("^([[:print:]]*)$"));
+ 	json_object_object_add(opt, key_serv_domains_config, arr);
+diff --git a/json_utils.c b/json_utils.c
+index f66d08a..8f2c195 100644
+--- a/json_utils.c
++++ b/json_utils.c
+@@ -83,7 +83,7 @@ static bool json_match_object(struct json_object *jobj,
+ 		key_is_trusted = json_object_object_get_ex(jtrusted, key,
+ 				&tmp_trusted);
+ 
+-		if (key_is_trusted == FALSE)
++		if (key_is_trusted == false)
+ 			return false;
+ 
+ 		res = __json_type_dispatch(val, tmp_trusted);
