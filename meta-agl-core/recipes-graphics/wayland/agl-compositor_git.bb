@@ -13,6 +13,8 @@ DEPENDS = "wayland wayland-protocols wayland-native weston \
 
 SRC_URI = "git://gerrit.automotivelinux.org/gerrit/src/agl-compositor.git;protocol=https;branch=${AGL_BRANCH}"
 SRCREV = "cec4cf8fe409cae5618e81e4a3b6dd11cc8b2aa9"
+AGL_BRANCH:aglnext = "next"
+SRCREV:aglnext = "${AUTOREV}"
 
 PV = "0.0.10+git${SRCPV}"
 S = "${WORKDIR}/git"

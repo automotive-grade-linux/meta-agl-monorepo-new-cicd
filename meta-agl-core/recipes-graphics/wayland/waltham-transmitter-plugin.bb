@@ -7,7 +7,9 @@ LIC_FILES_CHKSUM = "file://COPYING;md5=f21c9af4de068fb53b83f0b37d262ec3"
 DEPENDS += "wayland wayland-native waltham weston"
 
 SRC_URI = "git://gerrit.automotivelinux.org/gerrit/src/waltham-transmitter-plugin.git;protocol=https;branch=${AGL_BRANCH}"
+AGL_BRANCH:aglnext = "next"
 SRCREV = "c9d23a045e6cb46c023c15f8189ef3ee8b1ddf20"
+SRCREV:aglnext = "${AUTOREV}"
 
 S = "${WORKDIR}/git"
 
