@@ -14,5 +14,4 @@ IMAGE_INSTALL_append = "\
     weston-examples \
     curl \
     ptest-runner \
-    libsoup-2.4 \
     "
