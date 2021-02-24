@@ -1,4 +1,4 @@
-From edb252e5dae20869081a22e1e18cde4336c7b31c Mon Sep 17 00:00:00 2001
+From 552f06e025493f7e634ea9e27489861b88f45555 Mon Sep 17 00:00:00 2001
 From: Tim Orling <timothy.t.orling@linux.intel.com>
 Date: Mon, 15 Oct 2018 18:30:42 -0700
 Subject: [PATCH] Initial LAVA support
@@ -19,14 +19,16 @@ It is valid to have a measurement without units, but not units without a measure
 
 Signed-off-by: Tim Orling <timothy.t.orling@linux.intel.com>
 [updated for ptest-runner 2.3.2]
+[updated for ptest-runner 2.4.1]
+[updated for ptest-runner 2.4.2]
 Signed-off-by: Scott Murray <scott.murray@konsulko.com>
 
 ---
  flags.h | 10 ++++++++++
  main.c  |  9 ++++++++-
- utils.c | 14 ++++++++++++++
+ utils.c | 15 +++++++++++++++
  utils.h |  2 +-
- 4 files changed, 33 insertions(+), 2 deletions(-)
+ 4 files changed, 34 insertions(+), 2 deletions(-)
  create mode 100644 flags.h
 
 diff --git a/flags.h b/flags.h
@@ -46,7 +48,7 @@ index 0000000..0dac223
 +
 +#endif				/* __FLAGS_H__ */
 diff --git a/main.c b/main.c
-index e3a1b69..4807183 100644
+index 31e4dd5..f12d6d6 100644
 --- a/main.c
 +++ b/main.c
 @@ -38,6 +38,7 @@
@@ -57,7 +59,7 @@ index e3a1b69..4807183 100644
  
  #ifndef DEFAULT_DIRECTORY
  #define DEFAULT_DIRECTORY "/usr/lib"
-@@ -110,8 +111,9 @@ main(int argc, char *argv[])
+@@ -130,8 +131,9 @@ main(int argc, char *argv[])
  	opts.timeout = DEFAULT_TIMEOUT;
  	opts.ptests = NULL;
  	opts.xml_filename = NULL;
@@ -68,7 +70,7 @@ index e3a1b69..4807183 100644
  		switch (opt) {
  			case 'd':
  				free(opts.dirs[0]);
-@@ -136,6 +138,11 @@ main(int argc, char *argv[])
+@@ -156,6 +158,11 @@ main(int argc, char *argv[])
  				opts.xml_filename = strdup(optarg);
  				CHECK_ALLOCATION(opts.xml_filename, 1, 1);
  			break;
@@ -81,32 +83,26 @@ index e3a1b69..4807183 100644
  				print_usage(stdout, argv[0]);
  				exit(1);
 diff --git a/utils.c b/utils.c
-index a4e190e..29f40f3 100644
+index a67ac11..0c081ce 100644
 --- a/utils.c
 +++ b/utils.c
-@@ -47,6 +47,7 @@
+@@ -49,6 +49,7 @@
  
  #include "ptest_list.h"
  #include "utils.h"
 +#include "flags.h"
  
  #define GET_STIME_BUF_SIZE 1024
- #define WAIT_CHILD_POLL_TIMEOUT_MS 200
-@@ -442,6 +443,7 @@ run_ptests(struct ptest_list *head, const struct ptest_options opts,
- 		}
+ #define WAIT_CHILD_BUF_MAX_SIZE 1024
+@@ -483,6 +484,7 @@ run_ptests(struct ptest_list *head, const struct ptest_options opts,
+ 		fprintf(fp, "START: %s\n", progname);
  		PTEST_LIST_ITERATE_START(head, p)
  			char *ptest_dir = strdup(p->run_ptest);
 +			char *ptest = strdup(p->ptest);
  			if (ptest_dir == NULL) {
  				rc = -1;
  				break;
-@@ -480,11 +482,15 @@ run_ptests(struct ptest_list *head, const struct ptest_options opts,
- 				int status;
- 				int fds[2]; fds[0] = pipefd_stdout[0]; fds[1] = pipefd_stderr[0];
- 				FILE *fps[2]; fps[0] = fp; fps[1] = fp_stderr;
-+				char result[5]; // pass\0, fail\0, skip\0
- 
- 				if (setpgid(child, pgid) == -1) {
+@@ -525,6 +527,9 @@ run_ptests(struct ptest_list *head, const struct ptest_options opts,
  					fprintf(fp, "ERROR: setpgid() failed, %s\n", strerror(errno));
  				}
  
@@ -116,11 +112,13 @@ index a4e190e..29f40f3 100644
  				sttime = time(NULL);
  				fprintf(fp, "%s\n", get_stime(stime, GET_STIME_BUF_SIZE, sttime));
  				fprintf(fp, "BEGIN: %s\n", ptest_dir);
-@@ -506,6 +512,14 @@ run_ptests(struct ptest_list *head, const struct ptest_options opts,
+@@ -548,6 +553,16 @@ run_ptests(struct ptest_list *head, const struct ptest_options opts,
  
  				fprintf(fp, "END: %s\n", ptest_dir);
  				fprintf(fp, "%s\n", get_stime(stime, GET_STIME_BUF_SIZE, entime));
 +				if (opts.flags & LAVA_SIGNAL_ENABLE) {
++					char result[5]; // pass\0, fail\0, skip\0
++
 +					if (status)
 +						sprintf(result, "fail");
 +					else
@@ -129,14 +127,14 @@ index a4e190e..29f40f3 100644
 +					fprintf(stdout, "<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=%s RESULT=%s>\n", ptest, result);
 +				}
  			}
+ 			free(ptest_dir);
  		PTEST_LIST_ITERATE_END
- 		fprintf(fp, "STOP: %s\n", progname);
 diff --git a/utils.h b/utils.h
-index 39832e6..8137bd6 100644
+index 04fc666..ad702d8 100644
 --- a/utils.h
 +++ b/utils.h
-@@ -41,9 +41,9 @@ struct ptest_options {
- 	int timeout;
+@@ -42,9 +42,9 @@ struct ptest_options {
+ 	unsigned int timeout;
  	char **ptests;
  	char *xml_filename;
 +	unsigned int flags;
