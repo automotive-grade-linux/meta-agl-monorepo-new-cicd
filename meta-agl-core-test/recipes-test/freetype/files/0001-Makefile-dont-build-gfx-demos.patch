@@ -1,17 +1,16 @@
-diff -ur ft2demos-2.9.1.orig/Makefile ft2demos-2.9.1/Makefile
---- ft2demos-2.9.1.orig/Makefile	2018-04-22 05:41:50.000000000 -0400
-+++ ft2demos-2.9.1/Makefile	2019-02-18 23:28:59.794678736 -0500
-@@ -163,7 +163,8 @@
- 
-   ifeq ($(PLATFORM),unix)
-     CC        = $(CCraw)
--    LINK_CMD  = $(subst /,$(SEP),$(OBJ_BUILD)/libtool) \
-+	LIBTOOL   = $(OBJ_BUILD)/libtool
-+    LINK_CMD  = $(subst /,$(SEP),$(LIBTOOL)) \
-                 --mode=link $(CC) \
-                 $(subst /,$(COMPILER_SEP),$(LDFLAGS))
-     LINK_LIBS = $(subst /,$(COMPILER_SEP),$(FTLIB) $(EFENCE)) $(LIB_CLOCK_GETTIME)
-@@ -289,12 +290,12 @@
+Do not build graphics tests
+
+Upstream-Status: Inappropriate [disable feature]
+Signed-off-by: Scott Murray <scott.murray@konsulko.com>
+---
+ Makefile | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index 8bb8666..95e5e45 100644
+--- a/Makefile
++++ b/Makefile
+@@ -297,13 +297,13 @@ else
            ttdebug
  
    # Comment out the next line if you don't have a graphics subsystem.
@@ -19,14 +18,16 @@ diff -ur ft2demos-2.9.1.orig/Makefile ft2demos-2.9.1/Makefile
 -          ftgamma  \
 -          ftgrid   \
 -          ftmulti  \
+-          ftsdf    \
 -          ftstring \
 -          ftview
-+  # EXES += ftdiff   \
-+  #         ftgamma  \
-+  #         ftgrid   \
-+  #         ftmulti  \
-+  #         ftstring \
-+  #         ftview
++  #EXES += ftdiff   \
++  #        ftgamma  \
++  #        ftgrid   \
++  #        ftmulti  \
++  #        ftsdf    \
++  #        ftstring \
++  #        ftview
  
    # ftvalid requires ftgxval.c and ftotval.c
    #

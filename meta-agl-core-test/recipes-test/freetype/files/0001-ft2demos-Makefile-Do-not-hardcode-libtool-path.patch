@@ -8,23 +8,24 @@ Content-Transfer-Encoding: 8bit
 
 It is already known and imported through config.mk.
 
+Upstream-Status: Inappropriate [embedded specific]
 Signed-off-by: Jan-Simon Möller <jsmoeller@linuxfoundation.org>
+[Updated for freetype 2.10.4]
+Signed-off-by: Scott Murray <scott.murray@konsulko.com>
 ---
- Makefile | 1 -
- 1 file changed, 1 deletion(-)
+ Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/Makefile b/Makefile
-index a5d34bd..254aad4 100644
+index 851c4f7..c537983 100644
 --- a/Makefile
 +++ b/Makefile
-@@ -153,7 +153,6 @@ else
+@@ -165,7 +165,7 @@ else
  
    ifeq ($(PLATFORM),unix)
-     CC        = $(CCraw)
--	LIBTOOL   = $(OBJ_BUILD)/libtool
-     LINK_CMD  = $(subst /,$(SEP),$(LIBTOOL)) \
-                 --mode=link $(CC) \
-                 $(subst /,$(COMPILER_SEP),$(LDFLAGS))
--- 
-2.1.4
-
+     override CC = $(CCraw)
+-    LINK_CMD    = $(subst /,$(SEP),$(OBJ_BUILD)/libtool) \
++    LINK_CMD  = $(subst /,$(SEP),$(LIBTOOL)) \
+                   --mode=link $(CC) \
+                   $(subst /,$(COMPILER_SEP),$(LDFLAGS))
+     LINK_LIBS   = $(subst /,$(COMPILER_SEP),$(FTLIB) $(EFENCE)) $(LIB_CLOCK_GETTIME)
