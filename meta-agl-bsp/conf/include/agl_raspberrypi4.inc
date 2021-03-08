@@ -7,6 +7,9 @@ OSTREE_KERNEL_ARGS_sota_append = " cma=256M"
 # use u-boot always
 RPI_USE_U_BOOT = "1"
 
+# Use UART for serial console
+ENABLE_UART ?= "1"
+
 # For libomxil
 #LICENSE_FLAGS_WHITELIST = "commercial"
 

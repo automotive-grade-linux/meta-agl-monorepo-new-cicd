@@ -48,6 +48,3 @@ do_deploy_append_raspberrypi4() {
 do_deploy_append_sota() {
     echo "device_tree_address=0x0c800000" >> ${DEPLOYDIR}/bootfiles/config.txt
 }
-
-ENABLE_UART_raspberrypi3 = "1"
-ENABLE_UART_raspberrypi4 = "1"
