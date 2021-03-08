@@ -44,7 +44,3 @@ do_deploy:append:raspberrypi4() {
     echo -e "\n[pi4]" >> ${DEPLOYDIR}/bootfiles/config.txt
     echo "max_framebuffers=2" >> ${DEPLOYDIR}/bootfiles/config.txt
 }
-
-do_deploy:append:sota() {
-    echo "device_tree_address=0x0c800000" >> ${DEPLOYDIR}/bootfiles/config.txt
-}
