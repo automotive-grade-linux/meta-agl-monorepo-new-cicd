@@ -1,3 +1,0 @@
-SRC_URI = "git://git.denx.de/u-boot.git;branch=master"
-SRCREV = "840658b093976390e9537724f802281c9c8439f5"
-LIC_FILES_CHKSUM = "file://Licenses/README;md5=5a7450c57ffe5ae63fd732446b988025"

@@ -29,7 +29,3 @@ IMAGE_INSTALL:append = " ${@bb.utils.contains('AGL_XEN_WANTED', '1', 'xen-tools 
 
 # Add xen-raspberry binary to boot files
 IMAGE_BOOT_FILES:append = " ${@bb.utils.contains('AGL_XEN_WANTED','1', 'xen-${MACHINE}', '',d)}"
-
-PREFERRED_VERSION_u-boot = "2021.07"
-PREFERRED_VERSION_u-boot-tools = "2021.07"
-UBOOT_MACHINE:rpi = "rpi_arm64_config"
