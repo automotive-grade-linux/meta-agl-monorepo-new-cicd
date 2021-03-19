@@ -1,4 +1,4 @@
-state.rcarsound {
+state.ak4613 {
 	control.1 {
 		iface MIXER
 		name 'Digital Playback Volume1'
