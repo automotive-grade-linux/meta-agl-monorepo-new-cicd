@@ -496,6 +496,7 @@ EOF
 [[ $FORCE -eq 1 ]] && rm -f \
 	$BUILDDIR/conf/local.conf \
 	$BUILDDIR/conf/bblayers.conf \
+	$BUILDDIR/conf/templateconf.cfg \
 	$BUILDDIR/conf/setup.* \
 	$BUILDDIR/conf/*.log
 
