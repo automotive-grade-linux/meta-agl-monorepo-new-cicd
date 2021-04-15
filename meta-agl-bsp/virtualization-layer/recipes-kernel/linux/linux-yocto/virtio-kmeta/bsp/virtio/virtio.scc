@@ -1,3 +1,5 @@
 # SPDX-License-Identifier: MIT
 kconf hardware virtio.cfg
 patch virtio-input-add-multi-touch-support.patch
+
+include virtio-snd/virtio-snd.scc

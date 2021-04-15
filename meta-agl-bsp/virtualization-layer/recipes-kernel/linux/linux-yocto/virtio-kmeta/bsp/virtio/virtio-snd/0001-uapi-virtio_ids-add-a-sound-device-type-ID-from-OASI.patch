@@ -1,0 +1,28 @@
+From 6afbb3650d7e02785030f1212c88b50d7296bb45 Mon Sep 17 00:00:00 2001
+From: Anton Yakovlev <anton.yakovlev@opensynergy.com>
+Date: Tue, 2 Mar 2021 17:47:01 +0100
+Subject: [PATCH] uapi: virtio_ids: add a sound device type ID from OASIS spec
+
+The OASIS virtio spec defines a sound device type ID that is not
+present in the header yet.
+
+Signed-off-by: Anton Yakovlev <anton.yakovlev@opensynergy.com>
+Link: https://lore.kernel.org/r/20210302164709.3142702-2-anton.yakovlev@opensynergy.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Vasyl Vavrychuk <vasyl.vavrychuk@opensynergy.com>
+---
+ include/uapi/linux/virtio_ids.h | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/include/uapi/linux/virtio_ids.h b/include/uapi/linux/virtio_ids.h
+index b052355ac7a3..bc740d6d2259 100644
+--- a/include/uapi/linux/virtio_ids.h
++++ b/include/uapi/linux/virtio_ids.h
+@@ -45,6 +45,7 @@
+ #define VIRTIO_ID_CRYPTO       20 /* virtio crypto */
+ #define VIRTIO_ID_IOMMU        23 /* virtio IOMMU */
+ #define VIRTIO_ID_MEM          24 /* virtio mem */
++#define VIRTIO_ID_SOUND        25 /* virtio sound */
+ #define VIRTIO_ID_FS           26 /* virtio filesystem */
+ #define VIRTIO_ID_PMEM         27 /* virtio pmem */
+ #define VIRTIO_ID_MAC80211_HWSIM 29 /* virtio mac80211-hwsim */

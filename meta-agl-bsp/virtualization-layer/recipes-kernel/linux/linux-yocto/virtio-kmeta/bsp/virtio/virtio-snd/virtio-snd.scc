@@ -1,0 +1,11 @@
+# SPDX-License-Identifier: MIT
+kconf hardware virtio-snd.cfg
+patch 0001-uapi-virtio_ids-add-a-sound-device-type-ID-from-OASI.patch
+patch 0002-ALSA-virtio-add-virtio-sound-driver.patch
+patch 0003-ALSA-virtio-handling-control-messages.patch
+patch 0004-ALSA-virtio-build-PCM-devices-and-substream-hardware.patch
+patch 0005-ALSA-virtio-handling-control-and-I-O-messages-for-th.patch
+patch 0006-ALSA-virtio-PCM-substream-operators.patch
+patch 0007-ALSA-virtio-introduce-jack-support.patch
+patch 0008-ALSA-virtio-introduce-PCM-channel-map-support.patch
+patch 0009-ALSA-virtio-introduce-device-suspend-resume-support.patch
