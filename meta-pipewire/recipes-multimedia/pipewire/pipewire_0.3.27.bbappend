@@ -5,3 +5,8 @@ PACKAGECONFIG = "\
     ${@bb.utils.filter('DISTRO_FEATURES', 'systemd', d)} \
     gstreamer v4l2 \
 "
+
+SRC_URI += "\
+    file://0001-pipewiresink-use-all-the-available-dest-memory-when-.patch \
+    file://0002-pipewiresink-release-manually-acquired-buffers-back-.patch \
+"

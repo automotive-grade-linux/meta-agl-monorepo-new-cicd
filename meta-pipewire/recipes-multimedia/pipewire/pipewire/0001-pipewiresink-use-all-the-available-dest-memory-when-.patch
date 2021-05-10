@@ -1,0 +1,33 @@
+From b86e5cabfae3ab354f350f8f7589b21a153a8a5d Mon Sep 17 00:00:00 2001
+From: George Kiagiadakis <george.kiagiadakis@collabora.com>
+Date: Mon, 10 May 2021 17:12:12 +0300
+Subject: pipewiresink: use all the available dest memory when copying buffer
+
+When pipewiresink needs to copy data, it has to resize the destination
+buffer (to a smaller size) in order to send the correct data size to
+pipewire. When this dest buffer is reused later, it will still have
+this smaller size as its total size and the copy may discard data
+from upstream if the new upstream buffer is bigger than the last one
+that was copied on the same dest buffer.
+
+Upstream-Status: Backport [from master/0.3.28]
+---
+ src/gst/gstpipewiresink.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/gst/gstpipewiresink.c b/src/gst/gstpipewiresink.c
+index 966b12c7..031b3ae0 100644
+--- a/src/gst/gstpipewiresink.c
++++ b/src/gst/gstpipewiresink.c
+@@ -616,7 +616,7 @@ gst_pipewire_sink_render (GstBaseSink * bsink, GstBuffer * buffer)
+       goto done;
+ 
+     gst_buffer_map (b, &info, GST_MAP_WRITE);
+-    gst_buffer_extract (buffer, 0, info.data, info.size);
++    gst_buffer_extract (buffer, 0, info.data, info.maxsize);
+     gst_buffer_unmap (b, &info);
+     gst_buffer_resize (b, 0, gst_buffer_get_size (buffer));
+     buffer = b;
+-- 
+2.30.2
+
