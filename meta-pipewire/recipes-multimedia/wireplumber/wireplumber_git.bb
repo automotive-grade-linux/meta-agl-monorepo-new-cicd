@@ -14,9 +14,10 @@ DEPENDS = "glib-2.0 glib-2.0-native pipewire lua"
 SRC_URI = "\
     git://gitlab.freedesktop.org/pipewire/wireplumber.git;protocol=https;branch=master \
 "
-SRCREV = "bc1413e1cd718a407630903d9a50dabd6d781498"
+SRCREV = "ecef960b7859b9b24885840453a3ddf4812845f2"
 
-PV = "0.3.70+git${SRCPV}"
+#PV = "0.3.95+git${SRCPV}"
+PV = "0.3.95"
 S  = "${WORKDIR}/git"
 
 WPAPI="0.4"

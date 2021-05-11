@@ -12,6 +12,7 @@ SRC_URI = "\
     file://30-alsa-monitor.lua \
     file://30-bluez-monitor.lua \
     file://99-load-modules.lua \
+    file://wireplumber.conf \
     file://wireplumber-bluetooth.conf \
 "
 PACKAGE_ARCH = "${MACHINE_ARCH}"
@@ -29,6 +30,8 @@ do_install_append() {
     install -m 0644 ${WORKDIR}/30-alsa-monitor.lua ${config_dir}
     install -m 0644 ${WORKDIR}/30-bluez-monitor.lua ${config_dir}
     install -m 0644 ${WORKDIR}/99-load-modules.lua ${config_dir}
+
+    install -m 0644 ${WORKDIR}/wireplumber.conf ${D}${sysconfdir}/wireplumber/
 
     install -d ${dbus_config_dir}
     install -m 0644 ${WORKDIR}/wireplumber-bluetooth.conf ${dbus_config_dir}
