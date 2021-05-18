@@ -13,6 +13,6 @@ PKGGROUP_ZEROCONF = "${@bb.utils.contains('DISTRO_FEATURES', 'zeroconf', 'packag
 
 RDEPENDS_${PN} += "\
     ${@bb.utils.contains('VIRTUAL-RUNTIME_net_manager','connman','connman connman-client connman-tests \
-        connman-tools connman-ncurses connman-plugin-session-policy-local','',d)} \
+        connman-tools connman-ncurses' ,'',d)} \
     ${@bb.utils.contains('AGL_FEATURES', 'agl-devel', '${PKGGROUP_ZEROCONF}', '', d)} \
     "
