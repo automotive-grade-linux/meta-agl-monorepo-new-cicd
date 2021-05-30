@@ -63,11 +63,6 @@ alsa_monitor.rules = {
         { "api.alsa.pcm.device", "=", "0" },
       },
       {
-        -- dra7xx
-        { "node.name", "matches", "alsa_output.*" },
-        { "api.alsa.card.id", "=", "DRA7xx-EVM" },
-      },
-      {
         -- imx8mq
         { "node.name", "matches", "alsa_output.*" },
         { "api.alsa.card.id", "=", "wm8524audio" },
@@ -129,11 +124,6 @@ alsa_monitor.rules = {
         -- ak4613
         { "node.name", "matches", "alsa_input.*" },
         { "api.alsa.card.id", "=", "ak4613" },
-      },
-      {
-        -- dra7xx
-        { "node.name", "matches", "alsa_input.*" },
-        { "api.alsa.card.id", "=", "DRA7xx-EVM" },
       },
       {
         -- imx8mq
