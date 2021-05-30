@@ -1,4 +1,4 @@
-DISTRO_FEATURES_append = " agl-medium-arm-compiler"
+require agl_imx-common.inc
 
 # Force use of the community supported LTS kernel instead of the
 # default linux-imx
@@ -9,14 +9,5 @@ MACHINE_FEATURES_append = " bcm4356"
 
 # Add helper to drive setting up HCI UART device
 MACHINE_EXTRA_RRECOMMENDS_append = " hci-uart-helper"
-
-# Disable meta-freescale package architecure mangling, as it causes
-# issues with AGL's explicit setting of DEFAULTTUNE.
-INHERIT_remove = "fsl-dynamic-packagearch"
-MACHINE_SOCARCH = "${TUNE_PKGARCH}"
-
-# Disable the meta-freescale weston-init bbappend as it conflicts
-# with AGL's.
-BBMASK = "meta-freescale/recipes-graphics/wayland/weston-init"
 
 AGL_DEFAULT_INITRAMFS_FSTYPES := ""
