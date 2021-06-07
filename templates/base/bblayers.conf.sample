@@ -39,9 +39,11 @@ AGL_CORE_DEPENDENCY_LAYERS = " \
 # the evaluation is in the bblayers.conf.sample in meta-agl/templates/base
 AGL_META_NETWORKING ?= ""
 AGL_META_PYTHON ?= ""
+AGL_META_FILESYSTEMS ?= ""
 AGL_OTHER_DEPENDENCY_LAYERS = " \
     ${AGL_META_NETWORKING} \
     ${AGL_META_PYTHON} \
+    ${AGL_META_FILESYSTEMS} \
     "
 
 ####################
