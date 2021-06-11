@@ -10,7 +10,7 @@ SRC_URI_append= "\
 
 do_install_append() {
      # replace the original config with our smack-aware config
-    rm -f ${D}${sysconfdir}/pipewire/pipewire.conf
+    mkdir -p ${D}${sysconfdir}/pipewire/
     install -m 0644 ${WORKDIR}/pipewire.conf ${D}${sysconfdir}/pipewire/pipewire.conf
 
     if ${@bb.utils.contains('DISTRO_FEATURES', 'systemd', 'true', 'false', d)}; then
@@ -30,4 +30,5 @@ do_install_append() {
 
 FILES_${PN}_append = "\
     ${sysconfdir}/smack/accesses.d/* \
+    ${sysconfdir}/pipewire/pipewire.conf \
 "

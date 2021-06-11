@@ -1,4 +1,4 @@
-From a949b090e9d4d11c300fb23b416a2cc69483962b Mon Sep 17 00:00:00 2001
+From b6854927aaf5e5970178ed9b0c6647bb759f2092 Mon Sep 17 00:00:00 2001
 From: George Kiagiadakis <george.kiagiadakis@collabora.com>
 Date: Tue, 16 Feb 2021 17:26:20 +0200
 Subject: [PATCH] modules: add new access-seclabel module
@@ -7,6 +7,7 @@ This module allows access control based on the security label
 of the client. It is tailored for use with the semantics of SMACK
 
 Upstream-Status: Inappropriate [smack specific]
+
 ---
  src/modules/meson.build              |  10 ++
  src/modules/module-access-seclabel.c | 220 +++++++++++++++++++++++++++
@@ -14,11 +15,11 @@ Upstream-Status: Inappropriate [smack specific]
  create mode 100644 src/modules/module-access-seclabel.c
 
 diff --git a/src/modules/meson.build b/src/modules/meson.build
-index 8c9ccc85..234cff6b 100644
+index f51aa29c..21b52d49 100644
 --- a/src/modules/meson.build
 +++ b/src/modules/meson.build
-@@ -14,6 +14,16 @@ pipewire_module_access = shared_library('pipewire-module-access', [ 'module-acce
-   dependencies : [mathlib, dl_lib, pipewire_dep],
+@@ -56,6 +56,16 @@ pipewire_module_echo_cancel = shared_library('pipewire-module-echo-cancel',
+   dependencies : [mathlib, dl_lib, pipewire_dep, webrtc_dep],
  )
  
 +pipewire_module_access_seclabel = shared_library('pipewire-module-access-seclabel',
@@ -260,6 +261,3 @@ index 00000000..3739f2e4
 +
 +	return 0;
 +}
--- 
-2.30.0
-

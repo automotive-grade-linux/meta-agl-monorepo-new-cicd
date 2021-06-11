@@ -13,7 +13,12 @@ load_module("default-nodes", {
   -- do not store runtime user changes in $HOME
   ["use-persistent-storage"] = false,
 })
-load_module("default-nodes-api")
+
+-- Selects default routes on devices that advertise routes
+load_script("default-routes.lua", {
+  -- do not store runtime user changes in $HOME
+  ["use-persistent-storage"] = false,
+})
 
 -- Automatically suspends idle nodes after 3 seconds
 load_script("suspend-node.lua")

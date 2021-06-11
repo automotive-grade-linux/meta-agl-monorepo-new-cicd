@@ -2,12 +2,6 @@
 
 default_policy = {}
 
-default_policy.sessions = {
-  -- [session name] = { session properties }
-  ["audio"] = { ["media.type"] = "Audio" },
-  --["video"] = { ["media.type"] = "Video" },
-}
-
 default_policy.endpoints = {
   -- [endpoint name] = { endpoint properties }
 
@@ -49,6 +43,10 @@ default_policy.policy = {
   ["move"] = false,  -- moves session items when metadata target.node changes
   ["follow"] = true, -- moves session items to the default device when it has changed
 
+  -- how much to lower the volume of lower priority streams when ducking
+  -- note that this is a linear volume modifier (not cubic as in the mixer)
+  ["duck.level"] = 0.2,
+
   ["roles"] = {
     ["Multimedia"] = {
       ["alias"] = { "Movie", "Music", "Game" },
@@ -67,7 +65,7 @@ default_policy.policy = {
     },
     ["Navigation"] = {
       ["priority"] = 50,
-      ["action.default"] = "cork",
+      ["action.default"] = "duck",
       ["action.Navigation"] = "mix",
     },
     ["Speech-High"] = {
@@ -102,9 +100,11 @@ function default_policy.enable()
   load_module("si-standard-link")
   load_module("si-audio-endpoint")
 
-  -- Create sessions statically at startup
-  load_script("static-sessions.lua", default_policy.sessions)
+  -- API to access default nodes from scripts
+  load_module("default-nodes-api")
 
+  -- API to access mixer controls, needed for volume ducking
+  load_module("mixer-api")
 
   -- Create endpoints statically at startup
   load_script("static-endpoints.lua", default_policy.endpoints)

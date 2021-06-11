@@ -7,7 +7,6 @@ LICENSE = "MIT"
 LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/MIT;md5=0835ade698e0bcf8506ecda2f7b4f302"
 SRC_URI = "\
     file://00-functions.lua \
-    file://00-spa-libs.lua \
     file://10-default-policy.lua \
     file://30-alsa-monitor.lua \
     file://30-bluez-monitor.lua \
@@ -25,7 +24,6 @@ do_install_append() {
 
     install -d ${config_dir}
     install -m 0644 ${WORKDIR}/00-functions.lua ${config_dir}
-    install -m 0644 ${WORKDIR}/00-spa-libs.lua ${config_dir}
     install -m 0644 ${WORKDIR}/10-default-policy.lua ${config_dir}
     install -m 0644 ${WORKDIR}/30-alsa-monitor.lua ${config_dir}
     install -m 0644 ${WORKDIR}/30-bluez-monitor.lua ${config_dir}

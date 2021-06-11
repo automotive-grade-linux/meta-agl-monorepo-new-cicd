@@ -11,15 +11,19 @@ DESCRIPTION = "Linux server for handling and routing audio and video streams bet
 HOMEPAGE = "https://pipewire.org/"
 BUGTRACKER  = "https://gitlab.freedesktop.org/pipewire/pipewire/issues"
 LICENSE = "MIT"
+LICENSE_${PN}-jack = "GPL-2.0-only"
+LICENSE_${PN}-alsa-card-profile = "LGPL-2.1-or-later"
+LICENSE_${PN}-spa-plugins-alsa = "LGPL-2.1-or-later"
+
 LIC_FILES_CHKSUM = " \
-    file://LICENSE;md5=e2c0b7d86d04e716a3c4c9ab34260e69 \
+    file://LICENSE;md5=2158739e172e58dc9ab1bdd2d6ec9c72 \
     file://COPYING;md5=97be96ca4fab23e9657ffa590b931c1a \
 "
 SECTION = "multimedia"
 
 DEPENDS = "dbus"
 
-SRCREV = "e598d0a42227c9dfa79dcb7583c054c5b2ec072d"
+SRCREV = "e857856be7b64d562cdcc01c43933218a68b225e"
 SRC_URI = "git://gitlab.freedesktop.org/pipewire/pipewire.git;branch=master;protocol=https"
 
 S = "${WORKDIR}/git"
@@ -38,14 +42,19 @@ USERADD_PARAM_${PN} = "--system --home / --no-create-home \
 # For "EVL", look up https://evlproject.org/ . It involves
 # a specially prepared kernel, and is currently unavailable
 # in Yocto.
+#
 # FFmpeg and Vulkan aren't really supported - at the current
 # stage (version 0.3.22), these are just experiments, not
 # actual features.
+#
 # libcamera support currently does not build successfully.
+#
 # systemd user service files are disabled because per-user
 # PipeWire instances aren't really something that makes
 # much sense in an embedded environment. A system-wide
 # instance does.
+#
+# manpage generation requires xmltoman, which is not available.
 EXTRA_OEMESON += " \
     -Daudiotestsrc=enabled \
     -Devl=disabled \
@@ -56,6 +65,7 @@ EXTRA_OEMESON += " \
     -Dffmpeg=disabled \
     -Dvulkan=disabled \
     -Dlibcamera=disabled \
+    -Dman=disabled \
 "
 
 PACKAGECONFIG ??= "\
@@ -72,10 +82,9 @@ PACKAGECONFIG ??= "\
 
 PACKAGECONFIG[alsa] = "-Dalsa=enabled,-Dalsa=disabled,alsa-lib udev"
 PACKAGECONFIG[bluez] = "-Dbluez5=enabled,-Dbluez5=disabled,bluez5 sbc"
-PACKAGECONFIG[docs] = "-Ddocs=enabled,-Ddocs=disabled,doxygen"
+PACKAGECONFIG[docs] = "-Ddocs=enabled,-Ddocs=disabled,doxygen-native"
 PACKAGECONFIG[gstreamer] = "-Dgstreamer=enabled,-Dgstreamer=disabled,glib-2.0 gstreamer1.0 gstreamer1.0-plugins-base"
 PACKAGECONFIG[jack] = "-Djack=enabled,-Djack=disabled,jack,,,pipewire-jack"
-PACKAGECONFIG[manpages] = "-Dman=enabled,-Dman=disabled,libxml-parser-perl-native"
 PACKAGECONFIG[sdl2] = "-Dsdl2=enabled,-Dsdl2=disabled,virtual/libsdl2"
 PACKAGECONFIG[sndfile] = "-Dsndfile=enabled,-Dsndfile=disabled,libsndfile1"
 PACKAGECONFIG[systemd] = "-Dsystemd=enabled -Dsystemd-system-service=enabled ,-Dsystemd=disabled -Dsystemd-system-service=disabled,systemd"
@@ -94,7 +103,7 @@ remove_unused_installed_files() {
     # Remove it if pipewire-jack is not built to avoid creating the
     # pipewire-jack package.
     if ${@bb.utils.contains('PACKAGECONFIG', 'pipewire-jack', 'false', 'true', d)}; then
-        rm -f "${D}${sysconfdir}/pipewire/jack.conf"
+        rm -f "${D}${datadir}/pipewire/jack.conf"
     fi
 }
 
@@ -192,10 +201,11 @@ PACKAGES =+ "\
 PACKAGES_DYNAMIC = "^${PN}-spa-plugins.* ^${PN}-modules.*"
 
 SYSTEMD_SERVICE_${PN} = "pipewire.service"
-CONFFILES_${PN} += "${sysconfdir}/pipewire/pipewire.conf"
+CONFFILES_${PN} += "${datadir}/pipewire/pipewire.conf"
 FILES_${PN} = " \
-    ${sysconfdir}/pipewire/pipewire.conf \
-    ${systemd_system_unitdir}/pipewire.* \
+    ${datadir}/pipewire/pipewire.conf \
+    ${datadir}/pipewire/filter-chain \
+    ${systemd_user_unitdir}/pipewire.* \
     ${bindir}/pipewire \
 "
 
@@ -203,9 +213,9 @@ FILES_${PN}-dev += " \
     ${libdir}/${PW_MODULE_SUBDIR}/jack/libjack*.so \
 "
 
-CONFFILES_libpipewire += "${sysconfdir}/pipewire/client.conf"
+CONFFILES_libpipewire += "${datadir}/pipewire/client.conf"
 FILES_libpipewire = " \
-    ${sysconfdir}/pipewire/client.conf \
+    ${datadir}/pipewire/client.conf \
     ${libdir}/libpipewire-*.so.* \
 "
 # Add the bare minimum modules and plugins required to be able
@@ -223,9 +233,11 @@ FILES_${PN}-tools = " \
 # This is a shim daemon that is intended to be used as a
 # drop-in PulseAudio replacement, providing a pulseaudio-compatible
 # socket that can be used by applications that use libpulse.
-CONFFILES_${PN}-pulse += "${sysconfdir}/pipewire/pipewire-pulse.conf"
+CONFFILES_${PN}-pulse += "${datadir}/pipewire/pipewire-pulse.conf"
+
 FILES_${PN}-pulse = " \
-    ${sysconfdir}/pipewire/pipewire-pulse.conf \
+    ${datadir}/pipewire/pipewire-pulse.conf \
+    ${systemd_user_unitdir}/pipewire-pulse.* \
     ${bindir}/pipewire-pulse \
 "
 RDEPENDS_${PN}-pulse += " \
@@ -239,19 +251,19 @@ FILES_${PN}-alsa = "\
 "
 
 # jack drop-in libraries to redirect audio to pipewire
-CONFFILES_${PN}-jack = "${sysconfdir}/pipewire/jack.conf"
+CONFFILES_${PN}-jack = "${datadir}/pipewire/jack.conf"
 FILES_${PN}-jack = "\
-    ${sysconfdir}/pipewire/jack.conf \
+    ${datadir}/pipewire/jack.conf \
     ${libdir}/${PW_MODULE_SUBDIR}/jack/libjack*.so.* \
 "
 
 # Example session manager. Not intended for use in production.
+CONFFILES_${PN}-media-session = "${datadir}/pipewire/media-session.d/*"
 SYSTEMD_SERVICE_${PN}-media-session = "pipewire-media-session.service"
-CONFFILES_${PN}-media-session = "${sysconfdir}/pipewire/media-session.d/*"
 FILES_${PN}-media-session = " \
     ${bindir}/pipewire-media-session \
+    ${datadir}/pipewire/media-session.d/* \
     ${systemd_system_unitdir}/pipewire-media-session.service \
-    ${sysconfdir}/pipewire/media-session.d/* \
 "
 RPROVIDES_${PN}-media-session = "virtual/pipewire-sessionmanager"
 
@@ -267,9 +279,9 @@ FILES_${PN}-spa-tools = " \
 FILES_${PN}-modules = ""
 RRECOMMENDS_${PN}-modules += "${PN}-modules-meta"
 
-CONFFILES_${PN}-modules-rtkit = "${sysconfdir}/pipewire/client-rt.conf"
+CONFFILES_${PN}-modules-rtkit = "${datadir}/pipewire/client-rt.conf"
 FILES_${PN}-modules-rtkit += " \
-    ${sysconfdir}/pipewire/client-rt.conf \
+    ${datadir}/pipewire/client-rt.conf \
     "
 
 FILES_${PN}-alsa-card-profile = " \
