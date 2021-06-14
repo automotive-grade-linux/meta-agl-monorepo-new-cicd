@@ -223,15 +223,15 @@ function append_fragment() {
 	echo >>$basefile
 	echo "# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #" >>$basefile
 	echo "# fragment { " >>$basefile
-	[[ -f $f ]] && echo "# $f" >>$basefile || true
+	[[ -n $f ]] && echo "# $f" >>$basefile || true
 	echo "#" >>$basefile
 	[[ -n "$label" ]] && echo "$label" >>$basefile
-	[[ -f $f ]] && cat $f >>$basefile || true
+	[[ -n $f ]] && cat $f >>$basefile || true
 	echo "" >>$basefile
 	echo "#" >>$basefile
 	echo "# }" >>$basefile
 	echo "# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #" >>$basefile
-	[[ -f $f ]] && echo $f >>$BUILDDIR/conf/fragments.log || true
+	[[ -n $f ]] && echo $f >>$BUILDDIR/conf/fragments.log || true
 }
 
 function execute_setup() {
