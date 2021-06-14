@@ -1,9 +1,5 @@
-# AGL includes all kernel modules here for ease-of-use during development.
-# Comment this out to be able to select the kernel modules yourself.
-IMAGE_INSTALL_append = " kernel-modules"
-
-# Likewise as we included all kernel modules by default in the filesystem,
-# we do not need a separate tarball stored.
+# Disable kernel module tarballs by default on the assumption that
+# desired modules will already be present in images.
 # Comment this out to receive the separate modules tarball again.
 MODULE_TARBALL_DEPLOY ?= "0"
 
