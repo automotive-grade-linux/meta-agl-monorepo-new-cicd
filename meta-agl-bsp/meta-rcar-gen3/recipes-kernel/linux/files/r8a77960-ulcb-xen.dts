@@ -7,7 +7,7 @@
  */
 
 /dts-v1/;
-#include "r8a7796.dtsi"
+#include "r8a77960.dtsi"
 #include "ulcb.dtsi"
 
 / {
