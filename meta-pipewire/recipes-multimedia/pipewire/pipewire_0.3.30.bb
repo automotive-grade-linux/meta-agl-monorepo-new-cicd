@@ -10,10 +10,7 @@ SUMMARY = "Multimedia processing server for Linux"
 DESCRIPTION = "Linux server for handling and routing audio and video streams between applications and multimedia I/O devices"
 HOMEPAGE = "https://pipewire.org/"
 BUGTRACKER  = "https://gitlab.freedesktop.org/pipewire/pipewire/issues"
-LICENSE = "MIT"
-LICENSE_${PN}-jack = "GPL-2.0-only"
-LICENSE_${PN}-alsa-card-profile = "LGPL-2.1-or-later"
-LICENSE_${PN}-spa-plugins-alsa = "LGPL-2.1-or-later"
+LICENSE = "MIT & GPL-2.0-only & LGPL-2.1-or-later"
 
 LIC_FILES_CHKSUM = " \
     file://LICENSE;md5=2158739e172e58dc9ab1bdd2d6ec9c72 \
@@ -94,6 +91,7 @@ PACKAGECONFIG[pipewire-jack] = "-Dpipewire-jack=enabled -Dlibjack-path=${libdir}
 
 PACKAGESPLITFUNCS_prepend = " split_dynamic_packages "
 PACKAGESPLITFUNCS_append = " set_dynamic_metapkg_rdepends "
+PACKAGESPLITFUNCS_append = " fixup_dynamic_pkg_licenses "
 
 SPA_SUBDIR = "spa-0.2"
 PW_MODULE_SUBDIR = "pipewire-0.3"
@@ -108,6 +106,26 @@ remove_unused_installed_files() {
 }
 
 do_install[postfuncs] += "remove_unused_installed_files"
+
+python fixup_dynamic_pkg_licenses () {
+    #dynamic packages inherit currently whatever is specified in LICENSE (thus multiple)
+    packages = (d.getVar('PACKAGES') or "").split()
+
+    for pkg in packages:
+        # we manually assign the LICENSES here to cover all packages (even dynamically created ones)
+        d.setVar("LICENSE_" + pkg ,"MIT")
+
+        # next handle special cases
+        # ==> LICENSE_${PN}-spa-plugins-alsa = "LGPL-2.1-or-later"
+        if "pipewire-spa-plugins-alsa" in pkg:
+            d.setVar("LICENSE_pipewire-spa-plugins-alsa", "LGPL-2.1-or-later")
+        # ==> LICENSE_${PN}-alsa-card-profile = "LGPL-2.1-or-later"
+        if "pipewire-alsa-card-profile" in pkg:
+            d.setVar("LICENSE_pipewire-alsa-card-profile", "LGPL-2.1-or-later")
+        # ==> LICENSE_${PN}-jack = "GPL-2.0-only"
+        if "pipewire-jack" in pkg:
+            d.setVar("LICENSE_pipewire-jack", "GPL-2.0-only")
+}
 
 python split_dynamic_packages () {
     # Create packages for each SPA plugin. These plugins are located
