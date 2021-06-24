@@ -11,8 +11,6 @@ RDEPENDS_${PN} = "\
         lsof \
         gdb \
         valgrind \
-        perf \
-        powertop \
         screen \
         usbutils \
         rsync \
