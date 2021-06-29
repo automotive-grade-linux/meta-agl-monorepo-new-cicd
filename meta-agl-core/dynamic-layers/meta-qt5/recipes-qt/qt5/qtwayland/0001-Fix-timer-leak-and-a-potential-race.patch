@@ -1,0 +1,42 @@
+From f4d3297e6705cc524729d629bf94db11841dbb24 Mon Sep 17 00:00:00 2001
+From: Simon Yuan <simon.yuan@navico.com>
+Date: Thu, 7 Nov 2019 09:22:37 +1300
+Subject: [PATCH] Fix timer leak and a potential race
+
+The callback timer is now killed immediately before starting a new timer, this
+makes sure there is always a single active callback timer. It's unclear why
+killing the timer in a separate lambda doesn't always kill the timer in time,
+the hypothesis is that if killing the timer comes after starting a new one, then
+the previous timer is now left dangling. Whatever the reason is, it makes even
+more sense to kill the timer in the same lamda and immediately before starting a
+new timer anyway.
+---
+ src/client/qwaylandwindow.cpp | 11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
+
+diff --git a/src/client/qwaylandwindow.cpp b/src/client/qwaylandwindow.cpp
+index 0df99d9f..93b46bf1 100644
+--- a/src/client/qwaylandwindow.cpp
++++ b/src/client/qwaylandwindow.cpp
+@@ -1136,13 +1136,12 @@ void QWaylandWindow::handleUpdate()
+     mWaitingForFrameCallback = true;
+     mWaitingForUpdate = false;
+ 
+-    // Stop current frame timer if any, can't use killTimer directly, see comment above.
+-    int fcbId = mFrameCallbackTimerId.fetchAndStoreOrdered(-1);
+-    if (fcbId != -1)
+-        QMetaObject::invokeMethod(this, [this, fcbId] { killTimer(fcbId); }, Qt::QueuedConnection);
+-
+     // Start a timer for handling the case when the compositor stops sending frame callbacks.
+-    QMetaObject::invokeMethod(this, [this] { // Again; can't do it directly
++    // Can't use killTimer directly, see comment above.
++    QMetaObject::invokeMethod(this, [this] {
++        int fcbId = mFrameCallbackTimerId.fetchAndStoreOrdered(-1);
++        if (fcbId != -1)
++            killTimer(fcbId);
+         if (mWaitingForFrameCallback)
+             mFrameCallbackTimerId = startTimer(100);
+     }, Qt::QueuedConnection);
+-- 
+2.25.1
+
