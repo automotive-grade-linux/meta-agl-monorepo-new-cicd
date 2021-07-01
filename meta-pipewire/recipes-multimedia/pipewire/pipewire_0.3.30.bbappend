@@ -8,6 +8,8 @@ PACKAGECONFIG = "\
 
 SRC_URI += "\
     file://0001-alsa-plugin-allow-specifying-a-media.role-on-the-vir.patch \
+    file://0001-null-sink-make-the-timerfd-non-blocking.patch \
+    file://0002-node-driver-make-the-timerfd-non-blocking.patch \
 "
 
 do_install_append() {

@@ -1,0 +1,43 @@
+From 5aa9c953909b936ba215ebca77461a17160f59fb Mon Sep 17 00:00:00 2001
+From: George Kiagiadakis <george.kiagiadakis@collabora.com>
+Date: Thu, 1 Jul 2021 11:50:40 +0300
+Subject: [PATCH] node-driver: make the timerfd non-blocking
+
+Relates to #1377
+
+Upstream-Status: Backport [from master/0.3.32]
+Signed-off-by: George Kiagiadakis <george.kiagiadakis@collabora.com>
+---
+ spa/plugins/support/node-driver.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
+
+diff --git a/spa/plugins/support/node-driver.c b/spa/plugins/support/node-driver.c
+index 34533d0d9..32964110d 100644
+--- a/spa/plugins/support/node-driver.c
++++ b/spa/plugins/support/node-driver.c
+@@ -119,8 +119,11 @@ static void on_timeout(struct spa_source *source)
+ 	spa_log_trace(this->log, "timeout");
+
+ 	if (spa_system_timerfd_read(this->data_system,
+-				this->timer_source.fd, &expirations) < 0)
++				this->timer_source.fd, &expirations) < 0) {
++		if (errno == EAGAIN)
++			return;
+ 		perror("read timerfd");
++	}
+
+ 	nsec = this->next_time;
+
+@@ -349,7 +352,8 @@ impl_init(const struct spa_handle_factory *factory,
+
+ 	this->timer_source.func = on_timeout;
+ 	this->timer_source.data = this;
+-	this->timer_source.fd = spa_system_timerfd_create(this->data_system, CLOCK_MONOTONIC, SPA_FD_CLOEXEC);
++	this->timer_source.fd = spa_system_timerfd_create(this->data_system, CLOCK_MONOTONIC,
++							  SPA_FD_CLOEXEC | SPA_FD_NONBLOCK);
+ 	this->timer_source.mask = SPA_IO_IN;
+ 	this->timer_source.rmask = 0;
+ 	this->timerspec.it_value.tv_sec = 0;
+--
+2.30.2
+
