@@ -24,9 +24,13 @@ PACKAGECONFIG[policy-deny-all] = "-Dpolicy-default=deny-all,,"
 inherit meson pkgconfig python3native
 
 FILES_${PN} = " \
-               ${bindir}/agl-compositor \
-               ${bindir}/agl-screenshooter \
-               ${datadir}/${PN}/protocols/agl-shell.xml \
-               ${datadir}/${PN}/protocols/agl-shell-desktop.xml \
-              "
+    ${bindir}/agl-compositor \
+    ${bindir}/agl-screenshooter \
+"
+
 RDEPENDS_${PN} += " ${@bb.utils.contains('AGL_FEATURES', 'waltham-remoting', 'waltham waltham-transmitter-plugin', '', d)}"
+
+FILES_${PN}-dev += " \
+    ${datadir}/agl-compositor/protocols/agl-shell.xml \
+    ${datadir}/agl-compositor/protocols/agl-shell-desktop.xml \
+"
