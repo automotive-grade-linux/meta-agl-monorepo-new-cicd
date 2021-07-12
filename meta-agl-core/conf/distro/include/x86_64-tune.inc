@@ -52,4 +52,4 @@ QB_CPU:x86-64 = "-cpu qemu64,+ssse3,+sse4.1,+sse4.2,+popcnt"
 QB_CPU_KVM:x86-64 = "-cpu kvm64 -cpu qemu64,+ssse3,+sse4.1,+sse4.2,+popcnt"
 
 # Add the 'virtio-rng-pci' device otherwise the guest may run out of entropy
-QB_OPT_APPEND = "-vga vmware -show-cursor -usb -device usb-tablet -device virtio-rng-pci"
+QB_OPT_APPEND = "-vga vmware -display default,show-cursor=on -usb -device usb-tablet -device virtio-rng-pci"
