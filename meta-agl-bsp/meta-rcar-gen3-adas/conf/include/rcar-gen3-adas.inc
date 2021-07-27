@@ -2,6 +2,10 @@
 #MACHINEOVERRIDES .= ":kingfisher"
 #PACKAGE_EXTRA_ARCHS_append = " kingfisher"
 
+# Add a feature as a low-impact way to detect Kingfisher support in
+# recipes.
+AGL_FEATURES_append = " kingfisher"
+
 PREFERRED_RPROVIDER_virtual/gpsd-conf ?= "gpsd-kingfisher-conf"
 
 IMAGE_NAME = "${IMAGE_BASENAME}-${MACHINE}-kf${IMAGE_VERSION_SUFFIX}"
