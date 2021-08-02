@@ -1,5 +1,5 @@
-do_install_append() {
+do_install:append() {
 	mv ${D}/${sbindir}/nbd-client ${D}/${sbindir}/nbd3-client
 }
 
-FILES_${PN}-client_append = " ${sbindir}/nbd3-client"
+FILES:${PN}-client:append = " ${sbindir}/nbd3-client"

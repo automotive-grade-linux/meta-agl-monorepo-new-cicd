@@ -9,7 +9,7 @@ S = "${WORKDIR}"
 do_configure[noexec] = "1"
 do_compile[noexec] = "1"
 
-do_install_append() {
+do_install:append() {
     install -d ${D}/${sysconfdir}/rba
     install -m 0644 ${WORKDIR}/RBAModel.json ${D}/${sysconfdir}/rba
 }

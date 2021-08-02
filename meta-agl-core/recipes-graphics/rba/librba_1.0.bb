@@ -16,9 +16,9 @@ S = "${WORKDIR}/git"
 
 inherit pkgconfig cmake
 
-FILES_${PN} = "${libdir}/"
-FILES_${PN}-dev = "${libdir}/pkgconfig/librba.pc \
+FILES:${PN} = "${libdir}/"
+FILES:${PN}-dev = "${libdir}/pkgconfig/librba.pc \
                    ${includedir}/ \
                   "
-INSANE_SKIP_${PN} += "dev-so"
-INSANE_SKIP_${PN}-dev += "dev-elf"
+INSANE_SKIP:${PN} += "dev-so"
+INSANE_SKIP:${PN}-dev += "dev-elf"

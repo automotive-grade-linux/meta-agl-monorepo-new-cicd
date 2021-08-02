@@ -14,4 +14,4 @@ S  = "${WORKDIR}/git"
 inherit cmake aglwgt pkgconfig
 
 DEPENDS += "pipewire wireplumber json-c"
-RDEPENDS_${PN} = "agl-service-signal-composer"
+RDEPENDS:${PN} = "agl-service-signal-composer"

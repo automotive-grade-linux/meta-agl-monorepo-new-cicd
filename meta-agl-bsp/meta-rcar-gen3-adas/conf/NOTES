@@ -5,7 +5,7 @@
 
 # E.g. MACHINE_FEATURE. Should *not* be in layer.conf !!
 # Radio packages
-#IMAGE_INSTALL_append_rcar-gen3 += " \
+#IMAGE_INSTALL:append:rcar-gen3 += " \
 #    si-tools \
 #    si-init \
 #    linux-firmware-wl18xx \
@@ -17,19 +17,19 @@
 #    ofono-tests \
 #"
 # E.g. MACHINE_FEATURE
-#IMAGE_INSTALL_append_r8a7797 += " \
+#IMAGE_INSTALL:append:r8a7797 += " \
 #    kernel-module-uio-imp \
 #    kernel-module-cmemdrv \
 #    udev-rules-cvlib \
 #"
 # E.g. MACHINE_FEATURE
-#IMAGE_INSTALL_append_r8a7798 += " \
+#IMAGE_INSTALL:append:r8a7798 += " \
 #    kernel-module-uio-imp \
 #    kernel-module-cmemdrv \
 #    udev-rules-cvlib \
 #"
 # This is a special use case. Should be enabled by user.
-#DISTRO_FEATURES_append = " surroundview "
+#DISTRO_FEATURES:append = " surroundview "
 
 
 #### BBMASK
@@ -58,7 +58,7 @@ BBMASK += "/meta-rcar-gen3-adas/recipes-devtools/valgrind/"
 BBMASK += "/meta-rcar-gen3-adas/recipes-devtools/gcc/"
 
 # libpng in upstream already enabled neon
-# poky/meta/recipes-multimedia/libpng/libpng_1.6.37.bb:EXTRA_OECONF_append_class-target = " ${@bb.utils.contains("TUNE_FEATURES", "neon", "--enable-arm-neon=on", "--enable-arm-neon=off" ,d)}"
+# poky/meta/recipes-multimedia/libpng/libpng_1.6.37.bb:EXTRA_OECONF:append:class-target = " ${@bb.utils.contains("TUNE_FEATURES", "neon", "--enable-arm-neon=on", "--enable-arm-neon=off" ,d)}"
 BBMASK += "/meta-rcar-gen3-adas/recipes-graphics/libpng/"
 
 # opencv in upstream is newer

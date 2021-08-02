@@ -18,6 +18,6 @@ EXTRA_OECMAKE += " \
 	-DUNITDIR_SYSTEM=${systemd_system_unitdir} \
 "
 
-FILES_${PN} += "${systemd_system_unitdir}"
+FILES:${PN} += "${systemd_system_unitdir}"
 
 

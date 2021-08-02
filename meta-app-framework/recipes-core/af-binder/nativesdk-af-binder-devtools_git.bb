@@ -4,5 +4,5 @@ DEPENDS = "nativesdk-json-c"
 
 inherit cmake pkgconfig nativesdk
 
-EXTRA_OECMAKE_append = " -DONLY_DEVTOOLS=TRUE"
+EXTRA_OECMAKE:append = " -DONLY_DEVTOOLS=TRUE"
 

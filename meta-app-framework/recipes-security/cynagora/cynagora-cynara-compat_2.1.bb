@@ -11,9 +11,9 @@ S = "${WORKDIR}/git"
 inherit cmake
 
 PROVIDES = "cynara"
-RPROVIDES_${PN} = "cynara"
+RPROVIDES:${PN} = "cynara"
 DEPENDS = "libcap"
-RDEPENDS_${PN} = "cynagora"
+RDEPENDS:${PN} = "cynagora"
 
 EXTRA_OECMAKE += " \
 	-DWITH_SYSTEMD=OFF \
@@ -21,7 +21,7 @@ EXTRA_OECMAKE += " \
 	-DDIRECT_CYNARA_COMPAT=ON \
 "
 
-do_install_append() {
+do_install:append() {
 	# remove cynagora stuff
 	rm $(find ${D} -name '*cynagora*')
 	# remove stupid test

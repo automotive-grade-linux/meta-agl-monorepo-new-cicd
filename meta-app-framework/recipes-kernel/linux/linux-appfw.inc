@@ -1,4 +1,4 @@
-FILESEXTRAPATHS_prepend := "${THISDIR}/linux:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/linux:"
 
 # Enable SMACK support without making it the default explicitly.
 AGL_KCONFIG_FRAGMENTS += "smack.cfg"

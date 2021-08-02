@@ -12,4 +12,4 @@ TMPDIR_k3r5 = "${TOPDIR}/tmp-${BB_CURRENT_MC}"
 DEPLOY_DIR_k3r5 = "${TOPDIR}/tmp/deploy"
 
 # Workaround for recipe assumption of poky location
-LIC_FILES_CHKSUM_pn-ti-rtos-firmware = "file://${THISDIR}/../../licenses/TI-TFL;md5=a1b59cb7ba626b9dbbcbf00f3fbc438a"
+LIC_FILES_CHKSUM:pn-ti-rtos-firmware = "file://${THISDIR}/../../licenses/TI-TFL;md5=a1b59cb7ba626b9dbbcbf00f3fbc438a"

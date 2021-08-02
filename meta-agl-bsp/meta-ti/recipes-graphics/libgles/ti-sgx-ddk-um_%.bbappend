@@ -1,16 +1,16 @@
-FILESEXTRAPATHS_append := ":${THISDIR}/${PN}"
-FILES_${PN} += "/etc/ti-sgx/"
+FILESEXTRAPATHS:append := ":${THISDIR}/${PN}"
+FILES:${PN} += "/etc/ti-sgx/"
 
-SRC_URI_append = "\
+SRC_URI:append = "\
     file://pvr.service \
 "
 
 inherit systemd
 
 SYSTEMD_PACKAGES = "${PN}"
-SYSTEMD_SERVICE_${PN} = "pvr.service"
+SYSTEMD_SERVICE:${PN} = "pvr.service"
 
-do_install_append() {
+do_install:append() {
 	install -d ${D}${systemd_system_unitdir}
 	install -m 0755 ${WORKDIR}/pvr.service ${D}${systemd_system_unitdir}
 	install -d ${D}/etc/ti-sgx

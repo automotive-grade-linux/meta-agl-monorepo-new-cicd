@@ -1,3 +1,3 @@
-RDEPENDS_${PN} += " \
+RDEPENDS:${PN} += " \
     agl-service-audiomixer \
     "

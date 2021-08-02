@@ -29,9 +29,9 @@ inherit meson pkgconfig systemd manpages gettext useradd
 
 USERADD_PACKAGES = "${PN}"
 
-GROUPADD_PARAM_${PN} = "--system pipewire"
+GROUPADD_PARAM:${PN} = "--system pipewire"
 
-USERADD_PARAM_${PN} = "--system --home / --no-create-home \
+USERADD_PARAM:${PN} = "--system --home / --no-create-home \
                        --comment 'PipeWire multimedia daemon' \
                        --gid pipewire --groups audio,video \
                        pipewire"
@@ -89,9 +89,9 @@ PACKAGECONFIG[v4l2] = "-Dv4l2=enabled,-Dv4l2=disabled,udev"
 PACKAGECONFIG[pipewire-alsa] = "-Dpipewire-alsa=enabled,-Dpipewire-alsa=disabled,alsa-lib"
 PACKAGECONFIG[pipewire-jack] = "-Dpipewire-jack=enabled -Dlibjack-path=${libdir}/${PW_MODULE_SUBDIR}/jack,-Dpipewire-jack=disabled,jack,,,jack"
 
-PACKAGESPLITFUNCS_prepend = " split_dynamic_packages "
-PACKAGESPLITFUNCS_append = " set_dynamic_metapkg_rdepends "
-PACKAGESPLITFUNCS_append = " fixup_dynamic_pkg_licenses "
+PACKAGESPLITFUNCS:prepend = " split_dynamic_packages "
+PACKAGESPLITFUNCS:append = " set_dynamic_metapkg_rdepends "
+PACKAGESPLITFUNCS:append = " fixup_dynamic_pkg_licenses "
 
 SPA_SUBDIR = "spa-0.2"
 PW_MODULE_SUBDIR = "pipewire-0.3"
@@ -113,18 +113,18 @@ python fixup_dynamic_pkg_licenses () {
 
     for pkg in packages:
         # we manually assign the LICENSES here to cover all packages (even dynamically created ones)
-        d.setVar("LICENSE_" + pkg ,"MIT")
+        d.setVar("LICENSE:" + pkg ,"MIT")
 
         # next handle special cases
-        # ==> LICENSE_${PN}-spa-plugins-alsa = "LGPL-2.1-or-later"
+        # ==> LICENSE:${PN}-spa-plugins-alsa = "LGPL-2.1-or-later"
         if "pipewire-spa-plugins-alsa" in pkg:
-            d.setVar("LICENSE_pipewire-spa-plugins-alsa", "LGPL-2.1-or-later")
-        # ==> LICENSE_${PN}-alsa-card-profile = "LGPL-2.1-or-later"
+            d.setVar("LICENSE:pipewire-spa-plugins-alsa", "LGPL-2.1-or-later")
+        # ==> LICENSE:${PN}-alsa-card-profile = "LGPL-2.1-or-later"
         if "pipewire-alsa-card-profile" in pkg:
-            d.setVar("LICENSE_pipewire-alsa-card-profile", "LGPL-2.1-or-later")
-        # ==> LICENSE_${PN}-jack = "GPL-2.0-only"
+            d.setVar("LICENSE:pipewire-alsa-card-profile", "LGPL-2.1-or-later")
+        # ==> LICENSE:${PN}-jack = "GPL-2.0-only"
         if "pipewire-jack" in pkg:
-            d.setVar("LICENSE_pipewire-jack", "GPL-2.0-only")
+            d.setVar("LICENSE:pipewire-jack", "GPL-2.0-only")
 }
 
 python split_dynamic_packages () {
@@ -154,11 +154,11 @@ python set_dynamic_metapkg_rdepends () {
     pw_module_pn = base_pn + '-modules'
     pw_module_metapkg =  pw_module_pn + '-meta'
 
-    d.setVar('ALLOW_EMPTY_' + spa_metapkg, "1")
-    d.setVar('FILES_' + spa_metapkg, "")
+    d.setVar('ALLOW_EMPTY:' + spa_metapkg, "1")
+    d.setVar('FILES:' + spa_metapkg, "")
 
-    d.setVar('ALLOW_EMPTY_' + pw_module_metapkg, "1")
-    d.setVar('FILES_' + pw_module_metapkg, "")
+    d.setVar('ALLOW_EMPTY:' + pw_module_metapkg, "1")
+    d.setVar('FILES:' + pw_module_metapkg, "")
 
     blacklist = [ spa_pn, spa_metapkg, pw_module_pn, pw_module_metapkg ]
     spa_metapkg_rdepends = []
@@ -193,11 +193,11 @@ python set_dynamic_metapkg_rdepends () {
             if is_pw_module_pkg:
                 pw_module_metapkg_rdepends.append(pkg)
 
-    d.setVar('RDEPENDS_' + spa_metapkg, ' '.join(spa_metapkg_rdepends))
-    d.setVar('DESCRIPTION_' + spa_metapkg, spa_pn + ' meta package')
+    d.setVar('RDEPENDS:' + spa_metapkg, ' '.join(spa_metapkg_rdepends))
+    d.setVar('DESCRIPTION:' + spa_metapkg, spa_pn + ' meta package')
 
-    d.setVar('RDEPENDS_' + pw_module_metapkg, ' '.join(pw_module_metapkg_rdepends))
-    d.setVar('DESCRIPTION_' + pw_module_metapkg, pw_module_pn + ' meta package')
+    d.setVar('RDEPENDS:' + pw_module_metapkg, ' '.join(pw_module_metapkg_rdepends))
+    d.setVar('DESCRIPTION:' + pw_module_metapkg, pw_module_pn + ' meta package')
 }
 
 PACKAGES =+ "\
@@ -218,95 +218,95 @@ PACKAGES =+ "\
 
 PACKAGES_DYNAMIC = "^${PN}-spa-plugins.* ^${PN}-modules.*"
 
-SYSTEMD_SERVICE_${PN} = "pipewire.service"
-CONFFILES_${PN} += "${datadir}/pipewire/pipewire.conf"
-FILES_${PN} = " \
+SYSTEMD_SERVICE:${PN} = "pipewire.service"
+CONFFILES:${PN} += "${datadir}/pipewire/pipewire.conf"
+FILES:${PN} = " \
     ${datadir}/pipewire/pipewire.conf \
     ${datadir}/pipewire/filter-chain \
     ${systemd_user_unitdir}/pipewire.* \
     ${bindir}/pipewire \
 "
 
-FILES_${PN}-dev += " \
+FILES:${PN}-dev += " \
     ${libdir}/${PW_MODULE_SUBDIR}/jack/libjack*.so \
 "
 
-CONFFILES_libpipewire += "${datadir}/pipewire/client.conf"
-FILES_libpipewire = " \
+CONFFILES:libpipewire += "${datadir}/pipewire/client.conf"
+FILES:libpipewire = " \
     ${datadir}/pipewire/client.conf \
     ${libdir}/libpipewire-*.so.* \
 "
 # Add the bare minimum modules and plugins required to be able
 # to use libpipewire. Without these, it is essentially unusable.
-RDEPENDS_libpipewire += " \
+RDEPENDS:libpipewire += " \
     ${PN}-modules-client-node \
     ${PN}-modules-protocol-native \
     ${PN}-spa-plugins-support \
 "
 
-FILES_${PN}-tools = " \
+FILES:${PN}-tools = " \
     ${bindir}/pw-* \
 "
 
 # This is a shim daemon that is intended to be used as a
 # drop-in PulseAudio replacement, providing a pulseaudio-compatible
 # socket that can be used by applications that use libpulse.
-CONFFILES_${PN}-pulse += "${datadir}/pipewire/pipewire-pulse.conf"
+CONFFILES:${PN}-pulse += "${datadir}/pipewire/pipewire-pulse.conf"
 
-FILES_${PN}-pulse = " \
+FILES:${PN}-pulse = " \
     ${datadir}/pipewire/pipewire-pulse.conf \
     ${systemd_user_unitdir}/pipewire-pulse.* \
     ${bindir}/pipewire-pulse \
 "
-RDEPENDS_${PN}-pulse += " \
+RDEPENDS:${PN}-pulse += " \
     ${PN}-modules-protocol-pulse \
 "
 
 # alsa plugin to redirect audio to pipewire
-FILES_${PN}-alsa = "\
+FILES:${PN}-alsa = "\
     ${libdir}/alsa-lib/* \
     ${datadir}/alsa/alsa.conf.d/* \
 "
 
 # jack drop-in libraries to redirect audio to pipewire
-CONFFILES_${PN}-jack = "${datadir}/pipewire/jack.conf"
-FILES_${PN}-jack = "\
+CONFFILES:${PN}-jack = "${datadir}/pipewire/jack.conf"
+FILES:${PN}-jack = "\
     ${datadir}/pipewire/jack.conf \
     ${libdir}/${PW_MODULE_SUBDIR}/jack/libjack*.so.* \
 "
 
 # Example session manager. Not intended for use in production.
-CONFFILES_${PN}-media-session = "${datadir}/pipewire/media-session.d/*"
-SYSTEMD_SERVICE_${PN}-media-session = "pipewire-media-session.service"
-FILES_${PN}-media-session = " \
+CONFFILES:${PN}-media-session = "${datadir}/pipewire/media-session.d/*"
+SYSTEMD_SERVICE:${PN}-media-session = "pipewire-media-session.service"
+FILES:${PN}-media-session = " \
     ${bindir}/pipewire-media-session \
     ${datadir}/pipewire/media-session.d/* \
     ${systemd_system_unitdir}/pipewire-media-session.service \
 "
-RPROVIDES_${PN}-media-session = "virtual/pipewire-sessionmanager"
+RPROVIDES:${PN}-media-session = "virtual/pipewire-sessionmanager"
 
 # Dynamic packages (see set_dynamic_metapkg_rdepends).
-FILES_${PN}-spa-plugins = ""
-RRECOMMENDS_${PN}-spa-plugins += "${PN}-spa-plugins-meta"
+FILES:${PN}-spa-plugins = ""
+RRECOMMENDS:${PN}-spa-plugins += "${PN}-spa-plugins-meta"
 
-FILES_${PN}-spa-tools = " \
+FILES:${PN}-spa-tools = " \
     ${bindir}/spa-* \
 "
 
 # Dynamic packages (see set_dynamic_metapkg_rdepends).
-FILES_${PN}-modules = ""
-RRECOMMENDS_${PN}-modules += "${PN}-modules-meta"
+FILES:${PN}-modules = ""
+RRECOMMENDS:${PN}-modules += "${PN}-modules-meta"
 
-CONFFILES_${PN}-modules-rtkit = "${datadir}/pipewire/client-rt.conf"
-FILES_${PN}-modules-rtkit += " \
+CONFFILES:${PN}-modules-rtkit = "${datadir}/pipewire/client-rt.conf"
+FILES:${PN}-modules-rtkit += " \
     ${datadir}/pipewire/client-rt.conf \
     "
 
-FILES_${PN}-alsa-card-profile = " \
+FILES:${PN}-alsa-card-profile = " \
     ${datadir}/alsa-card-profile/* \
     ${nonarch_base_libdir}/udev/rules.d/90-pipewire-alsa.rules \
 "
 
-FILES_gstreamer1.0-pipewire = " \
+FILES:gstreamer1.0-pipewire = " \
     ${libdir}/gstreamer-1.0/* \
 "

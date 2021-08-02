@@ -25,7 +25,7 @@ The following example shows how to activate C/C++ code
 specific to agl-devel:
 
 ```yocto
-CPPFLAGS_append_agl-devel = " -DAGL_DEVEL"
+CPPFLAGS:append:agl-devel = " -DAGL_DEVEL"
 ```
 
 Using this, any code enclosed in

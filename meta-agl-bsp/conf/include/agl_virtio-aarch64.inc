@@ -1,5 +1,5 @@
 # Build updatable image. Only takes effect when sota.bbclass is inherited
-DISTRO_FEATURES_append = " sota"
+DISTRO_FEATURES:append = " sota"
 
 # Root device
 ROOT_VM = "root=PARTUUID=${DISK_SIGNATURE}-02"
@@ -11,4 +11,4 @@ WKS_FILE = "directdisk.wks.in"
 AGL_DEFAULT_IMAGE_FSTYPES = "ext4"
 
 # Need to run QEMU with virtio-gpu device
-PACKAGECONFIG_append_pn-qemu-system-native = " virglrenderer glx gtk+"
+PACKAGECONFIG:append:pn-qemu-system-native = " virglrenderer glx gtk+"

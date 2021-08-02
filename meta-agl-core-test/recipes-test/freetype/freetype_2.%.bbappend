@@ -1,4 +1,4 @@
-FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
 
 SRC_URI =+ "${SOURCEFORGE_MIRROR}/freetype/freetype-demos/${PV}/ft2demos-${PV}.tar.gz;name=ft2demos \
            file://0001-Makefile-dont-build-gfx-demos.patch;patchdir=../ft2demos-${PV} \
@@ -11,18 +11,18 @@ PACKAGES =+ "${PN}-demos"
 
 B = "${S}"
 
-do_compile_append () {
+do_compile:append () {
     oe_runmake -C ${WORKDIR}/ft2demos-${PV} TOP_DIR=${WORKDIR}/${BPN}-${PV}/
 }
 
-do_install_append () {
+do_install:append () {
     install -d -m 0755 ${D}/${bindir}
     for x in ftbench ftdump ftlint ftvalid ttdebug; do
         install -m 0755 ${WORKDIR}/ft2demos-${PV}/bin/.libs/$x ${D}/${bindir}
     done
 }
 
-FILES_${PN}-demos = "\
+FILES:${PN}-demos = "\
     ${bindir}/ftbench \
     ${bindir}/ftdump \
     ${bindir}/ftlint \
@@ -31,4 +31,4 @@ FILES_${PN}-demos = "\
 "
 
 # enable pixmap/libpng support to allow color emojis
-PACKAGECONFIG_append = " pixmap"
+PACKAGECONFIG:append = " pixmap"

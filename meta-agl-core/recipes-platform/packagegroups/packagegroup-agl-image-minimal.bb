@@ -8,17 +8,17 @@ PACKAGES = "\
     profile-agl-minimal \
     "
 
-ALLOW_EMPTY_${PN} = "1"
+ALLOW_EMPTY:${PN} = "1"
 
-RDEPENDS_${PN} += "\
+RDEPENDS:${PN} += "\
     packagegroup-agl-core-boot \
     packagegroup-machine-base \
     "
 
-RDEPENDS_${PN} += "\
+RDEPENDS:${PN} += "\
     packagegroup-agl-core-connectivity \
     packagegroup-agl-core-os-commonlibs \
     packagegroup-agl-core-security \
     "
 
-RDEPENDS_profile-agl-minimal = "${PN}"
+RDEPENDS:profile-agl-minimal = "${PN}"

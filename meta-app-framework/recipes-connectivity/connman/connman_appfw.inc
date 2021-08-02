@@ -19,16 +19,16 @@
 # in which connmand runs, this change is not submitted upstream
 # and it can be overridden by a distro via FIX_CONNMAN_CAPABILITIES.
 
-FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
 
-SRC_URI_append_with-lsm-smack = "\
+SRC_URI:append:with-lsm-smack = "\
   file://connman.service.conf \
 "
 
-RDEPENDS_${PN}_append_with-lsm-smack = " smack"
+RDEPENDS:${PN}:append:with-lsm-smack = " smack"
 
-FILES_${PN}_append = " ${systemd_unitdir}"
+FILES:${PN}:append = " ${systemd_unitdir}"
 
-do_install_append_with-lsm-smack() {
+do_install:append:with-lsm-smack() {
   install -Dm0644 ${WORKDIR}/connman.service.conf ${D}${systemd_unitdir}/system/connman.service.d/smack.conf
 }

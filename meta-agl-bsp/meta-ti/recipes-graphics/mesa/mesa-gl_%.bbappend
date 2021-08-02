@@ -1,7 +1,7 @@
 # Remove GBM support from Mesa
 # TI Platforms provides own GBM library
 
-PACKAGES_remove = "libgbm"
-PACKAGES_remove = "libgbm-dev"
+PACKAGES:remove = "libgbm"
+PACKAGES:remove = "libgbm-dev"
 
-EXTRA_OECONF_remove = "--enable-gbm"
+EXTRA_OECONF:remove = "--enable-gbm"

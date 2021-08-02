@@ -1,10 +1,10 @@
-FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
 
-SRC_URI_append =" \
+SRC_URI:append =" \
     ${@bb.utils.contains('AGL_XEN_WANTED','1',' file://boot_xen.cmd','',d)} \
 "
 
-do_compile_append() {
+do_compile:append() {
 
  # if xen feature is activated we overwirte the boot script with xen specific one
    if [ "${AGL_XEN_WANTED}" = "1" ]; then

@@ -1,6 +1,6 @@
-FILESEXTRAPATHS_prepend := "${THISDIR}/dbus-cynagora:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/dbus-cynagora:"
 
-SRC_URI_append_class-target = "\
+SRC_URI:append:class-target = "\
    file://0001-Integration-of-Cynara-asynchronous-security-checks.patch \
    file://0002-Disable-message-dispatching-when-send-rule-result-is.patch \
    file://0003-Handle-unavailability-of-policy-results-for-broadcas.patch \
@@ -10,6 +10,6 @@ SRC_URI_append_class-target = "\
    file://0007-Switch-from-cynara-to-cynagora.patch \
 "
 
-DEPENDS_append_class-target = " cynagora smack"
-EXTRA_OECONF_append_class-target = " ${@bb.utils.contains('DISTRO_FEATURES','smack','--enable-cynagora --disable-selinux','',d)}"
+DEPENDS:append:class-target = " cynagora smack"
+EXTRA_OECONF:append:class-target = " ${@bb.utils.contains('DISTRO_FEATURES','smack','--enable-cynagora --disable-selinux','',d)}"
 

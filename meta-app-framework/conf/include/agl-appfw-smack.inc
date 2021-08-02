@@ -1,7 +1,7 @@
 # enable security features (smack, cynagora) - required by Application Framework
 OVERRIDES .= ":with-lsm-smack"
-DISTRO_FEATURES_append = " smack xattr"
-DISTRO_FEATURES_NATIVE_append = " smack xattr"
+DISTRO_FEATURES:append = " smack xattr"
+DISTRO_FEATURES_NATIVE:append = " smack xattr"
 
 APPFW_ENABLED = "1"
 
@@ -14,11 +14,11 @@ EXTRANATIVEPATH += "tar-native"
 IMAGE_FEATURES += "ssh-server-openssh"
 
 # enforce copy of xattrs (to be removed, see SPEC-475)
-PACKAGECONFIG_append_pn-shadow = " attr"
-PACKAGECONFIG_append_pn-shadow-native = " attr"
+PACKAGECONFIG:append:pn-shadow = " attr"
+PACKAGECONFIG:append:pn-shadow-native = " attr"
 
 # set the home directory for root
 ROOT_HOME = "/home/0"
 
 # include devel wgts in images
-IMAGE_FEATURES_append = " agl-devel-wgt"
+IMAGE_FEATURES:append = " agl-devel-wgt"

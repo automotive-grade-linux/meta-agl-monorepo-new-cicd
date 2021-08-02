@@ -1,8 +1,8 @@
 PACKAGECONFIG[kms] = "-Dbackend-drm=true,-Dbackend-drm=false,drm udev virtual/libgbm mtdev"
 
-PR_append = ".arago2"
+PR:append = ".arago2"
 
-FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
 
 #        file://0005-weston-drm-fix-dual-display-issue.patch
 SRC_URI += " \

@@ -1,4 +1,4 @@
-FILESEXTRAPATHS_prepend := "${THISDIR}/systemd:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/systemd:"
 
 SRC_URI += "\
     file://0002-network-add-CAN-Termination-tristate-option.patch \
@@ -8,11 +8,11 @@ SRC_URI += "\
 "
 
 # enable networkd/resolved support
-PACKAGECONFIG_append_pn-systemd = " \
+PACKAGECONFIG:append:pn-systemd = " \
    ${@bb.utils.contains('VIRTUAL-RUNTIME_net_manager','systemd','networkd resolved','',d)} \
 "
 
-do_install_append() {
+do_install:append() {
     # Install /etc/e2fsck.conf to avoid boot stuck by wrong clock time
     install -m 644 -p -D ${WORKDIR}/e2fsck.conf ${D}${sysconfdir}/e2fsck.conf
 
@@ -25,10 +25,10 @@ do_install_append() {
     fi
 }
 
-FILES_${PN} += "${sysconfdir}/e2fsck.conf "
+FILES:${PN} += "${sysconfdir}/e2fsck.conf "
 
 # SPEC-737: connmand also has a NTP client which races with systemd-timesyncd
-PACKAGECONFIG_remove = "timesyncd"
+PACKAGECONFIG:remove = "timesyncd"
 
 # Enable systemd-coredump when agl-devel is set on
-PACKAGECONFIG_append_agl-devel = " coredump"
+PACKAGECONFIG:append:agl-devel = " coredump"

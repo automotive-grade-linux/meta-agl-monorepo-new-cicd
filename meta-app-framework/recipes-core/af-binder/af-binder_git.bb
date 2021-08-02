@@ -4,21 +4,21 @@ DEPENDS = "file json-c libmicrohttpd systemd util-linux openssl cynara"
 
 inherit cmake pkgconfig
 
-EXTRA_OECMAKE_append_class-target = "\
+EXTRA_OECMAKE:append:class-target = "\
 	-DUNITDIR_SYSTEM=${systemd_system_unitdir} \
 "
 
-EXTRA_OECMAKE_append_agl-devel = " \
+EXTRA_OECMAKE:append:agl-devel = " \
 	-DAGL_DEVEL=ON \
 	-DINCLUDE_MONITORING=ON \
 	-DINCLUDE_SUPERVISOR=ON -DAFS_SUPERVISION_SOCKET=/run/platform/supervisor \
 "
 
-pkg_postinst_${PN}() {
+pkg_postinst:${PN}() {
 	mkdir -p "$D${libdir}/afb"
 }
 
-do_install_append_agl-devel_class-target() {
+do_install:append:agl-devel:class-target() {
     if ${@bb.utils.contains('DISTRO_FEATURES', 'systemd', 'true', 'false', d)}; then
         install -d -m 0755 ${D}${systemd_system_unitdir}/multi-user.target.wants
         ln -s ../afm-api-supervisor.service ${D}${systemd_system_unitdir}/multi-user.target.wants/afm-api-supervisor.service
@@ -29,19 +29,19 @@ do_install_append_agl-devel_class-target() {
 # main package
 #############################################
 
-FILES_${PN}_append_agl-devel = " ${libdir}/afb/monitoring ${systemd_system_unitdir}"
+FILES:${PN}:append:agl-devel = " ${libdir}/afb/monitoring ${systemd_system_unitdir}"
 
-RDEPENDS_${PN}-dev += "libafbwsc-dev"
+RDEPENDS:${PN}-dev += "libafbwsc-dev"
 
 #############################################
 # intrinsic binding packages
 #############################################
 PACKAGES =+ "${PN}-intrinsic-bindings"
-ALLOW_EMPTY_${PN}-intrinsic-bindings = "1"
+ALLOW_EMPTY:${PN}-intrinsic-bindings = "1"
 
 PACKAGES_DYNAMIC = "${PN}-binding-*"
 
-python populate_packages_prepend () {
+python populate_packages:prepend () {
     afb_libdir = d.expand('${libdir}/afb')
     postinst = d.getVar('binding_postinst', True)
     pkgs = []
@@ -49,7 +49,7 @@ python populate_packages_prepend () {
     pkgs += do_split_packages(d, afb_libdir, '(.*)-api\.so$', d.expand('${PN}-binding-%s'), 'AFB binding for %s', postinst=postinst, extra_depends=d.expand('${PN}'))
     pkgs += do_split_packages(d, afb_libdir, '(.*(?!-api))\.so$', d.expand('${PN}-binding-%s'), 'AFB binding for %s', postinst=postinst, extra_depends=d.expand('${PN}'))
 
-    d.setVar('RDEPENDS_' + d.getVar('PN', True) + '-intrinsic-bindings', ' '.join(pkgs))
+    d.setVar('RDEPENDS:' + d.getVar('PN', True) + '-intrinsic-bindings', ' '.join(pkgs))
 }
 
 #############################################
@@ -57,7 +57,7 @@ python populate_packages_prepend () {
 #############################################
 PACKAGES =+ "${PN}-tools"
 
-FILES_${PN}-tools = "\
+FILES:${PN}-tools = "\
 	${bindir}/afb-client-demo \
 "
 
@@ -66,10 +66,10 @@ FILES_${PN}-tools = "\
 #############################################
 PACKAGES =+ "libafbwsc libafbwsc-dev"
 
-FILES_libafbwsc = "\
+FILES:libafbwsc = "\
 	${libdir}/libafbwsc.so.* \
 "
-FILES_libafbwsc-dev = "\
+FILES:libafbwsc-dev = "\
 	${includedir}/afb/afb-wsj1.h \
 	${includedir}/afb/afb-ws-client.h \
 	${libdir}/libafbwsc.so \
@@ -81,7 +81,7 @@ FILES_libafbwsc-dev = "\
 #############################################
 PACKAGES =+ "${PN}-devtools"
 
-FILES_${PN}-devtools = "\
+FILES:${PN}-devtools = "\
 	${bindir}/afb-exprefs \
 	${bindir}/afb-json2c \
 	${bindir}/afb-genskel \
@@ -90,9 +90,9 @@ FILES_${PN}-devtools = "\
 #############################################
 # supervisor package
 #############################################
-PACKAGES_append_agl-devel = " ${PN}-supervisor "
+PACKAGES:append:agl-devel = " ${PN}-supervisor "
 
-FILES_${PN}-supervisor_agl-devel = "\
+FILES:${PN}-supervisor:agl-devel = "\
 	${bindir}/afs-supervisor \
         ${systemd_system_unitdir} \
 "
@@ -102,7 +102,7 @@ FILES_${PN}-supervisor_agl-devel = "\
 #############################################
 PACKAGES =+ "${PN}-samples"
 
-FILES_${PN}-samples = "\
+FILES:${PN}-samples = "\
 	${datadir}/af-binder \
 "
 
@@ -110,8 +110,8 @@ FILES_${PN}-samples = "\
 # meta package
 #############################################
 PACKAGES =+ "${PN}-meta"
-ALLOW_EMPTY_${PN}-meta = "1"
+ALLOW_EMPTY:${PN}-meta = "1"
 
-RDEPENDS_${PN}-meta += "${PN} ${PN}-tools libafbwsc ${PN}-intrinsic-bindings"
-RDEPENDS_${PN}-meta_append_agl-devel = " ${PN}-supervisor "
+RDEPENDS:${PN}-meta += "${PN} ${PN}-tools libafbwsc ${PN}-intrinsic-bindings"
+RDEPENDS:${PN}-meta:append:agl-devel = " ${PN}-supervisor "
 

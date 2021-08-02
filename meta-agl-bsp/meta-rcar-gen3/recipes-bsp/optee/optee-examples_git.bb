@@ -26,7 +26,7 @@ CFLAGS += "-Wno-extra -Wno-error=format"
 TARGET_CFLAGS += "-Wno-extra -Wno-error=format"
 
 TARGET_CC_ARCH += "${LDFLAGS}"
-INSANE_SKIP_${PN} = "ldflags"
+INSANE_SKIP:${PN} = "ldflags"
 
 TA_DEV_KIT_DIR = "${STAGING_DIR_TARGET}/usr/share/optee/export-ta_arm64"
 
@@ -58,4 +58,4 @@ do_install () {
     cp ${S}/hello_world/ta/include/* ${D}${includedir}
 }
 
-FILES_${PN} += "${nonarch_base_libdir}/optee_armtz/"
+FILES:${PN} += "${nonarch_base_libdir}/optee_armtz/"

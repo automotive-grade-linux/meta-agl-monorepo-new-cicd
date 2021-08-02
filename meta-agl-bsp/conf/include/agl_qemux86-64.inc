@@ -12,17 +12,17 @@ UVESA_MODE = "1280x1024-32"
 # kernel command line.
 #
 # Configuration for serial console
-QB_KERNEL_CMDLINE_APPEND_append = " console=ttyS0,115200n8"
+QB_KERNEL_CMDLINE_APPEND:append = " console=ttyS0,115200n8"
 #
 # All boot message will be off
-QB_KERNEL_CMDLINE_APPEND_append = " quiet"
+QB_KERNEL_CMDLINE_APPEND:append = " quiet"
 
 # Build updatable image. Only takes effect when sota.bbclass is inherited
-DISTRO_FEATURES_append = " sota"
+DISTRO_FEATURES:append = " sota"
 
 # Add firmware required by Up^2 board and default Intel mPCIe wifi card
 # sold by upshop.org
-MACHINE_EXTRA_RRECOMMENDS_append = " \
+MACHINE_EXTRA_RRECOMMENDS:append = " \
     linux-firmware-i915 \
     linux-firmware-rtl8168 \
     linux-firmware-ibt-hw-37-8 \
@@ -35,13 +35,13 @@ MACHINE_EXTRA_RRECOMMENDS_append = " \
 #       AGL_DEFAULT_IMAGE_FSTYPES to not include them, but for Intel
 #       we actually do want them for use on physical hardware.
 AGL_EXTRA_IMAGE_FSTYPES = "wic.xz wic.bmap ${@bb.utils.contains('DISTRO_FEATURES', 'AGLCI', 'wic.vmdk.xz', 'wic.vmdk', d)}"
-IMAGE_BOOT_FILES_sota = "u-boot-qemux86-64.rom"
+IMAGE_BOOT_FILES:sota = "u-boot-qemux86-64.rom"
 
 # Root device
 ROOT_VM = "root=PARTUUID=${DISK_SIGNATURE}-02"
 
 # Force the virtio video device as 'vmware' doesn't always work
-QB_OPT_APPEND_append = " -vga virtio"
+QB_OPT_APPEND:append = " -vga virtio"
 
 # DRM device weston/compositor systemd unit should depend upon
 WESTON_DRM_DEVICE = "dev-dri-card0.device"

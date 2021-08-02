@@ -2,7 +2,7 @@ require libafb-helpers_git.inc
 
 inherit cmake
 
-RDEPENDS_${PN}_append = " af-binder"
+RDEPENDS:${PN}:append = " af-binder"
 
-ALLOW_EMPTY_${PN} = "1"
+ALLOW_EMPTY:${PN} = "1"
 

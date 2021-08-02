@@ -4,7 +4,7 @@
 # A double inclusion would produce a warning. This include line is just for reference
 # include conf/machine/include/arm/arch-armv8.inc
 
-DEFAULTTUNE_poky-agl := "aarch64"
+DEFAULTTUNE:poky-agl := "aarch64"
 # not yet ready
 #QB_SYSTEM_NAME ?= "qemu-system-aarch"
 #QB_DEFAULT_KERNEL ?= "zImage"

@@ -1,7 +1,7 @@
 DISABLE_OVERSCAN = "1"
 TOTAL_BOARD_MEM = "3072"
 
-do_deploy_append_raspberrypi4() {
+do_deploy:append:raspberrypi4() {
     # ENABLE CAN
     if [ "${ENABLE_CAN}" = "1" ]; then
         echo "# Enable CAN" >>${DEPLOYDIR}/bootfiles/config.txt
@@ -24,7 +24,7 @@ do_deploy_append_raspberrypi4() {
     fi
 }
 
-do_deploy_append() {
+do_deploy:append() {
     if [ "${ENABLE_CMA}" = "1" ] && [ -n "${CMA_LWM}" ]; then
         sed -i '/#cma_lwm/ c\cma_lwm=${CMA_LWM}' ${DEPLOYDIR}/bootfiles/config.txt
     fi
@@ -40,11 +40,11 @@ do_deploy_append() {
     echo "dtparam=audio=on" >> ${DEPLOYDIR}/bootfiles/config.txt
 }
 
-do_deploy_append_raspberrypi4() {
+do_deploy:append:raspberrypi4() {
     echo -e "\n[pi4]" >> ${DEPLOYDIR}/bootfiles/config.txt
     echo "max_framebuffers=2" >> ${DEPLOYDIR}/bootfiles/config.txt
 }
 
-do_deploy_append_sota() {
+do_deploy:append:sota() {
     echo "device_tree_address=0x0c800000" >> ${DEPLOYDIR}/bootfiles/config.txt
 }

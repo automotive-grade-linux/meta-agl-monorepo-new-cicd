@@ -4,5 +4,5 @@
 # booting with "security=none" when userspace otherwise is
 # compiled to use Smack.
 
-PACKAGECONFIG_append_with-lsm-smack_class-target = " smack"
+PACKAGECONFIG:append:with-lsm-smack:class-target = " smack"
 PACKAGECONFIG[smack] = "--with-smack, --without-smack"

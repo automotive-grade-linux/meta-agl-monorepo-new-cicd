@@ -13,7 +13,7 @@ SRC_URI = "git://gerrit.automotivelinux.org/gerrit/src/nss-localuser;protocol=ht
 SRCREV = "66803c6fdb609ed83a78b9194ecb23e9c1b773e7"
 PV = "${AGL_BRANCH}+git${SRCPV}"
 
-RDEPENDS_${PN} = "base-files"
+RDEPENDS:${PN} = "base-files"
 
 S = "${WORKDIR}/git"
 
@@ -25,15 +25,15 @@ do_install() {
 	make nssdir=${D}${libdir} install
 }
 
-pkg_postinst_ontarget_${PN} () {
+pkg_postinst_ontarget:${PN} () {
 	sed -e '/^hosts:/s/\<localuser\>\s*//' \
 		-e 's/\(^hosts:\s\s*\)\(.*\)/\1localuser \2/' \
 		-i $D${sysconfdir}/nsswitch.conf
 }
 
-pkg_prerm_${PN} () {
+pkg_prerm:${PN} () {
 	sed -e '/^hosts:/s/\<localuser\>\s*//' \
 		-i $D${sysconfdir}/nsswitch.conf
 }
 
-INSANE_SKIP_${PN} = "ldflags"
+INSANE_SKIP:${PN} = "ldflags"

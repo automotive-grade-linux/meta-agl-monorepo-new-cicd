@@ -14,7 +14,7 @@ inherit packagegroup
 # Without configuration, security-manager is not usable. We use
 # the policy packaged from the upstream source code here. Adapting
 # it for the distro can be done by patching that source.
-RDEPENDS_${PN}_append_with-lsm-smack = " \
+RDEPENDS:${PN}:append:with-lsm-smack = " \
     cynagora \
     security-manager \
     security-manager-policy \

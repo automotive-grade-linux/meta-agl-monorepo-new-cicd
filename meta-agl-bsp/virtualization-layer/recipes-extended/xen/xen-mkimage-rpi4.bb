@@ -6,15 +6,15 @@ LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/GPL-2.0;md5=801f80980d171dd6425
 
 
 
-ALLOW_EMPTY_${PN} = "1"
-FILES_${PN} = ""
+ALLOW_EMPTY:${PN} = "1"
+FILES:${PN} = ""
 S = "${WORKDIR}"
 
 DEPENDS = "u-boot-mkimage-native "
 
 # Only for aarch64
 COMPATIBLE_MACHINE = "(-)"
-COMPATIBLE_MACHINE_aarch64 = "(.*)"
+COMPATIBLE_MACHINE:aarch64 = "(.*)"
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 

@@ -1,3 +1,3 @@
-FILESEXTRAPATHS_prepend_raspberrypi := "${THISDIR}/${PN}:"
+FILESEXTRAPATHS:prepend:raspberrypi := "${THISDIR}/${PN}:"
 
-SRC_URI_append_raspberrypi = " file://dsi.cfg"
+SRC_URI:append:raspberrypi = " file://dsi.cfg"

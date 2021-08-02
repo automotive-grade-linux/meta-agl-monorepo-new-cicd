@@ -1,5 +1,5 @@
-IMAGE_FEATURES_append = " dev-pkgs"
-IMAGE_INSTALL_append = " kernel-dev kernel-devsrc"
+IMAGE_FEATURES:append = " dev-pkgs"
+IMAGE_INSTALL:append = " kernel-dev kernel-devsrc"
 
 
 
@@ -8,7 +8,7 @@ IMAGE_INSTALL_append = " kernel-dev kernel-devsrc"
 
 # FIXME:
 # Always include the test widgets
-#IMAGE_FEATURES_append = " agl-test-wgt"
+#IMAGE_FEATURES:append = " agl-test-wgt"
 #
 # Required dependencies for app and test builds
 #TOOLCHAIN_HOST_TASK += " \

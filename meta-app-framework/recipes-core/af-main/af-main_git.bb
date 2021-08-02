@@ -11,12 +11,12 @@ BBCLASSEXTEND = "native"
 SECTION = "base"
 
 DEPENDS = "openssl libxml2 xmlsec1 systemd libzip json-c systemd security-manager af-binder sed m4"
-DEPENDS_class-native = "openssl libxml2 xmlsec1 libzip json-c"
-RDEPENDS_${PN}_class-target += "af-binder-tools nss-localuser cynagoauth"
+DEPENDS:class-native = "openssl libxml2 xmlsec1 libzip json-c"
+RDEPENDS:${PN}:class-target += "af-binder-tools nss-localuser cynagoauth"
 
-PACKAGE_WRITE_DEPS_append_with-lsm-smack = " smack-native libcap-native"
+PACKAGE_WRITE_DEPS:append:with-lsm-smack = " smack-native libcap-native"
 
-EXTRA_OECMAKE_append_class-native  = "\
+EXTRA_OECMAKE:append:class-native  = "\
 	-DUSE_LIBZIP=1 \
 	-DUSE_SIMULATION=1 \
 	-DUSE_SDK=1 \
@@ -26,7 +26,7 @@ EXTRA_OECMAKE_append_class-native  = "\
 	-Dafm_datadir=${afm_datadir} \
 "
 
-EXTRA_OECMAKE_append_class-target = "\
+EXTRA_OECMAKE:append:class-target = "\
 	-DUSE_LIBZIP=1 \
 	-DUSE_SIMULATION=0 \
 	-DUSE_SDK=0 \
@@ -52,23 +52,23 @@ EXTRA_OECMAKE_append_class-target = "\
 AGL_FORBID_UNSIGNED_APPS ?= "0"
 #
 # WORKAROUND:
-EXTRA_OECMAKE_append_agl-devel = " -DAGL_DEVEL=1"
-EXTRA_OECMAKE_append = " ${@bb.utils.contains('AGL_FORBID_UNSIGNED_APPS','1','','-DALLOW_NO_SIGNATURE=ON', d)}"
+EXTRA_OECMAKE:append:agl-devel = " -DAGL_DEVEL=1"
+EXTRA_OECMAKE:append = " ${@bb.utils.contains('AGL_FORBID_UNSIGNED_APPS','1','','-DALLOW_NO_SIGNATURE=ON', d)}"
 #
 # Correct version (IMPORTANT TODO: to be restored later):
-#EXTRA_OECMAKE_append_agl-devel = " -DAGL_DEVEL=1 -DALLOW_NO_SIGNATURE=ON"
+#EXTRA_OECMAKE:append:agl-devel = " -DAGL_DEVEL=1 -DALLOW_NO_SIGNATURE=ON"
 #
 # ------------------------ WARNING WARNING WARNNING ---------------------------
 
 
 USERADD_PACKAGES = "${PN}"
-USERADD_PARAM_${PN} = "--system --gid ${afm_name} --home-dir ${afm_datadir} ${afm_name}"
-GROUPADD_PARAM_${PN} = "--system ${afm_name}"
+USERADD_PARAM:${PN} = "--system --gid ${afm_name} --home-dir ${afm_datadir} ${afm_name}"
+GROUPADD_PARAM:${PN} = "--system ${afm_name}"
 
-RDEPENDS_${PN}_append_with-lsm-smack = " smack bash"
-DEPENDS_append_with-lsm-smack = " smack-native"
+RDEPENDS:${PN}:append:with-lsm-smack = " smack bash"
+DEPENDS:append:with-lsm-smack = " smack-native"
 
-do_install_append_class-target() {
+do_install:append:class-target() {
     install -d ${D}${bindir}
     install -d -m 0775 ${D}${systemd_units_root}/system
     install -d -m 0775 "${D}${systemd_units_root}/system/multi-user.target.wants"
@@ -87,7 +87,7 @@ do_install_append_class-target() {
     fi
 }
 
-pkg_postinst_ontarget_${PN}() {
+pkg_postinst_ontarget:${PN}() {
     if ${@bb.utils.contains('DISTRO_FEATURES', 'systemd', 'true', 'false', d)}; then
         chgrp ${afm_name} $D${systemd_units_root}/system
         chgrp ${afm_name} $D${systemd_units_root}/system/afm-user-session@.target.wants
@@ -99,7 +99,7 @@ pkg_postinst_ontarget_${PN}() {
     chown ${afm_name}:${afm_name} $D${afm_datadir}/icons
 }
 
-pkg_postinst_ontarget_${PN}_append_with-lsm-smack() {
+pkg_postinst_ontarget:${PN}:append:with-lsm-smack() {
     if ${@bb.utils.contains('DISTRO_FEATURES', 'systemd', 'true', 'false', d)}; then
         chsmack -a 'System::Shared' -t $D${systemd_units_root}/system
         chsmack -a 'System::Shared' -t $D${systemd_units_root}/system/afm-user-session@.target.wants
@@ -110,13 +110,13 @@ pkg_postinst_ontarget_${PN}_append_with-lsm-smack() {
     chsmack -a 'System::Shared' -t $D${afm_datadir}/applications
     chsmack -a 'System::Shared' -t $D${afm_datadir}/icons
 }
-FILES_${PN} += "${systemd_units_root}/* ${systemd_system_unitdir} ${systemd_user_unitdir}"
-FILES_${PN}_append_agl-sign-wgts = " ${datadir}/afm"
+FILES:${PN} += "${systemd_units_root}/* ${systemd_system_unitdir} ${systemd_user_unitdir}"
+FILES:${PN}:append:agl-sign-wgts = " ${datadir}/afm"
 
 PACKAGES =+ "${PN}-binding ${PN}-binding-dbg"
-FILES_${PN}-binding = " ${afb_binding_dir}/afm-main-binding.so "
-FILES_${PN}-binding-dbg = " ${afb_binding_dir}/.debug/afm-main-binding.so "
+FILES:${PN}-binding = " ${afb_binding_dir}/afm-main-binding.so "
+FILES:${PN}-binding-dbg = " ${afb_binding_dir}/.debug/afm-main-binding.so "
 
 PACKAGES =+ "${PN}-tools ${PN}-tools-dbg"
-FILES_${PN}-tools = "${bindir}/wgtpkg-*"
-FILES_${PN}-tools-dbg = "${bindir}/.debug/wgtpkg-*"
+FILES:${PN}-tools = "${bindir}/wgtpkg-*"
+FILES:${PN}-tools-dbg = "${bindir}/.debug/wgtpkg-*"

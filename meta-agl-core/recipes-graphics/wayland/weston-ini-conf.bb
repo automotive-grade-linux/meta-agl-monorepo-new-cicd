@@ -63,7 +63,7 @@ do_compile() {
     sed -i -e '$ d' ${WORKDIR}/weston.ini.landscape-inverted
 }
 
-do_install_append() {
+do_install:append() {
     install -d ${D}${weston_ini_dir}
     install -m 0644 ${WORKDIR}/weston.ini.default ${D}${weston_ini_dir}/
     install -m 0644 ${WORKDIR}/weston.ini.landscape ${D}${weston_ini_dir}/
@@ -81,28 +81,28 @@ PACKAGE_ARCH = "${MACHINE_ARCH}"
 
 ALTERNATIVE_LINK_NAME[weston.ini] = "${weston_ini_dir}/weston.ini"
 
-RDEPENDS_${PN} = "weston-init"
-RPROVIDES_${PN} = "weston-ini"
-RCONFLICTS_${PN} = "${PN}-landscape"
-ALTERNATIVE_${PN} = "weston.ini"
+RDEPENDS:${PN} = "weston-init"
+RPROVIDES:${PN} = "weston-ini"
+RCONFLICTS:${PN} = "${PN}-landscape"
+ALTERNATIVE:${PN} = "weston.ini"
 ALTERNATIVE_TARGET_${PN} = "${weston_ini_dir}/weston.ini.default"
 
 PACKAGE_BEFORE_PN += "${PN}-landscape"
 
-FILES_${PN}-landscape = "${weston_ini_dir}/weston.ini.landscape"
+FILES:${PN}-landscape = "${weston_ini_dir}/weston.ini.landscape"
 
-RDEPENDS_${PN}-landscape = "weston-init"
-RPROVIDES_${PN}-landscape = "weston-ini"
-RCONFLICTS_${PN}-landscape = "${PN}"
-ALTERNATIVE_${PN}-landscape = "weston.ini"
+RDEPENDS:${PN}-landscape = "weston-init"
+RPROVIDES:${PN}-landscape = "weston-ini"
+RCONFLICTS:${PN}-landscape = "${PN}"
+ALTERNATIVE:${PN}-landscape = "weston.ini"
 ALTERNATIVE_TARGET_${PN}-landscape = "${weston_ini_dir}/weston.ini.landscape"
 
 PACKAGE_BEFORE_PN += "${PN}-landscape-inverted"
 
-FILES_${PN}-landscape-inverted = "${weston_ini_dir}/weston.ini.landscape-inverted"
+FILES:${PN}-landscape-inverted = "${weston_ini_dir}/weston.ini.landscape-inverted"
 
-RDEPENDS_${PN}-landscape-inverted = "weston-init"
-RPROVIDES_${PN}-landscape-inverted = "weston-ini"
-RCONFLICTS_${PN}-landscape-inverted = "${PN}"
-ALTERNATIVE_${PN}-landscape-inverted = "weston.ini"
+RDEPENDS:${PN}-landscape-inverted = "weston-init"
+RPROVIDES:${PN}-landscape-inverted = "weston-ini"
+RCONFLICTS:${PN}-landscape-inverted = "${PN}"
+ALTERNATIVE:${PN}-landscape-inverted = "weston.ini"
 ALTERNATIVE_TARGET_${PN}-landscape-inverted = "${weston_ini_dir}/weston.ini.landscape-inverted"

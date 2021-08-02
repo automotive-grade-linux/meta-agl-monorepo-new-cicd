@@ -8,7 +8,7 @@ COMPATIBLE_MACHINE = "(salvator-x|m3ulcb|h3ulcb|ebisu)"
 
 S = "${WORKDIR}"
 
-SRC_URI_append_sota = "file://uEnv-ota-m3ulcb.txt \
+SRC_URI:append:sota = "file://uEnv-ota-m3ulcb.txt \
                        file://uEnv-ota-h3ulcb.txt \
                        file://uEnv-ota-h3-salvator-xs \
                        file://uEnv-ota-m3-salvator-xs"
@@ -16,7 +16,7 @@ do_deploy() {
     install -d ${DEPLOYDIR}/${PN}
 }
 
-do_deploy_append_sota() {
+do_deploy:append:sota() {
     install -m 0755 ${WORKDIR}/uEnv-ota-${BOARD_NAME}.txt ${DEPLOYDIR}/${PN}/uEnv.txt
 }
 

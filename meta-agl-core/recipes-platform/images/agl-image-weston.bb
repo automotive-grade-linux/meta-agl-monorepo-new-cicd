@@ -4,6 +4,6 @@ require agl-image-weston.inc
 
 LICENSE = "MIT"
 
-IMAGE_INSTALL_append = "\
+IMAGE_INSTALL:append = "\
     packagegroup-agl-profile-graphical \
     "

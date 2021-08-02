@@ -1,6 +1,6 @@
-FILESEXTRAPATHS_prepend := "${THISDIR}/pipewire:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/pipewire:"
 
-SRC_URI_append= "\
+SRC_URI:append= "\
     file://0001-modules-add-new-access-seclabel-module.patch \
     file://pipewire.conf \
     file://pipewire.service \
@@ -8,7 +8,7 @@ SRC_URI_append= "\
     file://smack-pipewire \
 "
 
-do_install_append() {
+do_install:append() {
      # replace the original config with our smack-aware config
     mkdir -p ${D}${sysconfdir}/pipewire/
     install -m 0644 ${WORKDIR}/pipewire.conf ${D}${sysconfdir}/pipewire/pipewire.conf
@@ -28,7 +28,7 @@ do_install_append() {
     fi
 }
 
-FILES_${PN}_append = "\
+FILES:${PN}:append = "\
     ${sysconfdir}/smack/accesses.d/* \
     ${sysconfdir}/pipewire/pipewire.conf \
 "

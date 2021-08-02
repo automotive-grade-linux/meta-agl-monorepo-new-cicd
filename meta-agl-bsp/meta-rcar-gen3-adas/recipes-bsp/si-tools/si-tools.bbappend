@@ -1,10 +1,10 @@
-FILESEXTRAPATHS_append := ":${THISDIR}/files"
+FILESEXTRAPATHS:append := ":${THISDIR}/files"
 
 SRC_URI += " \
     file://si-tools-fm-improvements.patch \
 "
 
-EXTRA_OEMAKE_append = " 'LDFLAGS=${LDFLAGS}'"
+EXTRA_OEMAKE:append = " 'LDFLAGS=${LDFLAGS}'"
 
 do_install() {
     install -d ${D}${bindir}
@@ -22,7 +22,7 @@ do_install() {
     done
 }
 
-FILES_${PN} = " \
+FILES:${PN} = " \
     ${bindir} \
     ${nonarch_base_libdir}/firmware/radio \
 "

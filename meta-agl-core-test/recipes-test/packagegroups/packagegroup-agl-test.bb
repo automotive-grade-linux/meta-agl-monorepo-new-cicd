@@ -11,9 +11,9 @@ PACKAGES = "\
     packagegroup-ivi-common-test \
     "
 
-ALLOW_EMPTY_${PN} = "1"
+ALLOW_EMPTY:${PN} = "1"
 
-RDEPENDS_${PN} += "\
+RDEPENDS:${PN} += "\
     bc \
     ebizzy \
     evtest \
@@ -56,13 +56,13 @@ RDEPENDS_${PN} += "\
 #   readelf, logrotate, vsftpd, crontab, sar, arp, ftp,
 #   host, rcp, rlogin, rsh, tcpdump, expect, iptables, dnsmasq,
 #   pgrep
-RDEPENDS_packagegroup-agl-test-ltp = ""
-#RDEPENDS_packagegroup-agl-test-ltp += " \
+RDEPENDS:packagegroup-agl-test-ltp = ""
+#RDEPENDS:packagegroup-agl-test-ltp += " \
 #    initscripts-functions bind-utils binutils \
 #    cronie dnsmasq expect inetutils-ftp inetutils-rsh \
 #    iptables logrotate net-tools sysstat tcpdump vsftpd \
 #    "
 
-RDEPENDS_packagegroup-ivi-common-test = " \
+RDEPENDS:packagegroup-ivi-common-test = " \
     packagegroup-agl-test \
     "

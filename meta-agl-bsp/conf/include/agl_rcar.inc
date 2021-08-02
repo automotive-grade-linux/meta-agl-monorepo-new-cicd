@@ -1,10 +1,10 @@
 require conf/include/agl_rcar-nogfx.inc
 
 # Enable AGL virtualization features
-MACHINE_FEATURES_append = " agl-egvirt"
+MACHINE_FEATURES:append = " agl-egvirt"
 
 # Enable Gfx Pkgs
-MACHINE_FEATURES_append = " gsx"
+MACHINE_FEATURES:append = " gsx"
 MULTI_PROVIDER_WHITELIST += "virtual/libgl virtual/egl virtual/libgles1 virtual/libgles2"
 
 # for Wayland/Weston
@@ -22,12 +22,12 @@ PREFERRED_PROVIDER_virtual/libomxil = "omx-user-module"
 # Add for gstreamer plugins ugly
 LICENSE_FLAGS_WHITELIST = "commercial"
 
-MACHINE_FEATURES_append = " multimedia"
+MACHINE_FEATURES:append = " multimedia"
 
-DISTRO_FEATURES_append = " use_eva_pkg"
+DISTRO_FEATURES:append = " use_eva_pkg"
 
-#DISTRO_FEATURES_append = " h265dec_lib mpeg2dec_lib"
-DISTRO_FEATURES_append = " h264dec_lib h264enc_lib aaclcdec_lib aaclcdec_mdw"
+#DISTRO_FEATURES:append = " h265dec_lib mpeg2dec_lib"
+DISTRO_FEATURES:append = " h264dec_lib h264enc_lib aaclcdec_lib aaclcdec_mdw"
 
 # Mask out meta-renesas-rcar-gen3's tweaks to weston-init, as they do
 # not seem necessary for anything in AGL, and the addition of
@@ -42,7 +42,7 @@ BBMASK += "meta-rcar-gen3/recipes-graphics/wayland/weston-init.bbappend"
 
 # Add graphics and decoder drivers to packagegroup-machine-base
 # recommendation.
-MACHINE_EXTRA_RRECOMMENDS_append_rcar-gen3 = " \
+MACHINE_EXTRA_RRECOMMENDS:append:rcar-gen3 = " \
     kernel-module-pvrsrvkm \
     kernel-module-vsp2 \
     kernel-module-vspm  \

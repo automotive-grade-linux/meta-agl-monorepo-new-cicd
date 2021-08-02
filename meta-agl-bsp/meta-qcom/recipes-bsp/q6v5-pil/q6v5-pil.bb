@@ -17,4 +17,4 @@ do_install() {
     echo "blacklist qcom_q6v5_pil" > ${D}/${sysconfdir}/modprobe.d/qcom_q6v5_pil.conf
 }
 
-SYSTEMD_SERVICE_${PN} = "qcom-q6v5-pil.service"
+SYSTEMD_SERVICE:${PN} = "qcom-q6v5-pil.service"

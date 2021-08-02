@@ -1,7 +1,7 @@
-RDEPENDS_${PN}_append_with-lsm-smack = " smack"
-PACKAGE_WRITE_DEPS_append_with-lsm-smack = " smack-native"
+RDEPENDS:${PN}:append:with-lsm-smack = " smack"
+PACKAGE_WRITE_DEPS:append:with-lsm-smack = " smack-native"
 
-do_install_append() {
+do_install:append() {
     install -m 0700 -d ${D}/${sysconfdir}/skel
     chmod -R 0700 ${D}/${sysconfdir}/skel
     install -m 0700 -d ${D}/${sysconfdir}/skel/app-data
@@ -15,7 +15,7 @@ do_install_append() {
     ln -s ../var/local ${D}/usr/local
 }
 
-do_install_append_with-lsm-smack () {
+do_install:append:with-lsm-smack () {
     install -d ${D}/${sysconfdir}/smack/accesses.d
     cat > ${D}/${sysconfdir}/smack/accesses.d/default-access-domains-no-user <<EOF
 System User::App-Shared rwxat
@@ -24,7 +24,7 @@ EOF
     chmod 0644 ${D}/${sysconfdir}/smack/accesses.d/default-access-domains-no-user
 }
 
-pkg_postinst_${PN}_append_with-lsm-smack() {
+pkg_postinst:${PN}:append:with-lsm-smack() {
     chsmack -r -a 'User::Home' -t -D $D/${sysconfdir}/skel
     chsmack -a 'User::App-Shared' -D $D/${sysconfdir}/skel/app-data
     cp -rTf --preserve=all $D/${sysconfdir}/skel $D/${ROOT_HOME}
@@ -35,7 +35,7 @@ pkg_postinst_${PN}_append_with-lsm-smack() {
 # Install default Smack rules, copied from a running Tizen IVI 3.0.
 # Corresponds to manifest file from default-access-domains in Tizen:
 # https://review.tizen.org/git?p=platform/core/security/default-ac-domains.git;a=blob;f=packaging/default-ac-domains.manifest
-do_install_append_with-lsm-smack () {
+do_install:append:with-lsm-smack () {
     install -d ${D}/${sysconfdir}/smack/accesses.d
     cat >${D}/${sysconfdir}/smack/accesses.d/default-access-domains <<EOF
 System _ -----l
@@ -74,9 +74,9 @@ EOF
 # via postinst. This is much easier to use with bitbake, too:
 # - no need to maintain a patched rpm
 # - works for directories which are not packaged by default when empty
-RDEPENDS_${PN}_append_with-lsm-smack = " smack"
-DEPENDS_append_with-lsm-smack = " smack-native"
-pkg_postinst_${PN}_with-lsm-smack() {
+RDEPENDS:${PN}:append:with-lsm-smack = " smack"
+DEPENDS:append:with-lsm-smack = " smack-native"
+pkg_postinst:${PN}:with-lsm-smack() {
     #!/bin/sh -e
 
     # https://review.tizen.org/gerrit/gitweb?p=platform/upstream/filesystem.git;a=blob;f=packaging/filesystem.manifest:

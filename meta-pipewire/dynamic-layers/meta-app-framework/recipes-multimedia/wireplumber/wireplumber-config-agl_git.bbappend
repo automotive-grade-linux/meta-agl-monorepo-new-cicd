@@ -1,11 +1,11 @@
-FILESEXTRAPATHS_prepend := "${THISDIR}/wireplumber-config-agl:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/wireplumber-config-agl:"
 
 SRC_URI += "\
     file://50-access-agl.lua \
     file://access-smack.lua \
 "
 
-do_install_append() {
+do_install:append() {
     # install smack-specific config
     config_dir="${D}${sysconfdir}/wireplumber/config.lua.d/"
     access_dir="${D}${sysconfdir}/wireplumber/scripts/access/"

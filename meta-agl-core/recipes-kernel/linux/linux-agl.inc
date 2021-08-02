@@ -15,7 +15,7 @@ def find_cfgs(d):
 
     return sources_list
 
-do_configure_append () {
+do_configure:append () {
     if [ -n "${AGL_KCONFIG_FRAGMENTS}" ]; then
         [ ! -f .config ] && cp -a ${WORKDIR}/defconfig .config
         merge_config.sh -m .config ${@" ".join(find_cfgs(d))}

@@ -4,10 +4,10 @@
 MODULE_TARBALL_DEPLOY ?= "0"
 
 # Comment out below if want to use QtWebkit
-PACKAGECONFIG_remove_pn-qtquick1 = "webkit"
+PACKAGECONFIG:remove:pn-qtquick1 = "webkit"
 
 
-ASSUME_PROVIDED_remove = "tar-native"
+ASSUME_PROVIDED:remove = "tar-native"
 
 # Use static IDs to enable full-filesystem updates
 USERADDEXTENSION = "useradd-staticids"

@@ -1,8 +1,8 @@
-FILESEXTRAPATHS_prepend := "${THISDIR}/${BPN}:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/${BPN}:"
 
 require recipes-kernel/linux/linux-yocto-agl.inc
 
-SRC_URI_append = " \
+SRC_URI:append = " \
     ${@oe.utils.conditional('USE_FAYTECH_MONITOR', '1', 'file://0002-faytech-fix-rpi.patch', '', d)} \
     file://0001-mconf-menuconfig.patch \
 "
@@ -28,19 +28,19 @@ SERIAL = "${@oe.utils.conditional("ENABLE_UART", "1", "console=${SERIAL_OPTION}"
 CMDLINE_DEBUG = ""
 
 # Xen related option
-CMDLINE_append = ' ${@bb.utils.contains('AGL_XEN_WANTED','1','clk_ignore_unused','',d)}'
+CMDLINE:append = ' ${@bb.utils.contains('AGL_XEN_WANTED','1','clk_ignore_unused','',d)}'
 
 # Workaround for crash during brcmfmac loading. Disable it at this moment
-CMDLINE_append = ' ${@bb.utils.contains('AGL_XEN_WANTED','1','modprobe.blacklist=brcmfmac','',d)}'
+CMDLINE:append = ' ${@bb.utils.contains('AGL_XEN_WANTED','1','modprobe.blacklist=brcmfmac','',d)}'
 
-CMDLINE_append = " usbhid.mousepoll=0"
+CMDLINE:append = " usbhid.mousepoll=0"
 
 # Add options to allow CMA to operate
-CMDLINE_append = '${@oe.utils.conditional("ENABLE_CMA", "1", " coherent_pool=6M smsc95xx.turbo_mode=N", "", d)}'
+CMDLINE:append = '${@oe.utils.conditional("ENABLE_CMA", "1", " coherent_pool=6M smsc95xx.turbo_mode=N", "", d)}'
 
 KERNEL_MODULE_AUTOLOAD += "snd-bcm2835"
 KERNEL_MODULE_AUTOLOAD += "hid-multitouch"
 
 PACKAGES += "kernel-module-snd-bcm2835"
 
-RDEPENDS_${PN} += "kernel-module-snd-bcm2835"
+RDEPENDS:${PN} += "kernel-module-snd-bcm2835"

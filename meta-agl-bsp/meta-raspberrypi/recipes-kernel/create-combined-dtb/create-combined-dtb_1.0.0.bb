@@ -7,8 +7,8 @@ LIC_FILES_CHKSUM = "file://${COREBASE}/meta/COPYING.MIT;md5=3da9cfbcb788c80a0384
 
 DEPENDS = "dtc-native"
 
-ALLOW_EMPTY_${PN} = "1"
-FILES_${PN} = ""
+ALLOW_EMPTY:${PN} = "1"
+FILES:${PN} = ""
 
 S = "${WORKDIR}"
 

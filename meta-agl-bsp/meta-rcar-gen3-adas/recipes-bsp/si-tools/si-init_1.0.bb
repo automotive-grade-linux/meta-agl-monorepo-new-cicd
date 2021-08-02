@@ -25,4 +25,4 @@ KERNEL=="i2c-12", MODE="0660", GROUP="audio", SECLABEL{smack}="*"
 EOF
 }
 
-FILES_${PN} += "${systemd_system_unitdir}"
+FILES:${PN} += "${systemd_system_unitdir}"

@@ -9,14 +9,14 @@ CORE_IMAGE_EXTRA_INSTALL += "packagegroup-machine-base"
 ## Graphics section ##
 #-------------------------------------------------
 PACKAGES_GFX = "ti-sgx-ddk-km"
-IMAGE_INSTALL_append = " ${PACKAGES_GFX}"
+IMAGE_INSTALL:append = " ${PACKAGES_GFX}"
 
 
 # Enable Gfx Pkgs
-MACHINE_FEATURES_append = " sgx"
+MACHINE_FEATURES:append = " sgx"
 MULTI_PROVIDER_WHITELIST += "virtual/libgl virtual/egl virtual/libgles1 virtual/libgles2"
 
-DEPENDS_remove = "virtual/libgl"
+DEPENDS:remove = "virtual/libgl"
 
 # Preferred providers
 PREFERRED_PROVIDER_virtual/libgles1 = ""
@@ -30,11 +30,11 @@ PREFERRED_PROVIDER_virtual/mesa     = "mesa-gl"
 #-------------------------------------------------
 
 # DEFAULTTUNE for cortex-a8
-DISTRO_FEATURES_append = " agl-medium-arm-compiler"
+DISTRO_FEATURES:append = " agl-medium-arm-compiler"
 
-SECURITY_CFLAGS_pn-mozjs = ""
-SECURITY_LDFLAGS_pn-mozjs = ""
-SECURITY_CFLAGS_pn-gpm = ""
-SECURITY_LDFLAGS_pn-gpm = ""
-SECURITY_CFLAGS_pn-libatasmart = ""
-SECURITY_LDFLAGS_pn-libatasmart = ""
+SECURITY_CFLAGS:pn-mozjs = ""
+SECURITY_LDFLAGS:pn-mozjs = ""
+SECURITY_CFLAGS:pn-gpm = ""
+SECURITY_LDFLAGS:pn-gpm = ""
+SECURITY_CFLAGS:pn-libatasmart = ""
+SECURITY_LDFLAGS:pn-libatasmart = ""

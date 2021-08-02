@@ -12,7 +12,7 @@ SRC_URI += "\
     file://0002-node-driver-make-the-timerfd-non-blocking.patch \
 "
 
-do_install_append() {
+do_install:append() {
     # install symlinks to alsalib configuration files
     for i in 50-pipewire.conf 99-pipewire-default.conf; do
         if [ -f ${D}${datadir}/alsa/alsa.conf.d/${i} ]; then
@@ -22,6 +22,6 @@ do_install_append() {
     done
 }
 
-FILES_${PN}-alsa_append = "\
+FILES:${PN}-alsa:append = "\
     ${sysconfdir}/alsa/conf.d/* \
 "

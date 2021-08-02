@@ -42,14 +42,14 @@
 # The related patch has been submitted to upstream too.
 # upstream link: http://permalink.gmane.org/gmane.linux.bluez.kernel/67993
 
-FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
 
-SRC_URI_append_with-lsm-smack = "\
+SRC_URI:append:with-lsm-smack = "\
   file://bluetooth.service.conf \
 "
 
-FILES_${PN}_append = " ${systemd_unitdir}"
+FILES:${PN}:append = " ${systemd_unitdir}"
 
-do_install_append_with-lsm-smack() {
+do_install:append:with-lsm-smack() {
   install -Dm0644 ${WORKDIR}/bluetooth.service.conf ${D}${systemd_unitdir}/system/bluetooth.service.d/smack.conf
 }

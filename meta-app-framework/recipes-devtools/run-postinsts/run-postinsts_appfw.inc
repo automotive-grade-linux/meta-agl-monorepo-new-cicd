@@ -1,14 +1,14 @@
-FILESEXTRAPATHS_prepend := "${THISDIR}/run-postinsts:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/run-postinsts:"
 
-SRC_URI_append = " file://ldconfig-wait.conf"
+SRC_URI:append = " file://ldconfig-wait.conf"
 
-do_configure_append() {
+do_configure:append() {
 	if ! grep -q StandardOutput= ${WORKDIR}/run-postinsts.service; then
 		sed -i '/ExecStart=/iStandardOutput=journal+console' ${WORKDIR}/run-postinsts.service
 	fi
 }
 
-do_install_append() {
+do_install:append() {
 	install -d ${D}${sysconfdir}/systemd/system/run-postinsts.service.d
 	install -m 0644 ${WORKDIR}/ldconfig-wait.conf ${D}${sysconfdir}/systemd/system/run-postinsts.service.d
 }

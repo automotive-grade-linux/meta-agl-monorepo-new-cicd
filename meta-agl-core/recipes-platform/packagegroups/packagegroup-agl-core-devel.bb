@@ -3,7 +3,7 @@ LICENSE = "MIT"
 
 inherit packagegroup
 
-RDEPENDS_${PN} = "\
+RDEPENDS:${PN} = "\
         strace \
         ldd \
         less \
@@ -22,7 +22,7 @@ RDEPENDS_${PN} = "\
         "
 
 # needs meta-oe present
-#RRECOMMENDS_${PN} = "\
+#RRECOMMENDS:${PN} = "\
 #        jq \
 #        htop \
 #        tree \

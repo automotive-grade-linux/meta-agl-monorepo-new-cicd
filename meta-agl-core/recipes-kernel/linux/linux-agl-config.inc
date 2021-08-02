@@ -22,14 +22,14 @@
 # perspective) AGL additions.
 #
 
-FILESEXTRAPATHS_prepend := "${THISDIR}/linux:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/linux:"
 
 # NOTE: AGL_KERNEL_SRC is explicitly intended as an intermediate variable
 #       that can be used as a last resort to completely disable all AGL
 #       additions, modifying or appending it is not recommended.
 AGL_KERNEL_SRC ?= "${@' '.join(['file://' + x for x in d.getVar('AGL_KCONFIG_FRAGMENTS').split()])}"
 
-SRC_URI_append = " ${AGL_KERNEL_SRC}"
+SRC_URI:append = " ${AGL_KERNEL_SRC}"
 
 # For meta-ti and meta-qcom
 KERNEL_CONFIG_FRAGMENTS ?= "${@' '.join(['${WORKDIR}/' + x for x in d.getVar('AGL_KCONFIG_FRAGMENTS').split()])}"
@@ -54,29 +54,29 @@ AGL_KCONFIG_FRAGMENTS += "${@bb.utils.contains('DISTRO_FEATURES', 'agl-devel', '
 #
 
 # Enable required features for the agl-netboot feature
-AGL_KCONFIG_FRAGMENTS_append_netboot = " \
+AGL_KCONFIG_FRAGMENTS:append:netboot = " \
     nbd.cfg \
     ramdisk.cfg \
 "
 
 # Add hda audio and required virtio device support for qemu
-AGL_KCONFIG_FRAGMENTS_append_qemuall = " \
+AGL_KCONFIG_FRAGMENTS:append:qemuall = " \
     sound-hda.cfg \
     qemu-virtio.cfg \
     qemu-drm.cfg \
 "
 
 # Configuration for using the ARM virt machine (and not versatilepb)
-AGL_KCONFIG_FRAGMENTS_append_qemuarm = " qemuarm.cfg"
+AGL_KCONFIG_FRAGMENTS:append:qemuarm = " qemuarm.cfg"
 
 # Additional drivers for virtual machines
 # OVERRIDES save us some c'n'p below ...
-OVERRIDES_prepend_qemux86 = "virtualmachine:"
-OVERRIDES_prepend_qemux86-64 = "virtualmachine:"
-AGL_KCONFIG_FRAGMENTS_append_virtualmachine = " vbox-vmware-sata.cfg"
+OVERRIDES:prepend:qemux86 = "virtualmachine:"
+OVERRIDES:prepend:qemux86-64 = "virtualmachine:"
+AGL_KCONFIG_FRAGMENTS:append_virtualmachine = " vbox-vmware-sata.cfg"
 
 # Extra configuration for using qemux86-64 image on physical hardware
-AGL_KCONFIG_FRAGMENTS_append_qemux86-64 = " \
+AGL_KCONFIG_FRAGMENTS:append:qemux86-64 = " \
     x86-extra-graphic-devices.cfg \
     x86-net-devices.cfg \
     x86-security-tpm.cfg \

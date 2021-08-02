@@ -16,9 +16,9 @@ S = "${WORKDIR}/git"
 B = "${WORKDIR}/build"
 
 DEPENDS = "mbedtls"
-RDEPENDS_${PN} += "mbedtls"
+RDEPENDS:${PN} += "mbedtls"
 
-do_configure_prepend() {
+do_configure:prepend() {
 	cp ${WORKDIR}/Makefile.aws ${S}/src
 	cp ${WORKDIR}/aws_iot_config.h ${S}/include
 	cp ${WORKDIR}/awsiotsdk.pc ${S}
@@ -36,5 +36,5 @@ do_install() {
 
 BBCLASSEXTEND = "native nativesdk"
 
-ALLOW_EMPTY_${PN} = "1"
+ALLOW_EMPTY:${PN} = "1"
 

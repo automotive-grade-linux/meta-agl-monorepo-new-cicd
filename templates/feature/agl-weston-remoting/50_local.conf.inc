@@ -1,1 +1,1 @@
-DISTRO_FEATURES_append = " weston-remoting"
+DISTRO_FEATURES:append = " weston-remoting"

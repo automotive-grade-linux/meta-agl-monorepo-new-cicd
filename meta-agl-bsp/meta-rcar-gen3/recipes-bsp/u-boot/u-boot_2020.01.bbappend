@@ -1,3 +1,3 @@
-FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
 
-SRC_URI_append = " file://remove-redundant-yyloc-global.patch "
+SRC_URI:append = " file://remove-redundant-yyloc-global.patch "

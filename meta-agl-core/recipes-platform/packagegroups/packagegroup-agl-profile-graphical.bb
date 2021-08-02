@@ -9,9 +9,9 @@ PACKAGES = "\
     profile-graphical \
     "
 
-ALLOW_EMPTY_${PN} = "1"
+ALLOW_EMPTY:${PN} = "1"
 
-RDEPENDS_${PN} += "\
+RDEPENDS:${PN} += "\
     packagegroup-agl-image-minimal \
     packagegroup-agl-graphical-weston \
     packagegroup-agl-graphical-multimedia \
@@ -19,4 +19,4 @@ RDEPENDS_${PN} += "\
 # FIXME: Removed due to issues building against weston 5.0.0:
 #    waltham-transmitter
 
-RDEPENDS_profile-graphical = "${PN}"
+RDEPENDS:profile-graphical = "${PN}"

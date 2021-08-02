@@ -14,12 +14,12 @@ inherit packagegroup
 # Disto can override
 VIRTUAL-RUNTIME_rngd ?= "rng-tools"
 
-RDEPENDS_${PN} = "\
+RDEPENDS:${PN} = "\
     packagegroup-core-boot \
     ${VIRTUAL-RUNTIME_rngd} \
 "
 
-RRECOMMENDS_${PN} = "\
+RRECOMMENDS:${PN} = "\
     tzdata \
 "
 

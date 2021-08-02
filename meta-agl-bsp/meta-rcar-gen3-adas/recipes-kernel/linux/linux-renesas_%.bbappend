@@ -1,10 +1,10 @@
-FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
 
-SRC_URI_append_ulcb = " \
+SRC_URI:append:ulcb = " \
     file://0001-arm64-dts-renesas-preserve-drm-HDMI-connector-naming.patch \
 "
 
-KERNEL_DEVICETREE_remove_h3ulcb = " \
+KERNEL_DEVICETREE:remove:h3ulcb = " \
     renesas/r8a7795-es1-h3ulcb-view.dtb \
     renesas/r8a7795-es1-h3ulcb-had-alfa.dtb \
     renesas/r8a7795-es1-h3ulcb-had-beta.dtb \

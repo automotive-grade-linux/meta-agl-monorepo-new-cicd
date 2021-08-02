@@ -1,4 +1,4 @@
-include agl_imx8mqevk-common.inc
+include agl:imx8mqevk-common.inc
 
 # NOTE: currently not using IMX_DEFAULT_BSP = "mainline", as it
 #       requires more changes than this approach of disabling
@@ -9,7 +9,7 @@ include agl_imx8mqevk-common.inc
 MACHINEOVERRIDES .= ":etnaviv"
 
 # Knock out Vivante overrides
-MACHINEOVERRIDES_EXTENDER_mx8mq_forcevariable = ""
+MACHINEOVERRIDES_EXTENDER:mx8mq:forcevariable = ""
 PREFERRED_VERSION_weston_mx8 = "8.0.0"
 PREFERRED_VERSION_wayland-protocols_mx8 = "1.20"
 PREFERRED_VERSION_libdrm_mx8 = "2.4.101"

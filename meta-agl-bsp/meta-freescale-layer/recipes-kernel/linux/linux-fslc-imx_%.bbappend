@@ -1,11 +1,11 @@
-FILESEXTRAPATHS_prepend := "${THISDIR}/${BPN}:${THISDIR}/files:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/${BPN}:${THISDIR}/files:"
 
 require recipes-kernel/linux/linux-yocto-agl.inc
 
 # These patches and the configuration fragment below will need to be
 # revisited if/when using IMX_DEFAULT_BSP = "mainline" with i.MX8
 # becomes more feasible with upstream meta-freescale.
-SRC_URI_append_etnaviv = " \
+SRC_URI:append:etnaviv = " \
     file://0001-enable-mhdp-with-etnaviv.patch \
     file://0002-dts-enable-etnaviv.patch \
 "
@@ -25,7 +25,7 @@ AGL_KCONFIG_FRAGMENTS += "cfg80211.cfg"
 AGL_KCONFIG_FRAGMENTS += "fixups.cfg"
 
 # Support for i.MX8MQ EVKB (e.g. Broadcom wifi)
-AGL_KCONFIG_FRAGMENTS_append_imx8mqevk = " imx8mq-evkb.cfg"
+AGL_KCONFIG_FRAGMENTS:append:imx8mqevk = " imx8mq-evkb.cfg"
 
 # Build in etnaviv if required
-AGL_KCONFIG_FRAGMENTS_append_etnaviv = " etnaviv.cfg"
+AGL_KCONFIG_FRAGMENTS:append:etnaviv = " etnaviv.cfg"

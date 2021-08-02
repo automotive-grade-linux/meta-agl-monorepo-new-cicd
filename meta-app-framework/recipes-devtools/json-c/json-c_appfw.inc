@@ -1,1 +1,1 @@
-EXTRA_OECONF_append = " --enable-threading"
+EXTRA_OECONF:append = " --enable-threading"

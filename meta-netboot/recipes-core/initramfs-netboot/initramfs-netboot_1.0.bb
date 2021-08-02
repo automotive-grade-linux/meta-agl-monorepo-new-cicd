@@ -5,7 +5,7 @@ SRC_URI = "file://init.sh"
 
 S = "${WORKDIR}"
 
-RDEPENDS_${PN} += "nbd-client"
+RDEPENDS:${PN} += "nbd-client"
 
 do_install() {
 	install -dm 0755 ${D}/etc
@@ -17,5 +17,5 @@ do_install() {
 
 inherit allarch
 
-FILES_${PN} += " /dev /etc/initrd-release /sbin/init "
+FILES:${PN} += " /dev /etc/initrd-release /sbin/init "
 

@@ -5,7 +5,7 @@ do_configure() function to your bbappend, using machine (e.g. h3ulcb)
 overrides (i.e. use the MACHINE name where "machine" is used below):
 
 '''
-do_configure_machine() {
+do_configure:machine() {
     echo repaint-window=34 >> ${WORKDIR}/core.cfg
 
     echo transition-duration=300 >> ${WORKDIR}/ivishell.cfg
@@ -14,17 +14,17 @@ do_configure_machine() {
 '''
 or:
 '''
-do_configure_machine() {
+do_configure:machine() {
     sed -i -e 's/drm-backend/fbdev-backend/' ${WORKDIR}/core.cfg
 }
 '''
 
 To add new non-display sections, just list them in SRC_URI and WESTON_FRAGMENTS:
 '''
-FILESEXTRAPATHS_prepend_machine := "${THISDIR}/${PN}:"
+FILESEXTRAPATHS:prepend:machine := "${THISDIR}/${PN}:"
 
-SRC_URI_append_machine = " file://foo.cfg"
-WESTON_FRAGMENTS_append_machine = " foo"
+SRC_URI:append:machine = " file://foo.cfg"
+WESTON_FRAGMENTS:append:machine = " foo"
 
 '''
 
@@ -33,7 +33,7 @@ HDMI-1-A connected screen that needs to be rotated 270 degrees to one
 that is rotated 90 degrees, redefine the WESTON_DISPLAYS variable:
 
 '''
-WESTON_DISPLAYS_machine = "hdmi-a-1-90"
+WESTON_DISPLAYS:machine = "hdmi-a-1-90"
 '''
 
 Note that the weston-ini-conf recipe automatically generates a landscape

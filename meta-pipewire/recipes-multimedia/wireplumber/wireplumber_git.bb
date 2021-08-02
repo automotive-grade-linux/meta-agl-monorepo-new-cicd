@@ -35,7 +35,7 @@ PACKAGECONFIG = "\
 
 PACKAGECONFIG[systemd] = "-Dsystemd=enabled -Dsystemd-system-service=true -Dsystemd-user-service=false,-Dsystemd=disabled -Dsystemd-system-service=false -Dsystemd-user-service=false,systemd"
 
-do_configure_prepend() {
+do_configure:prepend() {
     # relax meson version requirement
     # we only need 0.54 when building with -Dsystem-lua=false
     sed "s/meson_version : '>= 0.54.0'/meson_version : '>= 0.51.0'/" ${S}/meson.build > ${S}/tmp.build
@@ -47,8 +47,8 @@ PACKAGES =+ "\
     ${PN}-config \
 "
 
-SYSTEMD_SERVICE_${PN} = "wireplumber.service"
-FILES_${PN} = "\
+SYSTEMD_SERVICE:${PN} = "wireplumber.service"
+FILES:${PN} = "\
     ${bindir}/wireplumber \
     ${bindir}/wpctl \
     ${bindir}/wpexec \
@@ -56,17 +56,17 @@ FILES_${PN} = "\
     ${datadir}/wireplumber/* \
     ${systemd_system_unitdir}/* \
 "
-RPROVIDES_${PN} += "virtual/pipewire-sessionmanager"
-RDEPENDS_${PN} += "virtual/wireplumber-config"
+RPROVIDES:${PN} += "virtual/pipewire-sessionmanager"
+RDEPENDS:${PN} += "virtual/wireplumber-config"
 
-FILES_lib${PN}-${WPAPI} = "\
+FILES:lib${PN}-${WPAPI} = "\
     ${libdir}/libwireplumber-${WPAPI}.so.* \
 "
 
-FILES_${PN}-config += "\
+FILES:${PN}-config += "\
     ${sysconfdir}/wireplumber/* \
 "
-CONFFILES_${PN}-config += "\
+CONFFILES:${PN}-config += "\
     ${sysconfdir}/wireplumber/* \
 "
-RPROVIDES_${PN}-config += "virtual/wireplumber-config"
+RPROVIDES:${PN}-config += "virtual/wireplumber-config"

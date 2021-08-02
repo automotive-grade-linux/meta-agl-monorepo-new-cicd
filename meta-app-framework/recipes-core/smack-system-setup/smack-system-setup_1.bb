@@ -9,9 +9,9 @@ SRC_URI = "\
   file://tmp.mount.conf \
 "
 
-RDEPENDS_${PN}_append_with-lsm-smack = " smack"
+RDEPENDS:${PN}:append:with-lsm-smack = " smack"
 
-do_install_append_with-lsm-smack() {
+do_install:append:with-lsm-smack() {
     # tuning systemd units
     install -Dm0644 ${WORKDIR}/systemd-tmpfiles-setup.service.conf \
                      ${D}${systemd_unitdir}/system/systemd-tmpfiles-setup.service.d/smack.conf
@@ -25,4 +25,4 @@ do_install_append_with-lsm-smack() {
                      ${D}${sysconfdir}/udev/rules.d/55-udev-smack-default.rules
 }
 
-FILES_${PN} += "${systemd_unitdir}"
+FILES:${PN} += "${systemd_unitdir}"

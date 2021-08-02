@@ -13,4 +13,4 @@ S = "${WORKDIR}/git"
 inherit autotools pkgconfig
 
 DEPENDS += "libdrm virtual/kernel wayland"
-RDEPENDS_${PN} += "libdrm"
+RDEPENDS:${PN} += "libdrm"

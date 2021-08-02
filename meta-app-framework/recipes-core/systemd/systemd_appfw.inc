@@ -1,7 +1,7 @@
-FILESEXTRAPATHS_prepend := "${THISDIR}/systemd:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/systemd:"
 
 # Ensures systemd runs with label "System"
-EXTRA_OEMESON_append_with-lsm-smack = " -Dsmack-run-label=System"
+EXTRA_OEMESON:append:with-lsm-smack = " -Dsmack-run-label=System"
 
 ##################################################################################
 # Maintaining trivial, non-upstreamable configuration changes as patches
@@ -34,7 +34,7 @@ patch_systemd() {
 # This comes with the recipe systemd_230/234 of poky (meta/recipes-core/systemd)
 # It should be removed when poky changes.
 ##################################################################################
-do_install_prepend() {
+do_install:prepend() {
 	mv ${WORKDIR}/touchscreen.rules ${WORKDIR}/55-touchscreen.rules || true
 }
 

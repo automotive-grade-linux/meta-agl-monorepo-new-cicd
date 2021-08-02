@@ -18,7 +18,7 @@ PACKAGE_ARCH = "${MACHINE_ARCH}"
 
 do_configure[noexec] = "1"
 do_compile[noexec] = "1"
-do_install_append() {
+do_install:append() {
     config_dir="${D}${sysconfdir}/wireplumber/config.lua.d/"
     dbus_config_dir="${D}${sysconfdir}/dbus-1/system.d/"
 
@@ -35,10 +35,10 @@ do_install_append() {
     install -m 0644 ${WORKDIR}/wireplumber-bluetooth.conf ${dbus_config_dir}
 }
 
-FILES_${PN} += "\
+FILES:${PN} += "\
     ${sysconfdir}/wireplumber/* \
 "
-CONFFILES_${PN} += "\
+CONFFILES:${PN} += "\
     ${sysconfdir}/wireplumber/* \
 "
-RPROVIDES_${PN} += "virtual/wireplumber-config"
+RPROVIDES:${PN} += "virtual/wireplumber-config"

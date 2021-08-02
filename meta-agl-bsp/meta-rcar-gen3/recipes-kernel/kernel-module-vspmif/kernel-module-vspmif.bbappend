@@ -1,2 +1,2 @@
-KERNEL_MODULE_AUTOLOAD_append = " vspm_if"
+KERNEL_MODULE_AUTOLOAD:append = " vspm_if"
 KERNEL_MODULE_PACKAGE_SUFFIX = ""

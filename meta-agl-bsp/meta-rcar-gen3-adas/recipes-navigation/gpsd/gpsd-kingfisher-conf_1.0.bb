@@ -8,9 +8,9 @@ SRC_URI = " \
 
 inherit update-alternatives
 
-RPROVIDES_${PN} += "virtual/gpsd-conf"
+RPROVIDES:${PN} += "virtual/gpsd-conf"
 
-ALTERNATIVE_${PN} = "gpsd-defaults"
+ALTERNATIVE:${PN} = "gpsd-defaults"
 ALTERNATIVE_LINK_NAME[gpsd-defaults] = "${sysconfdir}/default/gpsd"
 ALTERNATIVE_TARGET[gpsd-defaults] = "${sysconfdir}/default/gpsd.kingfisher"
 ALTERNATIVE_PRIORITY[gpsd-defaults] = "20"
@@ -23,5 +23,5 @@ do_install() {
     install -m 0644 ${WORKDIR}/gpsd.kingfisher ${D}/${sysconfdir}/default/gpsd.kingfisher
 }
 
-FILES_${PN} = "${sysconfdir}/default/gpsd.kingfisher"
-CONFFILES_${PN} = "${sysconfdir}/default/gpsd.kingfisher"
+FILES:${PN} = "${sysconfdir}/default/gpsd.kingfisher"
+CONFFILES:${PN} = "${sysconfdir}/default/gpsd.kingfisher"

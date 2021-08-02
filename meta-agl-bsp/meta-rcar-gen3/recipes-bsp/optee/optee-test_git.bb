@@ -34,7 +34,7 @@ CFLAGS += "-Wno-extra -Wno-error=stringop-overflow -Wno-error=array-bounds"
 TARGET_CFLAGS += "-Wno-extra -Wno-error=stringop-overflow -Wno-error=array-bounds"
 
 TARGET_CC_ARCH += "${LDFLAGS}"
-INSANE_SKIP_${PN} = "ldflags"
+INSANE_SKIP:${PN} = "ldflags"
 
 S = "${WORKDIR}/git"
 EXTRA_OEMAKE = "-e MAKEFLAGS="
@@ -52,4 +52,4 @@ do_install () {
     install -D -p -m0444 ${S}/out/ta/*/*.ta ${D}${nonarch_base_libdir}/optee_armtz/
 }
 
-FILES_${PN} += "${nonarch_base_libdir}/optee_armtz/"
+FILES:${PN} += "${nonarch_base_libdir}/optee_armtz/"

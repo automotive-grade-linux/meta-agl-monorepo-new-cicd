@@ -34,7 +34,7 @@ EXTRA_OECMAKE = " \
 "
 
 inherit systemd
-SYSTEMD_SERVICE_${PN} = "security-manager.service"
+SYSTEMD_SERVICE:${PN} = "security-manager.service"
 
 inherit features_check
 REQUIRED_DISTRO_FEATURES += "smack"
@@ -46,8 +46,8 @@ REQUIRED_DISTRO_FEATURES += "smack"
 #
 # Leave it empty to use the upstream Tizen policy.
 SECURITY_MANAGER_POLICY ?= ""
-SRC_URI_append = " ${@' '.join(['file://' + x for x in d.getVar('SECURITY_MANAGER_POLICY', True).split()])}"
-python do_patch_append () {
+SRC_URI:append = " ${@' '.join(['file://' + x for x in d.getVar('SECURITY_MANAGER_POLICY', True).split()])}"
+python do_patch:append () {
     import os
     import shutil
     import glob
@@ -62,22 +62,22 @@ python do_patch_append () {
             shutil.copy(file, s + '/policy')
 }
 
-do_install_append () {
+do_install:append () {
    install -d ${D}/${systemd_unitdir}/system/multi-user.target.wants
    ln -s ../security-manager.service ${D}/${systemd_unitdir}/system/multi-user.target.wants/security-manager.service
    install -d ${D}/${systemd_unitdir}/system/sockets.target.wants
    ln -s ../security-manager.socket ${D}/${systemd_unitdir}/system/sockets.target.wants/security-manager.socket
 }
 
-RDEPENDS_${PN} += "sqlite3 cynara"
-FILES_${PN} += " \
+RDEPENDS:${PN} += "sqlite3 cynara"
+FILES:${PN} += " \
    ${systemd_unitdir} \
    ${TZ_SYS_DB} \
    ${bindir}/.security-manager-setup \
 "
 
 PACKAGES =+ "${PN}-policy"
-FILES_${PN}-policy = " \
+FILES:${PN}-policy = " \
    ${datadir}/${PN} \
    ${bindir}/security-manager-policy-reload \
 "

@@ -20,19 +20,19 @@ EXTRA_OECMAKE += " \
 
 inherit useradd
 USERADD_PACKAGES = "${PN}"
-GROUPADD_PARAM_${PN} = "-r cynagora"
-USERADD_PARAM_${PN} = "\
+GROUPADD_PARAM:${PN} = "-r cynagora"
+USERADD_PARAM:${PN} = "\
 --system --home ${localstatedir}/lib/empty \
 --no-create-home --shell /bin/false \
 --gid cynagora cynagora \
 "
 
-FILES_${PN} += "${systemd_system_unitdir}"
+FILES:${PN} += "${systemd_system_unitdir}"
 
 PACKAGES =+ "${PN}-tools"
-FILES_${PN}-tools += "${bindir}/cynagora-admin ${bindir}/cynagora-agent"
-RDEPENDS_${PN}_append_agl-devel = " ${PN}-tools"
+FILES:${PN}-tools += "${bindir}/cynagora-admin ${bindir}/cynagora-agent"
+RDEPENDS:${PN}:append:agl-devel = " ${PN}-tools"
 
 inherit ptest
-SRC_URI_append = " file://run-ptest"
-RDEPENDS_${PN}-ptest_append = " ${PN}-tools"
+SRC_URI:append = " file://run-ptest"
+RDEPENDS:${PN}-ptest:append = " ${PN}-tools"

@@ -19,8 +19,8 @@ AGL_EXTRA_IMAGE_FSTYPES ?= ""
 
 # important settings imported from poky-agl.conf
 # we do not import 
-DISTRO_FEATURES_append = " systemd smack"
-DISTRO_FEATURES_BACKFILL_CONSIDERED_append = " sysvinit"
+DISTRO_FEATURES:append = " systemd smack"
+DISTRO_FEATURES_BACKFILL_CONSIDERED:append = " sysvinit"
 VIRTUAL-RUNTIME_init_manager = "systemd"
 
 # skip unnecessary in yocto-check-layer - aka FIXME upstream
@@ -28,10 +28,10 @@ BBMASK += "meta-security/recipes-mac/smack/smack-test_1.0.bb"
 BBMASK += "packagegroup-core-security-ptest.bb"
 
 # missing in upstream recipes ... aka FIXME upstream
-BBCLASSEXTEND_pn-libzip = "native nativesdk"
-BBCLASSEXTEND_pn-xmlsec1 = "native nativesdk"
+BBCLASSEXTEND:pn-libzip = "native nativesdk"
+BBCLASSEXTEND:pn-xmlsec1 = "native nativesdk"
 
-DISTRO_FEATURES_append = " appfw smack "
+DISTRO_FEATURES:append = " appfw smack "
 
 EOF
 

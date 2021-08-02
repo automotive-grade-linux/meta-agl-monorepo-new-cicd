@@ -8,7 +8,7 @@ SRC_URI += "file://interbench.c.patch;striplevel=0"
 
 inherit autotools
 
-INSANE_SKIP_${PN} = "ldflags"
+INSANE_SKIP:${PN} = "ldflags"
 
 B = "${S}"
 EXTRA_OEMAKE = "CC='${CC}'"

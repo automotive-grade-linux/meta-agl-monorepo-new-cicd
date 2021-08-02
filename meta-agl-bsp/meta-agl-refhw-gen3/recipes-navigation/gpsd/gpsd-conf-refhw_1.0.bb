@@ -23,7 +23,7 @@ do_install() {
     fi
 }
 
-ALTERNATIVE_${PN} = "gpsd-defaults"
+ALTERNATIVE:${PN} = "gpsd-defaults"
 ALTERNATIVE_LINK_NAME[gpsd-defaults] = "${sysconfdir}/default/gpsd"
 ALTERNATIVE_TARGET[gpsd-defaults] = "${sysconfdir}/default/gpsd.refhw"
 # NOTE: Priority needs to be below default of 10 to avoid overriding the
@@ -31,7 +31,7 @@ ALTERNATIVE_TARGET[gpsd-defaults] = "${sysconfdir}/default/gpsd.refhw"
 #       will tweak things on boot to handle h3ulcb vs refhw.
 ALTERNATIVE_PRIORITY[gpsd-defaults] = "5"
 
-CONFFILES_${PN} = "${sysconfdir}/default/gpsd.refhw"
+CONFFILES:${PN} = "${sysconfdir}/default/gpsd.refhw"
 
 # NOTE: Explicitly not defining RPROVIDES of "virtual/gpsd-conf" to
 #       avoid conflicting with the default configuration and potentially

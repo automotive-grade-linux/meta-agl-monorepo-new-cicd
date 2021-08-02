@@ -25,6 +25,6 @@ do_install() {
     ln -s ../hci-uart-helper.service ${D}${systemd_system_unitdir}/bluetooth.service.wants/
 }
 
-FILES_${PN} += "${systemd_system_unitdir}"
+FILES:${PN} += "${systemd_system_unitdir}"
 
-RDEPENDS_${PN} += "bluez5"
+RDEPENDS:${PN} += "bluez5"

@@ -10,10 +10,10 @@ SRCREV = "1bef31c8bbad27f4914484c5007b2e199fb073d4"
 PV = "${AGLVERSION}"
 S  = "${WORKDIR}/git"
 
-DEPENDS_append = " af-binder libafb-helpers lua"
-RDEPENDS_${PN}_append = " af-binder lua"
+DEPENDS:append = " af-binder libafb-helpers lua"
+RDEPENDS:${PN}:append = " af-binder lua"
 
 inherit cmake
 
-ALLOW_EMPTY_${PN} = "1"
+ALLOW_EMPTY:${PN} = "1"
 

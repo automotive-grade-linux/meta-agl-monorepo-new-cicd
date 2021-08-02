@@ -14,7 +14,7 @@ LIC_FILES_CHKSUM = "file://himenoBMT.c;md5=8e8771ddc01c6d1a795e088e2d6dee78"
 
 DEPENDS = "p7zip-native"
 
-do_configure_append() {
+do_configure:append() {
     7z x -y -o${S} ${WORKDIR}/himenobmt.c.lzh
     cd ${S}
     sed -i -e 's/CC= gcc/#CC= gcc/' Makefile

@@ -29,4 +29,4 @@ def get_workaround_wic_typedeps(d):
     else:
         return ''
 
-IMAGE_TYPEDEP_wic += "${@get_workaround_wic_typedeps(d)}"
+IMAGE_TYPEDEP:wic += "${@get_workaround_wic_typedeps(d)}"

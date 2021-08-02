@@ -1,9 +1,9 @@
-FILESEXTRAPATHS_append := ":${THISDIR}/files"
+FILESEXTRAPATHS:append := ":${THISDIR}/files"
 
-SRC_URI_append_class-nativesdk = " \
+SRC_URI:append:class-nativesdk = " \
     file://environment.d-cmake-agl.sh \
 "
 
-do_install_append_class-nativesdk() {
+do_install:append:class-nativesdk() {
     install -m 644 ${WORKDIR}/environment.d-cmake-agl.sh ${D}${SDKPATHNATIVE}/environment-setup.d/cmake-agl.sh
 }

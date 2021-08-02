@@ -1,4 +1,4 @@
-RDEPENDS_${PN}_append = "\
+RDEPENDS:${PN}:append = "\
 	smack-system-setup \
 	xmlsec1 \
 	cynagora \

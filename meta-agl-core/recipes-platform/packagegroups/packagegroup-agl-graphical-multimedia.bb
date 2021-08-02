@@ -10,7 +10,7 @@ PACKAGES = "\
     packagegroup-agl-graphical-multimedia \
     "
 
-RDEPENDS_${PN} += "\
+RDEPENDS:${PN} += "\
     alsa-utils \
     gstreamer1.0-meta-base \
     "

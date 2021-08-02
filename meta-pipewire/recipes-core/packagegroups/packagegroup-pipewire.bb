@@ -8,7 +8,7 @@ PACKAGES = "\
     packagegroup-pipewire \
     "
 
-RDEPENDS_${PN} += "\
+RDEPENDS:${PN} += "\
     pipewire \
     pipewire-modules-meta \
     pipewire-spa-plugins-meta \

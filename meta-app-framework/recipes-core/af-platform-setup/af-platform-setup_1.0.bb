@@ -13,4 +13,4 @@ do_install() {
 	install -m 0644 ${S}/udev-shared.conf $d
 }
 
-FILES_${PN} = "${systemd_system_unitdir}"
+FILES:${PN} = "${systemd_system_unitdir}"

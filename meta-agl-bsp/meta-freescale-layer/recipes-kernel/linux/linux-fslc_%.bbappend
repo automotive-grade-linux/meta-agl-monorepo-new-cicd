@@ -1,4 +1,4 @@
-FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
 
 require recipes-kernel/linux/linux-yocto-agl.inc
 
@@ -16,7 +16,7 @@ AGL_KCONFIG_FRAGMENTS += "cfg80211.cfg"
 # (lock debugging and userspace firmware loader fallback)
 AGL_KCONFIG_FRAGMENTS += "fixups.cfg"
 
-do_install_append_cubox-i() {
+do_install:append:cubox-i() {
     # Add symlink to work with default Hummingboard 2 u-boot configuration
     ln -sf imx6q-hummingboard2.dtb ${D}/boot/imx6q-hummingboard2-emmc.dtb
 }

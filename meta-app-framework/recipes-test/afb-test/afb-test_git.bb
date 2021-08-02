@@ -10,15 +10,15 @@ SRC_URI = "git://gerrit.automotivelinux.org/gerrit/apps/app-afb-test;protocol=ht
 SRCREV = "${AGL_APP_REVISION}"
 
 DEPENDS += "lua libafb-helpers libappcontroller"
-RDEPENDS_${PN} += "lua bash jq"
-RDEPENDS_${PN}-ptest += "af-binder"
+RDEPENDS:${PN} += "lua bash jq"
+RDEPENDS:${PN}-ptest += "af-binder"
 
 PV = "${AGLVERSION}"
 S  = "${WORKDIR}/git"
 
 inherit cmake aglwgt pkgconfig ptest
 
-do_install_append() {
+do_install:append() {
        install -d ${D}${bindir}
        install -m 775 ${S}/afm-test.target.sh ${D}${bindir}/afm-test
 }

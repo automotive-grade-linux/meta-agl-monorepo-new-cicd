@@ -25,4 +25,4 @@ do_install () {
     install -Dm755 connman_ncurses ${D}${bindir}
 }
 
-FILES_${PN} = "${bindir}/connman_ncurses"
+FILES:${PN} = "${bindir}/connman_ncurses"

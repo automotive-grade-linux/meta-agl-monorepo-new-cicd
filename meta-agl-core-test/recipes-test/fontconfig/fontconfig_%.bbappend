@@ -1,4 +1,4 @@
-do_install_append() {
+do_install:append() {
 	install -m 755 -d ${D}/${datadir}/fontconfig-test
 	install -m 755 ${S}/test/run-test.sh ${D}/${datadir}/fontconfig-test/
 
@@ -12,7 +12,7 @@ do_install_append() {
 
 PACKAGES =+ "fontconfig-test"
 
-DEBIAN_NOAUTONAME_fontconfig-test = "1"
-FILES_fontconfig-test = "${datadir}/fontconfig-test/*"
+DEBIAN_NOAUTONAME:fontconfig-test = "1"
+FILES:fontconfig-test = "${datadir}/fontconfig-test/*"
 
 

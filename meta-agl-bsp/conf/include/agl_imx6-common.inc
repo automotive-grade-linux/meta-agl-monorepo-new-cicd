@@ -1,6 +1,6 @@
 require agl_imx-common.inc
 
-DISTRO_FEATURES_append = " agl-medium-arm-compiler"
+DISTRO_FEATURES:append = " agl-medium-arm-compiler"
 
 # This disables the Freescale/NXP Vivante GPU driver and enables
 # etnaviv support.  This is the default for the i.MX6 platforms in
@@ -9,6 +9,6 @@ DISTRO_FEATURES_append = " agl-medium-arm-compiler"
 IMX_DEFAULT_BSP = "mainline"
 
 # Set CMA size large enough to work with AGL
-UBOOT_EXTLINUX_KERNEL_ARGS_append = " cma=512M"
+UBOOT_EXTLINUX_KERNEL_ARGS:append = " cma=512M"
 
 AGL_DEFAULT_INITRAMFS_FSTYPES := ""

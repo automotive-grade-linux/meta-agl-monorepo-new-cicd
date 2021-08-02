@@ -1,6 +1,6 @@
-FILESEXTRAPATHS_prepend := "${THISDIR}/linux-yocto:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/linux-yocto:"
 
-SRC_URI_append_virtio-all = " \
+SRC_URI:append:virtio-all = " \
     file://virtio-kmeta;type=kmeta;destsuffix=virtio-kmeta \
     file://virtio-kmeta/bsp/virtio/virtio-aarch64-${LINUX_KERNEL_TYPE}.scc \
 "

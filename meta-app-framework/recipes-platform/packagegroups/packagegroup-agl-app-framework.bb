@@ -8,9 +8,9 @@ PACKAGES_${PN} = "\
     packagegroup-agl-app-framework \
     "
 
-ALLOW_EMPTY_${PN} = "1"
+ALLOW_EMPTY:${PN} = "1"
 
-RDEPENDS_${PN} = "\
+RDEPENDS:${PN} = "\
 	af-binder \
 	libafbwsc \
 	af-main \

@@ -1,1 +1,1 @@
-AGL_FEATURES_append = " waltham-remoting"
+AGL_FEATURES:append = " waltham-remoting"

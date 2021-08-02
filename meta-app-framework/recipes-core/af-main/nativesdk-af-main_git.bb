@@ -16,13 +16,12 @@ EXTRA_OECMAKE = "\
 	-Dafm_datadir=${afm_datadir} \
 "
 
-do_install_append() {
+do_install:append() {
     # remove unused .pc file we don't want to package
 	rm -rf ${D}/${libdir}
 }
 
 PACKAGES = "${PN}-tools ${PN}-tools-dbg"
-FILES_${PN}-tools = "${bindir}/wgtpkg-* ${afm_confdir}/*"
-FILES_${PN}-tools_append_agl-sign-wgts = " ${datadir}/afm"
-FILES_${PN}-tools-dbg = "${bindir}/.debug/wgtpkg-*"
-
+FILES:${PN}-tools = "${bindir}/wgtpkg-* ${afm_confdir}/*"
+FILES:${PN}-tools:append:agl-sign-wgts = " ${datadir}/afm"
+FILES:${PN}-tools-dbg = "${bindir}/.debug/wgtpkg-*"

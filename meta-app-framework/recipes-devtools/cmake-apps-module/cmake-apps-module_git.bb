@@ -14,7 +14,7 @@ S  = "${WORKDIR}/git"
 
 inherit cmake
 
-FILES_${PN} += " ${datadir}/*/Modules/CMakeAfbTemplates*"
+FILES:${PN} += " ${datadir}/*/Modules/CMakeAfbTemplates*"
 
 BBCLASSEXTEND = "native nativesdk"
 

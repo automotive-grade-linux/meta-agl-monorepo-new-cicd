@@ -9,16 +9,16 @@
 #
 
 # 'wgtpkg-pack' in af-main-native is required.
-DEPENDS_append = " af-main-native"
+DEPENDS:append = " af-main-native"
 
 # for bindings af-binder is required.
-DEPENDS_append = " af-binder"
+DEPENDS:append = " af-binder"
 
 # for bindings that use the cmake-apps-module
-DEPENDS_append = " cmake-apps-module-native"
+DEPENDS:append = " cmake-apps-module-native"
 
 # for hal bindings genskel is required.
-DEPENDS_append = " af-binder-devtools-native"
+DEPENDS:append = " af-binder-devtools-native"
 
 # Re-enable strip for qmake based projects (default value is "echo")
 OE_QMAKE_STRIP = "${STRIP}"
@@ -47,8 +47,8 @@ AGLWGT_AUTOINSTALL ?= "1"
 # Signature keys
 # These are default keys for development purposes !
 # Change it for production.
-WGTPKG_AUTOSIGN_0_agl-sign-wgts ??= "${WORKDIR}/recipe-sysroot-native/usr/share/afm/keys/developer.key.pem:${WORKDIR}/recipe-sysroot-native/usr/share/afm/certs/developer.cert.pem"
-WGTPKG_AUTOSIGN_1_agl-sign-wgts ??= "${WORKDIR}/recipe-sysroot-native/usr/share/afm/keys/platform.key.pem:${WORKDIR}/recipe-sysroot-native/usr/share/afm/certs/platform.cert.pem"
+WGTPKG_AUTOSIGN_0:agl-sign-wgts ??= "${WORKDIR}/recipe-sysroot-native/usr/share/afm/keys/developer.key.pem:${WORKDIR}/recipe-sysroot-native/usr/share/afm/certs/developer.cert.pem"
+WGTPKG_AUTOSIGN_1:agl-sign-wgts ??= "${WORKDIR}/recipe-sysroot-native/usr/share/afm/keys/platform.key.pem:${WORKDIR}/recipe-sysroot-native/usr/share/afm/certs/platform.cert.pem"
 
 export WGTPKG_AUTOSIGN_0
 export WGTPKG_AUTOSIGN_1
@@ -169,17 +169,17 @@ EOF
 
 PACKAGES += "${PN}-test ${PN}-debug ${PN}-coverage"
 
-FILES_${PN} += " \
+FILES:${PN} += " \
     /usr/AGL/apps/release/*.wgt \
     /usr/AGL/apps/autoinstall \
     /usr/AGL/apps/manualinstall \
     ${sysconfdir}/agl-postinsts/${POST_INSTALL_SCRIPT} \
 "
-FILES_${PN}-test = "/usr/AGL/apps/test/*.wgt"
-FILES_${PN}-debug = "/usr/AGL/apps/debug/*.wgt"
-FILES_${PN}-coverage = "/usr/AGL/apps/coverage/*.wgt"
+FILES:${PN}-test = "/usr/AGL/apps/test/*.wgt"
+FILES:${PN}-debug = "/usr/AGL/apps/debug/*.wgt"
+FILES:${PN}-coverage = "/usr/AGL/apps/coverage/*.wgt"
 
 # Test widgets need the parent widget and the test framework
-RDEPENDS_${PN}-test = "${PN} afb-test"
+RDEPENDS:${PN}-test = "${PN} afb-test"
 
 EXPORT_FUNCTIONS do_configure do_compile do_install

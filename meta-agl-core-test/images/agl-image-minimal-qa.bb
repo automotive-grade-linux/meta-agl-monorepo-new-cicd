@@ -7,6 +7,6 @@ require agl-image-minimal.bb
 
 LICENSE = "MIT"
 
-IMAGE_INSTALL_append = " \
+IMAGE_INSTALL:append = " \
     packagegroup-ivi-common-test \
     "

@@ -13,5 +13,5 @@ S = "${WORKDIR}/git"
 
 inherit meson pkgconfig python3native
 
-FILES_${PN} += "${libdir}/*"
-FILES_${PN} += "${bindir}/*"
+FILES:${PN} += "${libdir}/*"
+FILES:${PN} += "${bindir}/*"

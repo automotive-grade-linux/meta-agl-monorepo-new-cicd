@@ -18,5 +18,5 @@ S = "${WORKDIR}/git"
 
 inherit meson pkgconfig python3native
 
-FILES_${PN} = " ${bindir}/agl-shell-activator \
+FILES:${PN} = " ${bindir}/agl-shell-activator \
                 ${bindir}/agl-activator "
