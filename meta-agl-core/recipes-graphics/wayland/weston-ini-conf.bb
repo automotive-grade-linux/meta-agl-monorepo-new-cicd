@@ -10,6 +10,7 @@ SRC_URI = " \
 	file://hdmi-a-1-180.cfg \
 	file://hdmi-a-1-270.cfg \
 	file://remote-output.cfg \
+	file://transmitter-output.cfg \
 	file://virtual-0.cfg \
 	file://virtual-180.cfg \
 	file://virtual-270.cfg \
