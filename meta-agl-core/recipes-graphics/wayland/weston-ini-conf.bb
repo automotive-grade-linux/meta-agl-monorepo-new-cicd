@@ -10,7 +10,7 @@ SRC_URI = " \
 	file://hdmi-a-1-180.cfg \
 	file://hdmi-a-1-270.cfg \
 	file://remote-output.cfg \
-	file://transmitter-output.cfg \
+	file://transmitter-output.cfg.in \
 	file://virtual-0.cfg \
 	file://virtual-180.cfg \
 	file://virtual-270.cfg \
@@ -30,6 +30,19 @@ WESTON_FRAGMENTS = "core shell ${WESTON_DISPLAYS}"
 
 # On-target weston.ini directory
 weston_ini_dir = "${sysconfdir}/xdg/weston"
+
+# Options for the user to change in local.conf
+# e.g. TRANSMITTER_OUTPUT_MODE = "1080x1488"
+TRANSMITTER_OUTPUT_MODE ??= "640x720@30"
+TRANSMITTER_OUTPUT_HOST ??= "192.168.20.99"
+TRANSMITTER_OUTPUT_PORT ??= "5005"
+
+do_configure() {
+    sed -e "s#mode=.*#mode=${TRANSMITTER_OUTPUT_MODE}#" \
+        -e "s#host=.*#host=${TRANSMITTER_OUTPUT_HOST}#" \
+        -e "s#port=.*#port=${TRANSMITTER_OUTPUT_PORT}#" \
+        ${WORKDIR}/transmitter-output.cfg.in  > ${WORKDIR}/transmitter-output.cfg
+}
 
 do_compile() {
     # Put all of our cfg files together for a default portrait
