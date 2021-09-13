@@ -1,4 +1,4 @@
-include agl:imx8mqevk-common.inc
+include agl_imx8mqevk-common.inc
 
 # NOTE: currently not using IMX_DEFAULT_BSP = "mainline", as it
 #       requires more changes than this approach of disabling
