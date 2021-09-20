@@ -1,8 +1,8 @@
--- Default policy config file --
+-- Policy config file --
 
-default_policy = {}
+policy_config = {}
 
-default_policy.endpoints = {
+policy_config.endpoints = {
   -- [endpoint name] = { endpoint properties }
 
   ["endpoint.multimedia"] = {
@@ -39,12 +39,12 @@ default_policy.endpoints = {
   },
 }
 
-default_policy.policy = {
+policy_config.policy = {
   ["move"] = false,  -- moves session items when metadata target.node changes
   ["follow"] = true, -- moves session items to the default device when it has changed
 
   -- how much to lower the volume of lower priority streams when ducking
-  -- note that this is a linear volume modifier (not cubic as in the mixer)
+  -- note that this is a linear volume modifier (not cubic as in pulseaudio)
   ["duck.level"] = 0.2,
 
   ["roles"] = {
@@ -92,33 +92,31 @@ default_policy.policy = {
   },
 }
 
-function default_policy.enable()
-  -- Session item factories, building blocks for the session management graph
-  -- Do not disable these unless you really know what you are doing
-  load_module("si-node")
-  load_module("si-audio-adapter")
-  load_module("si-standard-link")
-  load_module("si-audio-endpoint")
+-- Session item factories, building blocks for the session management graph
+-- Do not disable these unless you really know what you are doing
+load_module("si-node")
+load_module("si-audio-adapter")
+load_module("si-standard-link")
+load_module("si-audio-endpoint")
 
-  -- API to access default nodes from scripts
-  load_module("default-nodes-api")
+-- API to access default nodes from scripts
+load_module("default-nodes-api")
 
-  -- API to access mixer controls, needed for volume ducking
-  load_module("mixer-api")
+-- API to access mixer controls, needed for volume ducking
+load_module("mixer-api")
 
-  -- Create endpoints statically at startup
-  load_script("static-endpoints.lua", default_policy.endpoints)
+-- Create endpoints statically at startup
+load_script("static-endpoints.lua", policy_config.endpoints)
 
-  -- Create session items for nodes that appear in the graph
-  load_script("create-item.lua")
+-- Create items for nodes that appear in the graph
+load_script("create-item.lua")
 
-  -- Link nodes to each other to make media flow in the graph
-  load_script("policy-node.lua", default_policy.policy)
+-- Link nodes to each other to make media flow in the graph
+load_script("policy-node.lua", policy_config.policy)
 
-  -- Link client nodes with endpoints to make media flow in the graph
-  load_script("policy-endpoint-client.lua", default_policy.policy)
-  load_script("policy-endpoint-client-links.lua", default_policy.policy)
+-- Link client nodes with endpoints to make media flow in the graph
+load_script("policy-endpoint-client.lua", policy_config.policy)
+load_script("policy-endpoint-client-links.lua", policy_config.policy)
 
-  -- Link endpoints with device nodes to make media flow in the graph
-  load_script("policy-endpoint-device.lua", default_policy.policy)
-end
+-- Link endpoints with device nodes to make media flow in the graph
+load_script("policy-endpoint-device.lua", policy_config.policy)
