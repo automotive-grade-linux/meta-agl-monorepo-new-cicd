@@ -1,1 +1,0 @@
-load_access("smack")

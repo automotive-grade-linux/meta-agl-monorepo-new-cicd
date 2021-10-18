@@ -27,7 +27,6 @@ Following is a "tree" look at the layer:
 |-- meta-agl-ic
 |-- meta-agl-ivi
 |-- meta-agl.md
-|-- meta-app-framework
 |-- meta-netboot
 |-- meta-pipewire
 |-- scripts
@@ -47,8 +46,6 @@ in `meta-agl`:
 * `meta-agl-core-test`: recipes supporting qa images (separate layer due to external dependencies)
 * `meta-agl-ic`: Instrument Cluster platform
 * `meta-agl-ivi`: IVI platform
-* `meta-app-framework`: Configuration and recipes supporting the AGL Application
-  Framework.
 * `meta-netboot`: Contains recipes and configuration adjustments to allow network
   boot through network block device (NBD) since network file system (NFS) does not
   support security labels.

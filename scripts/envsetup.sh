@@ -75,7 +75,7 @@ else
 | To support the newest/upcoming features, please use the script aglsetup.sh.  |
  ------------------------------------------------------------------------------
 EOF
-	. $SOURCEDIR/aglsetup.sh -m $1 -b $BUILD_DIR agl-devel agl-netboot agl-appfw-smack agl-demo
+	. $SOURCEDIR/aglsetup.sh -m $1 -b $BUILD_DIR agl-devel agl-netboot agl-demo
 	rc=$?
 	unset SOURCEDIR
 	unset BUILD_DIR

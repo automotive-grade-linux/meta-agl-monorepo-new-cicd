@@ -140,7 +140,6 @@ meta-agl/meta-agl-profile-core/recipes-platform
 |   |-- agl-image-graphical-qt5.bb
 |   `-- agl-image-graphical-qt5.inc
 `-- packagegroups
-    |-- packagegroup-agl-appfw-native-qt5.bb
     |-- packagegroup-agl-demo-qt-examples.bb
     |-- packagegroup-agl-profile-graphical-qt5.bb
     `-- packagegroup-qt5-toolchain-target.bbappend

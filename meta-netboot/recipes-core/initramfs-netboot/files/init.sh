@@ -21,7 +21,6 @@ EOF
 
 # global variables
 
-SMACK=n
 NBD_SERVER=
 NBD_PORT=10809
 NBD_DEV=/dev/nbd0
@@ -109,17 +108,6 @@ check_debug "Debug point 1. Exit to continue initrd script (mount NBD device)."
 
 log_info "NBD parameters: device $NBD_DEV, server $NBD_SERVER:$NBD_PORT"
 
-# check if smack is active (and if so, mount smackfs)
-grep -q smackfs /proc/filesystems && {
-	SMACK=y
-
-	do_mount_fs smackfs /sys/fs/smackfs
-
-	# adjust current label and network label
-	echo System >/proc/self/attr/current
-	echo System >/sys/fs/smackfs/ambient
-}
-
 # start nbd client
 try=5
 while :;do
@@ -165,9 +153,8 @@ fi
 # also use /proc/net/pnp to generate /etc/resolv.conf
 rm -f /etc/resolv.conf
 grep -v bootserver /proc/net/pnp | sed 's/^domain/search/g' >/etc/resolv.conf
-chsmack -A /etc/resolv.conf
 
-# unmount tmp and run to let systemd remount them with correct smack labels (SPEC-2596)
+# unmount tmp and run to let systemd remount them
 log_info "Unmounting /tmp and /run"
 umount /tmp
 umount /run

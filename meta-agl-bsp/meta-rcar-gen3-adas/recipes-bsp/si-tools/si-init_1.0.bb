@@ -21,7 +21,7 @@ do_install() {
     # the Si468x device via i2c
     install -d ${D}${sysconfdir}/udev/rules.d
     cat >${D}${sysconfdir}/udev/rules.d/zz-radio-si.rules <<'EOF'
-KERNEL=="i2c-12", MODE="0660", GROUP="audio", SECLABEL{smack}="*"
+KERNEL=="i2c-12", MODE="0660", GROUP="audio"
 EOF
 }
 
