@@ -1,8 +1,7 @@
-From a7d41cc40357d10cbb84ac463032f4d28af39162 Mon Sep 17 00:00:00 2001
+From 71c2e7bc6ecf872dd3b45480859dce0f2e941b03 Mon Sep 17 00:00:00 2001
 From: Matt Porter <mporter@konsulko.com>
 Date: Wed, 13 Dec 2017 12:49:20 -0500
-Subject: [PATCH] arm64: dts: renesas: preserve drm HDMI connector naming
- on KF
+Subject: [PATCH] arm64: dts: renesas: preserve drm HDMI connector naming on KF
 
 Kingfisher adds encoders on ports 0 and 2 of the R-Car
 display unit. The bare ULCB SK has only an HDMI encoder
@@ -19,6 +18,7 @@ is first.
 Change-Id: Ibbb1975c2383a526a54c257fb7d68d32a042d468
 Signed-off-by: Matt Porter <mporter@konsulko.com>
 Signed-off-by: Ronan Le Martret <ronan.lemartret@iot.bzh>
+Signed-off-by: Harunobu Kurokawa <harunobu.kurokawa.dn@renesas.com>
 ---
  arch/arm64/boot/dts/renesas/r8a77951.dtsi | 10 +++++-----
  arch/arm64/boot/dts/renesas/r8a77960.dtsi | 10 +++++-----
@@ -26,22 +26,10 @@ Signed-off-by: Ronan Le Martret <ronan.lemartret@iot.bzh>
  3 files changed, 15 insertions(+), 15 deletions(-)
 
 diff --git a/arch/arm64/boot/dts/renesas/r8a77951.dtsi b/arch/arm64/boot/dts/renesas/r8a77951.dtsi
-index 655a71157a5f..c8aa7be0e33e 100644
+index 12e78097533e..9ead58e8a7c2 100644
 --- a/arch/arm64/boot/dts/renesas/r8a77951.dtsi
 +++ b/arch/arm64/boot/dts/renesas/r8a77951.dtsi
-@@ -2373,6 +2373,11 @@ vin7csi41: endpoint@3 {
- 						remote-endpoint = <&csi41vin7>;
- 					};
- 				};
-+				port@0 {
-+					reg = <0>;
-+					du_out_rgb: endpoint {
-+					};
-+				};
- 			};
- 		};
- 
-@@ -3955,11 +3960,6 @@ ports {
+@@ -3943,11 +3943,6 @@ ports {
  				#address-cells = <1>;
  				#size-cells = <0>;
  
@@ -53,23 +41,23 @@ index 655a71157a5f..c8aa7be0e33e 100644
  				port@1 {
  					reg = <1>;
  					du_out_hdmi0: endpoint {
+@@ -3966,6 +3961,11 @@ du_out_lvds0: endpoint {
+ 						remote-endpoint = <&lvds0_in>;
+ 					};
+ 				};
++				port@0 {
++					reg = <0>;
++					du_out_rgb: endpoint {
++					};
++				};
+ 			};
+ 		};
+ 
 diff --git a/arch/arm64/boot/dts/renesas/r8a77960.dtsi b/arch/arm64/boot/dts/renesas/r8a77960.dtsi
-index 1b4099f571bd..22ef3d7047fd 100644
+index 66ab48b3a704..a5481dc4a3f1 100644
 --- a/arch/arm64/boot/dts/renesas/r8a77960.dtsi
 +++ b/arch/arm64/boot/dts/renesas/r8a77960.dtsi
-@@ -2279,6 +2279,11 @@ vin7csi40: endpoint@2 {
- 						remote-endpoint = <&csi40vin7>;
- 					};
- 				};
-+				port@0 {
-+					reg = <0>;
-+					du_out_rgb: endpoint {
-+					};
-+				};
- 			};
- 		};
- 
-@@ -3640,11 +3645,6 @@ ports {
+@@ -3628,11 +3628,6 @@ ports {
  				#address-cells = <1>;
  				#size-cells = <0>;
  
@@ -81,23 +69,23 @@ index 1b4099f571bd..22ef3d7047fd 100644
  				port@1 {
  					reg = <1>;
  					du_out_hdmi0: endpoint {
+@@ -3645,6 +3640,11 @@ du_out_lvds0: endpoint {
+ 						remote-endpoint = <&lvds0_in>;
+ 					};
+ 				};
++				port@0 {
++					reg = <0>;
++					du_out_rgb: endpoint {
++					};
++				};
+ 			};
+ 		};
+ 
 diff --git a/arch/arm64/boot/dts/renesas/r8a77961.dtsi b/arch/arm64/boot/dts/renesas/r8a77961.dtsi
-index ef2cb77f3c32..e1555d3673e2 100644
+index ef2cb77f3c32..032ef1ca0633 100644
 --- a/arch/arm64/boot/dts/renesas/r8a77961.dtsi
 +++ b/arch/arm64/boot/dts/renesas/r8a77961.dtsi
-@@ -2257,6 +2257,11 @@ vin7csi40: endpoint@2 {
- 						remote-endpoint = <&csi40vin7>;
- 					};
- 				};
-+				port@0 {
-+					reg = <0>;
-+					du_out_rgb: endpoint {
-+					};
-+				};
- 			};
- 		};
- 
-@@ -3434,11 +3439,6 @@ ports {
+@@ -3434,11 +3434,6 @@ ports {
  				#address-cells = <1>;
  				#size-cells = <0>;
  
@@ -109,6 +97,18 @@ index ef2cb77f3c32..e1555d3673e2 100644
  				port@1 {
  					reg = <1>;
  					du_out_hdmi0: endpoint {
+@@ -3451,6 +3446,11 @@ du_out_lvds0: endpoint {
+ 						remote-endpoint = <&lvds0_in>;
+ 					};
+ 				};
++				port@0 {
++					reg = <0>;
++					du_out_rgb: endpoint {
++					};
++				};
+ 			};
+ 		};
+ 
 -- 
-2.31.1
+2.25.1
 
