@@ -30,7 +30,10 @@ FILES:${PN} = " \
     ${libdir}/agl-compositor/libexec_compositor.so.0.0.0 \
 "
 
-RDEPENDS:${PN} += " ${@bb.utils.contains('AGL_FEATURES', 'waltham-remoting', 'waltham waltham-transmitter-plugin', '', d)}"
+RDEPENDS:${PN} += " \
+    agl-compositor-init \
+    ${@bb.utils.contains('AGL_FEATURES', 'waltham-remoting', 'waltham waltham-transmitter-plugin', '', d)} \
+"
 
 FILES:${PN}-dev += " \
     ${datadir}/agl-compositor/protocols/agl-shell.xml \

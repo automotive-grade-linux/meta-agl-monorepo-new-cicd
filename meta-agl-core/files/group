@@ -84,7 +84,8 @@ vmail::958:
 opensaf::957:
 lldpd::956:
 postdrop::954:
-display::200:
+weston::200:
+wayland::201:
 agl-driver::1001:
 agl-passenger::1002:
 systemd-network::1005:
