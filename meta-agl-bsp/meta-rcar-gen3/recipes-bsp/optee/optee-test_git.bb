@@ -12,7 +12,7 @@ PV = "3.1.0+git${SRCPV}"
 SRCREV = "45218eb59b006ad20cc7610904f291dd85157a43"
 
 SRC_URI = " \
-    git://github.com/OP-TEE/optee_test.git;branch=master;name=master \
+    git://github.com/OP-TEE/optee_test.git;branch=master;name=master;protocol=https \
     file://optee_xtest_fix.diff \
 "
 

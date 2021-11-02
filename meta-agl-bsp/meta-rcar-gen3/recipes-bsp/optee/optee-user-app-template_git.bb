@@ -12,7 +12,7 @@ PV = "0.1+git${SRCPV}"
 SRCREV = "0.1"
 
 SRC_URI = " \
-    git://github.com/iotbzh/optee_user_app_template;branch=master \
+    git://github.com/iotbzh/optee_user_app_template;branch=master;protocol=https \
 "
 
 COMPATIBLE_MACHINE = "(salvator-x|h3ulcb|m3ulcb|m3nulcb|ebisu)"

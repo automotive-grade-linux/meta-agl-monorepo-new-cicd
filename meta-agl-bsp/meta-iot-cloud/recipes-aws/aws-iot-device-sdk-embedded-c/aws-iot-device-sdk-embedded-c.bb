@@ -5,7 +5,7 @@ LICENSE = "Apache-2.0"
 LIC_FILES_CHKSUM = "file://LICENSE.txt;md5=acc7a1bf87c055789657b148939e4b40"
 
 SRC_URI = "\
-    git://github.com/aws/aws-iot-device-sdk-embedded-C.git;protocol=https \
+    git://github.com/aws/aws-iot-device-sdk-embedded-C.git;protocol=https;branch=master \
     file://Makefile.aws \
     file://aws_iot_config.h \
     file://awsiotsdk.pc \

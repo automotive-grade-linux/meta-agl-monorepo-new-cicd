@@ -13,7 +13,7 @@ PV = "3.6.0+git${SRCPV}"
 SRCREV = "292da2fd8db0176e0e96989268c63ef9ab910a6c"
 
 SRC_URI = " \
-    git://github.com/linaro-swg/optee_examples;branch=master;name=master \
+    git://github.com/linaro-swg/optee_examples;branch=master;name=master;protocol=https \
     file://0001-secure_storage-ta-Add-a-missing-include-file.patch \
 "
 

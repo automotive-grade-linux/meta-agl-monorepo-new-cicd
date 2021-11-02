@@ -2,7 +2,7 @@ require security-manager.inc
 
 PV = "1.0.2+git${SRCPV}"
 SRCREV = "860305a595d681d650024ad07b3b0977e1fcb0a6"
-SRC_URI += "git://github.com/Samsung/security-manager.git"
+SRC_URI += "git://github.com/Samsung/security-manager.git;branch=master;protocol=https"
 S = "${WORKDIR}/git"
 
 SRC_URI += " \
