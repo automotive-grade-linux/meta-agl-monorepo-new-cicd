@@ -7,8 +7,6 @@ IMAGE_INSTALL:append = " \
 # Install libdrm-test, including modetest, to images with GUI
 IMAGE_INSTALL:append = "${@bb.utils.contains('DISTRO_FEATURES', 'wayland', ' libdrm-tests', '', d)}"
 
-IMAGE_FEATURES:append = " agl-devel-wgt"
-
 # disable install of debug files in SDK
 # initial value: SDKIMAGE_FEATURES="dev-pkgs dbg-pkgs staticdev-pkgs"
 SDKIMAGE_FEATURES="dev-pkgs"
