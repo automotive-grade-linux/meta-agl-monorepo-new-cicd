@@ -43,12 +43,12 @@ inherit useradd
 
 USERADD_PACKAGES = "${PN}"
 
-FILES_${PN} += "\
+FILES:${PN} += "\
     ${systemd_system_unitdir}/weston.service \
     ${systemd_system_unitdir}/weston.socket \
     /home/weston \
 "
 
-SYSTEMD_SERVICE_${PN} = "weston.service weston.socket"
-USERADD_PARAM_${PN} = "--home /home/weston --shell /bin/sh --user-group -G video,input weston"
-GROUPADD_PARAM_${PN} = "-r wayland"
+SYSTEMD_SERVICE:${PN} = "weston.service weston.socket"
+USERADD_PARAM:${PN} = "--home /home/weston --shell /bin/sh --user-group -G video,input weston"
+GROUPADD_PARAM:${PN} = "-r wayland"
