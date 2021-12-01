@@ -1,0 +1,63 @@
+From 1d39b68d88e967739d6beb3c9be7f4644b5d4077 Mon Sep 17 00:00:00 2001
+From: Ashok Sidipotu <ashok.sidipotu@collabora.com>
+Date: Thu, 2 Dec 2021 16:23:09 +0530
+Subject: [PATCH] Revert "wp-uninstalled: build this script with the meson dirs
+ filled in"
+
+This reverts commit 52aaf96179584292f493c4b329bc2c409e6d3dee.
+---
+ meson.build       | 18 ------------------
+ wp-uninstalled.sh | 11 ++---------
+ 2 files changed, 2 insertions(+), 27 deletions(-)
+
+diff --git a/meson.build b/meson.build
+index 1affbc1..f2ca16c 100644
+--- a/meson.build
++++ b/meson.build
+@@ -120,21 +120,3 @@ subdir('src')
+ if get_option('tests')
+   subdir('tests')
+ endif
+-
+-conf_uninstalled = configuration_data()
+-conf_uninstalled.set('MESON', '')
+-conf_uninstalled.set('MESON_SOURCE_ROOT', meson.project_source_root())
+-conf_uninstalled.set('MESON_BUILD_ROOT', meson.project_build_root())
+-
+-wp_uninstalled = configure_file(
+-  input : 'wp-uninstalled.sh',
+-  output : 'wp-uninstalled.sh.in',
+-  configuration : conf_uninstalled,
+-)
+-
+-wireplumber_uninstalled = custom_target('wp-uninstalled',
+-  output : 'wp-uninstalled.sh',
+-  input : wp_uninstalled,
+-  build_by_default : true,
+-  command : ['cp', '@INPUT@', '@OUTPUT@'],
+-)
+diff --git a/wp-uninstalled.sh b/wp-uninstalled.sh
+index 79e53f2..d6279ff 100755
+--- a/wp-uninstalled.sh
++++ b/wp-uninstalled.sh
+@@ -2,15 +2,8 @@
+ 
+ set -e
+ 
+-# This is unset by meson
+-# shellcheck disable=SC2157
+-if [ -z "@MESON@" ]; then
+-  SOURCEDIR="@MESON_SOURCE_ROOT@"
+-  BUILDDIR="@MESON_BUILD_ROOT@"
+-else
+-  SOURCEDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+-  BUILDDIR=$(find "${SOURCEDIR}" -maxdepth 2 -name build.ninja -printf "%h\n" -quit 2>/dev/null || echo "${SOURCEDIR}/build")
+-fi
++SOURCEDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
++BUILDDIR=${SOURCEDIR}/build
+ CONFIGDIR=config
+ 
+ while getopts ":b:c:" opt; do
+-- 
+2.33.1
+

@@ -14,9 +14,16 @@ DEPENDS = "glib-2.0 glib-2.0-native pipewire lua"
 SRC_URI = "\
     git://gitlab.freedesktop.org/pipewire/wireplumber.git;protocol=https;branch=master \
 "
-SRCREV = "4af7e2bd68c4862bb707b62edf7557df56dad10f"
+# v0.4.5
+SRCREV = "3946457a7942a179c0f61c60de8cb8fc643391dd"
 
-PV = "0.4.0"
+# patches to be able to compile with lower version of meson that is available in AGL.
+SRC_URI += "\
+    file://0001-Revert-wp-uninstalled-build-this-script-with-the-mes.patch \
+    file://0002-Revert-tests-add-pipewire-env-variables-when-running.patch \
+"
+
+PV = "0.4.5"
 S  = "${WORKDIR}/git"
 
 WPAPI="0.4"
@@ -38,7 +45,7 @@ PACKAGECONFIG[systemd] = "-Dsystemd=enabled -Dsystemd-system-service=true -Dsyst
 do_configure:prepend() {
     # relax meson version requirement
     # we only need 0.54 when building with -Dsystem-lua=false
-    sed "s/meson_version : '>= 0.54.0'/meson_version : '>= 0.51.0'/" ${S}/meson.build > ${S}/tmp.build
+    sed "s/meson_version : '>= 0.56.0'/meson_version : '>= 0.53.2'/" ${S}/meson.build > ${S}/tmp.build
     mv -f ${S}/tmp.build ${S}/meson.build
 }
 

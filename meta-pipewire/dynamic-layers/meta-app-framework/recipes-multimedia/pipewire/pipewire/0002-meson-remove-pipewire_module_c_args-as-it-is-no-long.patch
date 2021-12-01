@@ -1,0 +1,26 @@
+From 3b2935ed044e657b515a07e78638b902baa8157a Mon Sep 17 00:00:00 2001
+From: Ashok Sidipotu <ashok.sidipotu@collabora.com>
+Date: Wed, 1 Dec 2021 12:17:52 +0530
+Subject: [PATCH] meson: remove pipewire_module_c_args as it is no longer used.
+
+Upstream-Status: Inappropriate [smack specific]
+
+---
+ src/modules/meson.build | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/src/modules/meson.build b/src/modules/meson.build
+index d1d90bf05..c9f629c08 100644
+--- a/src/modules/meson.build
++++ b/src/modules/meson.build
+@@ -114,7 +114,6 @@ pipewire_module_echo_cancel = shared_library('pipewire-module-echo-cancel',
+ 
+ pipewire_module_access_seclabel = shared_library('pipewire-module-access-seclabel',
+   [ 'module-access-seclabel.c' ],
+-  c_args : pipewire_module_c_args,
+   include_directories : [configinc, spa_inc],
+   install : true,
+   install_dir : modules_install_dir,
+-- 
+2.33.1
+

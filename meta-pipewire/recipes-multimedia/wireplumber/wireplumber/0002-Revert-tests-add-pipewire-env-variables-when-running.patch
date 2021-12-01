@@ -1,0 +1,136 @@
+From 4ea8ddc256df636208479a5b64bf8bdc6e413aca Mon Sep 17 00:00:00 2001
+From: Ashok Sidipotu <ashok.sidipotu@collabora.com>
+Date: Thu, 2 Dec 2021 16:57:54 +0530
+Subject: [PATCH] Revert "tests: add pipewire env variables when running tests,
+ tidy up common_env"
+
+This reverts commit c24db9f3539f9b7ebe9e74c991cc3037f28ea22c.
+---
+ tests/meson.build         | 31 -------------------------------
+ tests/modules/meson.build |  9 ++++++---
+ tests/wp/meson.build      | 10 +++++++---
+ tests/wplua/meson.build   | 15 +++++++++++----
+ 4 files changed, 24 insertions(+), 41 deletions(-)
+
+diff --git a/tests/meson.build b/tests/meson.build
+index 0e06568..9238d5b 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -28,37 +28,6 @@ if valgrind.found()
+     timeout_multiplier: 2)
+ endif
+ 
+-# The common test environment
+-common_test_env = environment({
+-  'HOME': '/invalid',
+-  'XDG_RUNTIME_DIR': '/invalid',
+-  'PIPEWIRE_RUNTIME_DIR': '/tmp',
+-  'XDG_CONFIG_HOME': meson.current_build_dir() / '.config',
+-  'XDG_STATE_HOME': meson.current_build_dir() / '.local' / 'state',
+-  'FILE_MONITOR_DIR': meson.current_build_dir() / '.local' / 'file_monitor',
+-  'WIREPLUMBER_CONFIG_DIR': '/invalid',
+-  'WIREPLUMBER_DATA_DIR': '/invalid',
+-  'WIREPLUMBER_MODULE_DIR': meson.current_build_dir() / '..' / 'modules',
+-  'WIREPLUMBER_DEBUG': '7',
+-})
+-
+-spa_plugindir = spa_dep.get_variable(
+-  pkgconfig: 'plugindir', internal: 'plugindir', default_value: '')
+-pipewire_moduledir = pipewire_dep.get_variable(
+-  pkgconfig: 'moduledir', internal: 'moduledir', default_value: '')
+-pipewire_confdatadir = pipewire_dep.get_variable(
+-  pkgconfig: 'confdatadir', internal: 'confdatadir', default_value: '')
+-
+-if spa_plugindir != ''
+-  common_test_env.set('SPA_PLUGIN_DIR', spa_plugindir)
+-endif
+-if pipewire_moduledir != ''
+-  common_test_env.set('PIPEWIRE_MODULE_DIR', pipewire_moduledir)
+-endif
+-if pipewire_confdatadir != ''
+-  common_test_env.set('PIPEWIRE_CONFIG_DIR', pipewire_confdatadir)
+-endif
+-
+ subdir('wp')
+ subdir('wplua')
+ subdir('modules')
+diff --git a/tests/modules/meson.build b/tests/modules/meson.build
+index ffab80b..2fc46dc 100644
+--- a/tests/modules/meson.build
++++ b/tests/modules/meson.build
+@@ -1,7 +1,10 @@
+ common_deps = [gobject_dep, gio_dep, wp_dep, pipewire_dep]
+-common_env = common_test_env
+-common_env.set('G_TEST_SRCDIR', meson.current_source_dir())
+-common_env.set('G_TEST_BUILDDIR', meson.current_build_dir())
++common_env = environment({
++  'G_TEST_SRCDIR': meson.current_source_dir(),
++  'G_TEST_BUILDDIR': meson.current_build_dir(),
++  'WIREPLUMBER_MODULE_DIR': meson.current_build_dir() / '..' / '..' / 'modules',
++  'WIREPLUMBER_DEBUG': '7',
++})
+ common_args = [
+   '-DG_LOG_USE_STRUCTURED',
+ ]
+diff --git a/tests/wp/meson.build b/tests/wp/meson.build
+index adc9cef..e75640c 100644
+--- a/tests/wp/meson.build
++++ b/tests/wp/meson.build
+@@ -1,7 +1,11 @@
+ common_deps = [gobject_dep, gio_dep, wp_dep, pipewire_dep]
+-common_env = common_test_env
+-common_env.set('G_TEST_SRCDIR', meson.current_source_dir())
+-common_env.set('G_TEST_BUILDDIR', meson.current_build_dir())
++common_env = environment({
++  'G_TEST_SRCDIR': meson.current_source_dir(),
++  'G_TEST_BUILDDIR': meson.current_build_dir(),
++  'XDG_CONFIG_HOME': meson.current_build_dir() / '.config',
++  'WIREPLUMBER_MODULE_DIR': meson.current_build_dir() / '..' / '..' / 'modules',
++  'WIREPLUMBER_DEBUG': '7',
++})
+ common_args = [
+   '-DG_LOG_USE_STRUCTURED',
+ ]
+diff --git a/tests/wplua/meson.build b/tests/wplua/meson.build
+index 128cc30..cd45c1c 100644
+--- a/tests/wplua/meson.build
++++ b/tests/wplua/meson.build
+@@ -1,13 +1,18 @@
+ common_deps = [wplua_dep, pipewire_dep, wp_dep]
+-common_env = common_test_env
+-common_env.set('G_TEST_SRCDIR', meson.current_source_dir())
+-common_env.set('G_TEST_BUILDDIR', meson.current_build_dir())
+-common_env.set('WIREPLUMBER_DATA_DIR', meson.current_source_dir())
++common_env = environment({
++  'G_TEST_SRCDIR': meson.current_source_dir(),
++  'G_TEST_BUILDDIR': meson.current_build_dir(),
++  'WIREPLUMBER_CONFIG_DIR': '/invalid',
++  'WIREPLUMBER_DATA_DIR': meson.current_source_dir(),
++  'WIREPLUMBER_MODULE_DIR': meson.current_build_dir() / '..' / '..' / 'modules',
++  'WIREPLUMBER_DEBUG': '7',
++})
+ 
+ test(
+   'test-wplua',
+   executable('test-wplua', 'wplua.c', dependencies: common_deps),
+   env: common_env,
++  workdir : meson.current_source_dir(),
+ )
+ 
+ script_tester = executable('script-tester',
+@@ -20,10 +25,12 @@ test(
+   script_tester,
+   args: ['pod.lua'],
+   env: common_env,
++  workdir : meson.current_source_dir(),
+ )
+ test(
+   'test-lua-monitor-rules',
+   script_tester,
+   args: ['monitor-rules.lua'],
+   env: common_env,
++  workdir : meson.current_source_dir(),
+ )
+-- 
+2.33.1
+

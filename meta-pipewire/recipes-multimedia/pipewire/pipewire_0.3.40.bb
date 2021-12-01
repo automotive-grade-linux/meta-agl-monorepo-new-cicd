@@ -20,7 +20,8 @@ SECTION = "multimedia"
 
 DEPENDS = "dbus"
 
-SRCREV = "e857856be7b64d562cdcc01c43933218a68b225e"
+# v0.3.40
+SRCREV = "7afd80052b7c49754a13c9ab49c368f95b60e0a7"
 SRC_URI = "git://gitlab.freedesktop.org/pipewire/pipewire.git;branch=master;protocol=https"
 
 S = "${WORKDIR}/git"
@@ -52,6 +53,11 @@ USERADD_PARAM:${PN} = "--system --home / --no-create-home \
 # instance does.
 #
 # manpage generation requires xmltoman, which is not available.
+#
+# Dont build any session managers along with pipewire
+# wireplumber is the session manger used in AGL and it will
+# be build in a different recipe
+#
 EXTRA_OEMESON += " \
     -Daudiotestsrc=enabled \
     -Devl=disabled \
@@ -63,6 +69,7 @@ EXTRA_OEMESON += " \
     -Dvulkan=disabled \
     -Dlibcamera=disabled \
     -Dman=disabled \
+    -Dsession-managers=[] \
 "
 
 PACKAGECONFIG ??= "\
@@ -88,6 +95,7 @@ PACKAGECONFIG[systemd] = "-Dsystemd=enabled -Dsystemd-system-service=enabled ,-D
 PACKAGECONFIG[v4l2] = "-Dv4l2=enabled,-Dv4l2=disabled,udev"
 PACKAGECONFIG[pipewire-alsa] = "-Dpipewire-alsa=enabled,-Dpipewire-alsa=disabled,alsa-lib"
 PACKAGECONFIG[pipewire-jack] = "-Dpipewire-jack=enabled -Dlibjack-path=${libdir}/${PW_MODULE_SUBDIR}/jack,-Dpipewire-jack=disabled,jack,,,jack"
+PACKAGECONFIG[pipewire-v4l2] = "-Dpipewire-v4l2=enabled -Dpipewire-v4l2=${libdir}/${PW_MODULE_SUBDIR}/v4l2,-Dpipewire-v4l2=disabled,v4l2"
 
 PACKAGESPLITFUNCS:prepend = " split_dynamic_packages "
 PACKAGESPLITFUNCS:append = " set_dynamic_metapkg_rdepends "
@@ -206,7 +214,7 @@ PACKAGES =+ "\
     ${PN}-pulse \
     ${PN}-alsa \
     ${PN}-jack \
-    ${PN}-media-session \
+    ${PN}-v4l2 \
     ${PN}-spa-plugins \
     ${PN}-spa-plugins-meta \
     ${PN}-spa-tools \
@@ -268,25 +276,21 @@ FILES:${PN}-alsa = "\
     ${datadir}/alsa/alsa.conf.d/* \
 "
 
+#lib to emulate v4l2 system calls on top of PipeWire
+FILES:${PN}-v4l2 = "\
+    ${libdir}/${PW_MODULE_SUBDIR}/v4l2/libpw-v4l2.so \
+"
+
 # jack drop-in libraries to redirect audio to pipewire
 CONFFILES:${PN}-jack = "${datadir}/pipewire/jack.conf"
 FILES:${PN}-jack = "\
     ${datadir}/pipewire/jack.conf \
     ${libdir}/${PW_MODULE_SUBDIR}/jack/libjack*.so.* \
 "
-
-# Example session manager. Not intended for use in production.
-CONFFILES:${PN}-media-session = "${datadir}/pipewire/media-session.d/*"
-SYSTEMD_SERVICE:${PN}-media-session = "pipewire-media-session.service"
-FILES:${PN}-media-session = " \
-    ${bindir}/pipewire-media-session \
-    ${datadir}/pipewire/media-session.d/* \
-    ${systemd_system_unitdir}/pipewire-media-session.service \
-"
-RPROVIDES:${PN}-media-session = "virtual/pipewire-sessionmanager"
-
 # Dynamic packages (see set_dynamic_metapkg_rdepends).
-FILES:${PN}-spa-plugins = ""
+FILES:${PN}-spa-plugins-bluez5 += " \
+    ${datadir}/${SPA_SUBDIR}/bluez5/bluez-hardware.conf \
+"
 RRECOMMENDS:${PN}-spa-plugins += "${PN}-spa-plugins-meta"
 
 FILES:${PN}-spa-tools = " \
