@@ -19,3 +19,15 @@ This section provides information about the layers used by the AGL Project:
     ```
     $ git clone https://gerrit.automotivelinux.org/gerrit/AGL/meta-agl
     ```
+
+Maintenance
+-----------
+
+All patches must be submitted via the AGL Gerrit instance at
+<https://gerrit.automotivelinux.org>.  See this wiki page for
+details:
+
+<https://wiki.automotivelinux.org/agl-distro/contributing>
+
+Layer maintainers:
+* Jan-Simon Möller <jsmoeller@linuxfoundation.org>

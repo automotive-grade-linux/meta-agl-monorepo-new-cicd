@@ -3,6 +3,19 @@ meta-netboot
 
 This layer contains some recipes and configuration adjustments to allow network boot through NBD (network block device).
 
+Maintenance
+-----------
+
+All patches must be submitted via the AGL Gerrit instance at
+https://gerrit.automotivelinux.org.  See this wiki page for
+details:
+
+https://wiki.automotivelinux.org/agl-distro/contributing
+
+Layer maintainers:
+    Jan-Simon Möller <jsmoeller@linuxfoundation.org>
+
+
 Content and usage
 -----------------
 

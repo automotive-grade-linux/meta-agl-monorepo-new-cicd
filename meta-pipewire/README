@@ -1,3 +1,16 @@
-This is meta-pipewire.
+meta-pipewire
+=============
 
-This layer holds the sound manager 'pipewire' and 'wireplumber'.
+This layer holds the sound manager 'pipewire' and session manager 'wireplumber'.
+
+Maintenance
+-----------
+
+All patches must be submitted via the AGL Gerrit instance at
+https://gerrit.automotivelinux.org.  See this wiki page for
+details:
+
+https://wiki.automotivelinux.org/agl-distro/contributing
+
+Layer maintainers:
+    Jan-Simon Möller <jsmoeller@linuxfoundation.org>
