@@ -1,6 +1,7 @@
 FILESEXTRAPATHS:append := ":${THISDIR}/weston"
 
 SRC_URI:append = "\
+    file://0002-Allow-weston-to-start-from-a-systemd-user-session.patch \
     file://0005-correctly-tear-down-drm-backend.patch \
     "
 
