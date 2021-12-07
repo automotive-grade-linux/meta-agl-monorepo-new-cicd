@@ -1,7 +1,7 @@
-From 11b29ce444610a07067a89b38e9e85c2162bbf67 Mon Sep 17 00:00:00 2001
+From edb252e5dae20869081a22e1e18cde4336c7b31c Mon Sep 17 00:00:00 2001
 From: Tim Orling <timothy.t.orling@linux.intel.com>
 Date: Mon, 15 Oct 2018 18:30:42 -0700
-Subject: [PATCH 7/7] [WIP] Initial LAVA support
+Subject: [PATCH] Initial LAVA support
 
 Linaro Automated Validation Architecture (LAVA) launches a test suite
 on the target but thereafter only observes stdout.
@@ -20,7 +20,15 @@ It is valid to have a measurement without units, but not units without a measure
 Signed-off-by: Tim Orling <timothy.t.orling@linux.intel.com>
 [updated for ptest-runner 2.3.2]
 Signed-off-by: Scott Murray <scott.murray@konsulko.com>
+
 ---
+ flags.h | 10 ++++++++++
+ main.c  |  9 ++++++++-
+ utils.c | 14 ++++++++++++++
+ utils.h |  2 +-
+ 4 files changed, 33 insertions(+), 2 deletions(-)
+ create mode 100644 flags.h
+
 diff --git a/flags.h b/flags.h
 new file mode 100644
 index 0000000..0dac223
@@ -38,7 +46,7 @@ index 0000000..0dac223
 +
 +#endif				/* __FLAGS_H__ */
 diff --git a/main.c b/main.c
-index 01d60f7..165370f 100644
+index e3a1b69..4807183 100644
 --- a/main.c
 +++ b/main.c
 @@ -38,6 +38,7 @@
@@ -49,7 +57,7 @@ index 01d60f7..165370f 100644
  
  #ifndef DEFAULT_DIRECTORY
  #define DEFAULT_DIRECTORY "/usr/lib"
-@@ -74,8 +75,9 @@ main(int argc, char *argv[])
+@@ -110,8 +111,9 @@ main(int argc, char *argv[])
  	opts.timeout = DEFAULT_TIMEOUT;
  	opts.ptests = NULL;
  	opts.xml_filename = NULL;
@@ -59,8 +67,8 @@ index 01d60f7..165370f 100644
 +	while ((opt = getopt(argc, argv, "d:e:lt:x:Lh")) != -1) {
  		switch (opt) {
  			case 'd':
- 				free(opts.directory);
-@@ -122,6 +124,11 @@ main(int argc, char *argv[])
+ 				free(opts.dirs[0]);
+@@ -136,6 +138,11 @@ main(int argc, char *argv[])
  				opts.xml_filename = strdup(optarg);
  				CHECK_ALLOCATION(opts.xml_filename, 1, 1);
  			break;
@@ -73,7 +81,7 @@ index 01d60f7..165370f 100644
  				print_usage(stdout, argv[0]);
  				exit(1);
 diff --git a/utils.c b/utils.c
-index a8ba190..19f9efa 100644
+index a4e190e..29f40f3 100644
 --- a/utils.c
 +++ b/utils.c
 @@ -47,6 +47,7 @@
@@ -84,8 +92,8 @@ index a8ba190..19f9efa 100644
  
  #define GET_STIME_BUF_SIZE 1024
  #define WAIT_CHILD_POLL_TIMEOUT_MS 200
-@@ -439,6 +440,7 @@ run_ptests(struct ptest_list *head, const struct ptest_options opts,
- 		fprintf(fp, "START: %s\n", progname);
+@@ -442,6 +443,7 @@ run_ptests(struct ptest_list *head, const struct ptest_options opts,
+ 		}
  		PTEST_LIST_ITERATE_START(head, p)
  			char *ptest_dir = strdup(p->run_ptest);
 +			char *ptest = strdup(p->ptest);
@@ -124,10 +132,10 @@ index a8ba190..19f9efa 100644
  		PTEST_LIST_ITERATE_END
  		fprintf(fp, "STOP: %s\n", progname);
 diff --git a/utils.h b/utils.h
-index aa53707..df11e24 100644
+index 39832e6..8137bd6 100644
 --- a/utils.h
 +++ b/utils.h
-@@ -39,9 +39,9 @@ struct ptest_options {
+@@ -41,9 +41,9 @@ struct ptest_options {
  	int timeout;
  	char **ptests;
  	char *xml_filename;
