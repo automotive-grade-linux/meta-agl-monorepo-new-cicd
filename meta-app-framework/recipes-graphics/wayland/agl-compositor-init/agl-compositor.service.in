@@ -1,0 +1,28 @@
+#
+# Weston must be built with systemd support, and your weston.ini must load
+# the plugin systemd-notify.so.
+
+[Unit]
+Description=agl-compositor, a Wayland compositor, as a systemd user service
+Documentation=https://docs.automotivelinux.org/en/master/#5_Component_Documentation/1_agl-compositor/
+
+# Activate using a systemd socket
+Requires=agl-compositor.socket
+After=agl-compositor.socket
+
+# Since we are part of the agl session, make sure we are started before
+# it is complete.
+Before=agl-session.target
+
+[Service]
+Type=notify
+ExecStart=/usr/bin/agl-compositor @AGL_COMPOSITOR_ARGS@
+
+TimeoutStartSec=60
+WatchdogSec=20
+
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=agl-session.target
