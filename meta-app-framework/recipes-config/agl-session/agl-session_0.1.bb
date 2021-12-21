@@ -5,6 +5,7 @@ LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/Apache-2.0;md5=89aea4e17d99a7ca
 SRC_URI = "\
     file://agl-session@.service \
     file://agl-session.target \
+    file://50-xdg-data-dirs.sh \
 "
 
 inherit systemd allarch useradd
@@ -30,6 +31,13 @@ do_install() {
 
     install -d ${D}${systemd_user_unitdir}
     install -m 0644 ${WORKDIR}/agl-session.target ${D}${systemd_user_unitdir}
+
+    install -d ${D}${libdir}/systemd/user-environment-generators
+    install -m 0755 ${WORKDIR}/50-xdg-data-dirs.sh ${D}${libdir}/systemd/user-environment-generators/
 }
 
-FILES:${PN} += "${systemd_system_unitdir} ${systemd_user_unitdir}"
+FILES:${PN} += " \
+    ${systemd_system_unitdir} \
+    ${systemd_user_unitdir} \
+    ${libdir}/systemd/user-environment-generators/ \
+"
