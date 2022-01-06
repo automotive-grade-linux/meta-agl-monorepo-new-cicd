@@ -4,7 +4,10 @@ policy_config = {}
 
 policy_config.endpoints = {
   -- [endpoint name] = { endpoint properties }
-
+  ["endpoint.capture"] = {
+    ["media.class"] = "Audio/Source",
+    ["role"] = "Capture",
+  },
   ["endpoint.multimedia"] = {
     ["media.class"] = "Audio/Sink",
     ["role"] = "Multimedia",
@@ -53,6 +56,13 @@ policy_config.policy = {
   ["duck.level"] = 0.2,
 
   ["roles"] = {
+    ["Capture"] = {
+      ["alias"] = { "Multimedia", "Music", "Voice", "Capture" },
+      ["priority"] = 25,
+      ["action.default"] = "cork",
+      ["action.Capture"] = "mix",
+      ["media.class"] = "Audio/Source",
+    },
     ["Multimedia"] = {
       ["alias"] = { "Movie", "Music", "Game" },
       ["priority"] = 25,
