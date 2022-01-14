@@ -3,6 +3,7 @@ FILESEXTRAPATHS:append := ":${THISDIR}/weston"
 SRC_URI:append = "\
     file://0002-Allow-weston-to-start-from-a-systemd-user-session.patch \
     file://0005-correctly-tear-down-drm-backend.patch \
+    file://0001-clients-window-Add-set_app_id-function-change-Waylan.patch \
     "
 
 # Workaround for incorrect upstream definition
