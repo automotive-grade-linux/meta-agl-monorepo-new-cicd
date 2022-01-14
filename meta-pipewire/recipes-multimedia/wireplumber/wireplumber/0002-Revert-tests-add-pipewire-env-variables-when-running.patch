@@ -5,6 +5,8 @@ Subject: [PATCH] Revert "tests: add pipewire env variables when running tests,
  tidy up common_env"
 
 This reverts commit c24db9f3539f9b7ebe9e74c991cc3037f28ea22c.
+
+Upstream-Status: Inappropriate[meson version dependent]
 ---
  tests/meson.build         | 31 -------------------------------
  tests/modules/meson.build |  9 ++++++---

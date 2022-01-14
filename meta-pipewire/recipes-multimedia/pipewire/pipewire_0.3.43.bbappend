@@ -7,7 +7,10 @@ PACKAGECONFIG = "\
 "
 
 SRC_URI += "\
-    file://0001-Revert-meson-declare-spa_dep-and-override_dependency.patch \
+    file://0001-Revert-treewide-meson.build-use-project_-build-sourc.patch \
+    file://0002-Revert-treewide-meson.build-use-dependency-variable-.patch \
+    file://0003-Revert-meson-declare-spa_dep-and-override_dependency.patch \
+    file://0004-Revert-systemd-correctly-prefix-systemd-system-units.patch \
 "
 
 do_install:append() {

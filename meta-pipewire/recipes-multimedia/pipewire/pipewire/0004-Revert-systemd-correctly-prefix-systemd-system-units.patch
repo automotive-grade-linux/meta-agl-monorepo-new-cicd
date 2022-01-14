@@ -1,0 +1,25 @@
+From 85d47ff146f1bda2f94d32b5b392024089c6f564 Mon Sep 17 00:00:00 2001
+From: Ashok Sidipotu <ashok.sidipotu@collabora.com>
+Date: Fri, 14 Jan 2022 20:51:09 +0530
+Subject: [PATCH 4/4] Revert "systemd: correctly prefix systemd system units"
+
+This reverts commit 5054b48c9de655b4b48f7c801cb305d9eb122520.
+
+Upstream-Status: Inappropriate[this systemd configuration is in not relvent to AGL]
+---
+ src/daemon/systemd/system/meson.build | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/daemon/systemd/system/meson.build b/src/daemon/systemd/system/meson.build
+index 7e1c223f8..4d942c1ab 100644
+--- a/src/daemon/systemd/system/meson.build
++++ b/src/daemon/systemd/system/meson.build
+@@ -1,4 +1,4 @@
+-systemd_system_services_dir = systemd.get_variable(pkgconfig: 'systemdsystemunitdir', pkgconfig_define : [ 'rootprefix', prefix])
++systemd_system_services_dir = systemd.get_variable(pkgconfig: 'systemdsystemunitdir', pkgconfig_define : [ 'prefix', prefix])
+ 
+ install_data(sources : 'pipewire.socket',
+              install_dir : systemd_system_services_dir)
+-- 
+2.34.1
+

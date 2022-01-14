@@ -20,8 +20,8 @@ SECTION = "multimedia"
 
 DEPENDS = "dbus"
 
-# v0.3.40
-SRCREV = "7afd80052b7c49754a13c9ab49c368f95b60e0a7"
+# v0.3.43
+SRCREV = "07724b7aefa8a23a016727b53f4e426ecd63d248"
 SRC_URI = "git://gitlab.freedesktop.org/pipewire/pipewire.git;branch=master;protocol=https"
 
 S = "${WORKDIR}/git"

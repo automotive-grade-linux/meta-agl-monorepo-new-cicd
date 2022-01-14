@@ -1,20 +1,22 @@
-From 1d39b68d88e967739d6beb3c9be7f4644b5d4077 Mon Sep 17 00:00:00 2001
+From 78cde5e91ba5d9aa7bfe918ce6bad3b4af30c796 Mon Sep 17 00:00:00 2001
 From: Ashok Sidipotu <ashok.sidipotu@collabora.com>
-Date: Thu, 2 Dec 2021 16:23:09 +0530
+Date: Fri, 14 Jan 2022 20:14:56 +0530
 Subject: [PATCH] Revert "wp-uninstalled: build this script with the meson dirs
  filled in"
 
 This reverts commit 52aaf96179584292f493c4b329bc2c409e6d3dee.
+
+Upstream-Status: Inappropriate[meson version dependent]
 ---
- meson.build       | 18 ------------------
+ meson.build       | 31 -------------------------------
  wp-uninstalled.sh | 11 ++---------
- 2 files changed, 2 insertions(+), 27 deletions(-)
+ 2 files changed, 2 insertions(+), 40 deletions(-)
 
 diff --git a/meson.build b/meson.build
-index 1affbc1..f2ca16c 100644
+index 1f9c9d8..7e02b29 100644
 --- a/meson.build
 +++ b/meson.build
-@@ -120,21 +120,3 @@ subdir('src')
+@@ -120,34 +120,3 @@ subdir('src')
  if get_option('tests')
    subdir('tests')
  endif
@@ -36,6 +38,19 @@ index 1affbc1..f2ca16c 100644
 -  build_by_default : true,
 -  command : ['cp', '@INPUT@', '@OUTPUT@'],
 -)
+-
+-if meson.version().version_compare('>= 0.58')
+-  builddir = meson.project_build_root()
+-  srcdir = meson.project_source_root()
+-
+-  devenv = environment({
+-    'WIREPLUMBER_MODULE_DIR': builddir / 'modules',
+-    'WIREPLUMBER_CONFIG_DIR': srcdir / 'src' / 'config',
+-    'WIREPLUMBER_DATA_DIR': srcdir / 'src',
+-  })
+-
+-  meson.add_devenv(devenv)
+-endif
 diff --git a/wp-uninstalled.sh b/wp-uninstalled.sh
 index 79e53f2..d6279ff 100755
 --- a/wp-uninstalled.sh

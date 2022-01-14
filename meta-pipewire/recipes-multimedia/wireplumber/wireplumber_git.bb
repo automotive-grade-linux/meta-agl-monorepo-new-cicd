@@ -14,8 +14,8 @@ DEPENDS = "glib-2.0 glib-2.0-native pipewire lua"
 SRC_URI = "\
     git://gitlab.freedesktop.org/pipewire/wireplumber.git;protocol=https;branch=master \
 "
-# v0.4.5
-SRCREV = "3946457a7942a179c0f61c60de8cb8fc643391dd"
+# v0.4.7
+SRCREV = "afb177b5e0840d54dc41d02920702c3c9580ce02"
 
 # patches to be able to compile with lower version of meson that is available in AGL.
 SRC_URI += "\
