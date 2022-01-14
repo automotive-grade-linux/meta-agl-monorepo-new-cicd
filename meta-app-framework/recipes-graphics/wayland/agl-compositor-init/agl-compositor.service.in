@@ -16,6 +16,7 @@ Before=agl-session.target
 
 [Service]
 Type=notify
+EnvironmentFile=-/etc/default/agl-compositor
 ExecStart=/usr/bin/agl-compositor @AGL_COMPOSITOR_ARGS@
 
 TimeoutStartSec=60
