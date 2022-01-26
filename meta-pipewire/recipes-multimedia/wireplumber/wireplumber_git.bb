@@ -60,7 +60,7 @@ FILES:${PN} = "\
     ${bindir}/wpctl \
     ${bindir}/wpexec \
     ${libdir}/wireplumber-${WPAPI}/* \
-    ${datadir}/wireplumber/* \
+    ${datadir}/wireplumber/scripts/* \
     ${systemd_system_unitdir}/* \
 "
 RPROVIDES:${PN} += "virtual/pipewire-sessionmanager"
@@ -72,6 +72,11 @@ FILES:lib${PN}-${WPAPI} = "\
 
 FILES:${PN}-config += "\
     ${sysconfdir}/wireplumber/* \
+    ${datadir}/wireplumber/*conf \
+    ${datadir}/wireplumber/common/* \
+    ${datadir}/wireplumber/main.lua.d/* \
+    ${datadir}/wireplumber/bluetooth.lua.d/* \
+    ${datadir}/wireplumber/policy.lua.d/* \
 "
 CONFFILES:${PN}-config += "\
     ${sysconfdir}/wireplumber/* \
