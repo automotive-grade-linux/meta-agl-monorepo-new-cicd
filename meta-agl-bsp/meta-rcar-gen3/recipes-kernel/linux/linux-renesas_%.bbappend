@@ -8,6 +8,7 @@ SRC_URI:append = " \
 "
 
 AGL_KCONFIG_FRAGMENTS += "namespace_fix.cfg"
+AGL_KCONFIG_FRAGMENTS += "Set_GOV_PERFORMANCE.cfg"
 
 # For Xen
 AGL_KCONFIG_FRAGMENTS += " \
