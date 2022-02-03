@@ -1,0 +1,35 @@
+From 2501972518a67b1710998452d164cd077a4370f1 Mon Sep 17 00:00:00 2001
+From: Scott Murray <scott.murray@konsulko.com>
+Date: Thu, 17 Mar 2022 10:44:00 -0400
+Subject: [PATCH] systemd: Do not override rootprefix
+
+Do not override rootprefix with the value of prefix when querying
+systemdsystemunitdir from the systemd pkgconfig, as doing so forces
+the assumption that the system is running with usrmerge, which may
+not be the case.  Instead, rely on the systemd.pc correctly
+representing the desired install locations.
+
+Reworked version of change in:
+
+https://git.automotivelinux.org/AGL/meta-agl/tree/meta-pipewire/recipes-multimedia/pipewire/pipewire/0012-Miscellanous-changes-to-account-for-lower-version-of.patch
+
+Upstream-Status: Pending
+
+Signed-off-by: Scott Murray <scott.murray@konsulko.com>
+---
+ src/daemon/systemd/system/meson.build | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/daemon/systemd/system/meson.build b/src/daemon/systemd/system/meson.build
+index 84ca0b068..6956f2be3 100644
+--- a/src/daemon/systemd/system/meson.build
++++ b/src/daemon/systemd/system/meson.build
+@@ -1,4 +1,4 @@
+-systemd_system_services_dir = systemd.get_variable('systemdsystemunitdir', pkgconfig_define : [ 'rootprefix', prefix])
++systemd_system_services_dir = systemd.get_variable('systemdsystemunitdir')
+ if get_option('systemd-system-unit-dir') != ''
+   systemd_system_services_dir = get_option('systemd-system-unit-dir')
+ endif
+-- 
+2.35.1
+
