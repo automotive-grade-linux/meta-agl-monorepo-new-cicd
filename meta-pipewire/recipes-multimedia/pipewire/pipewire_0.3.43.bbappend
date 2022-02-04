@@ -11,6 +11,7 @@ SRC_URI += "\
     file://0002-Revert-treewide-meson.build-use-dependency-variable-.patch \
     file://0003-Revert-meson-declare-spa_dep-and-override_dependency.patch \
     file://0004-Revert-systemd-correctly-prefix-systemd-system-units.patch \
+    file://0005-pipewiresink-set-a-default-channel-map-if-the-number.patch \
 "
 
 do_install:append() {
