@@ -41,3 +41,7 @@ PSEUDO_IGNORE_PATHS:append:pn-kernel-module-qos = ",${KERNELSRC}"
 PSEUDO_IGNORE_PATHS:append:pn-kernel-module-vsp2driver = ",${KERNELSRC}"
 PSEUDO_IGNORE_PATHS:append:pn-kernel-module-vspmif = ",${KERNELSRC}"
 PSEUDO_IGNORE_PATHS:append:pn-kernel-module-vspm = ",${KERNELSRC}"
+
+# Mask out base-files and systemd bbappends to avoid changing systemd-tmpfiles
+# behavior, see SPEC-4256 for a more involved explanation.
+BBMASK += "meta-rcar-gen3/recipes-core/base-files/ meta-rcar-gen3/recipes-core/systemd/"
