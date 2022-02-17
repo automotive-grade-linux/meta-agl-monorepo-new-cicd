@@ -22,6 +22,7 @@ SRC_URI += "\
     file://0001-Revert-tests-add-pipewire-env-variables-when-running.patch \
     file://0002-Revert-wp-uninstalled-build-this-script-with-the-mes.patch \
     file://0003-spa-json-fix-va_list-APIs-for-different-architecture.patch \
+    file://0004-policy-endpoint-device-Fix-endpoints-not-connected-w.patch \
 "
 
 PV = "0.4.8"
@@ -65,7 +66,6 @@ FILES:${PN} = "\
     ${systemd_system_unitdir}/* \
 "
 RPROVIDES:${PN} += "virtual/pipewire-sessionmanager"
-RDEPENDS:${PN} += "virtual/wireplumber-config"
 
 FILES:lib${PN}-${WPAPI} = "\
     ${libdir}/libwireplumber-${WPAPI}.so.* \
@@ -79,7 +79,11 @@ FILES:${PN}-config += "\
     ${datadir}/wireplumber/bluetooth.lua.d/* \
     ${datadir}/wireplumber/policy.lua.d/* \
 "
-CONFFILES:${PN}-config += "\
-    ${sysconfdir}/wireplumber/* \
-"
-RPROVIDES:${PN}-config += "virtual/wireplumber-config"
+do_install:append() {
+    rm -rf ${D}${sysconfdir}/wireplumber/
+    rm -f ${D}${datadir}/wireplumber/*conf
+    rm -rf ${D}${datadir}/wireplumber/common
+    rm -rf ${D}${datadir}/wireplumber/main.lua.d
+    rm -rf ${D}${datadir}/wireplumber/bluetooth.lua.d
+    rm -rf ${D}${datadir}/wireplumber/policy.lua.d
+}

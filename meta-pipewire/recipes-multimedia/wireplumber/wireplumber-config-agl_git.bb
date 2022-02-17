@@ -8,11 +8,9 @@ LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/MIT;md5=0835ade698e0bcf8506ecda
 SRC_URI = "\
     file://bluetooth.lua.d/ \
     file://host.lua.d/ \
-    file://policy.lua.d \
     file://00-functions.lua \
     file://alsa-suspend.lua \
     file://bluetooth.conf \
-    file://policy.conf \
     file://wireplumber.conf \
     file://wireplumber-bluetooth.conf \
 "
@@ -35,12 +33,6 @@ do_install:append() {
     install -m 0644 ${WORKDIR}/host.lua.d/*.lua ${config_dir}/host.lua.d/
     install -m 0644 ${WORKDIR}/wireplumber.conf ${config_dir}
 
-    # config of the policy instance
-    install -d ${config_dir}/policy.lua.d/
-    ln -s ../00-functions.lua ${config_dir}/policy.lua.d/00-functions.lua
-    install -m 0644 ${WORKDIR}/policy.lua.d/*.lua ${config_dir}/policy.lua.d/
-    install -m 0644 ${WORKDIR}/policy.conf ${config_dir}
-
     # config of the bluetooth instance
     install -d ${config_dir}/bluetooth.lua.d/
     ln -s ../00-functions.lua ${config_dir}/bluetooth.lua.d/00-functions.lua
@@ -57,7 +49,6 @@ do_install:append() {
 
     # enable additional systemd services
     install -d ${systemd_dir}
-    ln -s ${systemd_system_unitdir}/wireplumber@.service ${systemd_dir}/wireplumber@policy.service
     ln -s ${systemd_system_unitdir}/wireplumber@.service ${systemd_dir}/wireplumber@bluetooth.service
 }
 
@@ -68,4 +59,3 @@ FILES:${PN} += "\
 CONFFILES:${PN} += "\
     ${sysconfdir}/* \
 "
-RPROVIDES:${PN} += "virtual/wireplumber-config"
