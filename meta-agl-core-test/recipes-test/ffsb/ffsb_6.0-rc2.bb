@@ -1,6 +1,6 @@
 DESCRIPTION = "Flexible File System Benchmark"
 HOMEPAGE = "https://sourceforge.net/projects/ffsb/"
-LICENSE = "GPLv2"
+LICENSE = "GPL-2.0-only"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=fd5d9bcabd8ed5a54a01ce8d183d592a"
 
 SRC_URI = "http://downloads.sourceforge.net/project/ffsb/ffsb/ffsb-${PV}/ffsb-${PV}.tar.bz2"

@@ -2,7 +2,7 @@ SUMMARY = "The fsfuzzer is a filesystem fuzzer tool that does stress tests of va
 DESCRIPTION = "This tool creates initial (valid) filesystem images and then manipulates their binary format and structure for detecting flaws/bugs/design problems in the parsing/handling code for that particular filesystem. The program expects that you have a /media directory. It uses that one for mounting test images in."
 HOMEPAGE = "https://www.ee.oulu.fi/research/ouspg/fsfuzzer"
 
-LICENSE = "GPLv2"
+LICENSE = "GPL-2.0-only"
 LIC_FILES_CHKSUM = "file://COPYING;md5=94d55d512a9ba36caa9b7df079bae19f"
 
 SRC_URI = "http://people.redhat.com/sgrubb/files/fsfuzzer-${PV}.tar.gz \

@@ -1,6 +1,6 @@
 DESCRIPTION = "OP-TEE TEST"
 
-LICENSE = "GPLv2 & BSD-2-Clause"
+LICENSE = "GPL-2.0-only & BSD-2-Clause"
 LIC_FILES_CHKSUM = "file://${S}/host/LICENSE;md5=b234ee4d69f5fce4486a80fdaf4a4263"
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"

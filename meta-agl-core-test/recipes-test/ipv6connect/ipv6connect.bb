@@ -1,6 +1,6 @@
 SUMMARY = "ipv6connect test"
 HOMEPAGE = "https://chromium.googlesource.com/chromiumos/third_party/autotest/+/0.12.369.B/client/tests/ipv6connect"
-LICENSE = "GPLv2"
+LICENSE = "GPL-2.0-only"
 LIC_FILES_CHKSUM = "file://${S}/${PN}/LICENSE;md5=b234ee4d69f5fce4486a80fdaf4a4263"
 
 SRC_URI = "git://gerrit.automotivelinux.org/gerrit/src/qa-test-misc;protocol=https;branch=${AGL_BRANCH}"

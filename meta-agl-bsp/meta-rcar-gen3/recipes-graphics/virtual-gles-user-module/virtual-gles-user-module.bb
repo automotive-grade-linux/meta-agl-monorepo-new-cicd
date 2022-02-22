@@ -1,6 +1,6 @@
 DESCRIPTION = "Virtual gles-module"
 
-LICENSE="GPLv2"
+LICENSE="GPL-2.0-only"
 
 DEPENDS = "gles-user-module wayland-kms libgbm"
 

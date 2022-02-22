@@ -6,7 +6,7 @@ SECTION = "console/network"
 
 DEPENDS = "dbus ncurses connman json-c"
 
-LICENSE = "GPLv2"
+LICENSE = "GPL-2.0-only"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=8c16666ae6c159876a0ba63099614381"
 
 SRC_URI = "git://gitlab.com/iotbzh/connman-json-client.git;protocol=https;branch=master \

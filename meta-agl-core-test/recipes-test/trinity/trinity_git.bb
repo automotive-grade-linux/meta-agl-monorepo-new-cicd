@@ -1,7 +1,7 @@
 SUMMARY = "a Linux System call fuzz teste."
 DESCRIPTION = "Trinity, a Linux System call fuzz tester."
 HOMEPAGE = "http://codemonkey.org.uk/projects/trinity/"
-LICENSE = "GPLv2"
+LICENSE = "GPL-2.0-only"
 LIC_FILES_CHKSUM = "file://${S}/COPYING;md5=96094d47cfbd2cc45eb46ce0fc423c04"
 
 COMPATIBLE_HOST = "(x86_64|arm|aarch64).*-linux"

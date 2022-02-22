@@ -1,6 +1,6 @@
 DESCRIPTION = "The Linux interactivity benchmark"
 HOMEPAGE = "http://users.tpg.com.au/ckolivas/interbench/"
-LICENSE = "GPLv2"
+LICENSE = "GPL-2.0-only"
 LIC_FILES_CHKSUM = "file://COPYING;md5=393a5ca445f6965873eca0259a17f833"
 SRC_URI = "http://ck.kolivas.org/apps/interbench/interbench-${PV}.tar.bz2"
 

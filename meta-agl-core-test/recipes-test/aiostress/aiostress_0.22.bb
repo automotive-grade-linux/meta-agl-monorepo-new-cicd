@@ -3,7 +3,7 @@ DESCRIPTION = "aio-stress will open or create each file on the command line, and
 aio is done in a rotating loop.  first file1 gets 8 requests, then file2, then file3 etc.\
 As each file finishes writing, it is switched to reads io buffers are aligned in case you want to do raw io"
 HOMEPAGE = "https://oss.oracle.com/~mason/aio-stress/"
-LICENSE = "GPLv2"
+LICENSE = "GPL-2.0-only"
 
 S="${WORKDIR}"
 

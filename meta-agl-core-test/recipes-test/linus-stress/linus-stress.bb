@@ -1,6 +1,6 @@
 SUMMARY = "linus_stress test"
 HOMEPAGE = "https://chromium.googlesource.com/chromiumos/third_party/autotest/+/master/client/tests/linus_stress"
-LICENSE = "GPLv2"
+LICENSE = "GPL-2.0-only"
 LIC_FILES_CHKSUM = "file://${S}/linus_stress/LICENSE;md5=b234ee4d69f5fce4486a80fdaf4a4263"
 
 SRC_URI = "git://gerrit.automotivelinux.org/gerrit/src/qa-test-misc;protocol=https;branch=${AGL_BRANCH}"

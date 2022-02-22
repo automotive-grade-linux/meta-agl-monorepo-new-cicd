@@ -1,5 +1,5 @@
 DESCRIPTION = "Himeno Benchmark"
-LICENSE = "LGPL-2.0"
+LICENSE = "LGPL-2.0-only"
 URL = "http://accc.riken.jp/en/supercom/himenobmt/"
 
 SRC_URI = "http://accc.riken.jp/en/wp-content/uploads/sites/2/2015/07/himenobmt.c.zip"
