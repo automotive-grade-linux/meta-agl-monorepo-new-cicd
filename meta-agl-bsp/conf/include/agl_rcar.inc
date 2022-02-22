@@ -5,7 +5,7 @@ MACHINE_FEATURES:append = " agl-egvirt"
 
 # Enable Gfx Pkgs
 MACHINE_FEATURES:append = " gsx"
-MULTI_PROVIDER_WHITELIST += "virtual/libgl virtual/egl virtual/libgles1 virtual/libgles2"
+BB_MULTI_PROVIDER_ALLOWED += "virtual/libgl virtual/egl virtual/libgles1 virtual/libgles2"
 
 # for Wayland/Weston
 PREFERRED_PROVIDER_virtual/libgles1 = ""
@@ -20,7 +20,7 @@ PREFERRED_RPROVIDER_libomxil = "omx-user-module"
 PREFERRED_PROVIDER_virtual/libomxil = "omx-user-module"
 
 # Add for gstreamer plugins ugly
-LICENSE_FLAGS_WHITELIST = "commercial"
+LICENSE_FLAGS_ACCEPTED = "commercial"
 
 MACHINE_FEATURES:append = " multimedia"
 

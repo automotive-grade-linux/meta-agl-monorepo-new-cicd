@@ -36,7 +36,7 @@ EOF
             cat <<'EOF' >> $LOCALCONF
 PKGR = "${PR}${EXTENDPRAUTO}.${AGL_PR}"
 PKGV = "${@ '${PV}'.replace('AUTOINC','${AGL_PR}')}"
-BB_HASHBASE_WHITELIST:append = " PKGR PKGV"
+BB_BASEHASH_IGNORE_VARS:append = " PKGR PKGV"
 EOF
             ;;
         value:*)
@@ -44,7 +44,7 @@ EOF
             cat <<'EOF' >> $LOCALCONF
 PKGR = "${PR}${EXTENDPRAUTO}.${AGL_PR}"
 PKGV = "${@ '${PV}'.replace('AUTOINC','${AGL_PR}')}"
-BB_HASHBASE_WHITELIST:append = " PKGR PKGV"
+BB_BASEHASH_IGNORE_VARS:append = " PKGR PKGV"
 EOF
             ;;
         none)

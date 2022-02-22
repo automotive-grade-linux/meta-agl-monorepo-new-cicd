@@ -32,7 +32,7 @@ RDEPENDS:${PN} += "\
 
 
 
-# to be added, but needs LICENSE_FLAGS_WHITELIST="non-commercial"
+# to be added, but needs LICENSE_FLAGS_ACCEPTED="non-commercial"
 #    netperf                             # meta-networking
 
 # relocate due to dependencies

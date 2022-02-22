@@ -9,7 +9,7 @@ IMAGE_INSTALL:append = " ${PACKAGES_GFX}"
 
 # Enable Gfx Pkgs
 MACHINE_FEATURES:append = " sgx"
-MULTI_PROVIDER_WHITELIST += "virtual/libgl virtual/egl virtual/libgles1 virtual/libgles2"
+BB_MULTI_PROVIDER_ALLOWED += "virtual/libgl virtual/egl virtual/libgles1 virtual/libgles2"
 
 DEPENDS:remove = "virtual/libgl"
 
