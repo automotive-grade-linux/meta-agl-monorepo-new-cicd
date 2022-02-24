@@ -8,10 +8,17 @@ PACKAGECONFIG = "\
 
 SRC_URI += "\
     file://0001-Revert-treewide-meson.build-use-project_-build-sourc.patch \
-    file://0002-Revert-treewide-meson.build-use-dependency-variable-.patch \
-    file://0003-Revert-meson-declare-spa_dep-and-override_dependency.patch \
-    file://0004-Revert-systemd-correctly-prefix-systemd-system-units.patch \
-    file://0005-pipewiresink-set-a-default-channel-map-if-the-number.patch \
+    file://0002-Revert-treewide-meson.build-use-feature.allowed.patch \
+    file://0003-Revert-treewide-meson.build-use-dependency-variable-.patch \
+    file://0004-Revert-treewide-meson.build-simplify-get_variable-ca.patch \
+    file://0005-Revert-treewide-meson.build-get-SPA_PLUGIN_DIR-from-.patch \
+    file://0006-Revert-meson-declare-spa_dep-and-override_dependency.patch \
+    file://0007-Revert-meson-use-meson-variables-for-the-SMs-uninsta.patch \
+    file://0008-Revert-meson-declare-spa_dep-and-override_dependency.patch \
+    file://0009-Revert-test-add-test-for-the-loop.patch \
+    file://0010-Revert-spa-improve-the-AEC-interface.patch \
+    file://0011-Revert-module-echo-cancel-Move-backends-to-dynamic-l.patch \
+    file://0012-Miscellanous-changes-to-account-for-lower-version-of.patch \
 "
 
 do_install:append() {

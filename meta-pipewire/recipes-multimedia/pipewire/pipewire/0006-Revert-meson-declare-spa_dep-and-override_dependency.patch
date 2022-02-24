@@ -1,11 +1,10 @@
-From 83b7f6457e5dca3ee2145e35f361f1520d24be42 Mon Sep 17 00:00:00 2001
+From 869e53ac9ded351ce6cb47b5ce04ef345c673b48 Mon Sep 17 00:00:00 2001
 From: Ashok Sidipotu <ashok.sidipotu@collabora.com>
-Date: Fri, 14 Jan 2022 18:30:44 +0530
-Subject: [PATCH 3/4] Revert "meson: declare spa_dep and override_dependency()
- for spa and pipewire"
+Date: Thu, 24 Feb 2022 12:16:03 +0530
+Subject: [PATCH 06/12] Revert "meson: declare spa_dep and
+ override_dependency() for spa and pipewire"
 
 This reverts commit 7ab5c35cadc075bcdf44031f1f7d95352cf9a13b.
-
 Upstream-Status: Inappropriate[meson version dependent]
 ---
  meson.build              |  2 +-
@@ -14,14 +13,14 @@ Upstream-Status: Inappropriate[meson version dependent]
  3 files changed, 4 insertions(+), 21 deletions(-)
 
 diff --git a/meson.build b/meson.build
-index 67e697c15..476f722b7 100644
+index 1b87bd004..af60472f8 100644
 --- a/meson.build
 +++ b/meson.build
 @@ -1,7 +1,7 @@
  project('pipewire', ['c' ],
-   version : '0.3.43',
+   version : '0.3.47',
    license : [ 'MIT', 'LGPL-2.1-or-later', 'GPL-2.0-only' ],
--  meson_version : '>= 0.56.0',
+-  meson_version : '>= 0.59.0',
 +  meson_version : '>= 0.49.0',
    default_options : [ 'warning_level=3',
                        'c_std=gnu99',
@@ -79,5 +78,5 @@ index f66ce8746..5cfaba3f9 100644
 -
  subdir('extensions')
 -- 
-2.34.1
+2.35.1
 

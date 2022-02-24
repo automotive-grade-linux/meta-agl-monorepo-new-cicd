@@ -1,7 +1,7 @@
-From cbe87dc5390c91523a9f0bc3eb126fa500c351e2 Mon Sep 17 00:00:00 2001
+From 8eda9c8d98d14dfc411e22c30e81fa32a5cb2f56 Mon Sep 17 00:00:00 2001
 From: Ashok Sidipotu <ashok.sidipotu@collabora.com>
 Date: Fri, 14 Jan 2022 18:23:54 +0530
-Subject: [PATCH 2/4] Revert "treewide: meson.build: use dependency variable
+Subject: [PATCH 03/12] Revert "treewide: meson.build: use dependency variable
  for SPA"
 
 This reverts commit 2b110af36683f13f2b55064dec4ae02c1b407561.
@@ -9,13 +9,13 @@ This reverts commit 2b110af36683f13f2b55064dec4ae02c1b407561.
 Upstream-Status: Inappropriate[meson version dependent]
 ---
  spa/examples/meson.build             |  4 +-
- spa/meson.build                      | 41 +++++++-------
+ spa/meson.build                      | 42 ++++++-------
  spa/plugins/alsa/acp/meson.build     |  4 +-
- spa/plugins/alsa/meson.build         |  7 +--
- spa/plugins/audioconvert/meson.build | 33 ++++++------
+ spa/plugins/alsa/meson.build         |  7 ++-
+ spa/plugins/audioconvert/meson.build | 34 ++++++-----
  spa/plugins/audiomixer/meson.build   | 11 ++--
  spa/plugins/audiotestsrc/meson.build |  3 +-
- spa/plugins/bluez5/meson.build       | 24 ++++-----
+ spa/plugins/bluez5/meson.build       | 24 ++++----
  spa/plugins/control/meson.build      |  3 +-
  spa/plugins/ffmpeg/meson.build       |  3 +-
  spa/plugins/jack/meson.build         |  3 +-
@@ -28,14 +28,14 @@ Upstream-Status: Inappropriate[meson version dependent]
  spa/plugins/volume/meson.build       |  2 +-
  spa/plugins/vulkan/meson.build       |  3 +-
  spa/tests/meson.build                |  5 +-
- spa/tools/meson.build                |  9 ++--
+ spa/tools/meson.build                |  9 ++-
  src/daemon/meson.build               |  8 +--
  src/gst/meson.build                  |  4 +-
- src/modules/meson.build              | 80 ++++++++++++++--------------
- src/modules/spa/meson.build          | 16 +++---
+ src/modules/meson.build              | 88 ++++++++++++++++------------
+ src/modules/spa/meson.build          | 16 ++---
  src/pipewire/meson.build             |  4 +-
- test/meson.build                     | 11 ++--
- 27 files changed, 160 insertions(+), 147 deletions(-)
+ test/meson.build                     | 11 +---
+ 27 files changed, 170 insertions(+), 147 deletions(-)
 
 diff --git a/spa/examples/meson.build b/spa/examples/meson.build
 index 7064a0643..bc04b723c 100644
@@ -53,10 +53,10 @@ index 7064a0643..bc04b723c 100644
        install_dir : installed_tests_execdir / 'examples' / 'spa'
      )
 diff --git a/spa/meson.build b/spa/meson.build
-index 4ad37cdb4..2717b86d6 100644
+index 2404748df..2717b86d6 100644
 --- a/spa/meson.build
 +++ b/spa/meson.build
-@@ -5,28 +5,7 @@
+@@ -5,29 +5,7 @@
  #pthread_lib = dependencies('threads')
  #mathlib = cc.find_library('m', required : false)
  
@@ -64,6 +64,7 @@ index 4ad37cdb4..2717b86d6 100644
 -  include_directories : [
 -    include_directories('include'),
 -  ],
+-  dependencies : [atomic_dep],
 -  version : spaversion,
 -  variables : {
 -    'plugindir' : meson.current_build_dir() / 'plugins',
@@ -86,7 +87,7 @@ index 4ad37cdb4..2717b86d6 100644
  
  subdir('include')
  
-@@ -76,3 +55,21 @@ subdir('tests')
+@@ -77,3 +55,21 @@ subdir('tests')
  if not get_option('examples').disabled()
    subdir('examples')
  endif
@@ -148,7 +149,7 @@ index e3fa6f0d7..402d93486 100644
  )
  
 diff --git a/spa/plugins/audioconvert/meson.build b/spa/plugins/audioconvert/meson.build
-index 4d15271f5..6f4fd968b 100644
+index 89af12671..55e88ccc4 100644
 --- a/spa/plugins/audioconvert/meson.build
 +++ b/spa/plugins/audioconvert/meson.build
 @@ -17,7 +17,7 @@ if have_sse
@@ -265,10 +266,11 @@ index 4d15271f5..6f4fd968b 100644
        c_args : [ simd_cargs ],
        install_rpath : spa_plugindir / 'audioconvert',
        install : installed_tests_enabled,
-@@ -192,8 +192,9 @@ if sndfile_dep.found()
+@@ -191,8 +191,10 @@ if sndfile_dep.found()
+     ]
    executable('spa-resample',
      sparesample_sources,
-     c_args : [ simd_cargs ],
++    c_args : [ simd_cargs ],
 +    include_directories : [spa_inc ],
      link_with : [ test_lib ],
 -    dependencies : [ spa_dep, sndfile_dep, mathlib, audioconvert_dep ],
@@ -340,10 +342,10 @@ index d1b22428d..8011ee883 100644
                            install : true,
                            install_dir : spa_plugindir / 'audiotestsrc')
 diff --git a/spa/plugins/bluez5/meson.build b/spa/plugins/bluez5/meson.build
-index b13e23cf4..eca9c9eb5 100644
+index 7a1e12ec7..ae6d8e8e0 100644
 --- a/spa/plugins/bluez5/meson.build
 +++ b/spa/plugins/bluez5/meson.build
-@@ -56,8 +56,8 @@ endif
+@@ -51,8 +51,8 @@ endif
  
  bluez5lib = shared_library('spa-bluez5',
    bluez5_sources,
@@ -354,7 +356,7 @@ index b13e23cf4..eca9c9eb5 100644
    install : true,
    install_dir : spa_plugindir / 'bluez5')
  
-@@ -65,26 +65,26 @@ codec_args = [ '-DCODEC_PLUGIN' ]
+@@ -60,26 +60,26 @@ codec_args = [ '-DCODEC_PLUGIN' ]
  
  bluez_codec_sbc = shared_library('spa-codec-bluez5-sbc',
    [ 'a2dp-codec-sbc.c', 'a2dp-codecs.c' ],
@@ -387,7 +389,7 @@ index b13e23cf4..eca9c9eb5 100644
      install : true,
      install_dir : spa_plugindir / 'bluez5')
  endif
-@@ -92,9 +92,9 @@ endif
+@@ -87,9 +87,9 @@ endif
  if aptx_dep.found()
    bluez_codec_aptx = shared_library('spa-codec-bluez5-aptx',
      [ 'a2dp-codec-aptx.c', 'a2dp-codecs.c' ],
@@ -399,7 +401,7 @@ index b13e23cf4..eca9c9eb5 100644
      install : true,
      install_dir : spa_plugindir / 'bluez5')
  endif
-@@ -108,9 +108,9 @@ if ldac_dep.found()
+@@ -103,9 +103,9 @@ if ldac_dep.found()
    endif
    bluez_codec_ldac = shared_library('spa-codec-bluez5-ldac',
      [ 'a2dp-codec-ldac.c', 'a2dp-codecs.c' ],
@@ -594,11 +596,11 @@ index b79bca2cf..9683b41ea 100644
    install : true,
    install_dir : spa_plugindir / 'vulkan')
 diff --git a/spa/tests/meson.build b/spa/tests/meson.build
-index 9e2a211e2..146cfe08a 100644
+index 9c78dcbd2..ea00a2cfe 100644
 --- a/spa/tests/meson.build
 +++ b/spa/tests/meson.build
-@@ -20,7 +20,7 @@ if find.found()
-                           configuration: c)
+@@ -21,7 +21,7 @@ if find.found()
+                            })
        executable('spa-include-test-@0@'.format(spa_header.underscorify()),
                   src,
 -                 dependencies: [ spa_dep ],
@@ -606,7 +608,7 @@ index 9e2a211e2..146cfe08a 100644
                   install: false)
      endif
    endforeach
-@@ -35,7 +35,8 @@ benchmark_apps = [
+@@ -36,7 +36,8 @@ benchmark_apps = [
  foreach a : benchmark_apps
    benchmark('spa-' + a,
      executable('spa-' + a, a + '.c',
@@ -639,10 +641,10 @@ index 6f12e9c8f..e4df6c3ac 100644
 +           dependencies : [dl_lib, ],
             install : true)
 diff --git a/src/daemon/meson.build b/src/daemon/meson.build
-index 5e64287a1..104a6dbf3 100644
+index 647d7393d..28cbe4467 100644
 --- a/src/daemon/meson.build
 +++ b/src/daemon/meson.build
-@@ -86,16 +86,16 @@ pipewire_exec = executable('pipewire',
+@@ -87,16 +87,16 @@ pipewire_exec = executable('pipewire',
    pipewire_daemon_sources,
    install: true,
    c_args : pipewire_c_args,
@@ -679,10 +681,10 @@ index 709dc0f1c..b91b33dc9 100644
      install_dir : '@0@/gstreamer-1.0'.format(get_option('libdir')),
  )
 diff --git a/src/modules/meson.build b/src/modules/meson.build
-index 45852f3b9..61a53bd6f 100644
+index 2d3a800d3..ba30275ab 100644
 --- a/src/modules/meson.build
 +++ b/src/modules/meson.build
-@@ -30,20 +30,20 @@ module_sources = [
+@@ -31,20 +31,20 @@ module_sources = [
  ]
  
  pipewire_module_access = shared_library('pipewire-module-access', [ 'module-access.c' ],
@@ -707,7 +709,7 @@ index 45852f3b9..61a53bd6f 100644
  )
  
  simd_cargs = []
-@@ -53,7 +53,7 @@ if have_sse
+@@ -54,7 +54,7 @@ if have_sse
    pffft_sse = static_library('pffft_sse',
      ['module-filter-chain/pffft.c' ],
      c_args : [sse_args, '-O3', '-DHAVE_SSE'],
@@ -716,7 +718,7 @@ index 45852f3b9..61a53bd6f 100644
      install : false
      )
    simd_cargs += ['-DHAVE_SSE']
-@@ -63,7 +63,7 @@ if have_neon
+@@ -64,7 +64,7 @@ if have_neon
    pffft_neon = static_library('pffft_neon',
      ['module-filter-chain/pffft.c' ],
      c_args : [neon_args, '-O3', '-DHAVE_NEON'],
@@ -725,7 +727,7 @@ index 45852f3b9..61a53bd6f 100644
      install : false
      )
    simd_cargs += ['-DHAVE_NEON']
-@@ -73,7 +73,7 @@ endif
+@@ -74,7 +74,7 @@ endif
  pffft_c = static_library('pffft_c',
    ['module-filter-chain/pffft.c' ],
    c_args : [simd_cargs, '-O3', '-DPFFFT_SIMD_DISABLE'],
@@ -734,7 +736,7 @@ index 45852f3b9..61a53bd6f 100644
    install : false
  )
  simd_dependencies += pffft_c
-@@ -99,7 +99,7 @@ endif
+@@ -100,7 +100,7 @@ endif
  
  pipewire_module_filter_chain = shared_library('pipewire-module-filter-chain',
    filter_chain_sources,
@@ -743,7 +745,7 @@ index 45852f3b9..61a53bd6f 100644
    install : true,
    install_dir : modules_install_dir,
    install_rpath: modules_install_dir,
-@@ -120,7 +120,7 @@ endif
+@@ -114,7 +114,7 @@ pipewire_module_echo_cancel_sources = [
  
  pipewire_module_echo_cancel = shared_library('pipewire-module-echo-cancel',
    pipewire_module_echo_cancel_sources,
@@ -752,7 +754,7 @@ index 45852f3b9..61a53bd6f 100644
    install : true,
    install_dir : modules_install_dir,
    install_rpath: modules_install_dir,
-@@ -130,17 +130,17 @@ pipewire_module_echo_cancel = shared_library('pipewire-module-echo-cancel',
+@@ -124,26 +124,36 @@ pipewire_module_echo_cancel = shared_library('pipewire-module-echo-cancel',
  pipewire_module_profiler = shared_library('pipewire-module-profiler',
    [ 'module-profiler.c',
      'module-profiler/protocol-native.c', ],
@@ -765,7 +767,7 @@ index 45852f3b9..61a53bd6f 100644
 +  dependencies : [mathlib, dl_lib, pipewire_dep],
  )
  
- build_module_rt = build_machine.system() == 'linux'
+ build_module_rt = dbus_dep.found()
  if build_module_rt
  pipewire_module_rt = shared_library('pipewire-module-rt', [ 'module-rt.c' ],
 -  include_directories : [configinc],
@@ -773,16 +775,26 @@ index 45852f3b9..61a53bd6f 100644
    install : true,
    install_dir : modules_install_dir,
    install_rpath: modules_install_dir,
-@@ -152,7 +152,7 @@ summary({'rt': build_module_rt}, bool_yn: true, section: 'Optional Modules')
- build_module_rtkit = dbus_dep.found()
- if build_module_rtkit
- pipewire_module_rtkit = shared_library('pipewire-module-rtkit', [ 'module-rtkit.c' ],
--  include_directories : [configinc],
+   dependencies : [dbus_dep, mathlib, dl_lib, pipewire_dep],
+ )
++<<<<<<< HEAD
+ # TODO: This serves as a temporary alias to prevent breaking existing setups
+ #       while `module-rtkit` is being migrated to `module-rt`
+ pipewire_module_rtkit = shared_library('pipewire-module-rtkit', [ 'module-rt.c' ],
+   include_directories : [configinc],
++=======
++endif
++summary({'rt': build_module_rt}, bool_yn: true, section: 'Optional Modules')
++
++build_module_rtkit = dbus_dep.found()
++if build_module_rtkit
++pipewire_module_rtkit = shared_library('pipewire-module-rtkit', [ 'module-rtkit.c' ],
 +  include_directories : [configinc, spa_inc],
++>>>>>>> Revert "treewide: meson.build: use dependency variable for SPA"
    install : true,
    install_dir : modules_install_dir,
    install_rpath: modules_install_dir,
-@@ -164,7 +164,7 @@ summary({'rtkit': build_module_rtkit}, bool_yn: true, section: 'Optional Modules
+@@ -155,7 +165,7 @@ summary({'rt': build_module_rt}, bool_yn: true, section: 'Optional Modules')
  build_module_portal = dbus_dep.found()
  if build_module_portal
  pipewire_module_portal = shared_library('pipewire-module-portal', [ 'module-portal.c' ],
@@ -791,7 +803,7 @@ index 45852f3b9..61a53bd6f 100644
    install : true,
    install_dir : modules_install_dir,
    install_rpath: modules_install_dir,
-@@ -178,20 +178,20 @@ pipewire_module_client_device = shared_library('pipewire-module-client-device',
+@@ -169,20 +179,20 @@ pipewire_module_client_device = shared_library('pipewire-module-client-device',
      'module-client-device/resource-device.c',
      'module-client-device/proxy-device.c',
      'module-client-device/protocol-native.c', ],
@@ -816,7 +828,7 @@ index 45852f3b9..61a53bd6f 100644
  )
  
  pipewire_module_protocol_deps = [mathlib, dl_lib, pipewire_dep]
-@@ -207,7 +207,7 @@ pipewire_module_protocol_native = shared_library('pipewire-module-protocol-nativ
+@@ -198,7 +208,7 @@ pipewire_module_protocol_native = shared_library('pipewire-module-protocol-nativ
      'module-protocol-native/protocol-native.c',
      'module-protocol-native/v0/protocol-native.c',
      'module-protocol-native/connection.c' ],
@@ -825,7 +837,7 @@ index 45852f3b9..61a53bd6f 100644
    install : true,
    install_dir : modules_install_dir,
    install_rpath: modules_install_dir,
-@@ -281,7 +281,7 @@ endif
+@@ -273,7 +283,7 @@ endif
  
  pipewire_module_protocol_pulse = shared_library('pipewire-module-protocol-pulse',
    pipewire_module_protocol_pulse_sources,
@@ -834,7 +846,7 @@ index 45852f3b9..61a53bd6f 100644
    install : true,
    install_dir : modules_install_dir,
    install_rpath: modules_install_dir,
-@@ -293,7 +293,7 @@ if build_module_pulse_tunnel
+@@ -285,7 +295,7 @@ if build_module_pulse_tunnel
    pipewire_module_pulse_tunnel = shared_library('pipewire-module-pulse-tunnel',
    [ 'module-pulse-tunnel.c',
      'module-protocol-pulse/format.c' ],
@@ -843,7 +855,7 @@ index 45852f3b9..61a53bd6f 100644
    install : true,
    install_dir : modules_install_dir,
    install_rpath: modules_install_dir,
-@@ -304,7 +304,7 @@ summary({'pulse-tunnel': build_module_pulse_tunnel}, bool_yn: true, section: 'Op
+@@ -296,7 +306,7 @@ summary({'pulse-tunnel': build_module_pulse_tunnel}, bool_yn: true, section: 'Op
  
  pipewire_module_protocol_simple = shared_library('pipewire-module-protocol-simple',
    [ 'module-protocol-simple.c' ],
@@ -852,7 +864,7 @@ index 45852f3b9..61a53bd6f 100644
    install : true,
    install_dir : modules_install_dir,
    install_rpath: modules_install_dir,
-@@ -313,20 +313,20 @@ pipewire_module_protocol_simple = shared_library('pipewire-module-protocol-simpl
+@@ -305,20 +315,20 @@ pipewire_module_protocol_simple = shared_library('pipewire-module-protocol-simpl
  
  pipewire_module_example_sink = shared_library('pipewire-module-example-sink',
    [ 'module-example-sink.c' ],
@@ -877,7 +889,7 @@ index 45852f3b9..61a53bd6f 100644
  )
  
  pipewire_module_client_node = shared_library('pipewire-module-client-node',
-@@ -338,12 +338,12 @@ pipewire_module_client_node = shared_library('pipewire-module-client-node',
+@@ -330,12 +340,12 @@ pipewire_module_client_node = shared_library('pipewire-module-client-node',
      'module-client-node/v0/transport.c',
      'module-client-node/v0/protocol-native.c',
      'spa/spa-node.c', ],
@@ -892,7 +904,7 @@ index 45852f3b9..61a53bd6f 100644
  )
  
  pipewire_module_metadata = shared_library('pipewire-module-metadata',
-@@ -351,12 +351,12 @@ pipewire_module_metadata = shared_library('pipewire-module-metadata',
+@@ -343,12 +353,12 @@ pipewire_module_metadata = shared_library('pipewire-module-metadata',
      'module-metadata/proxy-metadata.c',
      'module-metadata/metadata.c',
      'module-metadata/protocol-native.c'],
@@ -907,7 +919,7 @@ index 45852f3b9..61a53bd6f 100644
  )
  
  test('pw-test-protocol-native',
-@@ -364,8 +364,8 @@ test('pw-test-protocol-native',
+@@ -356,8 +366,8 @@ test('pw-test-protocol-native',
      [ 'module-protocol-native/test-connection.c',
        'module-protocol-native/connection.c' ],
      c_args : libpipewire_c_args,
@@ -918,7 +930,7 @@ index 45852f3b9..61a53bd6f 100644
      install : installed_tests_enabled,
      install_dir : installed_tests_execdir,
    ),
-@@ -391,7 +391,7 @@ pipewire_module_adapter = shared_library('pipewire-module-adapter',
+@@ -383,7 +393,7 @@ pipewire_module_adapter = shared_library('pipewire-module-adapter',
    [ 'module-adapter.c',
      'module-adapter/adapter.c',
      'spa/spa-node.c' ],
@@ -927,7 +939,7 @@ index 45852f3b9..61a53bd6f 100644
    install : true,
    install_dir : modules_install_dir,
    install_rpath: modules_install_dir,
-@@ -413,11 +413,11 @@ pipewire_module_session_manager = shared_library('pipewire-module-session-manage
+@@ -405,11 +415,11 @@ pipewire_module_session_manager = shared_library('pipewire-module-session-manage
      'module-session-manager/proxy-session-manager.c',
      'module-session-manager/session.c',
    ],
@@ -941,7 +953,7 @@ index 45852f3b9..61a53bd6f 100644
  )
  
  build_module_zeroconf_discover = avahi_dep.found()
-@@ -426,7 +426,7 @@ pipewire_module_zeroconf_discover = shared_library('pipewire-module-zeroconf-dis
+@@ -418,7 +428,7 @@ pipewire_module_zeroconf_discover = shared_library('pipewire-module-zeroconf-dis
    [ 'module-zeroconf-discover.c',
      'module-protocol-pulse/format.c',
      'module-zeroconf-discover/avahi-poll.c' ],
@@ -950,7 +962,7 @@ index 45852f3b9..61a53bd6f 100644
    install : true,
    install_dir : modules_install_dir,
    install_rpath: modules_install_dir,
-@@ -440,7 +440,7 @@ if build_module_raop_discover
+@@ -432,7 +442,7 @@ if build_module_raop_discover
  pipewire_module_raop_discover = shared_library('pipewire-module-raop-discover',
    [ 'module-raop-discover.c',
      'module-zeroconf-discover/avahi-poll.c' ],
@@ -959,7 +971,7 @@ index 45852f3b9..61a53bd6f 100644
    install : true,
    install_dir : modules_install_dir,
    install_rpath: modules_install_dir,
-@@ -454,7 +454,7 @@ if build_module_raop
+@@ -446,7 +456,7 @@ if build_module_raop
  pipewire_module_raop_sink = shared_library('pipewire-module-raop-sink',
    [ 'module-raop-sink.c',
      'module-raop/rtsp-client.c' ],
@@ -968,7 +980,7 @@ index 45852f3b9..61a53bd6f 100644
    install : true,
    install_dir : modules_install_dir,
    install_rpath: modules_install_dir,
-@@ -470,7 +470,7 @@ build_module_roc = roc_lib.found()
+@@ -462,7 +472,7 @@ build_module_roc = roc_lib.found()
  if build_module_roc
  pipewire_module_roc_sink = shared_library('pipewire-module-roc-sink',
    [ 'module-roc-sink.c' ],
@@ -977,7 +989,7 @@ index 45852f3b9..61a53bd6f 100644
    install : true,
    install_dir : modules_install_dir,
    install_rpath: modules_install_dir,
-@@ -479,7 +479,7 @@ pipewire_module_roc_sink = shared_library('pipewire-module-roc-sink',
+@@ -471,7 +481,7 @@ pipewire_module_roc_sink = shared_library('pipewire-module-roc-sink',
  
  pipewire_module_roc_source = shared_library('pipewire-module-roc-source',
    [ 'module-roc-source.c' ],
@@ -1047,7 +1059,7 @@ index 969f50b22..f66ce8746 100644
  
  pipewire_dep = declare_dependency(link_with : libpipewire,
 diff --git a/test/meson.build b/test/meson.build
-index 89f2bc2ec..87e211431 100644
+index eca92eb24..4108ac14b 100644
 --- a/test/meson.build
 +++ b/test/meson.build
 @@ -19,6 +19,7 @@ pwtest_c_args = [
@@ -1098,7 +1110,7 @@ index 89f2bc2ec..87e211431 100644
                 link_with: pwtest_lib)
  )
  
-@@ -80,7 +76,7 @@ test('test-context',
+@@ -88,7 +84,7 @@ test('test-context',
                 'test-context.c',
                 'test-config.c',
                 include_directories: pwtest_inc,
@@ -1107,7 +1119,7 @@ index 89f2bc2ec..87e211431 100644
                 link_with: [pwtest_lib,
                              pipewire_module_protocol_native,
                              pipewire_module_client_node,
-@@ -95,7 +91,7 @@ test('test-support',
+@@ -103,7 +99,7 @@ test('test-support',
                 'test-support.c',
                 'test-logger.c',
                 include_directories: pwtest_inc,
@@ -1116,7 +1128,7 @@ index 89f2bc2ec..87e211431 100644
                 link_with: [pwtest_lib])
  )
  test('test-spa',
-@@ -107,7 +103,6 @@ test('test-spa',
+@@ -115,7 +111,6 @@ test('test-spa',
                 'test-spa-node.c',
                 'test-spa-pod.c',
                 include_directories: pwtest_inc,
@@ -1125,5 +1137,5 @@ index 89f2bc2ec..87e211431 100644
  )
  
 -- 
-2.34.1
+2.35.1
 

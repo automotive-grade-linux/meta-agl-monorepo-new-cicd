@@ -1,0 +1,277 @@
+From 6dec8c7faf57a1bd0162a4e790ed031945588d98 Mon Sep 17 00:00:00 2001
+From: Ashok Sidipotu <ashok.sidipotu@collabora.com>
+Date: Thu, 24 Feb 2022 11:22:34 +0530
+Subject: [PATCH 02/12] Revert "treewide: meson.build: use feature.allowed()"
+
+This reverts commit cc7305351202424a2800425d86ae9c9b72aefa15.
+Upstream-Status: Inappropriate[meson version dependent]
+---
+ man/meson.build                 |  2 +-
+ meson.build                     | 14 +++++++-------
+ spa/meson.build                 |  4 ++--
+ spa/plugins/bluez5/meson.build  | 18 +++++++++---------
+ spa/plugins/meson.build         | 18 +++++++++---------
+ spa/plugins/support/meson.build |  2 +-
+ src/daemon/systemd/meson.build  |  4 ++--
+ src/gst/meson.build             |  2 +-
+ src/meson.build                 |  4 ++--
+ src/tools/meson.build           |  2 +-
+ 10 files changed, 35 insertions(+), 35 deletions(-)
+
+diff --git a/man/meson.build b/man/meson.build
+index 54d1c5eca..8e6e7dbe4 100644
+--- a/man/meson.build
++++ b/man/meson.build
+@@ -19,7 +19,7 @@ manpages = [
+   'pw-profiler.1.rst.in',
+ ]
+ 
+-if get_option('pipewire-jack').allowed()
++if not get_option('pipewire-jack').disabled()
+   manpages += 'pw-jack.1.rst.in'
+ endif
+ 
+diff --git a/meson.build b/meson.build
+index 338192073..9d806198a 100644
+--- a/meson.build
++++ b/meson.build
+@@ -336,7 +336,7 @@ endforeach
+ gst_dp_found = gst_dep.length() > 0
+ summary({'gstreamer-device-provider': gst_dp_found}, bool_yn: true, section: 'Backend')
+ 
+-cdata.set('HAVE_GSTREAMER_DEVICE_PROVIDER', get_option('gstreamer-device-provider').allowed())
++cdata.set('HAVE_GSTREAMER_DEVICE_PROVIDER', not get_option('gstreamer-device-provider').disabled())
+ 
+ webrtc_dep = dependency('webrtc-audio-processing',
+   version : ['>= 0.2', '< 1.0'],
+@@ -382,10 +382,10 @@ cdata.set('HAVE_LILV', lilv_lib.found())
+ 
+ installed_tests_metadir = pipewire_datadir / 'installed-tests' / pipewire_name
+ installed_tests_execdir = pipewire_libexecdir / 'installed-tests' / pipewire_name
+-installed_tests_enabled = get_option('installed_tests').allowed()
++installed_tests_enabled = not get_option('installed_tests').disabled()
+ installed_tests_template = files('template.test.in')
+ 
+-if get_option('tests').allowed()
++if not get_option('tests').disabled()
+   gstack = find_program('gstack', required : false)
+   cdata.set('HAVE_GSTACK', gstack.found())
+ endif
+@@ -394,17 +394,17 @@ subdir('po')
+ subdir('spa')
+ subdir('src')
+ 
+-if get_option('tests').allowed()
++if not get_option('tests').disabled()
+   subdir('test')
+ endif
+ 
+ configure_file(output : 'config.h',
+                configuration : cdata)
+ 
+-if get_option('pipewire-jack').allowed()
++if not get_option('pipewire-jack').disabled()
+   subdir('pipewire-jack')
+ endif
+-if get_option('pipewire-v4l2').allowed()
++if not get_option('pipewire-v4l2').disabled()
+   subdir('pipewire-v4l2')
+ endif
+ 
+@@ -415,7 +415,7 @@ if alsa_dep.found()
+ endif
+ 
+ generate_manpages = false
+-if get_option('man').allowed()
++if not get_option('man').disabled()
+   rst2man = find_program('rst2man', required: false)
+   if not rst2man.found()
+     rst2man = find_program('rst2man.py', required: get_option('man'))
+diff --git a/spa/meson.build b/spa/meson.build
+index 1931d35b1..2404748df 100644
+--- a/spa/meson.build
++++ b/spa/meson.build
+@@ -31,7 +31,7 @@ pkgconfig.generate(filebase : 'lib@0@'.format(spa_name),
+ 
+ subdir('include')
+ 
+-if get_option('spa-plugins').allowed()
++if not get_option('spa-plugins').disabled()
+   udevrulesdir = get_option('udevrulesdir')
+   if udevrulesdir == ''
+     # absolute path, otherwise meson prepends the prefix
+@@ -74,6 +74,6 @@ endif
+ 
+ subdir('tools')
+ subdir('tests')
+-if get_option('examples').allowed()
++if not get_option('examples').disabled()
+   subdir('examples')
+ endif
+diff --git a/spa/plugins/bluez5/meson.build b/spa/plugins/bluez5/meson.build
+index 4567b67dd..7a1e12ec7 100644
+--- a/spa/plugins/bluez5/meson.build
++++ b/spa/plugins/bluez5/meson.build
+@@ -6,12 +6,12 @@ foreach dep: bluez5_deps
+ endforeach
+ 
+ cdata.set('HAVE_BLUEZ_5_BACKEND_NATIVE',
+-          get_option('bluez5-backend-hsp-native').allowed() or
+-          get_option('bluez5-backend-hfp-native').allowed())
+-cdata.set('HAVE_BLUEZ_5_BACKEND_HSP_NATIVE', get_option('bluez5-backend-hsp-native').allowed())
+-cdata.set('HAVE_BLUEZ_5_BACKEND_HFP_NATIVE', get_option('bluez5-backend-hfp-native').allowed())
+-cdata.set('HAVE_BLUEZ_5_BACKEND_OFONO', get_option('bluez5-backend-ofono').allowed())
+-cdata.set('HAVE_BLUEZ_5_BACKEND_HSPHFPD', get_option('bluez5-backend-hsphfpd').allowed())
++          not get_option('bluez5-backend-hsp-native').disabled() or
++          not get_option('bluez5-backend-hfp-native').disabled())
++cdata.set('HAVE_BLUEZ_5_BACKEND_HSP_NATIVE', not get_option('bluez5-backend-hsp-native').disabled())
++cdata.set('HAVE_BLUEZ_5_BACKEND_HFP_NATIVE', not get_option('bluez5-backend-hfp-native').disabled())
++cdata.set('HAVE_BLUEZ_5_BACKEND_OFONO', not get_option('bluez5-backend-ofono').disabled())
++cdata.set('HAVE_BLUEZ_5_BACKEND_HSPHFPD', not get_option('bluez5-backend-hsphfpd').disabled())
+ cdata.set('HAVE_BLUEZ_5_HCI', dependency('bluez', version: '< 6', required: false).found())
+ 
+ bluez5_sources = [
+@@ -34,18 +34,18 @@ bluez5_data = ['bluez-hardware.conf']
+ 
+ install_data(bluez5_data, install_dir : spa_datadir / 'bluez5')
+ 
+-if get_option('bluez5-backend-hsp-native').allowed() or get_option('bluez5-backend-hfp-native').allowed()
++if not get_option('bluez5-backend-hsp-native').disabled() or not get_option('bluez5-backend-hfp-native').disabled()
+   if libusb_dep.found()
+     bluez5_deps += libusb_dep
+   endif
+   bluez5_sources += ['backend-native.c']
+ endif
+ 
+-if get_option('bluez5-backend-ofono').allowed()
++if not get_option('bluez5-backend-ofono').disabled()
+   bluez5_sources += ['backend-ofono.c']
+ endif
+ 
+-if get_option('bluez5-backend-hsphfpd').allowed()
++if not get_option('bluez5-backend-hsphfpd').disabled()
+   bluez5_sources += ['backend-hsphfpd.c']
+ endif
+ 
+diff --git a/spa/plugins/meson.build b/spa/plugins/meson.build
+index fcf007aa9..0b581b29b 100644
+--- a/spa/plugins/meson.build
++++ b/spa/plugins/meson.build
+@@ -1,16 +1,16 @@
+ if alsa_dep.found()
+   subdir('alsa')
+ endif
+-if get_option('audioconvert').allowed()
++if not get_option('audioconvert').disabled()
+   subdir('audioconvert')
+ endif
+-if get_option('audiomixer').allowed()
++if not get_option('audiomixer').disabled()
+   subdir('audiomixer')
+ endif
+-if get_option('control').allowed()
++if not get_option('control').disabled()
+   subdir('control')
+ endif
+-if get_option('audiotestsrc').allowed()
++if not get_option('audiotestsrc').disabled()
+   subdir('audiotestsrc')
+ endif
+ if bluez_dep.found()
+@@ -22,19 +22,19 @@ endif
+ if jack_dep.found()
+   subdir('jack')
+ endif
+-if get_option('support').allowed()
++if not get_option('support').disabled()
+   subdir('support')
+ endif
+-if get_option('test').allowed()
++if not get_option('test').disabled()
+   subdir('test')
+ endif
+-if get_option('videoconvert').allowed()
++if not get_option('videoconvert').disabled()
+   subdir('videoconvert')
+ endif
+-if get_option('videotestsrc').allowed()
++if not get_option('videotestsrc').disabled()
+   subdir('videotestsrc')
+ endif
+-if get_option('volume').allowed()
++if not get_option('volume').disabled()
+   subdir('volume')
+ endif
+ if vulkan_headers
+diff --git a/spa/plugins/support/meson.build b/spa/plugins/support/meson.build
+index 1672d38df..b810b283c 100644
+--- a/spa/plugins/support/meson.build
++++ b/spa/plugins/support/meson.build
+@@ -23,7 +23,7 @@ spa_support_lib = shared_library('spa-support',
+   install_dir : spa_plugindir / 'support')
+ spa_support_dep = declare_dependency(link_with: spa_support_lib)
+ 
+-if get_option('evl').allowed()
++if not get_option('evl').disabled()
+   evl_inc = include_directories('/usr/evl/include')
+   evl_lib = cc.find_library('evl',
+                             dirs: ['/usr/evl/lib/'],
+diff --git a/src/daemon/systemd/meson.build b/src/daemon/systemd/meson.build
+index 482a44c4b..89ad2f6dc 100644
+--- a/src/daemon/systemd/meson.build
++++ b/src/daemon/systemd/meson.build
+@@ -1,6 +1,6 @@
+-if get_option('systemd-system-service').allowed()
++if not get_option('systemd-system-service').disabled()
+   subdir('system')
+ endif
+-if get_option('systemd-user-service').allowed()
++if not get_option('systemd-user-service').disabled()
+   subdir('user')
+ endif
+diff --git a/src/gst/meson.build b/src/gst/meson.build
+index fd552f6cb..709dc0f1c 100644
+--- a/src/gst/meson.build
++++ b/src/gst/meson.build
+@@ -8,7 +8,7 @@ pipewire_gst_sources = [
+   'gstpipewiresrc.c',
+ ]
+ 
+-if get_option('gstreamer-device-provider').allowed()
++if not get_option('gstreamer-device-provider').disabled()
+   pipewire_gst_sources += [ 'gstpipewiredeviceprovider.c' ]
+ endif
+ 
+diff --git a/src/meson.build b/src/meson.build
+index cefc329eb..2fb73fd59 100644
+--- a/src/meson.build
++++ b/src/meson.build
+@@ -3,10 +3,10 @@ subdir('pipewire')
+ subdir('daemon')
+ subdir('tools')
+ subdir('modules')
+-if get_option('examples').allowed()
++if not get_option('examples').disabled()
+   subdir('examples')
+ endif
+-if get_option('tests').allowed()
++if not get_option('tests').disabled()
+   subdir('tests')
+ endif
+ 
+diff --git a/src/tools/meson.build b/src/tools/meson.build
+index 02514c253..038231fcd 100644
+--- a/src/tools/meson.build
++++ b/src/tools/meson.build
+@@ -34,7 +34,7 @@ if ncurses_dep.found()
+ endif
+ 
+ build_pw_cat = false
+-if get_option('pw-cat').allowed() and sndfile_dep.found()
++if not get_option('pw-cat').disabled() and sndfile_dep.found()
+   build_pw_cat = true
+ 
+   pwcat_sources = [
+-- 
+2.35.1
+

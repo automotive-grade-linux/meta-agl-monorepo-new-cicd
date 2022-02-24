@@ -1,8 +1,8 @@
-From 4ea8ddc256df636208479a5b64bf8bdc6e413aca Mon Sep 17 00:00:00 2001
+From 1197f31d2b681d0cf0ca1309d50c8ab8ea80ac5e Mon Sep 17 00:00:00 2001
 From: Ashok Sidipotu <ashok.sidipotu@collabora.com>
 Date: Thu, 2 Dec 2021 16:57:54 +0530
-Subject: [PATCH] Revert "tests: add pipewire env variables when running tests,
- tidy up common_env"
+Subject: [PATCH 1/2] Revert "tests: add pipewire env variables when running
+ tests, tidy up common_env"
 
 This reverts commit c24db9f3539f9b7ebe9e74c991cc3037f28ea22c.
 
@@ -75,7 +75,7 @@ index ffab80b..2fc46dc 100644
    '-DG_LOG_USE_STRUCTURED',
  ]
 diff --git a/tests/wp/meson.build b/tests/wp/meson.build
-index adc9cef..e75640c 100644
+index 178564d..b64ccae 100644
 --- a/tests/wp/meson.build
 +++ b/tests/wp/meson.build
 @@ -1,7 +1,11 @@
@@ -94,7 +94,7 @@ index adc9cef..e75640c 100644
    '-DG_LOG_USE_STRUCTURED',
  ]
 diff --git a/tests/wplua/meson.build b/tests/wplua/meson.build
-index 128cc30..cd45c1c 100644
+index a7ff033..fcf4b51 100644
 --- a/tests/wplua/meson.build
 +++ b/tests/wplua/meson.build
 @@ -1,13 +1,18 @@
@@ -120,19 +120,20 @@ index 128cc30..cd45c1c 100644
  )
  
  script_tester = executable('script-tester',
-@@ -20,10 +25,12 @@ test(
+@@ -20,6 +25,7 @@ test(
    script_tester,
    args: ['pod.lua'],
    env: common_env,
 +  workdir : meson.current_source_dir(),
  )
  test(
-   'test-lua-monitor-rules',
+   'test-lua-json',
+@@ -32,4 +38,5 @@ test(
    script_tester,
    args: ['monitor-rules.lua'],
    env: common_env,
 +  workdir : meson.current_source_dir(),
  )
 -- 
-2.33.1
+2.35.1
 

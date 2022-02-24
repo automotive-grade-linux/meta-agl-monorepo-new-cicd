@@ -1,11 +1,10 @@
-From 78cde5e91ba5d9aa7bfe918ce6bad3b4af30c796 Mon Sep 17 00:00:00 2001
+From 8e959b7894047030edca21a04dd91994e8868a1f Mon Sep 17 00:00:00 2001
 From: Ashok Sidipotu <ashok.sidipotu@collabora.com>
-Date: Fri, 14 Jan 2022 20:14:56 +0530
-Subject: [PATCH] Revert "wp-uninstalled: build this script with the meson dirs
- filled in"
+Date: Fri, 25 Feb 2022 06:05:43 +0530
+Subject: [PATCH 2/2] Revert "wp-uninstalled: build this script with the meson
+ dirs filled in"
 
 This reverts commit 52aaf96179584292f493c4b329bc2c409e6d3dee.
-
 Upstream-Status: Inappropriate[meson version dependent]
 ---
  meson.build       | 31 -------------------------------
@@ -13,7 +12,7 @@ Upstream-Status: Inappropriate[meson version dependent]
  2 files changed, 2 insertions(+), 40 deletions(-)
 
 diff --git a/meson.build b/meson.build
-index 1f9c9d8..7e02b29 100644
+index e4323dc..185248f 100644
 --- a/meson.build
 +++ b/meson.build
 @@ -120,34 +120,3 @@ subdir('src')
@@ -74,5 +73,5 @@ index 79e53f2..d6279ff 100755
  
  while getopts ":b:c:" opt; do
 -- 
-2.33.1
+2.35.1
 

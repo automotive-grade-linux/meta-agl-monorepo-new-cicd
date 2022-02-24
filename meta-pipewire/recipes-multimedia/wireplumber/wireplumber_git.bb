@@ -14,16 +14,17 @@ DEPENDS = "glib-2.0 glib-2.0-native pipewire lua"
 SRC_URI = "\
     git://gitlab.freedesktop.org/pipewire/wireplumber.git;protocol=https;branch=master \
 "
-# v0.4.7
-SRCREV = "afb177b5e0840d54dc41d02920702c3c9580ce02"
+# v0.4.8
+SRCREV = "e14bb72dcc85e2130d0ea96768e5ae3b375a041e"
 
 # patches to be able to compile with lower version of meson that is available in AGL.
 SRC_URI += "\
-    file://0001-Revert-wp-uninstalled-build-this-script-with-the-mes.patch \
-    file://0002-Revert-tests-add-pipewire-env-variables-when-running.patch \
+    file://0001-Revert-tests-add-pipewire-env-variables-when-running.patch \
+    file://0002-Revert-wp-uninstalled-build-this-script-with-the-mes.patch \
+    file://0003-spa-json-fix-va_list-APIs-for-different-architecture.patch \
 "
 
-PV = "0.4.5"
+PV = "0.4.8"
 S  = "${WORKDIR}/git"
 
 WPAPI="0.4"

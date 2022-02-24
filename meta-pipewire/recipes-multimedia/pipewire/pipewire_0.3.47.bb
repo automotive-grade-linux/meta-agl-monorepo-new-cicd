@@ -20,8 +20,8 @@ SECTION = "multimedia"
 
 DEPENDS = "dbus"
 
-# v0.3.43
-SRCREV = "07724b7aefa8a23a016727b53f4e426ecd63d248"
+# v0.3.47
+SRCREV = "2af393889358723a2789caa3c856700b1c968ef0"
 SRC_URI = "git://gitlab.freedesktop.org/pipewire/pipewire.git;branch=master;protocol=https"
 
 S = "${WORKDIR}/git"
@@ -242,6 +242,8 @@ FILES:${PN}-dev += " \
 CONFFILES:libpipewire += "${datadir}/pipewire/client.conf"
 FILES:libpipewire = " \
     ${datadir}/pipewire/client.conf \
+    ${datadir}/pipewire/client-rt.conf \
+    ${datadir}/pipewire/minimal.conf \
     ${libdir}/libpipewire-*.so.* \
 "
 # Add the bare minimum modules and plugins required to be able

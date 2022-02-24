@@ -1,0 +1,166 @@
+From b781a4dbb45191a4b2746d5fe12d6f907681441c Mon Sep 17 00:00:00 2001
+From: Ashok Sidipotu <ashok.sidipotu@collabora.com>
+Date: Thu, 24 Feb 2022 12:28:59 +0530
+Subject: [PATCH 12/12] Miscellanous changes to account for lower version of
+ meson in agl
+
+Upstream-Status: Inappropriate[meson version dependent]
+---
+ meson.build                           | 30 ++++++++++++++-------------
+ spa/plugins/audioconvert/meson.build  |  4 ++--
+ spa/tests/meson.build                 |  2 +-
+ src/daemon/systemd/system/meson.build |  5 +----
+ src/modules/meson.build               | 18 +++-------------
+ src/tests/meson.build                 |  6 +++---
+ 6 files changed, 26 insertions(+), 39 deletions(-)
+
+diff --git a/meson.build b/meson.build
+index af60472f8..7106eeaad 100644
+--- a/meson.build
++++ b/meson.build
+@@ -440,25 +440,27 @@ run_target('pw-uninstalled',
+              '-v@0@'.format(pipewire_version)]
+ )
+ 
+-devenv = environment()
++if meson.version().version_compare('>=0.58.0')
++  devenv = environment()
+ 
+-builddir = meson.project_build_root()
+-srcdir = meson.project_source_root()
++  builddir = meson.build_root()
++  srcdir = meson.source_root()
+ 
+-devenv.set('PIPEWIRE_CONFIG_DIR', pipewire_dep.get_variable(internal: 'confdatadir'))
+-devenv.set('PIPEWIRE_MODULE_DIR', pipewire_dep.get_variable(internal: 'moduledir'))
++  devenv.set('PIPEWIRE_CONFIG_DIR', pipewire_dep.get_variable(internal: 'confdatadir'))
++  devenv.set('PIPEWIRE_MODULE_DIR', pipewire_dep.get_variable(internal: 'moduledir'))
+ 
+-  devenv.set('SPA_PLUGIN_DIR', builddir / 'spa' / 'plugins')
+-  devenv.set('SPA_DATA_DIR', srcdir / 'spa' / 'plugins')
++    devenv.set('SPA_PLUGIN_DIR', builddir / 'spa' / 'plugins')
++    devenv.set('SPA_DATA_DIR', srcdir / 'spa' / 'plugins')
+ 
+-devenv.set('GST_PLUGIN_PATH', builddir / 'src'/ 'gst')
++  devenv.set('GST_PLUGIN_PATH', builddir / 'src'/ 'gst')
+ 
+-devenv.set('ALSA_PLUGIN_DIR', builddir / 'pipewire-alsa' / 'alsa-plugins')
+-devenv.set('ACP_PATHS_DIR', srcdir / 'spa' / 'plugins' / 'alsa' / 'mixer' / 'paths')
+-devenv.set('ACP_PROFILES_DIR', srcdir / 'spa' / 'plugins' / 'alsa' / 'mixer' / 'profile-sets')
++  devenv.set('ALSA_PLUGIN_DIR', builddir / 'pipewire-alsa' / 'alsa-plugins')
++  devenv.set('ACP_PATHS_DIR', srcdir / 'spa' / 'plugins' / 'alsa' / 'mixer' / 'paths')
++  devenv.set('ACP_PROFILES_DIR', srcdir / 'spa' / 'plugins' / 'alsa' / 'mixer' / 'profile-sets')
+ 
+-devenv.set('LD_LIBRARY_PATH', builddir / 'pipewire-jack' / 'src')
++  devenv.set('LD_LIBRARY_PATH', builddir / 'pipewire-jack' / 'src')
+ 
+-devenv.set('PW_UNINSTALLED', '1')
++  devenv.set('PW_UNINSTALLED', '1')
+ 
+-meson.add_devenv(devenv)
++  meson.add_devenv(devenv)
++endif
+diff --git a/spa/plugins/audioconvert/meson.build b/spa/plugins/audioconvert/meson.build
+index 3aa0f3846..6f4fd968b 100644
+--- a/spa/plugins/audioconvert/meson.build
++++ b/spa/plugins/audioconvert/meson.build
+@@ -140,7 +140,7 @@ foreach a : test_apps
+       install : installed_tests_enabled,
+       install_dir : installed_tests_execdir / 'audioconvert'),
+       env : [
+-        'SPA_PLUGIN_DIR=@0@/spa/plugins/'.format(meson.project_build_root()),
++        'SPA_PLUGIN_DIR=@0@/spa/plugins/'.format(meson.build_root()),
+         ])
+ 
+     if installed_tests_enabled
+@@ -170,7 +170,7 @@ foreach a : benchmark_apps
+       install : installed_tests_enabled,
+       install_dir : installed_tests_execdir / 'audioconvert'),
+       env : [
+-        'SPA_PLUGIN_DIR=@0@/spa/plugins/'.format(meson.project_build_root()),
++        'SPA_PLUGIN_DIR=@0@/spa/plugins/'.format(meson.build_root()),
+         ])
+ 
+     if installed_tests_enabled
+diff --git a/spa/tests/meson.build b/spa/tests/meson.build
+index d995cfaa4..ea00a2cfe 100644
+--- a/spa/tests/meson.build
++++ b/spa/tests/meson.build
+@@ -42,7 +42,7 @@ foreach a : benchmark_apps
+       install_dir : installed_tests_execdir,
+     ),
+     env : [
+-      'SPA_PLUGIN_DIR=@0@/spa/plugins/'.format(meson.project_build_root()),
++      'SPA_PLUGIN_DIR=@0@/spa/plugins/'.format(meson.build_root()),
+     ]
+   )
+ 
+diff --git a/src/daemon/systemd/system/meson.build b/src/daemon/systemd/system/meson.build
+index b3e5f1f41..4d942c1ab 100644
+--- a/src/daemon/systemd/system/meson.build
++++ b/src/daemon/systemd/system/meson.build
+@@ -1,7 +1,4 @@
+-systemd_system_services_dir = systemd.get_variable(pkgconfig: 'systemdsystemunitdir', pkgconfig_define : [ 'rootprefix', prefix])
+-if get_option('systemd-system-unit-dir') != ''
+-  systemd_system_services_dir = get_option('systemd-system-unit-dir')
+-endif
++systemd_system_services_dir = systemd.get_variable(pkgconfig: 'systemdsystemunitdir', pkgconfig_define : [ 'prefix', prefix])
+ 
+ install_data(sources : 'pipewire.socket',
+              install_dir : systemd_system_services_dir)
+diff --git a/src/modules/meson.build b/src/modules/meson.build
+index 568b32c50..8cf4f781d 100644
+--- a/src/modules/meson.build
++++ b/src/modules/meson.build
+@@ -150,18 +150,6 @@ pipewire_module_rt = shared_library('pipewire-module-rt', [ 'module-rt.c' ],
+ endif
+ summary({'rt': build_module_rt}, bool_yn: true, section: 'Optional Modules')
+ 
+-build_module_rtkit = dbus_dep.found()
+-if build_module_rtkit
+-pipewire_module_rtkit = shared_library('pipewire-module-rtkit', [ 'module-rtkit.c' ],
+-  include_directories : [configinc, spa_inc],
+-  install : true,
+-  install_dir : modules_install_dir,
+-  install_rpath: modules_install_dir,
+-  dependencies : [dbus_dep, mathlib, dl_lib, pipewire_dep],
+-)
+-endif
+-summary({'rt': build_module_rt}, bool_yn: true, section: 'Optional Modules')
+-
+ build_module_portal = dbus_dep.found()
+ if build_module_portal
+ pipewire_module_portal = shared_library('pipewire-module-portal', [ 'module-portal.c' ],
+@@ -372,9 +360,9 @@ test('pw-test-protocol-native',
+     install_dir : installed_tests_execdir,
+   ),
+   env : [
+-    'SPA_PLUGIN_DIR=@0@/spa/plugins/'.format(meson.project_build_root()),
+-    'PIPEWIRE_CONFIG_DIR=@0@/src/daemon/'.format(meson.project_build_root()),
+-    'PIPEWIRE_MODULE_DIR=@0@/src/modules/'.format(meson.project_build_root())
++    'SPA_PLUGIN_DIR=@0@/spa/plugins/'.format(meson.build_root()),
++    'PIPEWIRE_CONFIG_DIR=@0@/src/daemon/'.format(meson.build_root()),
++    'PIPEWIRE_MODULE_DIR=@0@/src/modules/'.format(meson.build_root())
+   ]
+ )
+ 
+diff --git a/src/tests/meson.build b/src/tests/meson.build
+index 9a595d431..1b03967fb 100644
+--- a/src/tests/meson.build
++++ b/src/tests/meson.build
+@@ -13,9 +13,9 @@ foreach a : test_apps
+       install : installed_tests_enabled,
+       install_dir : installed_tests_execdir),
+     env : [
+-      'SPA_PLUGIN_DIR=@0@/spa/plugins/'.format(meson.project_build_root()),
+-      'PIPEWIRE_CONFIG_DIR=@0@/src/daemon/'.format(meson.project_build_root()),
+-      'PIPEWIRE_MODULE_DIR=@0@/src/modules/'.format(meson.project_build_root())
++      'SPA_PLUGIN_DIR=@0@/spa/plugins/'.format(meson.build_root()),
++      'PIPEWIRE_CONFIG_DIR=@0@/src/daemon/'.format(meson.build_root()),
++      'PIPEWIRE_MODULE_DIR=@0@/src/modules/'.format(meson.build_root())
+       ])
+ 
+   if installed_tests_enabled
+-- 
+2.35.1
+
