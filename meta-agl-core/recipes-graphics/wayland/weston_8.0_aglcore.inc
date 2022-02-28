@@ -6,6 +6,7 @@ SRC_URI:append = "\
     file://0001-clients-window-Add-set_app_id-function-change-Waylan.patch \
     file://0001-libweston-backend-drm-Re-order-gbm-destruction-at-DR.patch \
     file://0001-gl-renderer-Avoid-double-free-on-init-failure.patch \
+    file://0001-libweston-Remove-source-repaint_timer-in-weston_comp.patch \
     "
 
 # Workaround for incorrect upstream definition
