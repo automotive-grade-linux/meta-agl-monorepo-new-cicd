@@ -40,7 +40,7 @@ FILES:${PN} = "\
 RDEPENDS:${PN} = " \
     agl-compositor \
     agl-session \
-    weston-ini-conf \
+    weston-ini \
 "
 
 RCONFLICTS:${PN} = "weston-init"
