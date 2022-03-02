@@ -48,6 +48,7 @@ AGL_KCONFIG_FRAGMENTS += "sound.cfg"
 
 # Enable support for SystemTap
 AGL_KCONFIG_FRAGMENTS += "${@bb.utils.contains('DISTRO_FEATURES', 'agl-devel', 'systemtap.cfg', '', d)}"
+AGL_KCONFIG_FRAGMENTS:bbe += "disable-relay.cfg"
 
 #
 # Feature override and qemu specific appends:
