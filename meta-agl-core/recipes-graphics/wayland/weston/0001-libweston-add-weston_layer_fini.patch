@@ -1,0 +1,82 @@
+From 8740037a93c7c4400cc381ecf3009d1e4014be07 Mon Sep 17 00:00:00 2001
+From: Pekka Paalanen <pekka.paalanen@collabora.com>
+Upstream-Status: Backport
+Date: Fri, 14 May 2021 14:29:40 +0300
+Subject: [PATCH] libweston: add weston_layer_fini()
+
+Layers did not have a fini sequence before, which means the compositor
+layer list might have stale pointers temporarily when shutting down. A
+bigger problem might be having views linger after the destruction of the
+layer.
+
+These problems were not observed yet, but if they exist, this patch
+should help to find them and then fix them.
+
+The check in weston_compositor_shutdown() is not an assert yet, because
+it will trigger until all components call weston_layer_fini() correctly.
+Some components do not even have a tear-down function to call it from at
+all, like fullscreen-shell.
+
+The same with the check in weston_layer_fini().
+
+Signed-off-by: Pekka Paalanen <pekka.paalanen@collabora.com>
+---
+ include/libweston/libweston.h |  2 ++
+ libweston/compositor.c        | 21 +++++++++++++++++++++
+ 2 files changed, 23 insertions(+)
+
+diff --git a/include/libweston/libweston.h b/include/libweston/libweston.h
+index 7e8e7a625..d9907de0d 100644
+--- a/include/libweston/libweston.h
++++ b/include/libweston/libweston.h
+@@ -1637,6 +1637,8 @@ void
+ weston_layer_init(struct weston_layer *layer,
+ 		  struct weston_compositor *compositor);
+ void
++weston_layer_fini(struct weston_layer *layer);
++void
+ weston_layer_set_position(struct weston_layer *layer,
+ 			  enum weston_layer_position position);
+ void
+diff --git a/libweston/compositor.c b/libweston/compositor.c
+index dc6ecb2ce..c2da3a48c 100644
+--- a/libweston/compositor.c
++++ b/libweston/compositor.c
+@@ -3243,6 +3243,21 @@ weston_layer_init(struct weston_layer *layer,
+ 	weston_layer_set_mask_infinite(layer);
+ }
+ 
++/** Finalize the weston_layer struct.
++ *
++ * \param layer The layer to finalize.
++ */
++WL_EXPORT void
++weston_layer_fini(struct weston_layer *layer)
++{
++	wl_list_remove(&layer->link);
++
++	if (!wl_list_empty(&layer->view_list.link))
++		weston_log("BUG: finalizing a layer with views still on it.\n");
++
++	wl_list_remove(&layer->view_list.link);
++}
++
+ /** Sets the position of the layer in the layer list. The layer will be placed
+  * below any layer with the same position value, if any.
+  * This function is safe to call if the layer is already on the list, but the
+@@ -7738,6 +7753,12 @@ weston_compositor_shutdown(struct weston_compositor *ec)
+ 	weston_binding_list_destroy_all(&ec->debug_binding_list);
+ 
+ 	weston_plane_release(&ec->primary_plane);
++
++	weston_layer_fini(&ec->fade_layer);
++	weston_layer_fini(&ec->cursor_layer);
++
++	if (!wl_list_empty(&ec->layer_list))
++		weston_log("BUG: layer_list is not empty after shutdown. Calls to weston_layer_fini() are missing somwhere.\n");
+ }
+ 
+ /** weston_compositor_exit_with_code
+-- 
+GitLab
+

@@ -7,6 +7,10 @@ SRC_URI:append = "\
     file://0001-libweston-backend-drm-Re-order-gbm-destruction-at-DR.patch \
     file://0001-gl-renderer-Avoid-double-free-on-init-failure.patch \
     file://0001-libweston-Remove-source-repaint_timer-in-weston_comp.patch \
+    file://0001-libweston-desktop-rename-weston_desktop_client_destr.patch \
+    file://0002-libweston-desktop-introduce-weston_desktop_client_de.patch \
+    file://0003-libweston-desktop-add-weston_desktop_xwayland_fini.patch \
+    file://0001-libweston-add-weston_layer_fini.patch \
     "
 
 # Workaround for incorrect upstream definition
