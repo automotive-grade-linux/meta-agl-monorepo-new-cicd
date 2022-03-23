@@ -19,6 +19,7 @@ SRC_URI += "\
     file://0010-Revert-spa-improve-the-AEC-interface.patch \
     file://0011-Revert-module-echo-cancel-Move-backends-to-dynamic-l.patch \
     file://0012-Miscellanous-changes-to-account-for-lower-version-of.patch \
+    file://0013-Revert-loop-remove-destroy-list.patch \
 "
 
 do_install:append() {
