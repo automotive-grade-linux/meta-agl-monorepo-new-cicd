@@ -13,11 +13,17 @@ PREFERRED_PROVIDER_virtual/libgles2 = "virtual-gles-user-module"
 PREFERRED_PROVIDER_virtual/egl = "virtual-gles-user-module"
 PREFERRED_PROVIDER_virtual/libgl = ""
 PREFERRED_PROVIDER_virtual/mesa = "mesa"
+
+
+
 PREFERRED_PROVIDER_libgbm = "libgbm"
+PREFERRED_PROVIDER_virtual/libgbm = "libgbm"
 PREFERRED_RPROVIDER_libgbm-dev = "libgbm"
+
 
 PREFERRED_RPROVIDER_libomxil = "omx-user-module"
 PREFERRED_PROVIDER_virtual/libomxil = "omx-user-module"
+VIRTUAL-RUNTIME_libomxil = "omx-user-module"
 
 # Add for gstreamer plugins ugly
 LICENSE_FLAGS_ACCEPTED = "commercial"
