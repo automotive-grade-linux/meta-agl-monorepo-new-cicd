@@ -8,7 +8,7 @@ SRC_URI = "file://hci-uart-helper.service \
            file://hci-uart-helper.sh \
 "
 
-COMPATIBLE_MACHINE = "imx8mqevk"
+COMPATIBLE_MACHINE = "imx8mq-evk"
 
 do_configure[noexec] = "1"
 do_compile[noexec] = "1"
