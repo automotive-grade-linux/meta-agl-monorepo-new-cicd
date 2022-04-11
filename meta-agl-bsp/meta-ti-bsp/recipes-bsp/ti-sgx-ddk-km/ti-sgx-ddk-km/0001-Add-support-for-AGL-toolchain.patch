@@ -1,4 +1,4 @@
-From 3bc2dac0d32038e82d9fec17bee5b66a73c2937c Mon Sep 17 00:00:00 2001
+From 630046ad76e14d28bd6b0728632e4f43b0916c22 Mon Sep 17 00:00:00 2001
 From: Paul Barker <paul.barker@sancloud.com>
 Date: Tue, 30 Nov 2021 16:48:58 +0000
 Subject: [PATCH] Add support for AGL toolchain
@@ -8,23 +8,25 @@ to make sure our toolchain is matched against this and not
 arm-linux-gnueabi.
 
 Signed-off-by: Paul Barker <paul.barker@sancloud.com>
+[Updated for 1.17.4948957/k5.10]
+Signed-off-by: Scott Murray <scott.murrary@konsulko.com>
 ---
  eurasia_km/eurasiacon/build/linux2/config/compiler.mk | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/eurasia_km/eurasiacon/build/linux2/config/compiler.mk b/eurasia_km/eurasiacon/build/linux2/config/compiler.mk
-index 97b90e2bc8ce..4e4a6d9c737f 100644
+index 1b5f090..6719dc2 100644
 --- a/eurasia_km/eurasiacon/build/linux2/config/compiler.mk
 +++ b/eurasia_km/eurasiacon/build/linux2/config/compiler.mk
 @@ -68,7 +68,7 @@ define calculate-compiler-preferred-target
    ifneq ($$(filter aarch64-%,$$($(1)_compiler_preferred_target)),)
     $(1)_compiler_preferred_target := aarch64-linux-gnu
    endif
--  ifneq ($$(filter arm-%-gnueabihf arm-oe-linux-gnueabi arm-poky-linux-gnueabi,$$($(1)_compiler_preferred_target)),)
-+  ifneq ($$(filter arm-%-gnueabihf arm-oe-linux-gnueabi arm-poky-linux-gnueabi arm-agl-linux-gnueabi,$$($(1)_compiler_preferred_target)),)
+-  ifneq ($$(filter arm-%-gnueabihf arm-oe-linux-gnueabi arm-poky-linux-gnueabi arm-yoe-linux-gnueabi arm-oe-linux-musleabi arm-poky-linux-musleabi arm-yoe-linux-musleabi,$$($(1)_compiler_preferred_target)),)
++  ifneq ($$(filter arm-%-gnueabihf arm-oe-linux-gnueabi arm-poky-linux-gnueabi arm-yoe-linux-gnueabi arm-agl-linux-gnueabi arm-oe-linux-musleabi arm-poky-linux-musleabi arm-yoe-linux-musleabi,$$($(1)_compiler_preferred_target)),)
     $(1)_compiler_preferred_target := arm-linux-gnueabihf
    endif
    ifneq ($$(filter arm-%-gnueabi armv7a-cros-linux-gnueabi armv7hl-redhat-linux-gnueabi,$$($(1)_compiler_preferred_target)),)
 -- 
-2.31.1
+2.30.2
 

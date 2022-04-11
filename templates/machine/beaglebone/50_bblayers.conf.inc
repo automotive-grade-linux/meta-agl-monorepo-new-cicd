@@ -1,5 +1,5 @@
 BBLAYERS =+ "\
     ${METADIR}/bsp/meta-arm/meta-arm \
     ${METADIR}/bsp/meta-arm/meta-arm-toolchain \
-    ${METADIR}/bsp/meta-ti \
+    ${METADIR}/bsp/meta-ti/meta-ti-bsp \
     "
