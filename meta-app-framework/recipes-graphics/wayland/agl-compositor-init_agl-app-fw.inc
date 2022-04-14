@@ -39,6 +39,7 @@ FILES:${PN} = "\
 
 RDEPENDS:${PN} = " \
     agl-compositor \
+    agl-shell-activator \
     agl-session \
     weston-ini \
 "
