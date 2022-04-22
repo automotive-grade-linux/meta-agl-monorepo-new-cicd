@@ -5,7 +5,7 @@
 
 # E.g. MACHINE_FEATURE. Should *not* be in layer.conf !!
 # Radio packages
-#IMAGE_INSTALL:append:rcar-gen3 += " \
+#IMAGE_INSTALL:append:rcar-gen3 = " \
 #    si-tools \
 #    si-init \
 #    linux-firmware-wl18xx \
