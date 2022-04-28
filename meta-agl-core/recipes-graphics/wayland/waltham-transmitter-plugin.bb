@@ -8,7 +8,7 @@ DEPENDS += "wayland wayland-native waltham weston"
 
 SRC_URI = "git://gerrit.automotivelinux.org/gerrit/src/waltham-transmitter-plugin.git;protocol=https;branch=${AGL_BRANCH}"
 AGL_BRANCH:aglnext = "next"
-SRCREV = "c9d23a045e6cb46c023c15f8189ef3ee8b1ddf20"
+SRCREV = "d64b99a999fcc17322393782fe802122fd963ced"
 SRCREV:aglnext = "${AUTOREV}"
 
 S = "${WORKDIR}/git"
