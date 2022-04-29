@@ -48,3 +48,13 @@ BBMASK += "meta-rcar-gen3/recipes-core/base-files/ meta-rcar-gen3/recipes-core/s
 
 # Mask out cogl bbappend to avoid meta-gnome dependency
 BBMASK += "meta-rcar-gen3/recipes-graphics/cogl/cogl-1.0_1.%.bbappend"
+
+# Provide default value that avoids errors from a new packaging QA
+# check with respect to packagegroups depending on versioned library
+# packages needing to be machine-specific.
+#
+# Note that this needs to be done here in global configuration space as
+# opposed to in a bbappend because the value needs to be set before the
+# packagegroup bbclass is inherited.  This can be removed when upstream
+# is fixed to add the required PACKAGE_ARCH = "${MACHINE_ARCH}".
+PACKAGE_ARCH:pn-packagegroup-multimedia-libs = "${MACHINE_ARCH}"
