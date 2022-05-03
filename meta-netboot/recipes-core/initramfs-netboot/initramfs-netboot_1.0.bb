@@ -11,11 +11,11 @@ do_install() {
 	install -dm 0755 ${D}/etc
 	touch ${D}/etc/initrd-release
 	install -dm 0755 ${D}/dev
-	install -dm 0755 ${D}/sbin
-	install -m 0755 ${WORKDIR}/init.sh ${D}/sbin/init
+	install -dm 0755 ${D}${sbindir}
+	install -m 0755 ${WORKDIR}/init.sh ${D}${sbindir}/init
 }
 
 inherit allarch
 
-FILES:${PN} += " /dev /etc/initrd-release /sbin/init "
+FILES:${PN} += " /dev /etc/initrd-release ${sbindir}/init "
 

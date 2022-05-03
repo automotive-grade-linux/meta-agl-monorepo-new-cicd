@@ -1,6 +1,3 @@
-KERNEL_MODULE_AUTOLOAD:append = " vspm_if"
-KERNEL_MODULE_PACKAGE_SUFFIX = ""
-
 do_install:append() {
     # Work around upstream not using ${nonarch_base_libdir}/modules
     if ${@bb.utils.contains('DISTRO_FEATURES', 'usrmerge', 'true', 'false', d)}; then
@@ -11,7 +8,7 @@ do_install:append() {
 }
 
 # Required to guarantee the module goes into the expected
-# kernel-module-vspmif package and doesn't end up packaged in
-# kernel-module-vspm-if by the default behavior.  Can be removed if
+# kernel-module-vsp2driver package and doesn't end up packaged in
+# kernel-module-vsp2 by the default behavior.  Can be removed if
 # upstream correctly use ${nonarch_base_libdir} themselves.
-FILES:${PN} += "${nonarch_base_libdir}/modules/${KERNEL_VERSION}/extra/vspm_if.ko"
+FILES:${PN} += "${nonarch_base_libdir}/modules/${KERNEL_VERSION}/extra/vsp2.ko"
