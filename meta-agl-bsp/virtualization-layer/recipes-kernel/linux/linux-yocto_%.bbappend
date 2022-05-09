@@ -5,4 +5,4 @@ SRC_URI:append:virtio-all = " \
     file://virtio-kmeta/bsp/virtio/virtio-aarch64-${LINUX_KERNEL_TYPE}.scc \
 "
 
-COMPATIBLE_MACHINE_virtio-aarch64 = "virtio-aarch64"
+COMPATIBLE_MACHINE:virtio-aarch64 = "virtio-aarch64"

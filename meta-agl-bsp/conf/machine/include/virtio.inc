@@ -16,19 +16,8 @@ RDEPENDS:${KERNEL_PACKAGE_NAME}-base = ""
 PREFERRED_PROVIDER_virtual/kernel ??= "linux-yocto"
 
 # Use newer kernel
-PREFERRED_VERSION_linux-yocto = "5.10.%"
-
-# Clear since it is set to 'sllin' in packagegroup-agl-demo.bb, and sllin is not
-# compatible with kernel 5.10 at the moment.
-LIN_DRIVERS = ""
-
-# Clear since it is set to 'lttng-modules' in packagegroup-core-tools-profile.bb,
-# and lttng-modules are not compatible with 5.10 kernel used for virtio.
-LTTNGMODULES:virtio-all = ""
+PREFERRED_VERSION_linux-yocto = "5.15.%"
 
 EXTRA_IMAGEDEPENDS += "qemu-native qemu-helper-native"
 
 IMAGE_CLASSES += "qemuboot"
-
-# most driver fails to compile
-MOST_DRIVERS ?= ""
