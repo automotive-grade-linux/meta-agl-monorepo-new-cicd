@@ -13,5 +13,6 @@ RDEPENDS:${PN} += " \
                   weston \
                   weston-init \
                   weston-examples \
+                  polkit \
                   "
 
