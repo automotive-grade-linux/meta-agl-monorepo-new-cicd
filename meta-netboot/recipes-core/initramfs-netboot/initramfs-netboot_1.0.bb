@@ -8,8 +8,8 @@ S = "${WORKDIR}"
 RDEPENDS:${PN} += "nbd-client"
 
 do_install() {
-	install -dm 0755 ${D}/etc
-	touch ${D}/etc/initrd-release
+	install -dm 0755 ${D}${sysconfdir}
+	touch ${D}${sysconfdir}/initrd-release
 	install -dm 0755 ${D}/dev
 	install -dm 0755 ${D}${sbindir}
 	install -m 0755 ${WORKDIR}/init.sh ${D}${sbindir}/init
@@ -17,5 +17,5 @@ do_install() {
 
 inherit allarch
 
-FILES:${PN} += " /dev /etc/initrd-release ${sbindir}/init "
+FILES:${PN} += " /dev ${sysconfdir}/initrd-release ${sbindir}/init "
 
