@@ -15,7 +15,7 @@ PV      = "1.0+git${SRCPV}"
 SRC_URI = " \
         git://gerrit.automotivelinux.org/gerrit/src/applaunchd;protocol=https;branch=${AGL_BRANCH}  \
         "
-SRCREV = "${AGL_APP_REVISION}"
+SRCREV = "c84836ec5ddaf2d0e91c46713475c35652bb540f"
 
 S       = "${WORKDIR}/git"
 
