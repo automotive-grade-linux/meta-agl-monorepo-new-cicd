@@ -23,7 +23,7 @@ EOF
 FILES:${PN} += "${nonarch_base_libdir}/modules/${KERNEL_VERSION}/extra/vspm_if.ko"
 
 #kernel-module-vspmif should not provide "kernel-module-vspm-if". "kernel-module-vspm-if" is a separate package with module rules.
-RPROVIDES:${PN}:remove += "kernel-module-vspm-if"
+RPROVIDES:${PN}:remove = "kernel-module-vspm-if"
 
 FILES:${PN}:append = " \
     ${sysconfdir}/udev/rules.d/*.rules \
