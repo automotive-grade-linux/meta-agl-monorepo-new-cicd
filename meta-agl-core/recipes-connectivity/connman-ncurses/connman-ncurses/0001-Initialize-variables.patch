@@ -1,0 +1,39 @@
+From 0389a80796d3ae31d8f60659f0638660a00157b2 Mon Sep 17 00:00:00 2001
+From: Jan-Simon Moeller <jsmoeller@linuxfoundation.org>
+Date: Tue, 19 Jul 2022 23:58:05 +0200
+Subject: [PATCH] Initialize variables
+
+This fixes compiler warnings.
+
+Signed-off-by: Jan-Simon Moeller <jsmoeller@linuxfoundation.org>
+---
+ main.c      | 2 +-
+ renderers.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/main.c b/main.c
+index f0354f9..1fa9ab1 100644
+--- a/main.c
++++ b/main.c
+@@ -159,7 +159,7 @@ static void report_error()
+  */
+ static void get_help_window()
+ {
+-	char *msg;
++	char *msg = "";
+ 
+ 	if (win_help)
+ 		return;
+diff --git a/renderers.c b/renderers.c
+index c531a1e..d9d0414 100644
+--- a/renderers.c
++++ b/renderers.c
+@@ -153,7 +153,7 @@ static void renderers_technologies(struct json_object *jobj)
+ 	int i;
+ 	char *desc_base = "%-20s Powered %-5s          Connected %-5s";
+ 	char desc_base_sub[30];
+-	const char *k_name, *k_type, *k_powered, *k_connected;
++	const char *k_name = "" , *k_type = "" , *k_powered = "", *k_connected = "";
+ 	char *desc, *tech_short_name;
+ 	struct json_object *sub_array, *dbus_tech_name, *tech_dict;
+ 	struct userptr_data *data;
