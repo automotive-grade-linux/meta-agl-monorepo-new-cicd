@@ -154,6 +154,22 @@ fi
 rm -f /etc/resolv.conf
 grep -v bootserver /proc/net/pnp | sed 's/^domain/search/g' >/etc/resolv.conf
 
+# Do SELinux relabeling if required, to avoid a reboot that would complicate CI
+if [ -f /.autorelabel ]; then
+	# Nothing SELinux related works w/o the fs mounted
+	do_mount_fs selinuxfs /sys/fs/selinux
+
+	# Labeling requires the policy to be loaded
+        log_info "Loading SELinux policy"
+	/usr/sbin/load_policy
+
+	/usr/bin/selinux-autorelabel.sh
+
+	# Will get remounted by systemd startup, unmount to keep that behavior
+	# more like the non-netboot case.
+        umount /sys/fs/selinux
+fi
+
 # unmount tmp and run to let systemd remount them
 log_info "Unmounting /tmp and /run"
 umount /tmp
