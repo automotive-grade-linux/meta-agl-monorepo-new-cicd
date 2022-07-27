@@ -1,8 +1,8 @@
 [Unit]
-Description=Sandboxed %I
+Description=%I
 
 [Service]
 Type=simple
 User=agl-driver
-ExecStart=%i
 Environment=XDG_RUNTIME_DIR=/run/user/1001/
+ExecStart=%i
