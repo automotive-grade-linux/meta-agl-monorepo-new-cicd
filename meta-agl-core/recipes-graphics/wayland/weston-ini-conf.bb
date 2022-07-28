@@ -120,3 +120,7 @@ RPROVIDES:${PN}-landscape-inverted = "weston-ini"
 RCONFLICTS:${PN}-landscape-inverted = "${PN}"
 ALTERNATIVE:${PN}-landscape-inverted = "weston.ini"
 ALTERNATIVE_TARGET_${PN}-landscape-inverted = "${weston_ini_dir}/weston.ini.landscape-inverted"
+
+# This is a settings-only package, we do not need a development package
+# (and its fixed dependency to ${PN} being installed)
+PACKAGES:remove = "${PN}-dev ${PN}-staticdev"
