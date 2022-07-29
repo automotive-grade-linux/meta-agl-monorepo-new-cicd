@@ -1,8 +1,8 @@
 require agl_imx-common.inc
 
 # Force use of the community supported LTS kernel instead of the
-# default linux-imx
-#IMX_DEFAULT_KERNEL:imx8mq-evk = "linux-fslc-imx"
+# default linux-fslc
+IMX_DEFAULT_KERNEL:imx8mq-evk = "linux-fslc-lts"
 
 # For EVKB wifi support
 #MACHINE_FEATURES:append = " bcm4356"
