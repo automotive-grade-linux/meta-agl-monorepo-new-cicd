@@ -8,10 +8,10 @@ COMPATIBLE_MACHINE = "(salvator-x|m3ulcb|h3ulcb|ebisu)"
 
 S = "${WORKDIR}"
 
-SRC_URI:append:sota = "file://uEnv-ota-m3ulcb.txt \
-                       file://uEnv-ota-h3ulcb.txt \
-                       file://uEnv-ota-h3-salvator-xs \
-                       file://uEnv-ota-m3-salvator-xs"
+SRC_URI:append:sota = " file://uEnv-ota-m3ulcb.txt \
+                        file://uEnv-ota-h3ulcb.txt \
+                        file://uEnv-ota-h3-salvator-xs \
+                        file://uEnv-ota-m3-salvator-xs"
 do_deploy() {
     install -d ${DEPLOYDIR}/${PN}
 }

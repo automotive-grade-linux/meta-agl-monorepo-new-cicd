@@ -18,4 +18,4 @@ DEPENDS += "weston libdrm"
 S = "${WORKDIR}/git/subprojects/gst-plugins-bad"
 
 EXTRA_OECONF += "--enable-kms"
-PACKAGECONFIG:append = "kms"
+PACKAGECONFIG:append = " kms"
