@@ -5,4 +5,4 @@ Description=%I
 Type=simple
 User=agl-driver
 Environment=XDG_RUNTIME_DIR=/run/user/1001/
-ExecStart=/usr/bin/flutter --b=/usr/share/flutter/%I --app-id=%I
+ExecStart=/usr/bin/flutter-auto --b=/usr/share/flutter/%I --xdg-shell-app-id=%I
