@@ -58,10 +58,3 @@ BBMASK += "meta-rcar-gen3/recipes-graphics/cogl/cogl-1.0_1.%.bbappend"
 # packagegroup bbclass is inherited.  This can be removed when upstream
 # is fixed to add the required PACKAGE_ARCH = "${MACHINE_ARCH}".
 PACKAGE_ARCH:pn-packagegroup-multimedia-libs = "${MACHINE_ARCH}"
-
-# Mask out the gstreamer bbappends to avoid failures due to poky moving
-# to 1.20.2.  Temporary replacement 1.20.2 versions can be carried in
-# meta-agl-bsp until the BSP is updated for kirkstone 4.0.2.
-BBMASK += "meta-rcar-gen3/recipes-multimedia/gstreamer/gstreamer1.0-omx_1.20.1.bbappend"
-BBMASK += "meta-rcar-gen3/recipes-multimedia/gstreamer/gstreamer1.0-plugins-bad_1.20.1.bbappend"
-BBMASK += "meta-rcar-gen3/recipes-multimedia/gstreamer/gstreamer1.0-plugins-good_1.20.1.bbappend"
