@@ -1,5 +1,0 @@
-# SPDX-License-Identifier: MIT
-kconf hardware virtio.cfg
-
-include virtio-snd/virtio-snd.scc
-include virtio-scmi/virtio-scmi.scc

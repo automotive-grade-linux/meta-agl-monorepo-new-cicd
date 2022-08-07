@@ -7,7 +7,7 @@ include ktypes/standard/standard.scc nopatch
 include arch/arm/aarch64.scc
 include cfg/8250.scc
 include cfg/virtio.scc
-include virtio.scc
+include bsp/virtio/agl-virtio.scc
 
 # enable the ability to run 32 bit apps
 include arch/arm/32bit-compat.scc

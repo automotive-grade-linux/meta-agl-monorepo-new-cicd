@@ -1,5 +1,0 @@
-# SPDX-License-Identifier: MIT
-kconf hardware virtio-scmi.cfg
-kconf hardware iio-scmi.cfg
-patch 0001-iio-core-Introduce-IIO_VAL_INT_64.patch
-patch 0002-iio-scmi-Add-reading-raw-attribute.patch
