@@ -1,0 +1,12 @@
+[Unit]
+Wants=network.target
+After=network.target
+
+[Service]
+User=agl-driver
+Environment=XDG_DATA_DIRS=/usr/share
+ExecStart=/usr/bin/applaunchd
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
