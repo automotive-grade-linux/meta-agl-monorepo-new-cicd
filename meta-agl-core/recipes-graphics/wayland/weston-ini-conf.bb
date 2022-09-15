@@ -55,6 +55,10 @@ do_compile() {
     done
     sed -i -e '$ d' ${WORKDIR}/weston.ini.default
 
+    cat ${WORKDIR}/weston.ini.default > ${WORKDIR}/weston.ini.default-no-activate
+    echo "[core]" >> ${WORKDIR}/weston.ini.default-no-activate
+    echo "activate-by-default=false" >> ${WORKDIR}/weston.ini.default-no-activate
+
     # Do it again, but filter fragments to configure for landscape
     # and a corresponding landscape-inverted that is 180 degrees
     # rotated.
@@ -80,6 +84,7 @@ do_compile() {
 do_install:append() {
     install -d ${D}${weston_ini_dir}
     install -m 0644 ${WORKDIR}/weston.ini.default ${D}${weston_ini_dir}/
+    install -m 0644 ${WORKDIR}/weston.ini.default-no-activate ${D}${weston_ini_dir}/
     install -m 0644 ${WORKDIR}/weston.ini.landscape ${D}${weston_ini_dir}/
     install -m 0644 ${WORKDIR}/weston.ini.landscape-inverted ${D}${weston_ini_dir}/
 }
@@ -120,6 +125,17 @@ RPROVIDES:${PN}-landscape-inverted = "weston-ini"
 RCONFLICTS:${PN}-landscape-inverted = "${PN}"
 ALTERNATIVE:${PN}-landscape-inverted = "weston.ini"
 ALTERNATIVE_TARGET_${PN}-landscape-inverted = "${weston_ini_dir}/weston.ini.landscape-inverted"
+
+# no activation by default
+PACKAGE_BEFORE_PN += "${PN}-no-activate"
+
+FILES:${PN}-no-activate = "${weston_ini_dir}/weston.ini.default-no-activate"
+
+RDEPENDS:${PN}-no-activate = "weston-init"
+RPROVIDES:${PN}-no-activate = "weston-ini"
+RCONFLICTS:${PN}-no-activate = "${PN}"
+ALTERNATIVE:${PN}-no-activate = "weston.ini"
+ALTERNATIVE_TARGET_${PN}-no-activate = "${weston_ini_dir}/weston.ini.default-no-activate"
 
 # This is a settings-only package, we do not need a development package
 # (and its fixed dependency to ${PN} being installed)
