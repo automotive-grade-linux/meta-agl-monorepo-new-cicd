@@ -19,6 +19,7 @@ RDEPENDS:${PN} = "\
         libxslt-bin \
         gcc-sanitizers \
         pciutils \
+        openssh-sftp-server \
         "
 
 # needs meta-oe present
