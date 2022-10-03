@@ -89,6 +89,7 @@ wayland::201:
 display::202:
 agl-driver::1001:
 agl-passenger::1002:
+applaunchd::1003:
 systemd-network::1005:
 systemd-resolve::1006:
 mosquitto::1007:

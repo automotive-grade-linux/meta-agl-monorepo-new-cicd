@@ -3,7 +3,7 @@ Wants=network.target
 After=network.target
 
 [Service]
-User=agl-driver
+User=applaunchd
 Environment=XDG_DATA_DIRS=/usr/share
 ExecStart=/usr/bin/applaunchd
 Restart=on-failure

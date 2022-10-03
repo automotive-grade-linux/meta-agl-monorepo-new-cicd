@@ -17,9 +17,13 @@ GROUPADD_PARAM:${PN} = "\
 	--system video ; \
 	--system pipewire ; \
 	-g 1001 agl-driver ; \
+	-g 1003 applaunchd ; \
 "
+# agl-driver user needs to be part of applaunchd group for D-Bus activation to still work
+# should be removed after everything is converted to gRPC for enhanced security
 USERADD_PARAM:${PN} = "\
-  -g 1001 -u 1001 -G video,display,pipewire -o -d /home/agl-driver -m -K PASS_MAX_DAYS=-1 agl-driver ; \
+  -g 1001 -u 1001 -G video,display,pipewire,applaunchd -o -d /home/agl-driver -m -K PASS_MAX_DAYS=-1 agl-driver ; \
+  -g 1003 -u 1003 -o -d / -K PASS_MAX_DAYS=-1 applaunchd ; \
 "
 
 SYSTEMD_PACKAGES = "${PN}"
