@@ -15,4 +15,5 @@ RDEPENDS:${PN} += "\
     ${@bb.utils.contains('VIRTUAL-RUNTIME_net_manager','connman','connman connman-client connman-conf \
         connman-tests connman-tools connman-ncurses' ,'',d)} \
     ${@bb.utils.contains('AGL_FEATURES', 'agl-devel', '${PKGGROUP_ZEROCONF}', '', d)} \
+    systemd-conf-canbus \
     "
