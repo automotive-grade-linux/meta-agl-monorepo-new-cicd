@@ -11,4 +11,11 @@ do_install:append(){
         mv ${D}/lib/firmware ${D}${nonarch_base_libdir}/
         rm -rf ${D}/lib
     fi
+
+    # Undo upstream's out of date use of weston@.service
+    if ${@bb.utils.contains('DISTRO_FEATURES', 'systemd', 'true', 'false', d)} ; then
+        # Fix weston dependency, needs to be weston.service
+        sed -i 's/^RequiredBy=weston@.service$/RequiredBy=weston.service/' \
+                ${D}${systemd_system_unitdir}/rc.pvr.service
+    fi
 }
