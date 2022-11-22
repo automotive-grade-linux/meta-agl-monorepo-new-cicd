@@ -10,3 +10,4 @@ WESTON_DISPLAYS:append = "${@bb.utils.contains("AGL_FEATURES", "waltham-remoting
 # and vice versa.
 WESTON_DISPLAYS:append:qemuall = " virtual-90"
 WESTON_DISPLAYS:append:intel-corei7-64 = " virtual-90"
+WESTON_DISPLAYS:append:virtio-aarch64 = " virtual-90"
