@@ -34,6 +34,8 @@ FILES:${PN} = " \
 
 RDEPENDS:${PN} += " \
     agl-compositor-init \
+    xkeyboard-config \
+    ${@bb.utils.filter('DISTRO_FEATURES', 'polkit', d)} \
     ${@bb.utils.contains('AGL_FEATURES', 'waltham-remoting', 'waltham waltham-transmitter-plugin', '', d)} \
 "
 
