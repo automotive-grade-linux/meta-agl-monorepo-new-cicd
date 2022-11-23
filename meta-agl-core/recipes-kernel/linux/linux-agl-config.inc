@@ -67,6 +67,10 @@ AGL_KCONFIG_FRAGMENTS:append:qemuall = " \
     qemu-drm.cfg \
 "
 
+AGL_KCONFIG_FRAGMENTS:append:virtio-all = " \
+    sound-hda.cfg \
+"
+
 # Configuration for using the ARM virt machine (and not versatilepb)
 AGL_KCONFIG_FRAGMENTS:append:qemuarm = " qemuarm.cfg"
 
