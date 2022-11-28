@@ -75,7 +75,7 @@ AGL_KCONFIG_FRAGMENTS:append:qemuarm = " qemuarm.cfg"
 # OVERRIDES save us some c'n'p below ...
 OVERRIDES:prepend:qemux86 = "virtualmachine:"
 OVERRIDES:prepend:qemux86-64 = "virtualmachine:"
-AGL_KCONFIG_FRAGMENTS:append_virtualmachine = " vbox-vmware-sata.cfg"
+AGL_KCONFIG_FRAGMENTS:append:virtualmachine = " vbox-vmware-sata.cfg"
 
 # Extra configuration for using qemux86-64 image on physical hardware
 AGL_KCONFIG_FRAGMENTS:append:qemux86-64 = " \
