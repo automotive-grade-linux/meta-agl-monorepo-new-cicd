@@ -1,0 +1,12 @@
+[Match]
+Name=can*
+
+[CAN]
+BitRate=500K
+SamplePoint=75%
+DataBitRate=4M
+DataSamplePoint=80%
+FDMode=yes
+
+[Link]
+ActivationPolicy=up

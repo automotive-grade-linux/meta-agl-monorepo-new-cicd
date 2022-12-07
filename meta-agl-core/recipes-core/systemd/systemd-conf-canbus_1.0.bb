@@ -8,6 +8,7 @@ PE = "1"
 
 SRC_URI = "\
     file://canbus-can.network \
+    file://canbus-can-fd.network \
     file://canbus-virtio.network \
 "
 
