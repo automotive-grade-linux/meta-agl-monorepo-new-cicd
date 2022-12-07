@@ -35,7 +35,7 @@ weston_ini_dir = "${sysconfdir}/xdg/weston"
 # Options for the user to change in local.conf
 # e.g. TRANSMITTER_OUTPUT_MODE = "1080x1488"
 TRANSMITTER_OUTPUT_MODE ??= "640x720@30"
-TRANSMITTER_OUTPUT_HOST ??= "192.168.20.99"
+TRANSMITTER_OUTPUT_HOST ??= "192.168.10.3"
 TRANSMITTER_OUTPUT_PORT ??= "5005"
 
 do_configure() {
