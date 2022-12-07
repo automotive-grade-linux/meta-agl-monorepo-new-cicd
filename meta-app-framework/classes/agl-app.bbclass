@@ -68,6 +68,14 @@ do_install:append () {
 	Environment=AGL_APP_WAM_DIR=${AGL_APP_WAM_DIR}
 	EOF
     fi
+
+    if [ "${AGL_APP_TEMPLATE}" = "agl-app-flutter" ]; then
+       # Install icon if present
+       if [ -f ${S}/package/${AGL_APP_ID}.svg ]; then
+          install -d ${D}${datadir}/icons/hicolor/scalable
+          install -m 0644 ${S}/package/${AGL_APP_ID}.svg ${D}${datadir}/icons/hicolor/scalable/
+       fi
+   fi
 }
 
 FILES:${PN}:append = " ${systemd_system_unitdir} ${datadir}/icons"
