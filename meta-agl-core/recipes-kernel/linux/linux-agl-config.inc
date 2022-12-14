@@ -39,6 +39,7 @@ AGL_KCONFIG_FRAGMENTS += " \
     can-bus.cfg \
     fanotify.cfg \
     overlayfs.cfg \
+    audit.cfg \
     ${@bb.utils.contains('DISTRO_FEATURES', 'selinux', 'selinux.cfg', '', d)} \
     ${@bb.utils.contains('DISTRO_FEATURES', 'systemd', 'systemd-required.cfg', '', d)} \
 "
