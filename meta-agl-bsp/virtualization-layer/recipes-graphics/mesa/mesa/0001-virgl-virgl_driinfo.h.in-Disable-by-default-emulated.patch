@@ -1,0 +1,34 @@
+From 39dea63ebce2764c683c8c2eddbb10cf07a970c4 Mon Sep 17 00:00:00 2001
+From: Marius Vlad <marius.vlad@collabora.com>
+Date: Mon, 19 Dec 2022 11:51:28 +0200
+Subject: [PATCH] virgl/virgl_driinfo.h.in: Disable by default emulated BGRA
+ and swizzling
+
+Workaround in place for virtio aarch64 to avoid graphical artefacts when
+first time booting up on PVR host driver.
+
+Introduced with patch 'virgl: Always enable emulated BGRA and swizzling
+unless specifically told not to' in mesa-20.3.0.
+
+Signed-off-by: Marius Vlad <marius.vlad@collabora.com>
+---
+ src/gallium/drivers/virgl/virgl_driinfo.h.in | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/src/gallium/drivers/virgl/virgl_driinfo.h.in b/src/gallium/drivers/virgl/virgl_driinfo.h.in
+index f57e5880965..1c06f932c5c 100644
+--- a/src/gallium/drivers/virgl/virgl_driinfo.h.in
++++ b/src/gallium/drivers/virgl/virgl_driinfo.h.in
+@@ -8,7 +8,7 @@
+ //   5. Implement the tweak in virglrenderer
+ DRI_CONF_SECTION_MISCELLANEOUS
+     DRI_CONF_FORMAT_L8_SRGB_ENABLE_READBACK(false)
+-    DRI_CONF_GLES_EMULATE_BGRA(true)
+-    DRI_CONF_GLES_APPLY_BGRA_DEST_SWIZZLE(true)
++    DRI_CONF_GLES_EMULATE_BGRA(false)
++    DRI_CONF_GLES_APPLY_BGRA_DEST_SWIZZLE(false)
+     DRI_CONF_GLES_SAMPLES_PASSED_VALUE(1024, 1, 400000000)
+ DRI_CONF_SECTION_END
+-- 
+2.35.1
+
