@@ -1,0 +1,11 @@
+[Match]
+Type=can
+OriginalName=can*
+
+[Link]
+TransmitQueueLength=1000
+# Need to duplicate default configuration here, since only first
+# matching .link is applied
+NamePolicy=keep kernel database onboard slot path
+AlternativeNamesPolicy=database onboard slot path
+MACAddressPolicy=persistent
