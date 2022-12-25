@@ -32,7 +32,7 @@ AGL_APPS = " \
     "
 
 RDEPENDS:${PN}:append = " \
-    weston-ini-conf-landscape \
+    weston-ini-conf-landscape-no-activate \
     ${@bb.utils.contains('DISTRO_FEATURES', 'agl-devel', 'unzip' , '', d)} \
     qtquickcontrols2-agl \
     qtquickcontrols2-agl-style \
