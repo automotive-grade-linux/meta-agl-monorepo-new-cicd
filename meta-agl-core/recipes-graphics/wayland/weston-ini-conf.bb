@@ -80,12 +80,16 @@ do_compile() {
     done
     sed -i -e '$ d' ${WORKDIR}/weston.ini.landscape
     sed -i -e '$ d' ${WORKDIR}/weston.ini.landscape-inverted
+
+    cat ${WORKDIR}/weston.ini.landscape > ${WORKDIR}/weston.ini.landscape-no-activate
+    sed -i -e 's#\[core\]#[core]\nactivate-by-default=false#' ${WORKDIR}/weston.ini.landscape-no-activate
 }
 
 do_install:append() {
     install -d ${D}${weston_ini_dir}
     install -m 0644 ${WORKDIR}/weston.ini.default ${D}${weston_ini_dir}/
     install -m 0644 ${WORKDIR}/weston.ini.default-no-activate ${D}${weston_ini_dir}/
+    install -m 0644 ${WORKDIR}/weston.ini.landscape-no-activate ${D}${weston_ini_dir}/
     install -m 0644 ${WORKDIR}/weston.ini.landscape ${D}${weston_ini_dir}/
     install -m 0644 ${WORKDIR}/weston.ini.landscape-inverted ${D}${weston_ini_dir}/
 }
@@ -137,6 +141,18 @@ RPROVIDES:${PN}-no-activate = "weston-ini"
 RCONFLICTS:${PN}-no-activate = "${PN}"
 ALTERNATIVE:${PN}-no-activate = "weston.ini"
 ALTERNATIVE_TARGET_${PN}-no-activate = "${weston_ini_dir}/weston.ini.default-no-activate"
+
+# landscape, no activation by default
+PACKAGE_BEFORE_PN += "${PN}-landscape-no-activate"
+
+FILES:${PN}-landscape-no-activate = "${weston_ini_dir}/weston.ini.landscape-no-activate"
+
+RDEPENDS:${PN}-landscape-no-activate = "weston-init"
+RPROVIDES:${PN}-landscape-no-activate = "weston-ini"
+RCONFLICTS:${PN}-landscape-no-activate = "${PN}"
+ALTERNATIVE:${PN}-landscape-no-activate = "weston.ini"
+ALTERNATIVE_TARGET_${PN}-landscape-no-activate = "${weston_ini_dir}/weston.ini.landscape-no-activate"
+
 
 # This is a settings-only package, we do not need a development package
 # (and its fixed dependency to ${PN} being installed)
