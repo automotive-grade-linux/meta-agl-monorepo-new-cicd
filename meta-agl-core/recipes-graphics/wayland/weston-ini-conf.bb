@@ -9,7 +9,7 @@ SRC_URI = " \
 	file://hdmi-a-1-90.cfg \
 	file://hdmi-a-1-180.cfg \
 	file://hdmi-a-1-270.cfg \
-	file://remote-output.cfg \
+	file://remote-output.cfg.in \
 	file://transmitter-output.cfg.in \
 	file://virtual-0.cfg \
 	file://virtual-90.cfg \
@@ -43,6 +43,9 @@ do_configure() {
         -e "s#host=.*#host=${TRANSMITTER_OUTPUT_HOST}#" \
         -e "s#port=.*#port=${TRANSMITTER_OUTPUT_PORT}#" \
         ${WORKDIR}/transmitter-output.cfg.in  > ${WORKDIR}/transmitter-output.cfg
+    sed -e "s#host=.*#host=${TRANSMITTER_OUTPUT_HOST}#" \
+        -e "s#port=.*#port=${TRANSMITTER_OUTPUT_PORT}#" \
+        ${WORKDIR}/remote-output.cfg.in  > ${WORKDIR}/remote-output.cfg
 }
 
 do_compile() {
@@ -62,6 +65,7 @@ do_compile() {
     # and a corresponding landscape-inverted that is 180 degrees
     # rotated.
     rm -f ${WORKDIR}/weston.ini.landscape
+    rm -f ${WORKDIR}/weston.ini.landscape-inverted
     for F in ${WESTON_FRAGMENTS}; do
         INVF=$F
         if echo $F | grep '^hdmi-a-1-\(90\|270\)$'; then
