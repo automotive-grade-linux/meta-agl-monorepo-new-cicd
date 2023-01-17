@@ -42,7 +42,7 @@ DISTRO_FEATURES:append:rcar-gen3 = " h264dec_lib h264enc_lib aaclcdec_lib aaclcd
 # getting weston started.  There is no clear rationale expressed in the
 # meta-renesas-rcar-gen3 commit history for the extra dependencies, and
 # testing shows no issues on H3ULCB when not having them.
-BBMASK += "meta-rcar-gen3/recipes-graphics/wayland/weston-init.bbappend"
+BBMASK += "meta-renesas/meta-rcar-gen3/recipes-graphics/wayland/weston-init.bbappend"
 
 # Add graphics and decoder drivers to packagegroup-machine-base
 # recommendation.
