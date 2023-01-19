@@ -1,5 +1,8 @@
 [Match]
 Name=eth* en*
+KernelCommandLine=!nbdroot
+KernelCommandLine=!nfsroot
+KernelCommandLine=!ip
 
 [Network]
 DHCP=yes
