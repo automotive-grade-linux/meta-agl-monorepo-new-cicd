@@ -55,8 +55,6 @@ do_compile() {
     done
     sed -i -e '$ d' ${WORKDIR}/weston.ini.default
 
-    echo "[shell-client-ext]\ncommand=/usr/lib/agl-compositor/agl-shell-grpc-server\n" >> ${WORKDIR}/weston.ini.default
-
     cat ${WORKDIR}/weston.ini.default > ${WORKDIR}/weston.ini.default-no-activate
     sed -i -e 's#\[core\]#[core]\nactivate-by-default=false#' ${WORKDIR}/weston.ini.default-no-activate
 
