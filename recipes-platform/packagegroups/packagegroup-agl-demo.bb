@@ -9,9 +9,6 @@ PACKAGES = "\
     packagegroup-agl-demo \
     "
 
-# HVAC and steering wheel demo dependency
-LIN_DRIVERS ??= " sllin"
-
 # Hook for demo platform configuration
 # ATM, only used to disable btwilink module on [MH]3ULCB + Kingfisher by default,
 # setting DEMO_ENABLE_BTWILINK to "true" in local.conf / site.conf re-enables.
@@ -39,7 +36,6 @@ RDEPENDS:${PN} += " \
     can-utils \
     cannelloni \
     iproute2 \
-    ${LIN_DRIVERS} \
     ${DEMO_PLATFORM_CONF} \
     ${TTF_FONTS} \
     ${@bb.utils.contains('DISTRO_FEATURES', 'webruntime', 'virtual/webruntime', '', d)} \
