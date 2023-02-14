@@ -8,12 +8,7 @@ AGL_META_FILESYSTEMS = "${METADIR}/external/meta-openembedded/meta-filesystems"
 AGL_META_MULTIMEDIA = "${METADIR}/external/meta-openembedded/meta-multimedia"
 AGL_META_NETWORKING = "${METADIR}/external/meta-openembedded/meta-networking"
 AGL_META_PYTHON = "${METADIR}/external/meta-openembedded/meta-python"
-
-# OpenEmbedded layer to add support for multiple cloud service provider solutions
-#---------------------------------------------------
-BBLAYERS =+ " \
-   ${METADIR}/external/meta-qt5 \
-"
+AGL_META_QT5 = "${METADIR}/external/meta-qt5"
 
 # Chromium recipes do still require python2
 BBLAYERS =+ " \
