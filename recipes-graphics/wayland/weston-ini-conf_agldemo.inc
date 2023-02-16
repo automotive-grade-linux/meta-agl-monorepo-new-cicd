@@ -2,6 +2,9 @@ FILESEXTRAPATHS:prepend := "${THISDIR}/weston-ini-conf:"
 
 SRC_URI += "file://weston.ini.kvm.in"
 
+# as grpc-server is enabled in meta-agl-demo, we can enable it here
+SRC_URI += "file://grpc-server.cfg"
+
 GUEST_VM1_IMAGE ?= "agl-ivi-demo-platform-flutter"
 GUEST_VM2_IMAGE ?= "agl-cluster-demo-platform-flutter"
 
