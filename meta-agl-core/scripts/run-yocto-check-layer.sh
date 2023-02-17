@@ -20,7 +20,7 @@ AGL_EXTRA_IMAGE_FSTYPES ?= ""
 
 # important settings imported from poky-agl.conf
 # we do not import 
-DISTRO_FEATURES:append = " systemd"
+DISTRO_FEATURES:append = " systemd wayland pam"
 DISTRO_FEATURES_BACKFILL_CONSIDERED:append = " sysvinit"
 VIRTUAL-RUNTIME_init_manager = "systemd"
 
@@ -28,8 +28,6 @@ EOF
 
 
 yocto-check-layer \
-	--dependency \
-	$AGLROOT/external/meta-openembedded/meta-oe \
 	-- \
 	$AGLROOT/meta-agl/meta-agl-core
 
