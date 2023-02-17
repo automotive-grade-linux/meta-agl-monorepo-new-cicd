@@ -8,7 +8,7 @@ SECTION = "x11"
 LICENSE = "MIT"
 LIC_FILES_CHKSUM = "file://COPYING;md5=fac6abe0003c4d142ff8fa1f18316df0"
 
-DEPENDS = "wayland wayland-protocols wayland-native weston grpc grpc-native \
+DEPENDS = "wayland wayland-protocols wayland-native weston \
 	   ${@bb.utils.contains('AGL_FEATURES', 'waltham-remoting', 'waltham waltham-transmitter-plugin', '', d)}"
 
 SRC_URI = "git://gerrit.automotivelinux.org/gerrit/src/agl-compositor.git;protocol=https;branch=${AGL_BRANCH}"
@@ -22,15 +22,20 @@ S = "${WORKDIR}/git"
 PACKAGECONFIG ?= ""
 PACKAGECONFIG[policy-rba] = "-Dpolicy-default=rba,,librba,librba rba-config"
 PACKAGECONFIG[policy-deny-all] = "-Dpolicy-default=deny-all,,"
-PACKAGECONFIG[grpc-proxy] = "-Dgrpc-proxy=true,-Dgrpc-proxy=false"
+PACKAGECONFIG[grpc-proxy] = "-Dgrpc-proxy=true,-Dgrpc-proxy=false,grpc grpc-native,grpc agl-shell-grpc-server"
 
 inherit meson pkgconfig python3native
+
+PACKAGES =+ "agl-shell-grpc-server"
 
 FILES:${PN} = " \
     ${bindir}/agl-compositor \
     ${bindir}/agl-screenshooter \
     ${libdir}/agl-compositor/libexec_compositor.so.0 \
     ${libdir}/agl-compositor/libexec_compositor.so.0.0.0 \
+"
+
+FILES:agl-shell-grpc-server = " \
     ${libdir}/agl-compositor/agl-shell-grpc-server \
 "
 
