@@ -104,3 +104,13 @@ dependencies:
   - URI: https://gerrit.automotivelinux.org/gerrit/gitweb?p=AGL/meta-agl.git
   - Branch: "master"
 
+## Maintenance
+
+All patches must be submitted via the AGL Gerrit instance at
+<https://gerrit.automotivelinux.org>.  See this wiki page for
+details:
+
+<https://wiki.automotivelinux.org/agl-distro/contributing>
+
+Layer maintainers:
+* Jan-Simon Möller <jsmoeller@linuxfoundation.org>
