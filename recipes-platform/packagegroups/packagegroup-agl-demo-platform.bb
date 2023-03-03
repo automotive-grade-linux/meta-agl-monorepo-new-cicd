@@ -26,6 +26,7 @@ AGL_APPS = " \
     messaging \
     phone \
     radio \
+    window-management-client-grpc \
     "
 
 RDEPENDS:${PN}:append = " \
