@@ -19,7 +19,8 @@ TOOLCHAIN_HOST_TASK:append = " nativesdk-perl-modules "
 # Add qtwaylandscanner to the SDK
 TOOLCHAIN_HOST_TASK:append = " nativesdk-qtwayland-tools "
 
-
+# add grpc for building natively for grpc_cpp_plugin
+TOOLCHAIN_HOST_TASK:append = " nativesdk-grpc nativesdk-grpc-dev "
 # Task do_populate_sdk and do_rootfs can't be exec simultaneously.
 # Both exec "createrepo" on the same directory, and so one of them
 # can failed (randomly).
