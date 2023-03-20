@@ -20,8 +20,8 @@ SECTION = "multimedia"
 
 DEPENDS = "dbus"
 
-# v0.3.47
-SRCREV = "2af393889358723a2789caa3c856700b1c968ef0"
+# v0.3.67
+SRCREV = "26623ff8cb3c9ba774537379a1835c5efb0d5159"
 SRC_URI = "git://gitlab.freedesktop.org/pipewire/pipewire.git;branch=master;protocol=https"
 
 S = "${WORKDIR}/git"
@@ -230,9 +230,15 @@ SYSTEMD_SERVICE:${PN} = "pipewire.service"
 CONFFILES:${PN} += "${datadir}/pipewire/pipewire.conf"
 FILES:${PN} = " \
     ${datadir}/pipewire/pipewire.conf \
+    ${datadir}/pipewire/filter-chain.conf \
     ${datadir}/pipewire/filter-chain \
     ${systemd_user_unitdir}/pipewire.* \
     ${bindir}/pipewire \
+    ${datadir}/pipewire/pipewire-avb.conf \
+    ${bindir}/pipewire-avb \
+    ${datadir}/pipewire/pipewire-aes67.conf \
+    ${bindir}/pipewire-aes67 \
+    ${sysconfdir}/security/limits.d \
 "
 
 FILES:${PN}-dev += " \

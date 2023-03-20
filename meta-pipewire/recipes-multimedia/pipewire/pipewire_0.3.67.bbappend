@@ -1,6 +1,5 @@
 SRC_URI += "\
     file://0001-systemd-Do-not-override-rootprefix.patch \
-    file://0002-Revert-loop-remove-destroy-list.patch \
 "
 
 PACKAGECONFIG = "\

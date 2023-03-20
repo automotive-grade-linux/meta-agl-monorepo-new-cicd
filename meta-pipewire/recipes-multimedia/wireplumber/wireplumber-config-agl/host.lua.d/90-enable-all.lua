@@ -13,7 +13,7 @@ device_defaults.enable()
 load_script("suspend-node.lua")
 
 -- Automatically sets device profiles to 'On'
-load_module("device-activation")
+load_script("policy-device-profile.lua")
 
 -- Mute ALSA sinks when requested by pipewire-ic-ipc
 load_module("mixer-api")
