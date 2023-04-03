@@ -11,7 +11,7 @@ SRC_URI = "git://gerrit.automotivelinux.org/gerrit/apps/agl-service-audiomixer.g
            file://agl-service-audiomixer.conf \
            file://agl-service-audiomixer.token \
 "
-SRCREV  = "f137c6762e9055600089bb251850f979f62aed50"
+SRCREV  = "aa1156632525720d1d6d205f1b7aad3be4161a09"
 
 PV = "2.0+git${SRCPV}"
 S  = "${WORKDIR}/git"
