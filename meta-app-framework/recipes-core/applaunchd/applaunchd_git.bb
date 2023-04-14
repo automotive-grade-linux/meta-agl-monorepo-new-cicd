@@ -25,7 +25,7 @@ SRC_URI = " \
     file://no-network.conf \
     file://private-tmp.conf \
 "
-SRCREV = "c52afaf8b5c96136fe20e5d5a1332121d3b09ee9"
+SRCREV = "5cab14e6a98519e0b6c6043a1a19e42f094d6522"
 
 S = "${WORKDIR}/git"
 
