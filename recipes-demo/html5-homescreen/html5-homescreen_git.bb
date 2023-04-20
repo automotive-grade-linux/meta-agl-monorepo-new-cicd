@@ -12,7 +12,7 @@ SRC_URI = " \
   git://gerrit.automotivelinux.org/gerrit/apps/html5-homescreen;protocol=https;branch=master \
   file://homescreen.service \
 "
-SRCREV = "f3cecb6e79d7fcac14535108c06cb5a922159d78"
+SRCREV = "e85c42ae77592afdb72df8e8d4f27e0e7ad17bb9"
 
 inherit pythonnative
 
