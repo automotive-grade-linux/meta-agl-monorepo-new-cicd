@@ -8,7 +8,7 @@ SRC_URI = "\
 # Needed by catapult
 DEPENDS += "python-six-native python-beautifulsoup4-native python-lxml-native python-html5lib-native python-webencodings-native"
 
-SRCREV_chromium91 = "381fd97e706a2e8e16017708e9c6083df69fed7a"
+SRCREV_chromium91 = "40fa88380696f62a3644efa6ae4fafda402698f7"
 SRCREV_v8 = "b958ec542dcb086f422a1216a959be38a4cc0339"
 
 CHROMIUM_VERSION = "91.0.4472.114"
@@ -70,6 +70,7 @@ GN_ARGS:append = " \
 GN_ARGS:append = " \
   is_webos=false \
   is_agl=true \
+  grpc_use_static_linking=true \
 "
 
 # TODO: drop this after we migrate to ubuntu 16.04 or above
