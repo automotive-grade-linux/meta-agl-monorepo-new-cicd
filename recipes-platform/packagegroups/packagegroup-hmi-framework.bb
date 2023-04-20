@@ -18,11 +18,3 @@ PACKAGES = "\
 RDEPENDS:${PN} = " \
   homescreen \
   "
-  
-#  hmi-debug \
-#  launcher \
-#"
-
-# temporarily disable due to failure to install package when AGLCI is on
-#RDEPENDS:append_${PN} = " ${@bb.utils.contains('DISTRO_FEATURES', 'AGLCI', 'homescreen-demo-ci', '', d)}"
-
