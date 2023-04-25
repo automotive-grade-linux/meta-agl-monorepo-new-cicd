@@ -20,6 +20,7 @@ RDEPENDS:${PN} = "\
         gcc-sanitizers \
         pciutils \
         openssh-sftp-server \
+        zstd \
         "
 
 # needs meta-oe present
