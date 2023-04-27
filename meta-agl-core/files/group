@@ -95,6 +95,7 @@ systemd-resolve::1006:
 mosquitto::1007:
 pipewire::1008:
 render::1009:
+sgx::1010:
 kuksa::900:
 qemu::901:
 kvm::902:
