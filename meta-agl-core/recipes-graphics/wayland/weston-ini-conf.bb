@@ -15,6 +15,7 @@ SRC_URI = " \
 	file://virtual-90.cfg \
 	file://virtual-180.cfg \
 	file://virtual-270.cfg \
+	file://grpc-proxy.cfg \
 "
 
 S = "${WORKDIR}"
@@ -60,6 +61,7 @@ do_compile() {
 
     cat ${WORKDIR}/weston.ini.default > ${WORKDIR}/weston.ini.default-no-activate
     sed -i -e 's#\[core\]#[core]\nactivate-by-default=false#' ${WORKDIR}/weston.ini.default-no-activate
+    cat ${WORKDIR}/grpc-proxy.cfg >> ${WORKDIR}/weston.ini.default-no-activate
 
     # Do it again, but filter fragments to configure for landscape
     # and a corresponding landscape-inverted that is 180 degrees
@@ -85,6 +87,7 @@ do_compile() {
 
     cat ${WORKDIR}/weston.ini.landscape > ${WORKDIR}/weston.ini.landscape-no-activate
     sed -i -e 's#\[core\]#[core]\nactivate-by-default=false#' ${WORKDIR}/weston.ini.landscape-no-activate
+    cat ${WORKDIR}/grpc-proxy.cfg >> ${WORKDIR}/weston.ini.landscape-no-activate
 }
 
 do_install:append() {
