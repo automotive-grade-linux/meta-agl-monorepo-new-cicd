@@ -1,3 +1,5 @@
+SRC_URI += "file://0001-virgl-don-t-a-use-staging-when-a-resources-created-w.patch"
+
 # The gallium-llvm is recommended as software 3D graphics renderer
 GALLIUM_LLVM = "gallium-llvm"
 PACKAGECONFIG:append:qemux86 = " gallium ${GALLIUM_LLVM}"
