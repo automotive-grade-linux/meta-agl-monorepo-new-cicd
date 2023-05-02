@@ -10,4 +10,4 @@ DISTRO_FEATURES:remove = " use_eva_pkg"
 MACHINE_FEATURES:append = " usb3"
 
 IMAGE_INSTALL:append = " gstreamer1.0-omx gstreamer1.0-plugin-vspfilter"
-IMAGE_INSTALL:append = " kernel-module-mmngr kernel-module-mmngrbuf kernel-module-uvcs-drv kernel-module-vspmif"
+IMAGE_INSTALL:append = " kernel-module-mmngr kernel-module-mmngrbuf kernel-module-uvcs-drv kernel-module-vspm-if"

@@ -5,5 +5,5 @@ BOARD_NAME = "h3-salvator-x"
 DTB_SUFFIX = "r8a77951-salvator-xs"
 
 IMAGE_INSTALL:append:rcar-gen3 = " \
-    kernel-module-vspmif \
+    kernel-module-vspm-if \
 "
