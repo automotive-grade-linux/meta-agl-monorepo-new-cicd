@@ -8,8 +8,7 @@ SECTION = "x11"
 LICENSE = "MIT"
 LIC_FILES_CHKSUM = "file://COPYING;md5=fac6abe0003c4d142ff8fa1f18316df0"
 
-DEPENDS = "wayland wayland-protocols wayland-native weston \
-	   ${@bb.utils.contains('AGL_FEATURES', 'waltham-remoting', 'waltham waltham-transmitter-plugin', '', d)}"
+DEPENDS = "wayland wayland-protocols wayland-native weston"
 
 SRC_URI = "git://gerrit.automotivelinux.org/gerrit/src/agl-compositor.git;protocol=https;branch=${AGL_BRANCH}"
 SRCREV = "4e4624dee9850b4a4e590dd0f0f2b3173bded085"
@@ -43,7 +42,6 @@ RDEPENDS:${PN} += " \
     agl-compositor-init \
     xkeyboard-config \
     ${@bb.utils.filter('DISTRO_FEATURES', 'polkit', d)} \
-    ${@bb.utils.contains('AGL_FEATURES', 'waltham-remoting', 'waltham waltham-transmitter-plugin', '', d)} \
 "
 
 FILES:${PN}-dev += " \

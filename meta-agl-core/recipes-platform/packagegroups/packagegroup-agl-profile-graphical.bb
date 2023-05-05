@@ -16,7 +16,5 @@ RDEPENDS:${PN} += "\
     packagegroup-agl-graphical-weston \
     packagegroup-agl-graphical-multimedia \
 "
-# FIXME: Removed due to issues building against weston 5.0.0:
-#    waltham-transmitter
 
 RDEPENDS:profile-graphical = "${PN}"
