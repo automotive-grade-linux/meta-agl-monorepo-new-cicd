@@ -38,8 +38,6 @@ addtask do_populate_sdk after do_rootfs
 # memory issue.
 TOOLCHAIN_TARGET_TASK += "gcc-sanitizers"
 
-TOOLCHAIN_TARGET_TASK += "waltham-dev"
-
 
 TOOLCHAIN_HOST_TASK += " \
     nativesdk-lua \
