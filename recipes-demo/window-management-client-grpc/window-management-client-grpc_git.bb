@@ -13,7 +13,7 @@ DEPENDS = "qtbase qtdeclarative qtquickcontrols2 qtwayland \
 PV = "2.0+git${SRCPV}"
 
 SRC_URI = "git://gerrit.automotivelinux.org/gerrit/src/window-management-client-grpc.git;protocol=https;branch=${AGL_BRANCH}"
-SRCREV  = "8b057267c4180e5648b6636f4b5b1de07f627977"
+SRCREV  = "c625714c4adce04c34ab406bdd444b13773760e2"
 
 S  = "${WORKDIR}/git"
 
