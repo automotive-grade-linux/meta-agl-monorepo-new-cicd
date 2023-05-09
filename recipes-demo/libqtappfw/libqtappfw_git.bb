@@ -22,11 +22,11 @@ DEPENDS = " \
 "
 
 SRC_URI = "git://gerrit.automotivelinux.org/gerrit/src/libqtappfw;protocol=https;branch=${AGL_BRANCH}"
-SRCREV  = "9a7e2c5420cae0669c149d5dddbcd99a8fac0038"
+SRCREV  = "d2b9c43a0b129aca2319aa8487154fd14bd0eed1"
 S       = "${WORKDIR}/git"
 
 # PV needs to be modified with SRCPV to work AUTOREV correctly
-PV = "2.0+git${SRCPV}"
+PV = "2.0.1+git${SRCPV}"
 
 inherit meson pkgconfig
 
