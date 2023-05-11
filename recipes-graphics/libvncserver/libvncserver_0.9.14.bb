@@ -5,6 +5,13 @@ PRIORITY = "optional"
 LICENSE = "GPL-2.0-only"
 LIC_FILES_CHKSUM = "file://COPYING;md5=361b6b837cad26c6900a926b62aada5f"
 
+SRC_URI = "git://github.com/LibVNC/libvncserver;branch=master;protocol=https"
+SRCREV := "10e9eb75f73e973725dc75c373de5d89807af028"
+
+S = "${WORKDIR}/git"
+
+inherit cmake
+
 # ffmpeg support is not currently compatible with ffmpeg 5.0
 PACKAGECONFIG ??= " \
     24bpp \
@@ -42,11 +49,6 @@ PACKAGECONFIG[zlib] = "-DWITH_ZLIB=ON,-DWITH_ZLIB=OFF,zlib"
 PACKAGE_BEFORE_PN = "libvncclient"
 FILES:libvncclient = "${libdir}/libvncclient.*"
 
-inherit cmake
 
-SRC_URI = "git://github.com/LibVNC/libvncserver;branch=master;protocol=https"
-SRCREV = "10e9eb75f73e973725dc75c373de5d89807af028"
-
-S = "${WORKDIR}/git"
 
 EXTRA_OECMAKE = "-DMAKE_INSTALL_LIBDIR=${libdir}"
