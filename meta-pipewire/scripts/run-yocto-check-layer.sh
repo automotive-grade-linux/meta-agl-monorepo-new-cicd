@@ -19,17 +19,24 @@ AGL_FEATURES ?= ""
 AGL_EXTRA_IMAGE_FSTYPES ?= ""
 
 # important settings imported from poky-agl.conf
-# we do not import 
-DISTRO_FEATURES:append = " systemd"
+# we cannot import the distro config right away
+# as the initial values are poky only till the layer
+# is added in
+
+AGL_DEFAULT_DISTRO_FEATURES = "usrmerge largefile opengl wayland pam bluetooth bluez5 3g polkit"
+DISTRO_FEATURES:append = " systemd wayland pam \${AGL_DEFAULT_DISTRO_FEATURES}"
 DISTRO_FEATURES_BACKFILL_CONSIDERED:append = " sysvinit"
 VIRTUAL-RUNTIME_init_manager = "systemd"
 
 EOF
 
-
-yocto-check-layer \
+yocto-check-layer --no-auto-dependency \
+	--dependency \
+	$AGLROOT/external/meta-openembedded/meta-oe \
 	-- \
 	$AGLROOT/meta-agl/meta-pipewire
 
 
 [ $? = 0 ] && rm -rf ${TMPROOT}/testbuild-ycl
+
+exit 0

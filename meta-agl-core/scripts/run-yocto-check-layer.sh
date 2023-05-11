@@ -1,5 +1,5 @@
 #!/bin/bash
-set -x
+#set -x
 
 SCRIPTPATH="$( cd $(dirname $0) >/dev/null 2>&1 ; pwd -P )"
 echo $SCRIPTPATH
@@ -19,15 +19,18 @@ AGL_FEATURES ?= ""
 AGL_EXTRA_IMAGE_FSTYPES ?= ""
 
 # important settings imported from poky-agl.conf
-# we do not import 
-DISTRO_FEATURES:append = " systemd wayland pam"
+# we cannot import the distro config right away
+# as the initial values are poky only till the layer
+# is added in
+# no polkit !
+AGL_DEFAULT_DISTRO_FEATURES = "usrmerge largefile opengl wayland pam bluetooth bluez5 3g"
+DISTRO_FEATURES:append = " systemd wayland pam \${AGL_DEFAULT_DISTRO_FEATURES}"
 DISTRO_FEATURES_BACKFILL_CONSIDERED:append = " sysvinit"
 VIRTUAL-RUNTIME_init_manager = "systemd"
 
 EOF
 
-
-yocto-check-layer \
+yocto-check-layer --no-auto-dependency \
 	-- \
 	$AGLROOT/meta-agl/meta-agl-core
 
@@ -35,8 +38,3 @@ yocto-check-layer \
 [ $? = 0 ] && rm -rf ${TMPROOT}/testbuild-ycl
 
 exit 0
-
-	--dependency \
-	    $AGLROOT/external/meta-openembedded/meta-oe \
-	    $AGLROOT/external/meta-openembedded/meta-python \
-	    $AGLROOT/external/meta-openembedded/meta-networking \
