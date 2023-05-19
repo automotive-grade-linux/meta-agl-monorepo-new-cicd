@@ -17,7 +17,7 @@ SRCREV  = "c625714c4adce04c34ab406bdd444b13773760e2"
 
 S  = "${WORKDIR}/git"
 
-inherit  meson pkgconfig agl-app
+inherit  meson pkgconfig
 
 AGL_APP_NAME = "window-management-client-grpc"
 
