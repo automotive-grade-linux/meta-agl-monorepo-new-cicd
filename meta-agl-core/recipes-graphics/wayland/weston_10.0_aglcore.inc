@@ -8,4 +8,5 @@ PACKAGECONFIG:append = "${@bb.utils.contains('DISTRO_FEATURES', 'weston-remoting
 SRC_URI:append = "file://0001-libweston-Send-name-description-update-wl_output-to-.patch \
 		  file://0001-libweston-desktop-xdg-shell-Add-tiled-orientation-st.patch \
 		  file://0001-simple-touch-Add-maximized-fullscreen-states.patch \
-		  file://0001-libweston-weston-log-Add-an-iterator-for-going-over-.patch"
+		  file://0001-libweston-weston-log-Add-an-iterator-for-going-over-.patch \
+		  file://0001-backend-drm-make-sure-all-buffers-are-released-when-.patch "
