@@ -24,7 +24,7 @@ PV = "1.0+git${SRCPV}"
 SRC_URI = "git://gerrit.automotivelinux.org/gerrit/apps/launcher;protocol=https;branch=${AGL_BRANCH} \
            file://launcher.service \
 "
-SRCREV = "5e828161fc1571323e2812a344f6714ae9331b2c"
+SRCREV = "4be88c049f31b7659e09223857b92ca531835039"
 
 S = "${WORKDIR}/git"
 
