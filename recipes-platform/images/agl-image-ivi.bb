@@ -9,6 +9,7 @@ require recipes-platform/images/agl-image-weston.inc
 IMAGE_INSTALL:append = "\
     packagegroup-agl-image-ivi \
     packagegroup-agl-ivi-services \
+    ${@bb.utils.contains('DISTRO_FEATURES', 'agl-devel', 'packagegroup-agl-ivi-services-devel' , '', d)} \
     ${@bb.utils.contains('DISTRO_FEATURES', 'pipewire', 'packagegroup-pipewire', '', d)} \
     ${@bb.utils.contains('DISTRO_FEATURES', 'pipewire', 'wireplumber-config-agl wireplumber-policy-config-agl', '', d)} \
     can-utils \

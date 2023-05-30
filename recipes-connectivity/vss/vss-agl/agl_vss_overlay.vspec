@@ -34,6 +34,14 @@ Vehicle.Cabin.Infotainment.Navigation.ElapsedDistance:
 
 # Define extra steering wheel switch signals, including DBC mappings
 
+Vehicle.Cabin.SteeringWheel:
+  type: branch
+  description: AGL steering wheel demo data.
+
+Vehicle.Cabin.SteeringWheel.Switches:
+  type: branch
+  description: AGL steering wheel demo switch data.
+
 Vehicle.Cabin.SteeringWheel.Switches.VolumeUp:
   datatype: boolean
   type: sensor

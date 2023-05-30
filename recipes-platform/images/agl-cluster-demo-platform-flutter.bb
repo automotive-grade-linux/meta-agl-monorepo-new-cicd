@@ -11,10 +11,13 @@ IMAGE_FEATURES += "splash package-management ssh-server-openssh"
 # running the full stack locally.
 IMAGE_KUKSA_PACKAGES = " \
     kuksa-val \
+    kuksa-databroker \
     kuksa-val-agl \
+    kuksa-databroker-agl \
     kuksa-certificates-agl \
     kuksa-dbc-feeder \
     kuksa-vss-init \
+    ${@bb.utils.contains('DISTRO_FEATURES', 'agl-devel', 'kuksa-databroker-cli' , '', d)} \
 "
 
 # generic
