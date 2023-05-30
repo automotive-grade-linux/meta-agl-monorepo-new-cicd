@@ -25,7 +25,7 @@ SRC_URI = " \
     file://no-network.conf \
     file://private-tmp.conf \
 "
-SRCREV = "5cab14e6a98519e0b6c6043a1a19e42f094d6522"
+SRCREV = "7a3e870a8349d43a4838604db2c28140c2f76c9f"
 
 S = "${WORKDIR}/git"
 
@@ -49,7 +49,7 @@ do_install:append() {
 
 PACKAGE_BEFORE_PN += "${PN}-template-agl-app ${PN}-template-agl-app-web ${PN}-template-agl-app-flutter"
 
-FILES:${PN} += "${systemd_system_unitdir} ${datadir}/dbus-1/"
+FILES:${PN} += "${systemd_system_unitdir}"
 
 FILES:${PN}-template-agl-app = "${systemd_system_unitdir}/agl-app@.service"
 
