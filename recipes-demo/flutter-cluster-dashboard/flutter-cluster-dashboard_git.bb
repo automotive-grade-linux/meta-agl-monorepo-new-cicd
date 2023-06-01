@@ -10,9 +10,7 @@ LIC_FILES_CHKSUM = "file://LICENSE.md;md5=0c52b0e4b5f0dbf57ea7d44bebb2e29d"
 
 SRC_URI = "git://gerrit.automotivelinux.org/gerrit/apps/flutter-instrument-cluster;protocol=https;branch=${AGL_BRANCH} \
     file://flutter-cluster-dashboard.service \
-    file://flutter_cluster_dashboard_on_bg-debug.json \
-    file://flutter_cluster_dashboard_on_bg-profile.json \
-    file://flutter_cluster_dashboard_on_bg-release.json \
+    file://flutter_cluster_dashboard_on_bg.json \
     file://flutter-cluster-dashboard.yaml \
     file://flutter-cluster-dashboard.yaml.demo \
 "
@@ -32,9 +30,7 @@ inherit flutter-app update-alternatives
 
 CLUSTER_DEMO_VISS_HOSTNAME ??= "192.168.10.2"
 
-APP_CONFIG = "flutter_cluster_dashboard_on_bg-release.json"
-APP_CONFIG:class-runtimedebug = "flutter_cluster_dashboard_on_bg-debug.json"
-APP_CONFIG:class-runtimeprofile = "flutter_cluster_dashboard_on_bg-profile.json"
+APP_CONFIG = "flutter_cluster_dashboard_on_bg.json"
 
 do_install:append() {
     install -D -m 0644 ${WORKDIR}/flutter-cluster-dashboard.service ${D}${systemd_user_unitdir}/flutter-cluster-dashboard.service

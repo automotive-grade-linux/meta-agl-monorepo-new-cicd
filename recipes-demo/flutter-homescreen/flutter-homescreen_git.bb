@@ -7,9 +7,7 @@ LICENSE = "Apache-2.0"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=86d3f3a95c324c9479bd8986968f4327"
 
 SRC_URI = "git://gerrit.automotivelinux.org/gerrit/apps/flutter-homescreen;protocol=https;branch=${AGL_BRANCH} \
-           file://flutter-homescreen-debug.json \
-           file://flutter-homescreen-profile.json \
-           file://flutter-homescreen-release.json \
+           file://flutter-homescreen.json \
            file://flutter-homescreen.service \
            file://homescreen_config.yaml \
 "
@@ -24,9 +22,7 @@ FLUTTER_BUILD_ARGS = "bundle -v"
 
 inherit flutter-app
 
-APP_CONFIG = "flutter-homescreen-release.json"
-APP_CONFIG:class-runtimedebug = "flutter-homescreen-debug.json"
-APP_CONFIG:class-runtimeprofile = "flutter-homescreen-profile.json"
+APP_CONFIG = "flutter-homescreen.json"
 
 do_install:append() {
     install -D -m 0644 ${WORKDIR}/flutter-homescreen.service ${D}${systemd_user_unitdir}/flutter-homescreen.service

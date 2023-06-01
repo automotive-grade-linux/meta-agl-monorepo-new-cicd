@@ -16,11 +16,9 @@ RDEPENDS:${PN} += "\
     packagegroup-agl-demo \
     "
 
-AGL_FLUTTER_RUNTIME ?= "runtimerelease"
-
 AGL_APPS = " \
-    flutter-dashboard-${AGL_FLUTTER_RUNTIME} \
-    flutter-hvac-${AGL_FLUTTER_RUNTIME} \
+    flutter-dashboard \
+    flutter-hvac \
     ondemandnavi \
     settings \
     mediaplayer \
@@ -31,8 +29,8 @@ AGL_APPS = " \
 
 RDEPENDS:${PN}:append = " \
     agl-compositor \
-    flutter-auto-${AGL_FLUTTER_RUNTIME} \
-    flutter-homescreen-${AGL_FLUTTER_RUNTIME} \
+    flutter-auto \
+    flutter-homescreen \
     qtquickcontrols2-agl \
     qtquickcontrols2-agl-style \
     ${@bb.utils.contains('DISTRO_FEATURES', 'agl-devel', 'unzip mpc' , '', d)} \
