@@ -4,5 +4,9 @@ Description=%I
 [Service]
 Type=simple
 User=agl-driver
+Environment=FLUTTER_VERSION=3.3.7
+Environment=FLUTTER_RUNTIME=release
+EnvironmentFile=-/etc/default/flutter
+EnvironmentFile=-/etc/default/%I
 Environment=XDG_RUNTIME_DIR=/run/user/1001/
-ExecStart=/usr/bin/flutter-auto --b=/usr/share/flutter/%I --xdg-shell-app-id=%I
+ExecStart=/usr/bin/flutter-auto --b=/usr/share/flutter/%I/${FLUTTER_VERSION}/${FLUTTER_RUNTIME} --xdg-shell-app-id=%I
