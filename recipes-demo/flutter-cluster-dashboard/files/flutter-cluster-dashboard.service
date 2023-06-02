@@ -3,7 +3,9 @@ Requires=agl-compositor.service
 After=agl-compositor.service
 
 [Service]
-ExecStart=/usr/bin/flutter-auto --j=/usr/share/flutter/default.json
+EnvironmentFile=/etc/default/flutter
+EnvironmentFile=-/etc/default/flutter-cluster-dashboard
+ExecStart=/usr/bin/flutter-auto --b=/usr/share/flutter/flutter_cluster_dashboard/${FLUTTER_VERSION}/${FLUTTER_RUNTIME} --j=/usr/share/flutter/flutter-cluster-dashboard.json
 Restart=on-failure
 
 [Install]

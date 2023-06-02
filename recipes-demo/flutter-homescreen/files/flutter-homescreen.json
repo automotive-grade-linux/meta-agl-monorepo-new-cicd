@@ -1,7 +1,6 @@
 {
         "view" : [ {
                 "window_type" : "BG",
-                "bundle_path" : "/usr/share/flutter/flutter_homescreen/3.3.7/release",
                 "width" : 1920,
                 "height": 1080,
                 "fullscreen": true

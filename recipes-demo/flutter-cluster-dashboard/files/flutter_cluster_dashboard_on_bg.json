@@ -2,7 +2,6 @@
         "view": [
                 {
                         "window_type": "BG",
-                        "bundle_path": "/usr/share/flutter/flutter_cluster_dashboard/3.3.7/release",
                         "width": 1920,
                         "height": 1080,
                         "fullscreen": true

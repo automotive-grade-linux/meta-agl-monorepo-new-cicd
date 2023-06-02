@@ -22,17 +22,18 @@ FLUTTER_BUILD_ARGS = "bundle -v"
 
 inherit flutter-app
 
-APP_CONFIG = "flutter-homescreen.json"
+APP_CONFIG = "${BPN}.json"
 
 do_install:append() {
-    install -D -m 0644 ${WORKDIR}/flutter-homescreen.service ${D}${systemd_user_unitdir}/flutter-homescreen.service
+    install -D -m 0644 ${WORKDIR}/${BPN}.service ${D}${systemd_user_unitdir}/${BPN}.service
     install -d ${D}${systemd_user_unitdir}/agl-session.target.wants
-    ln -s ../flutter-homescreen.service ${D}${systemd_user_unitdir}/agl-session.target.wants/flutter-homescreen.service
+    ln -s ../${BPN}.service ${D}${systemd_user_unitdir}/agl-session.target.wants/${BPN}.service
 
-    install -D -m 0644 ${WORKDIR}/${APP_CONFIG} ${D}${datadir}/flutter/flutter-homescreen.json
+    install -D -m 0644 ${WORKDIR}/${APP_CONFIG} ${D}${datadir}/flutter/${BPN}.json
 
     install -d ${D}${sysconfdir}/xdg/AGL
     install -m 0644 ${WORKDIR}/homescreen_config.yaml ${D}${sysconfdir}/xdg/AGL/
 }
 
 FILES:${PN} += "${datadir} ${systemd_user_unitdir} ${sysconfdir}/xdg/AGL"
+RDEPENDS:${PN} += "flutter-auto agl-flutter-env"
