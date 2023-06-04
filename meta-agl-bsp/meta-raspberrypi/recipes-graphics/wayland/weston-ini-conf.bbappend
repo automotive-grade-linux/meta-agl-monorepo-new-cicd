@@ -1,3 +1,7 @@
 FILESEXTRAPATHS:prepend:raspberrypi := "${THISDIR}/${PN}:"
 
-SRC_URI:append:raspberrypi = " file://dsi.cfg"
+# OLD DSI config
+#SRC_URI:append:raspberrypi = " file://dsi.cfg"
+
+# two hdmi ports
+SRC_URI:append:raspberrypi = " file://hdmi-dual.cfg"
