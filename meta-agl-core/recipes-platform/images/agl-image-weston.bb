@@ -1,9 +1,15 @@
 SUMMARY = "A very basic Wayland image with a terminal"
-
-require agl-image-weston.inc
-
 LICENSE = "MIT"
 
-IMAGE_INSTALL:append = "\
-    packagegroup-agl-profile-graphical \
-    "
+require agl-image-minimal.bb
+
+inherit features_check
+
+REQUIRED_DISTRO_FEATURES = "wayland"
+
+SYSTEMD_DEFAULT_TARGET = "graphical.target"
+
+IMAGE_INSTALL += " \
+    packagegroup-agl-graphical-weston \
+    ${@bb.utils.contains('DISTRO_FEATURES', 'agl-devel', 'weston-examples', '', d)} \
+"

@@ -6,6 +6,7 @@ inherit packagegroup
 
 PACKAGES = "\
     packagegroup-pipewire \
+    packagegroup-pipewire-tools \
     "
 
 RDEPENDS:${PN} += "\
@@ -15,5 +16,9 @@ RDEPENDS:${PN} += "\
     pipewire-alsa \
     gstreamer1.0-pipewire \
     wireplumber \
-    ${@bb.utils.contains('DISTRO_FEATURES', 'agl-devel', 'pipewire-tools pipewire-spa-tools', '', d)} \
+"
+
+RDEPENDS:${PN}-tools += "\
+    pipewire-tools \
+    pipewire-spa-tools \
 "

@@ -16,6 +16,7 @@ VIRTUAL-RUNTIME_rngd ?= "rng-tools"
 
 RDEPENDS:${PN} = "\
     packagegroup-core-boot \
+    packagegroup-machine-base \
     ${VIRTUAL-RUNTIME_rngd} \
 "
 

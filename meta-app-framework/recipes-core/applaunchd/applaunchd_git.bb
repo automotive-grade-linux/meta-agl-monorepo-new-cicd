@@ -29,7 +29,14 @@ SRCREV = "7a3e870a8349d43a4838604db2c28140c2f76c9f"
 
 S = "${WORKDIR}/git"
 
-inherit meson pkgconfig systemd
+inherit meson pkgconfig systemd useradd
+
+USERADD_PACKAGES = "${PN}"
+USERADDEXTENSION = "useradd-staticids"
+GROUPADD_PARAM:${PN} = "-g 1003 applaunchd ; "
+USERADD_PARAM:${PN} = "\
+    -g 1003 -u 1003 -o -d / -K PASS_MAX_DAYS=-1 applaunchd ; \
+"
 
 SYSTEMD_SERVICE:${PN} = "applaunchd.service"
 
@@ -58,7 +65,7 @@ FILES:${PN}-template-agl-app-web = "${systemd_system_unitdir}/agl-app-web@.servi
 FILES:${PN}-template-agl-app-flutter = "${systemd_system_unitdir}/agl-app-flutter@.service"
 
 RDEPENDS:${PN} += " \
-    agl-session \
+    agl-users \
     polkit-rule-agl-app \
 "
 

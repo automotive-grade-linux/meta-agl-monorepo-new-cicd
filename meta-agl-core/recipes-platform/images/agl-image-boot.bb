@@ -1,9 +1,5 @@
-SUMMARY = "An AGL small image just capable of allowing a device to boot."
-
-require agl-image-boot.inc
-
+SUMMARY = "A small image just capable of allowing a device to boot."
 LICENSE = "MIT"
 
-IMAGE_INSTALL:append = "\
-    packagegroup-agl-image-boot \
-    "
+inherit agl-core-image
+

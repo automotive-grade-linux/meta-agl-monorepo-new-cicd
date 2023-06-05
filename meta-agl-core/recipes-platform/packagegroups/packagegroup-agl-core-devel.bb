@@ -21,11 +21,4 @@ RDEPENDS:${PN} = "\
         pciutils \
         openssh-sftp-server \
         zstd \
-        "
-
-# needs meta-oe present
-#RRECOMMENDS:${PN} = "\
-#        jq \
-#        htop \
-#        tree \
-#"
+"

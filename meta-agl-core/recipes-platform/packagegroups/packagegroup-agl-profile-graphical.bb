@@ -1,5 +1,5 @@
 SUMMARY = "The middleware for AGL IVI profile"
-DESCRIPTION = "The set of packages required for AGL IVI Distribution"
+DESCRIPTION = "The base set of packages required for a AGL IVI Distribution"
 LICENSE = "MIT"
 
 inherit packagegroup
@@ -7,14 +7,11 @@ inherit packagegroup
 PACKAGES = "\
     packagegroup-agl-profile-graphical \
     profile-graphical \
-    "
-
-ALLOW_EMPTY:${PN} = "1"
+"
 
 RDEPENDS:${PN} += "\
     packagegroup-agl-image-minimal \
-    packagegroup-agl-graphical-weston \
-    packagegroup-agl-graphical-multimedia \
+    packagegroup-agl-graphical-compositor \
 "
 
 RDEPENDS:profile-graphical = "${PN}"

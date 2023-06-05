@@ -117,7 +117,6 @@ PACKAGE_ARCH = "${MACHINE_ARCH}"
 
 ALTERNATIVE_LINK_NAME[weston.ini] = "${weston_ini_dir}/weston.ini"
 
-RDEPENDS:${PN} = "weston-init"
 RPROVIDES:${PN} = "weston-ini"
 RCONFLICTS:${PN} = "${PN}-landscape"
 ALTERNATIVE:${PN} = "weston.ini"
@@ -127,7 +126,6 @@ PACKAGE_BEFORE_PN += "${PN}-landscape"
 
 FILES:${PN}-landscape = "${weston_ini_dir}/weston.ini.landscape"
 
-RDEPENDS:${PN}-landscape = "weston-init"
 RPROVIDES:${PN}-landscape = "weston-ini"
 RCONFLICTS:${PN}-landscape = "${PN}"
 ALTERNATIVE:${PN}-landscape = "weston.ini"
@@ -137,7 +135,6 @@ PACKAGE_BEFORE_PN += "${PN}-landscape-inverted"
 
 FILES:${PN}-landscape-inverted = "${weston_ini_dir}/weston.ini.landscape-inverted"
 
-RDEPENDS:${PN}-landscape-inverted = "weston-init"
 RPROVIDES:${PN}-landscape-inverted = "weston-ini"
 RCONFLICTS:${PN}-landscape-inverted = "${PN}"
 ALTERNATIVE:${PN}-landscape-inverted = "weston.ini"
@@ -148,7 +145,6 @@ PACKAGE_BEFORE_PN += "${PN}-no-activate"
 
 FILES:${PN}-no-activate = "${weston_ini_dir}/weston.ini.default-no-activate"
 
-RDEPENDS:${PN}-no-activate = "weston-init"
 RPROVIDES:${PN}-no-activate = "weston-ini"
 RCONFLICTS:${PN}-no-activate = "${PN}"
 ALTERNATIVE:${PN}-no-activate = "weston.ini"
@@ -159,12 +155,10 @@ PACKAGE_BEFORE_PN += "${PN}-landscape-no-activate"
 
 FILES:${PN}-landscape-no-activate = "${weston_ini_dir}/weston.ini.landscape-no-activate"
 
-RDEPENDS:${PN}-landscape-no-activate = "weston-init"
 RPROVIDES:${PN}-landscape-no-activate = "weston-ini"
 RCONFLICTS:${PN}-landscape-no-activate = "${PN}"
 ALTERNATIVE:${PN}-landscape-no-activate = "weston.ini"
 ALTERNATIVE_TARGET_${PN}-landscape-no-activate = "${weston_ini_dir}/weston.ini.landscape-no-activate"
-
 
 # This is a settings-only package, we do not need a development package
 # (and its fixed dependency to ${PN} being installed)

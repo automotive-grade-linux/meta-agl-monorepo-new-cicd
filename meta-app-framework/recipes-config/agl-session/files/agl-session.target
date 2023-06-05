@@ -1,5 +1,0 @@
-[Unit]
-Description=AGL user session
-
-BindsTo=graphical-session.target
-Before=graphical-session.target
