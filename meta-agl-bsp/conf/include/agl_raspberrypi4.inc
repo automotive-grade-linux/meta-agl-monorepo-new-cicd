@@ -29,3 +29,6 @@ IMAGE_INSTALL:append = " ${@bb.utils.contains('AGL_XEN_WANTED', '1', 'xen-tools 
 
 # Add xen-raspberry binary to boot files
 IMAGE_BOOT_FILES:append = " ${@bb.utils.contains('AGL_XEN_WANTED','1', 'xen-${MACHINE}', '',d)}"
+
+#DISPLAY CONFIGURATION
+WESTON_DISPLAYS:raspberrypi4 = " hdmi-a-1-90 hdmi-a-2-90"

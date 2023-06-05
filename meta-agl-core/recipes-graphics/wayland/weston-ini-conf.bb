@@ -9,6 +9,10 @@ SRC_URI = " \
 	file://hdmi-a-1-90.cfg \
 	file://hdmi-a-1-180.cfg \
 	file://hdmi-a-1-270.cfg \
+	file://hdmi-a-2-0.cfg \
+	file://hdmi-a-2-90.cfg \
+	file://hdmi-a-2-180.cfg \
+	file://hdmi-a-2-270.cfg \
 	file://remote-output.cfg.in \
 	file://transmitter-output.cfg.in \
 	file://virtual-0.cfg \
@@ -73,6 +77,9 @@ do_compile() {
         if echo $F | grep '^hdmi-a-1-\(90\|270\)$'; then
             F="hdmi-a-1-0"
             INVF="hdmi-a-1-180"
+        elif echo $F | grep '^hdmi-a-2-\(90\|270\)$'; then
+            F="hdmi-a-2-0"
+            INVF="hdmi-a-2-180"
         elif echo $F | grep '^virtual-90$'; then
             F="virtual-0"
             INVF="virtual-180"
