@@ -33,10 +33,10 @@ S = "${WORKDIR}/git"
 
 inherit qmake5 systemd pkgconfig
 
+SYSTEMD_SERVICE:${PN} = "${BPN}.service"
+
 do_install:append() {
-    install -d ${D}${systemd_user_unitdir}/agl-session.target.wants
-    install -m0644 ${WORKDIR}/tbtnavi.service ${D}${systemd_user_unitdir}/tbtnavi.service
-    ln -s ../tbtnavi.service ${D}${systemd_user_unitdir}/agl-session.target.wants/tbtnavi.service
+    install -D -m 0644 ${WORKDIR}/${BPN}.service ${D}${systemd_system_unitdir}/${BPN}.service
 
     # Currently using default global client and CA certificates
     # for KUKSA.val SSL, installing app specific ones would go here.
@@ -49,8 +49,6 @@ do_install:append() {
     install -m 0644 ${WORKDIR}/tbtnavi.conf ${D}${sysconfdir}/xdg/AGL/
     install -m 0644 ${WORKDIR}/tbtnavi.token ${D}${sysconfdir}/xdg/AGL/tbtnavi/
 }
-
-FILES:${PN} += " ${systemd_user_unitdir}"
 
 RDEPENDS:${PN} += " \
     qtlocation \

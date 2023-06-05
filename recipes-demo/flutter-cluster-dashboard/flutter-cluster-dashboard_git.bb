@@ -26,16 +26,16 @@ FLUTTER_APPLICATION_INSTALL_PREFIX = "/flutter"
 
 OPENROUTE_API_KEY ??= "YOU_NEED_TO_SET_IT_IN_LOCAL_CONF"
 
-inherit flutter-app update-alternatives
+inherit flutter-app update-alternatives systemd
 
 CLUSTER_DEMO_VISS_HOSTNAME ??= "192.168.10.2"
 
 APP_CONFIG = "flutter_cluster_dashboard_on_bg.json"
 
+SYSTEMD_SERVICE:${PN} = "flutter-cluster-dashboard.service"
+
 do_install:append() {
-    install -D -m 0644 ${WORKDIR}/${BPN}.service ${D}${systemd_user_unitdir}/${BPN}.service
-    install -d ${D}${systemd_user_unitdir}/agl-session.target.wants
-    ln -s ../${BPN}.service ${D}${systemd_user_unitdir}/agl-session.target.wants/${BPN}.service
+    install -D -m 0644 ${WORKDIR}/${BPN}.service ${D}${systemd_system_unitdir}/${BPN}.service
 
     install -D -m 0644 ${WORKDIR}/${APP_CONFIG} ${D}${datadir}/flutter/${BPN}.json
 
@@ -50,8 +50,9 @@ do_install:append() {
 
 ALTERNATIVE_LINK_NAME[flutter-cluster-dashboard.yaml] = "${sysconfdir}/xdg/AGL/${BPN}.yaml"
 
-FILES:${PN} += "${datadir} ${systemd_user_unitdir} ${sysconfdir}/default/"
-RDEPENDS:${PN} += "flutter-auto agl-flutter-env"
+FILES:${PN} += "${datadir} ${sysconfdir}/default/"
+
+RDEPENDS:${PN} += "flutter-auto agl-flutter-env liberation-fonts"
 
 PACKAGE_BEFORE_PN += "${PN}-conf ${PN}-conf-demo"
 

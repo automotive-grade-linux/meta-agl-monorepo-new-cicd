@@ -12,7 +12,6 @@ PACKAGES = "\
 
 RDEPENDS:${PN} += "\
     packagegroup-agl-image-ivi \
-    packagegroup-agl-profile-graphical-qt5 \
     packagegroup-agl-demo \
     "
 

@@ -21,15 +21,13 @@ SRCREV  = "ce90cf8dd26d596d65e222a94e64aa51e1c33298"
 
 S  = "${WORKDIR}/git"
 
-inherit cmake pkgconfig
+inherit cmake pkgconfig systemd
+
+SYSTEMD_SERVICE:${PN} = "${BPN}.service"
 
 do_install:append() {
-    install -D -m 0644 ${WORKDIR}/${BPN}.service ${D}${systemd_user_unitdir}/${BPN}.service
-    install -d ${D}${systemd_user_unitdir}/agl-session.target.wants
-    ln -s ../${BPN}.service ${D}${systemd_user_unitdir}/agl-session.target.wants/${BPN}.service
+    install -D -m 0644 ${WORKDIR}/${BPN}.service ${D}${systemd_system_unitdir}/${BPN}.service
 }
-
-FILES:${PN} += " ${systemd_user_unitdir}"
 
 RDEPENDS:${PN} += " \
     gstreamer1.0-plugins-base \

@@ -29,4 +29,4 @@ do_install() {
 
 FILES:${PN} += "${systemd_system_unitdir} ${sbindir}"
 
-RDEPENDS:${PN} += "nss agl-session kuksa-val-certificates-client bash"
+RDEPENDS:${PN} += "nss agl-users kuksa-val-certificates-client bash"

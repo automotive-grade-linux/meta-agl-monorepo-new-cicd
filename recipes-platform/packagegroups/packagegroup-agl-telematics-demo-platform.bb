@@ -9,24 +9,10 @@ PACKAGES = "\
     packagegroup-agl-telematics-demo-platform \
     "
 
-ALLOW_EMPTY:${PN} = "1"
-
-RDEPENDS:${PN} += "\
-    packagegroup-agl-profile-telematics \
-    "
-
-AGL_APPS = " \
-    "
-
-AGL_APIS = " \
-    "
-
 RDEPENDS:${PN}:append = " \
     gpsd \
     sw-gpsd-udev-conf \
     usb-can-udev-conf \
     simple-can-simulator \
     ${@bb.utils.contains('DISTRO_FEATURES', 'agl-devel', 'ofono-tests gps-utils' , '', d)} \
-    ${AGL_APPS} \
-    ${AGL_APIS} \
 "

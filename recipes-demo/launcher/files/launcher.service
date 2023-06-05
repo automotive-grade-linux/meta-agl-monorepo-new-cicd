@@ -4,8 +4,10 @@ After=homescreen.service
 
 [Service]
 Type=simple
+User=agl-driver
+Environment=XDG_RUNTIME_DIR=/run/user/1001/
 ExecStart=/usr/bin/launcher
 Restart=on-failure
 
 [Install]
-WantedBy=agl-session.target
+WantedBy=graphical.target

@@ -29,16 +29,16 @@ SRCREV = "c9ae3bc5a102caad6d8040cd268a64295654e162"
 
 S = "${WORKDIR}/git"
 
-inherit meson systemd pkgconfig
+inherit meson pkgconfig systemd
 
 PATH:prepend = "${STAGING_DIR_NATIVE}${OE_QMAKE_PATH_QT_BINS}:"
 
 OE_QMAKE_CXXFLAGS:append = " ${@bb.utils.contains('DISTRO_FEATURES', 'agl-devel', '' , '-DQT_NO_DEBUG_OUTPUT', d)}"
 
+SYSTEMD_SERVICE:${PN} = "${BPN}.service"
+
 do_install:append() {
-    install -d ${D}${systemd_user_unitdir}/agl-session.target.wants
-    install -m0644 ${WORKDIR}/homescreen.service ${D}${systemd_user_unitdir}/homescreen.service
-    ln -s ../homescreen.service ${D}${systemd_user_unitdir}/agl-session.target.wants/homescreen.service
+    install -D -m0644 ${WORKDIR}/homescreen.service ${D}${systemd_system_unitdir}/homescreen.service
 
     # Currently using default global client and CA certificates
     # for KUKSA.val SSL, installing app specific ones would go here.
@@ -51,8 +51,6 @@ do_install:append() {
     install -m 0644 ${WORKDIR}/homescreen.conf ${D}${sysconfdir}/xdg/AGL/
     install -m 0644 ${WORKDIR}/homescreen.token ${D}${sysconfdir}/xdg/AGL/homescreen/
 }
-
-FILES:${PN} += " ${systemd_user_unitdir}"
 
 RDEPENDS:${PN} += " \
     libqtappfw \

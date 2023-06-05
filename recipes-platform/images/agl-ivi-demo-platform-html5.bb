@@ -6,6 +6,6 @@ DESCRIPTION = "Contains the web runtime and sample web apps"
 require agl-demo-container-guest-integration.inc
 
 # add packages for demo platform (include demo apps) here
-IMAGE_INSTALL:append = " \
+IMAGE_INSTALL += " \
     packagegroup-agl-demo-platform-html5 \
 "

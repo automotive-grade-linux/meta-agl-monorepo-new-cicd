@@ -18,4 +18,4 @@ FILES:${PN} = " \
     ${sysconfdir}/systemd/system/agl-app@${AGL_APP_ID}.service.d \
 "
 
-RDEPENDS:${PN} = "weston"
+RDEPENDS:${PN} = "weston-terminal"

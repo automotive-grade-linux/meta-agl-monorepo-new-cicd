@@ -2,13 +2,12 @@ DESCRIPTION = "AGL KVM+QEMU Demo Platform image."
 
 LICENSE = "MIT"
 
-require recipes-platform/images/agl-image-weston.inc
+require recipes-platform/images/agl-image-compositor.bb
 
 IMAGE_FEATURES += "splash package-management ssh-server-openssh"
 
 # Add packages for KVM+QEMU demo platform here
-IMAGE_INSTALL:append = " \
-    packagegroup-agl-image-minimal \
+IMAGE_INSTALL += " \
     packagegroup-agl-core-connectivity \
     kernel-image \
     agl-compositor \

@@ -12,8 +12,6 @@ PACKAGES = "\
 
 RDEPENDS:${PN} += "\
     packagegroup-agl-image-ivi \
-    packagegroup-agl-profile-graphical-qt5 \
-    packagegroup-hmi-framework \
     packagegroup-agl-demo \
     "
 
@@ -31,6 +29,7 @@ AGL_APPS = " \
 
 RDEPENDS:${PN}:append = " \
     weston-ini-conf-no-activate \
+    homescreen \
     launcher \
     qtquickcontrols2-agl \
     qtquickcontrols2-agl-style \

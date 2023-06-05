@@ -12,7 +12,6 @@ PACKAGES = "\
 ALLOW_EMPTY:${PN} = "1"
 
 RDEPENDS:${PN} += "\
-    packagegroup-agl-profile-cluster-qt5 \
     packagegroup-agl-ttf-fonts \
     packagegroup-agl-source-han-sans-ttf-fonts \
     packagegroup-agl-networking \

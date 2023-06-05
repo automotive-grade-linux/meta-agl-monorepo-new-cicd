@@ -32,13 +32,11 @@ inherit qmake5 systemd pkgconfig
 
 PATH:prepend = "${STAGING_DIR_NATIVE}${OE_QMAKE_PATH_QT_BINS}:"
 
-do_install:append() {
-    install -d ${D}${systemd_user_unitdir}/agl-session.target.wants
-    install -m0644 ${WORKDIR}/launcher.service ${D}${systemd_user_unitdir}/launcher.service
-    ln -s ../launcher.service ${D}${systemd_user_unitdir}/agl-session.target.wants/launcher.service
-}
+SYSTEMD_SERVICE:${PN} = "${BPN}.service"
 
-FILES:${PN} += " ${systemd_user_unitdir}"
+do_install:append() {
+    install -D -m0644 ${WORKDIR}/launcher.service ${D}${systemd_system_unitdir}/launcher.service
+}
 
 RDEPENDS:${PN} += " \
     libqtappfw \

@@ -12,7 +12,6 @@ PACKAGES = "\
 
 RDEPENDS:${PN} += "\
     packagegroup-agl-image-ivi \
-    packagegroup-agl-profile-graphical-html5 \
     packagegroup-agl-demo \
     "
 
@@ -32,6 +31,7 @@ AGL_APPS = " \
     "
 
 RDEPENDS:${PN}:append = " \
+    virtual/webruntime \
     weston-ini-conf-landscape-no-activate \
     ${@bb.utils.contains('DISTRO_FEATURES', 'agl-devel', 'unzip' , '', d)} \
     qtquickcontrols2-agl \

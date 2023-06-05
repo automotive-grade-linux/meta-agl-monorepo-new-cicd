@@ -18,6 +18,9 @@ RDEPENDS:${PN} += "\
     packagegroup-agl-ivi-connectivity \
     packagegroup-agl-ivi-graphics \
     packagegroup-agl-ivi-multimedia \
+    packagegroup-agl-ivi-multimedia-hardware \
     packagegroup-agl-ivi-navigation \
+    packagegroup-agl-ivi-identity \
+    packagegroup-agl-ivi-services \
     "
 

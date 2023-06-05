@@ -23,14 +23,12 @@ SRCREV  = "b5622ce91307589b03ad5d903214b47ff2277e48"
 
 S  = "${WORKDIR}/git"
 
-inherit cmake_qt5 pkgconfig
+inherit cmake_qt5 pkgconfig systemd
 
 do_install:append() {
     # Only install unit, do not enable it by default
-    install -D -m 0644 ${WORKDIR}/${BPN}.service ${D}${systemd_user_unitdir}/${BPN}.service
+    install -D -m 0644 ${WORKDIR}/${BPN}.service ${D}${systemd_system_unitdir}/${BPN}.service
 }
-
-FILES:${PN} += " ${systemd_user_unitdir}"
 
 RDEPENDS:${PN} += " \
     qtwayland \
@@ -38,3 +36,6 @@ RDEPENDS:${PN} += " \
     gstreamer1.0-plugins-good \
     gstreamer1.0-plugins-bad \
 "
+
+SYSTEMD_SERVICE:${PN} = "${BPN}.service"
+SYSTEMD_AUTO_ENABLE:${PN} = "disable"

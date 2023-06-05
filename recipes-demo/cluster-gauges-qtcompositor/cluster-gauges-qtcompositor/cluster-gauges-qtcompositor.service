@@ -2,7 +2,8 @@
 Description=cluster-gauges-qtcompositor
 
 [Service]
-Environment=XDG_RUNTIME_DIR=/run/user/0
+User=agl-driver
+Environment=XDG_RUNTIME_DIR=/run/user/1001
 ExecStart=/usr/bin/cluster-gauges
 
 Restart=always

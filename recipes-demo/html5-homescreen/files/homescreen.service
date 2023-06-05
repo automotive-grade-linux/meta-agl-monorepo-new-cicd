@@ -5,9 +5,11 @@ After=WebAppMgr.service dbus.service
 
 [Service]
 Type=simple
+User=agl-driver
+Environment=XDG_RUNTIME_DIR=/run/user/1001/
 ExecStartPre=sleep 5
 ExecStart=/usr/bin/WebAppMgr --appid=homescreen --app-install-dir=/usr/lib/wam_apps/html5-homescreen/
 Restart=on-failure
 
 [Install]
-WantedBy=agl-session.target
+WantedBy=graphical.target

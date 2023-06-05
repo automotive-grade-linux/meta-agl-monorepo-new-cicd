@@ -26,14 +26,14 @@ SRCREV  = "137144c447d8adb618f5acbcbafd65f50264d6eb"
 
 S  = "${WORKDIR}/git"
 
-inherit pkgconfig cmake_qt5
+inherit pkgconfig cmake_qt5 systemd
 
 CLUSTER_DEMO_VISS_HOSTNAME ??= "192.168.10.2"
 
+SYSTEMD_SERVICE:${PN} = "${BPN}.service"
+
 do_install:append() {
-    install -d ${D}${systemd_user_unitdir}/agl-session.target.wants
-    install -m 0644 ${WORKDIR}/${BPN}.service ${D}${systemd_user_unitdir}/${BPN}.service
-    ln -s ../${BPN}.service ${D}${systemd_user_unitdir}/agl-session.target.wants/${BPN}.service
+    install -D -m 0644 ${WORKDIR}/${BPN}.service ${D}${systemd_system_unitdir}/${BPN}.service
 
     # VIS authorization token file for KUKSA.val should ideally not
     # be readable by other users, but currently that's not doable
@@ -44,8 +44,6 @@ do_install:append() {
     sed -i "s/^server = .*/server = \"${CLUSTER_DEMO_VISS_HOSTNAME}\"/" ${D}${sysconfdir}/xdg/AGL/cluster-dashboard.conf
     install -m 0644 ${WORKDIR}/cluster-dashboard.token ${D}${sysconfdir}/xdg/AGL/cluster-dashboard/
 }
-
-FILES:${PN} += " ${systemd_user_unitdir}"
 
 RDEPENDS:${PN} += " \
     qtwayland \

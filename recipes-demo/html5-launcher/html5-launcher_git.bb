@@ -38,5 +38,5 @@ do_install() {
 
 FILES:${PN} = "${WAM_APPLICATIONS_DIR}/${PN}"
 
-RCONFLICTS:${PN} = "launcher"
+RCONFLICTS:${PN} = "launcher flutter-homescreen"
 RDEPENDS:${PN} = "applaunchd"

@@ -6,9 +6,11 @@ After=agl-compositor.service
 
 # Since we are part of the agl session, make sure we are started before
 # it is complete.
-Before=agl-session.target
+Before=graphical.target
 
 [Service]
+User=agl-driver
+Environment=XDG_RUNTIME_DIR=/run/user/1001/
 ExecStart=/usr/bin/qt-cluster-receiver
 
 Restart=always
@@ -17,4 +19,4 @@ StandardOutput=journal
 StandardError=journal
 
 [Install]
-WantedBy=agl-session.target
+WantedBy=graphical.target

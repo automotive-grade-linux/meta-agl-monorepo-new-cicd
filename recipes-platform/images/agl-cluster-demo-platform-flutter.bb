@@ -2,7 +2,7 @@ SUMMARY = "Baseline Flutter Image for Release"
 
 LICENSE = "MIT"
 
-require recipes-platform/images/agl-image-weston.inc
+require recipes-platform/images/agl-image-compositor.bb
 
 IMAGE_FEATURES += "splash package-management ssh-server-openssh"
 
@@ -21,12 +21,9 @@ IMAGE_KUKSA_PACKAGES = " \
 "
 
 # generic
-IMAGE_INSTALL:append = "\
-    agl-compositor \
-    agl-compositor-init \
+IMAGE_INSTALL += "\
     ${@bb.utils.contains("AGL_FEATURES", "agl-demo-preload", "weston-ini-conf-landscape-inverted", "weston-ini-conf-landscape", d)} \
     \
-    packagegroup-agl-profile-graphical \
     packagegroup-agl-networking \
     cluster-receiver \
     \
@@ -35,7 +32,7 @@ IMAGE_INSTALL:append = "\
     "
 
 # Flutter
-IMAGE_INSTALL:append = "\
+IMAGE_INSTALL += "\
     flutter-cluster-dashboard \
     ${@bb.utils.contains("AGL_FEATURES", "agl-demo-preload", "flutter-cluster-dashboard-conf-demo", "flutter-cluster-dashboard-conf", d)} \
     cluster-demo-config-flutter \

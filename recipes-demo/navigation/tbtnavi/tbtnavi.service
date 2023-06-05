@@ -4,8 +4,10 @@ After=agl-compositor.service
 
 [Service]
 Type=simple
+User=agl-driver
+Environment=XDG_RUNTIME_DIR=/run/user/1001/
 ExecStart=/usr/bin/tbtnavi
 Restart=on-failure
 
 [Install]
-WantedBy=agl-session.target
+WantedBy=graphical.target

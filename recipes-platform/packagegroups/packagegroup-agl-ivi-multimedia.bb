@@ -10,18 +10,16 @@ PACKAGES = "\
 
 ALLOW_EMPTY:${PN} = "1"
 
+PIPEWIRE_PACKAGES = " \
+    packagegroup-pipewire \
+    ${@bb.utils.contains('DISTRO_FEATURES', 'agl-devel', 'packagegroup-pipewire-tools alsa-utils', '', d)} \
+    wireplumber-config-agl \
+    wireplumber-policy-config-agl \
+    "
+
 RDEPENDS:${PN} += "\
+    ${@bb.utils.contains('DISTRO_FEATURES', 'pipewire', '${PIPEWIRE_PACKAGES}', '', d)} \
     gstreamer1.0-plugins-base-meta \
     gstreamer1.0-plugins-good-meta \
     mpd \
-    "
-
-# for now: enable here for the AGL IVI demo (image-ivi and demo-platform)
-# tbd: change based on usage in profiles
-PIPEWIRE = "\
-    ${@bb.utils.contains('DISTRO_FEATURES', 'pipewire', 'packagegroup-pipewire', '', d)}\
-    "
-
-RDEPENDS:${PN} += "\
-    ${PIPEWIRE} \
     "

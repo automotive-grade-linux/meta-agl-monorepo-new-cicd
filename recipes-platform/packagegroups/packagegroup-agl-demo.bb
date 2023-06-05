@@ -38,5 +38,4 @@ RDEPENDS:${PN} += " \
     iproute2 \
     ${DEMO_PLATFORM_CONF} \
     ${TTF_FONTS} \
-    ${@bb.utils.contains('DISTRO_FEATURES', 'webruntime', 'virtual/webruntime', '', d)} \
     "
