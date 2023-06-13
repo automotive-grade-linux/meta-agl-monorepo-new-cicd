@@ -25,6 +25,9 @@ PACKAGECONFIG[grpc-proxy] = "-Dgrpc-proxy=true,-Dgrpc-proxy=false,grpc grpc-nati
 
 inherit meson pkgconfig python3native
 
+# Reuse include file from upstream weston since we have the same requirements
+require recipes-graphics/wayland/required-distro-features.inc
+
 PACKAGES =+ "agl-shell-grpc-server"
 
 FILES:${PN} = " \
@@ -41,7 +44,6 @@ FILES:agl-shell-grpc-server = " \
 RDEPENDS:${PN} += " \
     agl-compositor-init \
     xkeyboard-config \
-    ${@bb.utils.filter('DISTRO_FEATURES', 'polkit', d)} \
 "
 
 FILES:${PN}-dev += " \

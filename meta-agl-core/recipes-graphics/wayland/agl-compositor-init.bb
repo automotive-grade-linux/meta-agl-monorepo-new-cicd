@@ -4,6 +4,9 @@ LIC_FILES_CHKSUM = "file://${COREBASE}/meta/COPYING.MIT;md5=3da9cfbcb788c80a0384
 
 inherit systemd
 
+# Reuse include file from upstream weston since we have the same requirements
+require recipes-graphics/wayland/required-distro-features.inc
+
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 
 SRC_URI = "file://agl-compositor.service \

@@ -11,5 +11,5 @@ SYSTEMD_DEFAULT_TARGET = "graphical.target"
 
 IMAGE_INSTALL += " \
     packagegroup-agl-graphical-compositor \
-    ${@bb.utils.contains('DISTRO_FEATURES', 'agl-devel', 'agl-shell-activator weston-examples', '', d)} \
+    ${@bb.utils.contains('DISTRO_FEATURES', 'agl-devel', 'weston-examples', '', d)} \
 "
