@@ -32,7 +32,7 @@ WESTON_DISPLAYS ?= "hdmi-a-1-90"
 # Configuration fragments to use in weston.ini.*
 # Note that some may be replaced/removed when building the landscape
 # configuration.
-WESTON_FRAGMENTS = "core shell ${WESTON_DISPLAYS}"
+WESTON_FRAGMENTS = "core shell grpc-proxy ${WESTON_DISPLAYS}"
 
 # On-target weston.ini directory
 weston_ini_dir = "${sysconfdir}/xdg/weston"
@@ -65,7 +65,6 @@ do_compile() {
 
     cat ${WORKDIR}/weston.ini.default > ${WORKDIR}/weston.ini.default-no-activate
     sed -i -e 's#\[core\]#[core]\nactivate-by-default=false#' ${WORKDIR}/weston.ini.default-no-activate
-    cat ${WORKDIR}/grpc-proxy.cfg >> ${WORKDIR}/weston.ini.default-no-activate
 
     # Do it again, but filter fragments to configure for landscape
     # and a corresponding landscape-inverted that is 180 degrees
@@ -94,7 +93,6 @@ do_compile() {
 
     cat ${WORKDIR}/weston.ini.landscape > ${WORKDIR}/weston.ini.landscape-no-activate
     sed -i -e 's#\[core\]#[core]\nactivate-by-default=false#' ${WORKDIR}/weston.ini.landscape-no-activate
-    cat ${WORKDIR}/grpc-proxy.cfg >> ${WORKDIR}/weston.ini.landscape-no-activate
 }
 
 do_install:append() {
