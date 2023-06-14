@@ -64,7 +64,6 @@ do_compile() {
     sed -i -e '$ d' ${WORKDIR}/weston.ini.default
 
     cat ${WORKDIR}/weston.ini.default > ${WORKDIR}/weston.ini.default-no-activate
-    sed -i -e 's#\[core\]#[core]\nactivate-by-default=false#' ${WORKDIR}/weston.ini.default-no-activate
 
     # Do it again, but filter fragments to configure for landscape
     # and a corresponding landscape-inverted that is 180 degrees
@@ -92,7 +91,6 @@ do_compile() {
     sed -i -e '$ d' ${WORKDIR}/weston.ini.landscape-inverted
 
     cat ${WORKDIR}/weston.ini.landscape > ${WORKDIR}/weston.ini.landscape-no-activate
-    sed -i -e 's#\[core\]#[core]\nactivate-by-default=false#' ${WORKDIR}/weston.ini.landscape-no-activate
 }
 
 do_install:append() {
