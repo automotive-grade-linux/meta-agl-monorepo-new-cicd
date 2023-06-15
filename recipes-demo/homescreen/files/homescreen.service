@@ -1,6 +1,6 @@
 [Unit]
-Requires=agl-compositor.service
-After=agl-compositor.service
+Requires=agl-compositor.service applaunchd.service
+After=agl-compositor.service applaunchd.service
 Before=graphical.target
 
 [Service]

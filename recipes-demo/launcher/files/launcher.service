@@ -1,6 +1,6 @@
 [Unit]
-Requires=homescreen.service
-After=homescreen.service
+Requires=homescreen.service applaunchd.service
+After=homescreen.service applaunchd.service
 
 [Service]
 Type=simple
