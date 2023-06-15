@@ -29,7 +29,9 @@ SRCREV = "7a3e870a8349d43a4838604db2c28140c2f76c9f"
 
 S = "${WORKDIR}/git"
 
-inherit meson pkgconfig systemd useradd
+inherit meson pkgconfig systemd useradd features_check
+
+REQUIRED_DISTRO_FEATURES = "systemd polkit"
 
 USERADD_PACKAGES = "${PN}"
 USERADDEXTENSION = "useradd-staticids"
