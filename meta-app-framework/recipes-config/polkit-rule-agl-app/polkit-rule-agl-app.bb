@@ -6,7 +6,7 @@ SRC_URI = "file://50-agl-app.rules"
 
 DEPENDS += "polkit"
 
-inherit features_check
+inherit useradd features_check
 REQUIRED_DISTRO_FEATURES = "polkit"
 
 do_install() {
@@ -14,5 +14,8 @@ do_install() {
     chown polkitd:root ${D}/${datadir}/polkit-1/rules.d
     install -m 0644 ${WORKDIR}/50-agl-app.rules ${D}${datadir}/polkit-1/rules.d
 }
+
+USERADD_PACKAGES = "${PN}"
+USERADD_PARAM:${PN} += "--system --no-create-home --user-group --home-dir ${sysconfdir}/polkit-1 polkitd;"
 
 FILES:${PN} += "${datadir}/polkit-1/rules.d/*.rules"
