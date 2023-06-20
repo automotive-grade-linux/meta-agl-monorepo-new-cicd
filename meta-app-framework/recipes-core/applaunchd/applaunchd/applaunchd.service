@@ -3,6 +3,7 @@ Wants=network.target polkit.service
 After=network.target polkit.service
 
 [Service]
+Type=notify
 User=applaunchd
 Environment=XDG_DATA_DIRS=/usr/share
 ExecStart=/usr/bin/applaunchd
