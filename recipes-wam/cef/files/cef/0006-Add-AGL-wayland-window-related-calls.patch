@@ -1,0 +1,201 @@
+From efba58d289ad381c6ca9fae9ded040c816946894 Mon Sep 17 00:00:00 2001
+From: Roger Zanoni <rzanoni@igalia.com>
+Date: Thu, 18 May 2023 10:34:08 +0200
+Subject: [PATCH 06/10] Add AGL wayland window related calls
+
+---
+ include/views/cef_window.h             | 34 ++++++++++++++++
+ libcef/browser/views/view_util.h       | 10 +++++
+ libcef/browser/views/view_util_aura.cc | 54 ++++++++++++++++++++++++++
+ libcef/browser/views/window_impl.cc    | 24 ++++++++++++
+ libcef/browser/views/window_impl.h     | 10 +++++
+ 5 files changed, 132 insertions(+)
+
+diff --git a/include/views/cef_window.h b/include/views/cef_window.h
+index e34e446bd..dfa7821bc 100644
+--- a/include/views/cef_window.h
++++ b/include/views/cef_window.h
+@@ -348,6 +348,40 @@ class CefWindow : public CefPanel {
+   ///
+   /*--cef()--*/
+   virtual void RemoveAllAccelerators() = 0;
++
++  // AGL-related calls
++
++  ///
++  /// Tells the agl compositor to activate the app
++  ///
++  /*--cef()--*/
++  virtual void AglActivateApp(const CefString& app) = 0;
++
++  ///
++  /// Tells the agl compositor the application id
++  ///
++  /*--cef()--*/
++  virtual void AglSetAppId(const CefString& app_id) = 0;
++
++  ///
++  /// Tells the agl compositor that everything is set-up and good to go
++  ///
++  /*--cef()--*/
++  virtual void AglSetAppReady() = 0;
++
++  ///
++  /// Tells the agl compositor that the app is the background application
++  ///
++  /*--cef()--*/
++  virtual void AglSetBackGroundApp() = 0;
++
++  ///
++  /// Tells the agl compositor that the app is a panel
++  ///
++  /*--cef()--*/
++  virtual void AglSetPanelApp(uint32_t edge) = 0;
++
++  // -----------------
+ };
+ 
+ #endif  // CEF_INCLUDE_VIEWS_CEF_WINDOW_H_
+diff --git a/libcef/browser/views/view_util.h b/libcef/browser/views/view_util.h
+index 302eee464..505c66d94 100644
+--- a/libcef/browser/views/view_util.h
++++ b/libcef/browser/views/view_util.h
+@@ -141,6 +141,16 @@ CefWindowHandle GetWindowHandle(views::Widget* widget);
+ // Returns the platform window handle for |window|. May return nullptr.
+ CefWindowHandle GetWindowHandle(gfx::NativeWindow window);
+ 
++// AGL-Related calls
++
++void AglActivateApp(views::Widget* widget, const std::string& app);
++void AglSetAppId(views::Widget* widget, const std::string& app_id);
++void AglSetAppReady(views::Widget* widget);
++void AglSetBackGroundApp(views::Widget* widget);
++void AglSetPanelApp(views::Widget* widget, uint32_t edge);
++
++// -----------------
++
+ }  // namespace view_util
+ 
+ #endif  // CEF_LIBCEF_BROWSER_VIEWS_VIEW_UTIL_H_
+diff --git a/libcef/browser/views/view_util_aura.cc b/libcef/browser/views/view_util_aura.cc
+index 8a144eb33..2ad2f3dc7 100644
+--- a/libcef/browser/views/view_util_aura.cc
++++ b/libcef/browser/views/view_util_aura.cc
+@@ -39,4 +39,58 @@ CefWindowHandle GetWindowHandle(gfx::NativeWindow window) {
+   return kNullWindowHandle;
+ }
+ 
++// AGL-Related calls
++
++void AglActivateApp(views::Widget* widget, const std::string& app) {
++  if (!widget) {
++    return;
++  }
++  aura::Window* window = widget->GetNativeWindow();
++  if (window && window->GetRootWindow()) {
++    return window->GetHost()->SetAglActivateApp(app);
++  }
++}
++
++void AglSetAppId(views::Widget* widget, const std::string& app_id) {
++  if (!widget) {
++    return;
++  }
++  aura::Window* window = widget->GetNativeWindow();
++  if (window && window->GetRootWindow()) {
++    return window->GetHost()->SetAglAppId(app_id);
++  }
++}
++
++void AglSetAppReady(views::Widget* widget) {
++  if (!widget) {
++    return;
++  }
++  aura::Window* window = widget->GetNativeWindow();
++  if (window && window->GetRootWindow()) {
++    return window->GetHost()->SetAglReady();
++  }
++}
++
++void AglSetBackGroundApp(views::Widget* widget) {
++  if (!widget) {
++    return;
++  }
++  aura::Window* window = widget->GetNativeWindow();
++  if (window && window->GetRootWindow()) {
++    return window->GetHost()->SetAglBackground();
++  }
++}
++
++void AglSetPanelApp(views::Widget* widget, uint32_t edge) {
++  if (!widget) {
++    return;
++  }
++  aura::Window* window = widget->GetNativeWindow();
++  if (window && window->GetRootWindow()) {
++    return window->GetHost()->SetAglPanel(edge);
++  }
++}
++
++// -----------------
++
+ }  // namespace view_util
+diff --git a/libcef/browser/views/window_impl.cc b/libcef/browser/views/window_impl.cc
+index 64e5c443e..22a4d39f6 100644
+--- a/libcef/browser/views/window_impl.cc
++++ b/libcef/browser/views/window_impl.cc
+@@ -522,6 +522,30 @@ CefWindowHandle CefWindowImpl::GetWindowHandle() {
+   return view_util::GetWindowHandle(widget_);
+ }
+ 
++// AGL-Related calls
++
++void CefWindowImpl::AglActivateApp(const CefString& app) {
++  view_util::AglActivateApp(widget_, app);
++}
++
++void CefWindowImpl::AglSetAppId(const CefString& app_id) {
++  view_util::AglSetAppId(widget_, app_id);
++}
++
++void CefWindowImpl::AglSetAppReady() {
++  view_util::AglSetAppReady(widget_);
++}
++
++void CefWindowImpl::AglSetBackGroundApp() {
++  view_util::AglSetBackGroundApp(widget_);
++}
++
++void CefWindowImpl::AglSetPanelApp(uint32_t edge) {
++  view_util::AglSetPanelApp(widget_, edge);
++}
++
++// -----------------
++
+ void CefWindowImpl::SendKeyPress(int key_code, uint32 event_flags) {
+   CEF_REQUIRE_VALID_RETURN_VOID();
+   InitializeUITesting();
+diff --git a/libcef/browser/views/window_impl.h b/libcef/browser/views/window_impl.h
+index f9557d415..ad02904f9 100644
+--- a/libcef/browser/views/window_impl.h
++++ b/libcef/browser/views/window_impl.h
+@@ -132,6 +132,16 @@ class CefWindowImpl
+ 
+   views::Widget* widget() const { return widget_; }
+ 
++  // AGL-Related calls
++
++  void AglActivateApp(const CefString& app) override;
++  void AglSetAppId(const CefString& app_id) override;
++  void AglSetAppReady() override;
++  void AglSetBackGroundApp() override;
++  void AglSetPanelApp(uint32_t edge) override;
++
++  // -----------------
++
+  private:
+   // Create a new implementation object.
+   // Always call Initialize() after creation.
+-- 
+2.39.2
+

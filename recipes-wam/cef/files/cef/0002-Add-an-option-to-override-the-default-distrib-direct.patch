@@ -1,0 +1,39 @@
+From 1da1ed1f7035bdb0a4528962c048b7365369f8fd Mon Sep 17 00:00:00 2001
+From: Roger Zanoni <rzanoni@igalia.com>
+Date: Mon, 24 Apr 2023 13:56:10 +0200
+Subject: [PATCH 02/10] Add an option to override the default distrib directory
+ name
+
+---
+ tools/make_distrib.py | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/tools/make_distrib.py b/tools/make_distrib.py
+index 045430ea3..a858e8ff6 100644
+--- a/tools/make_distrib.py
++++ b/tools/make_distrib.py
+@@ -463,6 +463,11 @@ parser.add_option(
+     dest='baseoutpath',
+     default='',
+     help="Use an anternative base path for the generated gn outputs instead of using chromium source dir")
++parser.add_option(
++    '--dist-path-name',
++    dest='distpathname',
++    default='',
++    help="Override the default name of the distribution output path.")
+ parser.add_option(
+     '--output-dir',
+     dest='outputdir',
+@@ -675,6 +680,9 @@ else:
+ if options.ozone:
+   output_dir_name = output_dir_name + '_ozone'
+ 
++if options.distpathname != '':
++  output_dir_name = options.distpathname + '_' + binary_arch
++
+ output_dir = create_output_dir(output_dir_name, options.outputdir)
+ 
+ # create the README.TXT file
+-- 
+2.39.2
+
