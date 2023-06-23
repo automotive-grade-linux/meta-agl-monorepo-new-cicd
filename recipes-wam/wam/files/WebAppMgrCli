@@ -1,0 +1,9 @@
+#!/bin/bash
+
+WAM_CLI_EXE="/usr/bin/WebAppMgr"
+
+if [ "$WAM_IS_CEF" = true ] ; then
+  WAM_CLI_EXE="/usr/share/wam/WebAppMgrCli"
+fi
+
+exec $WAM_CLI_EXE $@

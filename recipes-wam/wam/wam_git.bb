@@ -3,13 +3,16 @@ AUTHOR = "Jani Hautakangas <jani.hautakangas@lge.com>"
 LICENSE = "Apache-2.0"
 LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/Apache-2.0;md5=89aea4e17d99a7cacdbeed46a0096b10"
 
-DEPENDS = "glib-2.0 jsoncpp boost chromium protobuf protobuf-native grpc grpc-native"
+DEPENDS = "glib-2.0 jsoncpp boost protobuf protobuf-native grpc grpc-native"
 
 SRC_URI = "\
     git://github.com/igalia/${BPN}.git;branch=@58.agl;protocol=https \
+    file://WebAppMgrCli \
     file://WebAppMgr.service \
     file://WebAppMgr.env \
+    file://WebAppMgr-cef.env \
 "
+
 SRCREV = "4fbd6e648913bcf0fba63e4460eb44242c11f71b"
 
 PV = "ose58.agl"
@@ -17,12 +20,6 @@ PV = "ose58.agl"
 S = "${WORKDIR}/git"
 
 inherit cmake pkgconfig systemd
-
-EXTRA_OECMAKE = "\
-    -DCMAKE_BUILD_TYPE=Release \
-    -DCMAKE_INSTALL_PREFIX=${prefix} \
-    -DPLATFORM_NAME=${@'${DISTRO}'.upper().replace('-', '_')} \
-    -DCHROMIUM_SRC_DIR=${STAGING_INCDIR}/chromium"
 
 # Disable some of security flags
 # Disable D_FORTIFY_SOURCE=2 and -fstack-protector-strong
@@ -36,8 +33,7 @@ do_install:append() {
     install -v -d ${D}${sysconfdir}/wam
     install -v -m 644 ${S}/files/launch/security_policy.conf ${D}${sysconfdir}/wam/security_policy.conf
     install -v -D -m 644 ${WORKDIR}/WebAppMgr.service ${D}${systemd_system_unitdir}/WebAppMgr.service
-    install -v -D -m 644 ${WORKDIR}/WebAppMgr.env ${D}${sysconfdir}/default/WebAppMgr.env
-    ln -snf WebAppMgr ${D}${bindir}/web-runtime
+    install -v -D -m 755 ${WORKDIR}/WebAppMgrCli ${D}${bindir}/WebAppMgrCli
 }
 
 CXXFLAGS:append:agl-devel = " -DAGL_DEVEL"
@@ -49,8 +45,14 @@ do_install:append:agl-devel() {
     touch ${D}${localstatedir}/agl-devel/preferences/devmode_enabled
 }
 
-FILES:${PN} += "${sysconfdir}/init ${sysconfdir}/wam ${libdir}/webappmanager/plugins/*.so"
+require ${@bb.utils.contains('AGL_FEATURES', 'agl-cef', 'wam-cef.inc', 'wam.inc', d)}
+
+FILES:${PN} += "${sysconfdir}/init \
+                ${sysconfdir}/wam \
+                ${bindir} \
+                ${libdir}/webappmanager/plugins/*.so"
+
+RDEPENDS:${PN} += " bash"
 
 PROVIDES += "virtual/webruntime"
 RPROVIDES:${PN} += "virtual/webruntime"
-
