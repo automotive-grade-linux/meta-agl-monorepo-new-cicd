@@ -11,6 +11,8 @@ over the opaque weston_log_scope.
 This also adds two helper functions to get the scope name and its
 description.
 
+Upstream-Status: Pending
+
 Signed-off-by: Marius Vlad <marius.vlad@collabora.com>
 ---
  include/libweston/weston-log.h |  9 +++++++++

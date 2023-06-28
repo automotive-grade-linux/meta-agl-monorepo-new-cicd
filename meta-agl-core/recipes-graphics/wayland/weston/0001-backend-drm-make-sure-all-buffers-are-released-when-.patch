@@ -26,6 +26,9 @@ crtc was already disabled with the new synchronous commit.
 
 Signed-off-by: Michael Olbrich <m.olbrich@pengutronix.de>
 (cherry picked from commit f5a4fb5abcb8aeb6b078b6235834cc4ab6176c26)
+
+Upstream-Status: Pending
+
 ---
  libweston/backend-drm/drm.c | 10 +++++++---
  1 file changed, 7 insertions(+), 3 deletions(-)

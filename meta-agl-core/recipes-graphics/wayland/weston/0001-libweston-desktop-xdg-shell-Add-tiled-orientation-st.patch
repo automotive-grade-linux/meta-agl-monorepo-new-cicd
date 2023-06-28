@@ -12,6 +12,8 @@ These new states are incorporated the same way as the others, retaining
 the set state, but also avoiding sending new configure events if nothing
 changed since previously acked data.
 
+Upstream-Status: Pending
+
 Signed-off-by: Marius Vlad <marius.vlad@collabora.com>
 (cherry-picked from 37a3025d893def991dec59587d17672aa3bf967a)
 

@@ -17,6 +17,8 @@ emitted to stdout:
 
 It is valid to have a measurement without units, but not units without a measurement.
 
+Upstream-Status: Pending
+
 Signed-off-by: Tim Orling <timothy.t.orling@linux.intel.com>
 [updated for ptest-runner 2.3.2]
 [updated for ptest-runner 2.4.1]
