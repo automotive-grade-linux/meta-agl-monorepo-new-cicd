@@ -1,0 +1,33 @@
+From 81213fb5e1bdd19f4f8135bcddcc1efaeb1b42a5 Mon Sep 17 00:00:00 2001
+From: Marius Vlad <marius.vlad@collabora.com>
+Date: Wed, 26 Jul 2023 13:57:30 +0300
+Subject: [PATCH] qwaylandintegration: Keep previous check related to
+ inputContext()
+
+Avoid touching inputContext() when QT_LOGGING_RULES are enabled. This
+check ensures we're still able to debug Qt issues.
+
+Bug-AGL: SPEC-4770
+Signed-off-by: Marius Vlad <marius.vlad@collabora.com>
+---
+ src/client/qwaylandintegration.cpp | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/src/client/qwaylandintegration.cpp b/src/client/qwaylandintegration.cpp
+index c53ccb78..6d3d9559 100644
+--- a/src/client/qwaylandintegration.cpp
++++ b/src/client/qwaylandintegration.cpp
+@@ -479,7 +479,9 @@ void QWaylandIntegration::reconfigureInputContext()
+     }
+ #endif
+ 
+-    qCDebug(lcQpaWayland) << "using input method:" << inputContext()->metaObject()->className();
++    bool mUsingInputContextFromCompositor = qobject_cast<QWaylandInputContext *>(mInputContext.data());
++    if (mUsingInputContextFromCompositor)
++        qCDebug(lcQpaWayland) << "using input method:" << inputContext()->metaObject()->className();
+ }
+ 
+ QWaylandShellIntegration *QWaylandIntegration::createShellIntegration(const QString &integrationName)
+-- 
+2.35.1
+
