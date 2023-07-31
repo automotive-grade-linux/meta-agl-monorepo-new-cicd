@@ -12,12 +12,14 @@
 
 [Unit]
 Description="WebAppMgr is responsible for running web apps and manage their lifecycle"
-After=agl-compositor.service
-Requires=agl-compositor.service
+After=agl-compositor.service nss-agl-driver-db.service
+Requires=agl-compositor.service nss-agl-driver-db.service
 Before=graphical.target
 BindTo=agl-compositor.service
 
 [Service]
+User=agl-driver
+WorkingDirectory=/home/agl-driver
 Type=simple
 UMask=0077
 OOMScoreAdjust=-1000
