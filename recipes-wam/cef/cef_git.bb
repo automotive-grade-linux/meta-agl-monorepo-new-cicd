@@ -11,7 +11,7 @@ CHROMIUM_URL = "github.com/rogerzanoni/chromium108.git"
 CHROMIUM_VERSION = "108.0.5359.125"
 BRANCH_chromium108 = "5359"
 # Taken from https://bitbucket.org/chromiumembedded/cef/src/5615/CHROMIUM_BUILD_COMPATIBILITY.txt
-SRCREV_chromium108 = "fe6cbc05f1ec805339364b0df0e8be925a991a80"
+SRCREV_chromium108 = "ef52580d516c7f65e11cb7de66cfb3b3507a2219"
 SRCREV_cef = "a98cd4cdc0fdc49b6c38ba10cec800922745441e"
 GN_TARGET_CPU = "${@gn_arch_name('${TUNE_ARCH}')}"
 
