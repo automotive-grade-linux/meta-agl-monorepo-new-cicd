@@ -26,6 +26,7 @@ AGL_APPS = " \
     phone \
     radio \
     window-management-client-grpc \
+    camera-gstreamer \
     "
 
 RDEPENDS:${PN}:append = " \
