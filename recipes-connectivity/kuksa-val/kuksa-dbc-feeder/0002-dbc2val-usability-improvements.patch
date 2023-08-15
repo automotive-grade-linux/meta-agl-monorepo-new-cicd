@@ -1,7 +1,7 @@
-From 91fb1f5a92e8784446c4e354fe5a8c465d6b3cb8 Mon Sep 17 00:00:00 2001
+From b217a746ef7b92291320e4c1a66b52df0318495f Mon Sep 17 00:00:00 2001
 From: Scott Murray <scott.murray@konsulko.com>
-Date: Tue, 2 May 2023 16:27:04 -0400
-Subject: [PATCH 2/2] dbc2val: usability improvements
+Date: Sat, 5 Aug 2023 13:58:16 -0400
+Subject: [PATCH 2/3] dbc2val: usability improvements
 
 Changes:
 - Tweaked default configuration file search path to better match
@@ -17,29 +17,40 @@ Changes:
 Upstream-Status: pending
 
 Signed-off-by: Scott Murray <scott.murray@konsulko.com>
+
 ---
- dbc2val/dbcfeeder.py              | 10 ++++++++--
- dbc2val/dbcfeederlib/dbcreader.py | 11 ++++++++---
- 2 files changed, 16 insertions(+), 5 deletions(-)
+ dbc2val/dbcfeeder.py | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
 diff --git a/dbc2val/dbcfeeder.py b/dbc2val/dbcfeeder.py
-index d32bb04..b73b96e 100755
+index 966dba7..e7fd319 100755
 --- a/dbc2val/dbcfeeder.py
 +++ b/dbc2val/dbcfeeder.py
-@@ -170,7 +170,11 @@ class Feeder:
+@@ -188,7 +188,11 @@ class Feeder:
  
-             # use socketCAN
-             log.info("Using socket CAN device '%s'", canport)
--            self._reader.start_listening(bustype="socketcan", channel=canport)
+                 # use socketCAN
+                 log.info("Using socket CAN device '%s'", canport)
 +            try:
-+                self._reader.start_listening(bustype="socketcan", channel=canport)
+                 self._reader.start_listening(bustype="socketcan", channel=canport)
 +            except:
 +                log.error("Could not open {}, exiting".format(canport))
 +                sys.exit(-1)
  
-         self._run()
- 
-@@ -278,8 +282,10 @@ def parse_config(filename):
+             receiver = threading.Thread(target=self._run_receiver)
+             receiver.start()
+@@ -212,6 +216,11 @@ class Feeder:
+                 threads.append(transmitter)
+         else:
+             log.info("No val2dbc mappings found or val2dbc disabled!!")
++
++        # Spin so signal handlers will work
++        while not self._shutdown:
++            time.sleep(0.1)
++
+         # Wait for all of them to finish
+         for thread in threads:
+             thread.join()
+@@ -363,8 +372,10 @@ def parse_config(filename):
          configfile = filename
      else:
          config_candidates = [
@@ -51,39 +62,15 @@ index d32bb04..b73b96e 100755
              "config/dbc_feeder.ini",
          ]
          for candidate in config_candidates:
-diff --git a/dbc2val/dbcfeederlib/dbcreader.py b/dbc2val/dbcfeederlib/dbcreader.py
-index 5dad41f..c2f5b55 100644
---- a/dbc2val/dbcfeederlib/dbcreader.py
-+++ b/dbc2val/dbcfeederlib/dbcreader.py
-@@ -56,8 +56,8 @@ class DBCReader:
-             Bitrate in bit/s.
-         """
-         self.bus = can.interface.Bus(*args, **kwargs) # pylint: disable=abstract-class-instantiated
--        rxThread = threading.Thread(target=self.rxWorker)
--        rxThread.start()
-+        self.rxThread = threading.Thread(target=self.rxWorker)
-+        self.rxThread.start()
+@@ -577,7 +588,7 @@ def main(argv):
+     elif "can" in config and "dbc_default_file" in config["can"]:
+         dbc_default = config["can"]["dbc_default_file"]
+     else:
+-        dbc_default = "dbc_default_values.json"
++        dbc_default = ""
  
-     def get_whitelist(self):
-         log.info("Collecting signals, generating CAN ID whitelist")
-@@ -86,7 +86,10 @@ class DBCReader:
-     def rxWorker(self):
-         log.info("Starting Rx thread")
-         while self.run:
--            msg = self.bus.recv(timeout=1)
-+            try:
-+                msg = self.bus.recv(timeout=1)
-+            except Exception:
-+                break
-             log.debug("processing message from CAN bus")
-             if msg and msg.arbitration_id in self.canidwl:
-                 try:
-@@ -113,3 +116,5 @@ class DBCReader:
- 
-     def stop(self):
-         self.run = False
-+        self.bus.shutdown()
-+        self.rxThread.join()
+     if args.dbc2val:
+         use_dbc2val = True
 -- 
-2.39.2
+2.41.0
 

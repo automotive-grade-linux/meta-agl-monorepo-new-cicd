@@ -1,7 +1,7 @@
-From 3c9f74492153817dc4fa405c1724fbf22ce58c98 Mon Sep 17 00:00:00 2001
+From 3f3dbe36b4adcdd7c3cef41980058331e79ce620 Mon Sep 17 00:00:00 2001
 From: Scott Murray <scott.murray@konsulko.com>
-Date: Tue, 2 May 2023 16:19:55 -0400
-Subject: [PATCH 1/2] kuksa_viss_client: Add external certificates support
+Date: Sat, 5 Aug 2023 13:27:44 -0400
+Subject: [PATCH 2/2] kuksa_viss_client: Add external certificates support
 
 Tweak the definition of __certificate_dir__ in the kuksa_certificates
 package, and certificate location logic in the client library to allow
@@ -19,10 +19,10 @@ Signed-off-by: Scott Murray <scott.murray@konsulko.com>
  2 files changed, 7 insertions(+), 2 deletions(-)
 
 diff --git a/kuksa-client/kuksa_client/cli_backend/__init__.py b/kuksa-client/kuksa_client/cli_backend/__init__.py
-index d282a0c..3052859 100644
+index f757cd6..f4d1f35 100644
 --- a/kuksa-client/kuksa_client/cli_backend/__init__.py
 +++ b/kuksa-client/kuksa_client/cli_backend/__init__.py
-@@ -29,7 +29,7 @@ class Backend:
+@@ -30,7 +30,7 @@ class Backend:
              self.insecure = config.getboolean('insecure', False)
          except AttributeError:
              self.insecure = config.get('insecure', False)
@@ -47,5 +47,5 @@ index 22ccd3f..8323868 100644
 +else:
 +    __certificate_dir__= os.path.dirname(os.path.realpath(__file__))
 -- 
-2.39.2
+2.41.0
 

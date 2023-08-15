@@ -13,7 +13,9 @@ require kuksa-val.inc
 
 require ${BPN}-crates.inc
 
-SRC_URI += "file://kuksa-databroker.service"
+SRC_URI += "file://0001-Remove-protobuf-src-usage.patch \
+            file://kuksa-databroker.service \
+"
 
 S = "${WORKDIR}/git"
 
@@ -34,6 +36,7 @@ do_install:append() {
 
     # Install gRPC API protobuf files
     install -d ${D}${includedir}
+    cp -dr ${S}/proto/kuksa ${D}${includedir}
     cp -dr ${S}/kuksa_databroker/proto/sdv ${D}${includedir}
 }
 

@@ -1,7 +1,7 @@
-From 8e3039af3fc2badb24ff5df9f60c8d5964d2389e Mon Sep 17 00:00:00 2001
+From f73106b1f204b49930922e8bb4d1fdec6ac64b7d Mon Sep 17 00:00:00 2001
 From: Scott Murray <scott.murray@konsulko.com>
-Date: Wed, 5 Apr 2023 16:05:52 -0400
-Subject: [PATCH] Make install locations configurable
+Date: Sat, 5 Aug 2023 12:19:45 -0400
+Subject: [PATCH 5/5] Make install locations configurable
 
 Make binary, certificate, and configuration file install locations
 configurable, including generation and installation of an accurate
@@ -17,21 +17,21 @@ Signed-off-by: Scott Murray <scott.murray@konsulko.com>
 ---
  kuksa-val-server/config.ini         |  7 ----
  kuksa-val-server/config.ini.in      |  7 ++++
- kuksa-val-server/src/CMakeLists.txt | 57 ++++++++++++++++++++++-------
- kuksa-val-server/src/config.hpp.in  | 27 ++++++++++++++
+ kuksa-val-server/src/CMakeLists.txt | 59 +++++++++++++++++++++--------
+ kuksa-val-server/src/config.hpp.in  | 27 +++++++++++++
  kuksa-val-server/src/main.cpp       |  5 ++-
- 5 files changed, 80 insertions(+), 23 deletions(-)
+ 5 files changed, 81 insertions(+), 24 deletions(-)
  delete mode 100644 kuksa-val-server/config.ini
  create mode 100644 kuksa-val-server/config.ini.in
  create mode 100644 kuksa-val-server/src/config.hpp.in
 
 diff --git a/kuksa-val-server/config.ini b/kuksa-val-server/config.ini
 deleted file mode 100644
-index 3e4ada4..0000000
+index 8fcd63c..0000000
 --- a/kuksa-val-server/config.ini
 +++ /dev/null
 @@ -1,7 +0,0 @@
--vss = vss_release_3.1.1.json
+-vss = vss_release_4.0.json
 -log-level = ALL
 -cert-path = .
 -
@@ -40,11 +40,11 @@ index 3e4ada4..0000000
 -    topic-prefix = vss
 diff --git a/kuksa-val-server/config.ini.in b/kuksa-val-server/config.ini.in
 new file mode 100644
-index 0000000..153f355
+index 0000000..3793bd6
 --- /dev/null
 +++ b/kuksa-val-server/config.ini.in
 @@ -0,0 +1,7 @@
-+vss = @KUKSA_DEFAULT_DATADIR@/vss_release_3.1.1.json
++vss = @KUKSA_DEFAULT_DATADIR@/vss_release_4.0.json
 +log-level = ALL
 +cert-path = @KUKSA_DEFAULT_CERTDIR@
 +
@@ -52,10 +52,10 @@ index 0000000..153f355
 +    publish = 
 +    topic-prefix = vss
 diff --git a/kuksa-val-server/src/CMakeLists.txt b/kuksa-val-server/src/CMakeLists.txt
-index d73462c..33518de 100644
+index 908c66c..b749a7a 100644
 --- a/kuksa-val-server/src/CMakeLists.txt
 +++ b/kuksa-val-server/src/CMakeLists.txt
-@@ -162,6 +162,35 @@ if(BUILD_EXE)
+@@ -161,6 +161,35 @@ if(BUILD_EXE)
    ######
    # Setup server install and packaging
  
@@ -91,10 +91,10 @@ index d73462c..33518de 100644
    configure_file(${CMAKE_CURRENT_SOURCE_DIR}/../../kuksa_certificates/jwt/jwt.key.pub  ${CMAKE_CURRENT_BINARY_DIR} COPYONLY)
    configure_file(${CMAKE_CURRENT_SOURCE_DIR}/../../kuksa_certificates/Server.pem  ${CMAKE_CURRENT_BINARY_DIR} COPYONLY)
    configure_file(${CMAKE_CURRENT_SOURCE_DIR}/../../kuksa_certificates/Server.key  ${CMAKE_CURRENT_BINARY_DIR} COPYONLY)
-@@ -173,22 +202,22 @@ if(BUILD_EXE)
-   configure_file(${CMAKE_CURRENT_SOURCE_DIR}/../../data/vss-core/vss_release_2.2.json ${CMAKE_CURRENT_BINARY_DIR} COPYONLY)
+@@ -173,23 +202,23 @@ if(BUILD_EXE)
    configure_file(${CMAKE_CURRENT_SOURCE_DIR}/../../data/vss-core/vss_release_3.0.json ${CMAKE_CURRENT_BINARY_DIR} COPYONLY)
    configure_file(${CMAKE_CURRENT_SOURCE_DIR}/../../data/vss-core/vss_release_3.1.1.json ${CMAKE_CURRENT_BINARY_DIR} COPYONLY)
+   configure_file(${CMAKE_CURRENT_SOURCE_DIR}/../../data/vss-core/vss_release_4.0.json ${CMAKE_CURRENT_BINARY_DIR} COPYONLY)
 -  configure_file(${CMAKE_CURRENT_SOURCE_DIR}/../config.ini ${CMAKE_CURRENT_BINARY_DIR} COPYONLY)
 +  configure_file(${CMAKE_CURRENT_SOURCE_DIR}/../config.ini.in ${CMAKE_CURRENT_BINARY_DIR}/config.ini @COPY)
    configure_file(${CMAKE_CURRENT_SOURCE_DIR}/../config_grpc_client.ini ${CMAKE_CURRENT_BINARY_DIR} COPYONLY)
@@ -111,6 +111,7 @@ index d73462c..33518de 100644
 -  install( FILES ${CMAKE_CURRENT_SOURCE_DIR}/../../data/vss-core/vss_release_2.2.json DESTINATION bin/${SERVER_EXE_NAME})
 -  install( FILES ${CMAKE_CURRENT_SOURCE_DIR}/../../data/vss-core/vss_release_3.0.json DESTINATION bin/${SERVER_EXE_NAME})
 -  install( FILES ${CMAKE_CURRENT_SOURCE_DIR}/../../data/vss-core/vss_release_3.1.1.json DESTINATION bin/${SERVER_EXE_NAME})
+-  install( FILES ${CMAKE_CURRENT_SOURCE_DIR}/../../data/vss-core/vss_release_4.0.json DESTINATION bin/${SERVER_EXE_NAME})
 -
 +  install( TARGETS ${SERVER_EXE_NAME} DESTINATION ${KUKSA_INSTALL_BINDIR})
 +  install( FILES ${CMAKE_CURRENT_SOURCE_DIR}/../../kuksa_certificates/jwt/jwt.key.pub DESTINATION ${KUKSA_INSTALL_CERTDIR})
@@ -124,6 +125,7 @@ index d73462c..33518de 100644
 +  install( FILES ${CMAKE_CURRENT_SOURCE_DIR}/../../data/vss-core/vss_release_2.2.json DESTINATION ${KUKSA_INSTALL_DATADIR})
 +  install( FILES ${CMAKE_CURRENT_SOURCE_DIR}/../../data/vss-core/vss_release_3.0.json DESTINATION ${KUKSA_INSTALL_DATADIR})
 +  install( FILES ${CMAKE_CURRENT_SOURCE_DIR}/../../data/vss-core/vss_release_3.1.1.json DESTINATION ${KUKSA_INSTALL_DATADIR})
++  install( FILES ${CMAKE_CURRENT_SOURCE_DIR}/../../data/vss-core/vss_release_4.0.json DESTINATION ${KUKSA_INSTALL_DATADIR})
 +  install( FILES ${CMAKE_CURRENT_BINARY_DIR}/config.ini DESTINATION ${KUKSA_INSTALL_CONFIGDIR})
  
    # CPack
@@ -162,7 +164,7 @@ index 0000000..24226d2
 +
 +#endif
 diff --git a/kuksa-val-server/src/main.cpp b/kuksa-val-server/src/main.cpp
-index b085126..9c7f8ae 100644
+index f3e6dd1..8346188 100644
 --- a/kuksa-val-server/src/main.cpp
 +++ b/kuksa-val-server/src/main.cpp
 @@ -47,6 +47,7 @@
@@ -173,7 +175,7 @@ index b085126..9c7f8ae 100644
  
  
  #include "../buildinfo.h"
-@@ -106,7 +107,7 @@ int main(int argc, const char *argv[]) {
+@@ -107,7 +108,7 @@ int main(int argc, const char *argv[]) {
    program_options::options_description desc{"OPTIONS"};
    desc.add_options()
      ("help,h", "Help screen")
@@ -182,9 +184,9 @@ index b085126..9c7f8ae 100644
        "Configuration file with `kuksa-val-server` input parameters."
        "Configuration file can replace command-line parameters and through different files multiple configurations can be handled more easily (e.g. test and production setup)."
        "Sample of configuration file parameters looks like:\n"
-@@ -115,7 +116,7 @@ int main(int argc, const char *argv[]) {
+@@ -116,7 +117,7 @@ int main(int argc, const char *argv[]) {
        "log-level = ALL\n")
-     ("vss", program_options::value<boost::filesystem::path>()->required(), "[mandatory] Path to VSS data file describing VSS data tree structure which `kuksa-val-server` shall handle. Sample 'vss_release_3.1.1.json' file can be found under [data](./data/vss-core/vss_release_3.1.1.json)")
+     ("vss", program_options::value<boost::filesystem::path>()->required(), "[mandatory] Path to VSS data file describing VSS data tree structure which `kuksa-val-server` shall handle. Sample 'vss_release_4.0.json' file can be found under [data](./data/vss-core/vss_release_4.0.json)")
      ("overlays", program_options::value<boost::filesystem::path>(), "Path to a directory cotaiing additional VSS models. All json files will be applied on top of the main vss file given by the -vss parameter in alphanumerical order")
 -    ("cert-path", program_options::value<boost::filesystem::path>()->required()->default_value(boost::filesystem::path(".")),
 +    ("cert-path", program_options::value<boost::filesystem::path>()->required()->default_value(boost::filesystem::path(KUKSA_DEFAULT_CERTDIR)),
@@ -192,5 +194,5 @@ index b085126..9c7f8ae 100644
      ("insecure", program_options::bool_switch()->default_value(false), "By default, `kuksa-val-server` shall accept only SSL (TLS) secured connections. If provided, `kuksa-val-server` shall also accept plain un-secured connections for Web-Socket and GRPC API connections, and also shall not fail connections due to self-signed certificates.")
      ("use-keycloak", "Use KeyCloak for permission management")
 -- 
-2.39.2
+2.41.0
 

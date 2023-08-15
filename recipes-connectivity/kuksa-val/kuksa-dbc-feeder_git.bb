@@ -7,7 +7,7 @@ LIC_FILES_CHKSUM = "file://LICENSE.txt;md5=175792518e4ac015ab6696d16c4f607e"
 
 DEPENDS = "python3-setuptools-git-versioning-native"
 
-PV = "0.1.2+git${SRCPV}"
+PV = "0.4.0+git${SRCPV}"
 
 SRC_URI = "git://github.com/eclipse/kuksa.val.feeders.git;protocol=https;branch=main \
            file://0001-dbc2val-add-installation-mechanism.patch \
@@ -17,8 +17,8 @@ SRC_URI = "git://github.com/eclipse/kuksa.val.feeders.git;protocol=https;branch=
            file://dbc_feeder.json.token \
            file://agl-vcar.dbc \
            file://kuksa-dbc-feeder.service \
-"
-SRCREV = "d5fe991706bd8fc6d92ffbbaa838a380067f201f"
+           "
+SRCREV = "5bb52eca8d79f7c05a024f69b1faab81dabacdcd"
 
 S = "${WORKDIR}/git"
 
