@@ -19,4 +19,4 @@ ALTERNATIVE_LINK_NAME[kuksa-val-env] = "${sysconfdir}/default/kuksa-val"
 ALTERNATIVE_TARGET[kuksa-val-env] = "${sysconfdir}/default/kuksa-val.agl-demo-cluster-support"
 ALTERNATIVE_PRIORITY[kuksa-val-env] = "20"
 
-RDEPENDS:${PN} += "kuksa-val"
+RDEPENDS:${PN} += "kuksa-certificates-agl-client"

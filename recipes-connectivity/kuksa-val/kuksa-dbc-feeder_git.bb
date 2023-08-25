@@ -14,7 +14,7 @@ SRC_URI = "git://github.com/eclipse/kuksa.val.feeders.git;protocol=https;branch=
            file://0002-dbc2val-usability-improvements.patch \
            file://0003-dbc2val-fix-token-file-configuration-option.patch \
            file://config.ini \
-           file://dbc_feeder.json.token \
+           file://dbc_feeder.token \
            file://agl-vcar.dbc \
            file://kuksa-dbc-feeder.service \
            "
@@ -34,7 +34,7 @@ do_install:append() {
     # Token should ideally not be readable by other users.
     # The potential for running the feeder as non-root will take some
     # investigation.
-    install -m 0600 ${WORKDIR}/dbc_feeder.json.token ${D}${sysconfdir}/kuksa-dbc-feeder/
+    install -m 0600 ${WORKDIR}/dbc_feeder.token ${D}${sysconfdir}/kuksa-dbc-feeder/
     install -m 0644 ${WORKDIR}/agl-vcar.dbc ${D}${sysconfdir}/kuksa-dbc-feeder/
     if ${@bb.utils.contains('DISTRO_FEATURES', 'systemd', 'true', 'false', d)}; then
         install -d ${D}${systemd_system_unitdir}

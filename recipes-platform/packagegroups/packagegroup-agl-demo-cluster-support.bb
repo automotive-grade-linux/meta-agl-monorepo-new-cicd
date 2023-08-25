@@ -11,5 +11,5 @@ PACKAGES = "\
 
 RDEPENDS:${PN} += "\
     tbtnavi \
-    kuksa-val-agl-demo-cluster \
+    kuksa-databroker-agl-demo-cluster \
 "

@@ -1,7 +1,7 @@
 [Unit]
 Description=Eclipse KUKSA.val DBC feeder
-Requires=kuksa-val.service can-dev-helper.service
-After=kuksa-val.service can-dev-helper.service
+Requires=kuksa-databroker.service can-dev-helper.service
+After=kuksa-databroker.service can-dev-helper.service
 
 [Service]
 ExecStart=/usr/bin/dbcfeeder.py

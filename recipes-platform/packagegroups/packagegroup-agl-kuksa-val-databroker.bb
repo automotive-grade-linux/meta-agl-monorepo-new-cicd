@@ -1,0 +1,21 @@
+SUMMARY = "KUKSA.val databroker packages"
+LICENSE = "MIT"
+
+inherit packagegroup
+
+PACKAGES = "\
+    packagegroup-agl-kuksa-val-databroker \
+    packagegroup-agl-kuksa-val-databroker-devel \
+"
+
+RDEPENDS:packagegroup-agl-kuksa-val-databroker = "\
+    kuksa-databroker \
+    kuksa-databroker-agl \
+    kuksa-certificates-agl \
+    kuksa-dbc-feeder \
+    kuksa-vss-init \
+"
+
+RDEPENDS:packagegroup-agl-kuksa-val-databroker-devel = "\
+    kuksa-databroker-cli \
+"

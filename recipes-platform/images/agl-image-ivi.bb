@@ -9,7 +9,6 @@ require recipes-platform/images/agl-image-compositor.bb
 IMAGE_INSTALL += " \
     packagegroup-agl-image-ivi \
     packagegroup-agl-ivi-services \
-    ${@bb.utils.contains('DISTRO_FEATURES', 'agl-devel', 'packagegroup-agl-ivi-services-devel' , '', d)} \
     can-utils \
     iproute2 \
     "

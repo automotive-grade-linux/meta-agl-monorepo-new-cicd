@@ -55,4 +55,4 @@ RDEPENDS:${PN}-client += "${PN}-ca"
 
 ALLOW_EMPTY:${PN} = "1"
 
-RDEPENDS:${PN} += "kuksa-val ${PN}-ca ${PN}-server ${PN}-client"
+RDEPENDS:${PN} += "${PN}-ca ${PN}-server ${PN}-client"

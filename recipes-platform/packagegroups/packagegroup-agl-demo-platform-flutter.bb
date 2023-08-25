@@ -12,6 +12,8 @@ PACKAGES = "\
 
 RDEPENDS:${PN} += "\
     packagegroup-agl-image-ivi \
+    packagegroup-agl-kuksa-val-server \
+    packagegroup-agl-kuksa-val-databroker \
     packagegroup-agl-demo \
     "
 

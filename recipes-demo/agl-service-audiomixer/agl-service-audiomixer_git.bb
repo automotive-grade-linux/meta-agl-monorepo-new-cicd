@@ -2,21 +2,35 @@ SUMMARY     = "Audio Mixer Service Daemon"
 DESCRIPTION = "AGL Audio Mixer Service Daemon"
 HOMEPAGE    = "https://gerrit.automotivelinux.org/gerrit/#/admin/projects/apps/agl-service-audiomixer"
 SECTION     = "apps"
-LICENSE     = "MIT"
+LICENSE     = "MIT & Apache-2.0"
 LIC_FILES_CHKSUM = "file://LICENSE;beginline=3;md5=e8ad01a5182f2c1b3a2640e9ea268264"
 
-DEPENDS = "boost openssl nlohmann-json systemd pipewire wireplumber"
+DEPENDS = " \
+    glib-2.0 \
+    boost \
+    openssl \
+    systemd \
+    pipewire \
+    wireplumber \
+    protobuf-native \
+    grpc-native \
+    protobuf \
+    grpc \
+    kuksa-databroker \
+"
 
 SRC_URI = "git://gerrit.automotivelinux.org/gerrit/apps/agl-service-audiomixer.git;protocol=https;branch=${AGL_BRANCH} \
            file://agl-service-audiomixer.conf \
            file://agl-service-audiomixer.token \
 "
-SRCREV  = "fdd9d0964a0fe7aadfcef33c9e9c1f183ca10820"
+SRCREV  = "82c1c0ab04219f9453f1b3a14a9754068e360583"
 
 PV = "2.0+git${SRCPV}"
 S  = "${WORKDIR}/git"
 
 inherit meson pkgconfig systemd
+
+EXTRA_OEMESON += "-Dprotos=${STAGING_INCDIR}"
 
 SYSTEMD_SERVICE:${PN} = "agl-service-audiomixer.service" 
 
@@ -35,4 +49,4 @@ do_install:append() {
 
 FILES:${PN} += "${systemd_system_unitdir}"
 
-RDEPENDS:${PN} += "kuksa-val"
+RDEPENDS:${PN} += "kuksa-databroker"
