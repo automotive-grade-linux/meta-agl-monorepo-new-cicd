@@ -1,34 +1,34 @@
-From 2de455486403a710cb6896b0052b4cd7e46d83a2 Mon Sep 17 00:00:00 2001
+From b8bbab864a1367ac47bcc0998b4c07d20020965a Mon Sep 17 00:00:00 2001
 From: Marius Vlad <marius.vlad@collabora.com>
-Date: Thu, 10 Aug 2023 14:20:48 +0300
+Date: Thu, 5 Oct 2023 18:23:52 +0300
 Subject: [PATCH] ext/wayland: Add title/appid support
+
+Upstream-Status: Pending
 
 Bug-AGL: SPEC-4870
 Signed-off-by: Marius Vlad <marius.vlad@collabora.com>
 ---
- ext/wayland/gstwaylandsink.c | 43 ++++++++++++++++++++++++++++++++++--
- ext/wayland/gstwaylandsink.h |  2 ++
- ext/wayland/wlwindow.c       | 10 ++++++++-
- ext/wayland/wlwindow.h       |  2 +-
- 4 files changed, 53 insertions(+), 4 deletions(-)
+ ext/wayland/gstwaylandsink.c       | 41 +++++++++++++++++++++++++++++-
+ ext/wayland/gstwaylandsink.h       |  2 ++
+ gst-libs/gst/wayland/gstwlwindow.c | 12 ++++++++-
+ gst-libs/gst/wayland/gstwlwindow.h |  3 ++-
+ 4 files changed, 55 insertions(+), 3 deletions(-)
 
 diff --git a/ext/wayland/gstwaylandsink.c b/ext/wayland/gstwaylandsink.c
-index 0761304..8913ee2 100644
+index 2f116bf..69f4a00 100644
 --- a/ext/wayland/gstwaylandsink.c
 +++ b/ext/wayland/gstwaylandsink.c
-@@ -63,7 +63,9 @@ enum
- {
-   PROP_0,
+@@ -61,6 +61,8 @@ enum
    PROP_DISPLAY,
--  PROP_FULLSCREEN
-+  PROP_FULLSCREEN,
+   PROP_FULLSCREEN,
+   PROP_ROTATE_METHOD,
 +  PROP_APP_ID,
-+  PROP_TITLE
++  PROP_TITLE,
+   PROP_LAST
  };
  
- GST_DEBUG_CATEGORY (gstwayland_debug);
-@@ -212,6 +214,16 @@ gst_wayland_sink_class_init (GstWaylandSinkClass * klass)
-           "Whether the surface should be made fullscreen ", FALSE,
+@@ -177,6 +179,16 @@ gst_wayland_sink_class_init (GstWaylandSinkClass * klass)
+           GST_TYPE_VIDEO_ORIENTATION_METHOD, GST_VIDEO_ORIENTATION_IDENTITY,
            G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
  
 +  g_object_class_install_property (gobject_class, PROP_APP_ID,
@@ -41,77 +41,77 @@ index 0761304..8913ee2 100644
 +          "title, xdg_shell::set_title",
 +          NULL, G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 +
-   gst_type_mark_as_plugin_api (GST_TYPE_WAYLAND_VIDEO, 0);
- }
- 
-@@ -246,6 +258,16 @@ gst_wayland_sink_get_property (GObject * object,
-       g_value_set_string (value, sink->display_name);
-       GST_OBJECT_UNLOCK (sink);
+  /**
+   * waylandsink:render-rectangle:
+   *
+@@ -266,6 +278,16 @@ gst_wayland_sink_get_property (GObject * object,
+       g_value_set_enum (value, self->current_rotate_method);
+       GST_OBJECT_UNLOCK (self);
        break;
 +    case PROP_APP_ID:
-+      GST_OBJECT_LOCK (sink);
-+      g_value_set_string (value, sink->app_id);
-+      GST_OBJECT_UNLOCK (sink);
++      GST_OBJECT_LOCK (self);
++      g_value_set_string (value, self->app_id);
++      GST_OBJECT_UNLOCK (self);
 +      break;
 +    case PROP_TITLE:
-+      GST_OBJECT_LOCK (sink);
-+      g_value_set_string (value, sink->title);
-+      GST_OBJECT_UNLOCK (sink);
++      GST_OBJECT_LOCK (self);
++      g_value_set_string (value, self->title);
++      GST_OBJECT_UNLOCK (self);
 +      break;
-     case PROP_FULLSCREEN:
-       GST_OBJECT_LOCK (sink);
-       g_value_set_boolean (value, sink->fullscreen);
-@@ -269,6 +291,16 @@ gst_wayland_sink_set_property (GObject * object,
-       sink->display_name = g_value_dup_string (value);
-       GST_OBJECT_UNLOCK (sink);
+     default:
+       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+       break;
+@@ -289,6 +311,16 @@ gst_wayland_sink_set_property (GObject * object,
+       gst_wayland_sink_set_fullscreen (self, g_value_get_boolean (value));
+       GST_OBJECT_UNLOCK (self);
        break;
 +    case PROP_APP_ID:
-+      GST_OBJECT_LOCK (sink);
-+      sink->app_id = g_value_dup_string (value);
-+      GST_OBJECT_UNLOCK (sink);
++      GST_OBJECT_LOCK (self);
++      self->app_id = g_value_dup_string (value);
++      GST_OBJECT_UNLOCK (self);
 +      break;
 +    case PROP_TITLE:
-+      GST_OBJECT_LOCK (sink);
-+      sink->title = g_value_dup_string (value);
-+      GST_OBJECT_UNLOCK (sink);
++      GST_OBJECT_LOCK (self);
++      self->title = g_value_dup_string (value);
++      GST_OBJECT_UNLOCK (self);
 +      break;
-     case PROP_FULLSCREEN:
-       GST_OBJECT_LOCK (sink);
-       gst_wayland_sink_set_fullscreen (sink, g_value_get_boolean (value));
-@@ -291,12 +323,18 @@ gst_wayland_sink_finalize (GObject * object)
-     gst_buffer_unref (sink->last_buffer);
-   if (sink->display)
-     g_object_unref (sink->display);
-+  if (sink->title)
-+    g_object_unref (sink->title);
-+  if (sink->app_id)
-+    g_object_unref (sink->app_id);
-   if (sink->window)
-     g_object_unref (sink->window);
-   if (sink->pool)
-     gst_object_unref (sink->pool);
+     case PROP_ROTATE_METHOD:
+       gst_wayland_sink_set_rotate_method (self, g_value_get_enum (value),
+           FALSE);
+@@ -310,12 +342,18 @@ gst_wayland_sink_finalize (GObject * object)
+     gst_buffer_unref (self->last_buffer);
+   if (self->display)
+     g_object_unref (self->display);
++  if (self->title)
++    g_object_unref (self->title);
++  if (self->app_id)
++    g_object_unref (self->app_id);
+   if (self->window)
+     g_object_unref (self->window);
+   if (self->pool)
+     gst_object_unref (self->pool);
  
-   g_free (sink->display_name);
-+  g_free (sink->title);
-+  g_free (sink->app_id);
+   g_free (self->display_name);
++  g_free (self->title);
++  g_free (self->app_id);
  
-   g_mutex_clear (&sink->display_lock);
-   g_mutex_clear (&sink->render_lock);
-@@ -718,7 +756,8 @@ gst_wayland_sink_show_frame (GstVideoSink * vsink, GstBuffer * buffer)
-     if (!sink->window) {
+   g_mutex_clear (&self->display_lock);
+   g_mutex_clear (&self->render_lock);
+@@ -761,7 +799,8 @@ gst_wayland_sink_show_frame (GstVideoSink * vsink, GstBuffer * buffer)
+     if (!self->window) {
        /* if we were not provided a window, create one ourselves */
-       sink->window = gst_wl_window_new_toplevel (sink->display,
--          &sink->video_info, sink->fullscreen, &sink->render_lock);
-+          &sink->video_info, sink->fullscreen, sink->app_id, sink->title,
-+	  &sink->render_lock);
-       g_signal_connect_object (sink->window, "closed",
-           G_CALLBACK (on_window_closed), sink, 0);
-     }
+       self->window = gst_wl_window_new_toplevel (self->display,
+-          &self->video_info, self->fullscreen, &self->render_lock);
++          &self->video_info, self->fullscreen, &self->app_id, &self->title,
++          &self->render_lock);
+       g_signal_connect_object (self->window, "closed",
+           G_CALLBACK (on_window_closed), self, 0);
+       gst_wl_window_set_rotate_method (self->window,
 diff --git a/ext/wayland/gstwaylandsink.h b/ext/wayland/gstwaylandsink.h
-index 7aabb6f..4db00e5 100644
+index 3243d8c..6aee19d 100644
 --- a/ext/wayland/gstwaylandsink.h
 +++ b/ext/wayland/gstwaylandsink.h
-@@ -63,6 +63,8 @@ struct _GstWaylandSink
+@@ -58,6 +58,8 @@ struct _GstWaylandSink
    gboolean fullscreen;
  
    gchar *display_name;
@@ -120,47 +120,50 @@ index 7aabb6f..4db00e5 100644
  
    gboolean redraw_pending;
    GMutex render_lock;
-diff --git a/ext/wayland/wlwindow.c b/ext/wayland/wlwindow.c
-index 66df0fc..ad2d3f3 100644
---- a/ext/wayland/wlwindow.c
-+++ b/ext/wayland/wlwindow.c
-@@ -254,7 +254,7 @@ gst_wl_window_ensure_fullscreen (GstWlWindow * window, gboolean fullscreen)
+diff --git a/gst-libs/gst/wayland/gstwlwindow.c b/gst-libs/gst/wayland/gstwlwindow.c
+index 6004993..de0a81e 100644
+--- a/gst-libs/gst/wayland/gstwlwindow.c
++++ b/gst-libs/gst/wayland/gstwlwindow.c
+@@ -270,7 +270,7 @@ gst_wl_window_ensure_fullscreen (GstWlWindow * self, gboolean fullscreen)
  
  GstWlWindow *
  gst_wl_window_new_toplevel (GstWlDisplay * display, const GstVideoInfo * info,
 -    gboolean fullscreen, GMutex * render_lock)
 +    gboolean fullscreen, gchar *app_id, gchar *title, GMutex * render_lock)
  {
-   GstWlWindow *window;
+   GstWlWindow *self;
+   GstWlWindowPrivate *priv;
+@@ -307,6 +307,16 @@ gst_wl_window_new_toplevel (GstWlDisplay * display, const GstVideoInfo * info,
  
-@@ -287,6 +287,14 @@ gst_wl_window_new_toplevel (GstWlDisplay * display, const GstVideoInfo * info,
+     gst_wl_window_ensure_fullscreen (self, fullscreen);
  
-     /* Finally, commit the xdg_surface state as toplevel */
-     window->configured = FALSE;
 +    if (app_id)
-+	    xdg_toplevel_set_app_id (window->xdg_toplevel, app_id);
++	    xdg_toplevel_set_app_id (priv->xdg_toplevel, app_id);
 +    else
-+	    xdg_toplevel_set_app_id (window->xdg_toplevel, "ext.wayland.waylandsink");
++	    xdg_toplevel_set_app_id (priv->xdg_toplevel, "ext.wayland.waylandsink");
 +    if (title)
-+	    xdg_toplevel_set_title (window->xdg_toplevel, title);
++	    xdg_toplevel_set_title (priv->xdg_toplevel, title);
 +    else
-+	    xdg_toplevel_set_title (window->xdg_toplevel, "ext.wayland.waylandsink");
-     wl_surface_commit (window->area_surface);
-     wl_display_flush (display->display);
++	    xdg_toplevel_set_title (priv->xdg_toplevel, "ext.wayland.waylandsink");
++
++
+     /* Finally, commit the xdg_surface state as toplevel */
+     priv->configured = FALSE;
+     wl_surface_commit (priv->area_surface);
+diff --git a/gst-libs/gst/wayland/gstwlwindow.h b/gst-libs/gst/wayland/gstwlwindow.h
+index 06c4001..e102052 100644
+--- a/gst-libs/gst/wayland/gstwlwindow.h
++++ b/gst-libs/gst/wayland/gstwlwindow.h
+@@ -39,7 +39,8 @@ void gst_wl_window_ensure_fullscreen (GstWlWindow * self,
  
-diff --git a/ext/wayland/wlwindow.h b/ext/wayland/wlwindow.h
-index 303c336..64399b3 100644
---- a/ext/wayland/wlwindow.h
-+++ b/ext/wayland/wlwindow.h
-@@ -83,7 +83,7 @@ GType gst_wl_window_get_type (void);
- void gst_wl_window_ensure_fullscreen (GstWlWindow * window,
-         gboolean fullscreen);
+ GST_WL_API
  GstWlWindow *gst_wl_window_new_toplevel (GstWlDisplay * display,
 -        const GstVideoInfo * info, gboolean fullscreen, GMutex * render_lock);
-+        const GstVideoInfo * info, gboolean fullscreen, gchar * app_id, gchar *title, GMutex * render_lock);
- GstWlWindow *gst_wl_window_new_in_surface (GstWlDisplay * display,
-         struct wl_surface * parent, GMutex * render_lock);
++        const GstVideoInfo * info, gboolean fullscreen, gchar * app_id,
++        gchar *title, GMutex * render_lock);
  
+ GST_WL_API
+ GstWlWindow *gst_wl_window_new_in_surface (GstWlDisplay * display,
 -- 
 2.35.1
 
