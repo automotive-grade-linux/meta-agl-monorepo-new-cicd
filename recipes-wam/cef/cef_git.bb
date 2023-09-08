@@ -56,7 +56,7 @@ OUT_PATH = "${B}/out/Release_GN_${GN_TARGET_CPU}"
 DIST_PATH = "${OUT_PATH}/dist/cef-minimal_${GN_TARGET_CPU}"
 CEF_DATA_PATH = "${datadir}/cef"
 
-DEPENDS:append = " curl clang-native gperf-native dbus libcxx compiler-rt libxkbcommon nss nss-native atk at-spi2-atk libdrm pango cairo virtual/egl qemu-native pciutils glib-2.0 pkgconfig-native pulseaudio"
+DEPENDS:append = " curl clang-native gperf-native dbus libcxx compiler-rt libxkbcommon nss nss-native atk at-spi2-atk libdrm pango cairo virtual/egl qemu-native pciutils glib-2.0 pkgconfig-native pulseaudio xz-native"
 
 do_sync[depends] += "depot-tools-wam-native:do_populate_sysroot"
 do_configure[depends] += "depot-tools-wam-native:do_populate_sysroot"
