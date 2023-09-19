@@ -1,0 +1,2 @@
+authorization : "/etc/xdg/AGL/dashboard/dashboard.token"
+use-tls : true
