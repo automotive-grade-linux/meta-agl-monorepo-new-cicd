@@ -9,9 +9,10 @@ LIC_FILES_CHKSUM = "file://LICENSE;md5=86d3f3a95c324c9479bd8986968f4327"
 SRC_URI = "git://gerrit.automotivelinux.org/gerrit/apps/flutter-homescreen;protocol=https;branch=${AGL_BRANCH} \
            file://flutter-homescreen.json \
            file://flutter-homescreen.service \
-           file://homescreen_config.yaml \
+           file://homescreen.yaml \
+           file://homescreen.token \
 "
-SRCREV = "5ce59ba69f1451ec18c565b7b18301856553f574"
+SRCREV = "cbbb9f40e283d12f6c52ad28609516f390316f7a"
 
 S = "${WORKDIR}/git"
 
@@ -31,8 +32,13 @@ do_install:append() {
 
     install -D -m 0644 ${WORKDIR}/${APP_CONFIG} ${D}${datadir}/flutter/${BPN}.json
 
-    install -d ${D}${sysconfdir}/xdg/AGL
-    install -m 0644 ${WORKDIR}/homescreen_config.yaml ${D}${sysconfdir}/xdg/AGL/
+    # VIS authorization token file for KUKSA.val should ideally not
+    # be readable by other users, but currently that's not doable
+    # until a packaging/sandboxing/MAC scheme is (re)implemented or
+    # something like OAuth is plumbed in as an alternative.
+    install -d ${D}${sysconfdir}/xdg/AGL/homescreen
+    install -m 0644 ${WORKDIR}/homescreen.yaml ${D}${sysconfdir}/xdg/AGL/
+    install -m 0644 ${WORKDIR}/homescreen.token ${D}${sysconfdir}/xdg/AGL/homescreen/
 }
 
 FILES:${PN} += "${datadir} ${sysconfdir}/xdg/AGL"
