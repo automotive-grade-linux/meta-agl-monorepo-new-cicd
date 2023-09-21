@@ -12,10 +12,11 @@ LIC_FILES_CHKSUM = "file://License.md;md5=f712ede8d4f845976061925d1416fc40"
 
 
 SRC_URI = "git://gerrit.automotivelinux.org/gerrit/apps/flutter-hvac;protocol=https;branch=${AGL_BRANCH} \
-    file://HVAC_config.yaml \
+    file://hvac.yaml \
+    file://hvac.token \
     "
 
-SRCREV = "20d76f947ef9d4a9093df0e5ad04476963655173"
+SRCREV = "6a853805d2479bf7b111511b1f94907e425c607a"
 S = "${WORKDIR}/git"
 
 inherit agl-app flutter-app
@@ -33,8 +34,9 @@ AGL_APP_ID = "flutter_hvac"
 AGL_APP_NAME = "HVAC"
 
 do_install:append() {
-    install -d ${D}${sysconfdir}/xdg/AGL
-    install -m 0644 ${WORKDIR}/HVAC_config.yaml ${D}${sysconfdir}/xdg/AGL/
+    install -d ${D}${sysconfdir}/xdg/AGL/hvac
+    install -m 0644 ${WORKDIR}/hvac.yaml ${D}${sysconfdir}/xdg/AGL/
+    install -m 0644 ${WORKDIR}/hvac.token ${D}${sysconfdir}/xdg/AGL/hvac/
 }
 
 FILES:${PN} += "${sysconfdir}/xdg/AGL"

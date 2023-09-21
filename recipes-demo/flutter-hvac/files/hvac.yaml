@@ -1,0 +1,2 @@
+authorization : "/etc/xdg/AGL/hvac/hvac.token"
+use-tls : true
