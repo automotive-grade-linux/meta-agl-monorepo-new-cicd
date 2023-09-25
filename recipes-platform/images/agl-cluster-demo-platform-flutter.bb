@@ -7,17 +7,11 @@ require recipes-platform/images/agl-image-compositor.bb
 IMAGE_FEATURES += "splash package-management ssh-server-openssh"
 
 # Break out KUKSA.val packages, as demo unit configuration
-# points at KUKSA.val server on the IVI board instead of
-# running the full stack locally.
+# points at KUKSA.val server on the IVI board in full demo
+# builds with the "agl-demo-preload" feature enabled.
 IMAGE_KUKSA_PACKAGES = " \
-    kuksa-val \
-    kuksa-databroker \
-    kuksa-val-agl \
-    kuksa-databroker-agl \
-    kuksa-certificates-agl \
-    kuksa-dbc-feeder \
-    kuksa-vss-init \
-    ${@bb.utils.contains('DISTRO_FEATURES', 'agl-devel', 'kuksa-databroker-cli' , '', d)} \
+    packagegroup-agl-kuksa-val-databroker \
+    ${@bb.utils.contains('DISTRO_FEATURES', 'agl-devel', 'packagegroup-agl-kuksa-val-databroker-devel' , '', d)} \
 "
 
 # generic
