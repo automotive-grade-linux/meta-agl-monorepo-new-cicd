@@ -11,20 +11,19 @@ LIC_FILES_CHKSUM = "file://LICENSE.md;md5=0c52b0e4b5f0dbf57ea7d44bebb2e29d"
 SRC_URI = "git://gerrit.automotivelinux.org/gerrit/apps/flutter-instrument-cluster;protocol=https;branch=${AGL_BRANCH} \
     file://flutter-cluster-dashboard.service \
     file://flutter_cluster_dashboard_on_bg.json \
-    file://flutter-cluster-dashboard.yaml \
-    file://flutter-cluster-dashboard.yaml.demo \
+    file://cluster-dashboard.yaml \
+    file://cluster-dashboard.yaml.demo \
+    file://cluster-dashboard.token \
 "
 
 PV = "1.0+git${SRCPV}"
-SRCREV = "9bc83e64c508ad8c69a3950d5421774f9b53a31f"
+SRCREV = "80a4f8d75a66c22a23e825d4c0fb4065e2e58cb8"
 
 S = "${WORKDIR}/git"
 
 PUBSPEC_APPNAME = "flutter_cluster_dashboard"
 
 FLUTTER_APPLICATION_INSTALL_PREFIX = "/flutter"
-
-OPENROUTE_API_KEY ??= "YOU_NEED_TO_SET_IT_IN_LOCAL_CONF"
 
 inherit flutter-app update-alternatives systemd
 
@@ -39,33 +38,31 @@ do_install:append() {
 
     install -D -m 0644 ${WORKDIR}/${APP_CONFIG} ${D}${datadir}/flutter/${BPN}.json
 
-    install -d ${D}${sysconfdir}/xdg/AGL
-    install -m 0644 ${WORKDIR}/${BPN}.yaml ${D}${sysconfdir}/xdg/AGL/${BPN}.yaml.default
-    install -m 0644 ${WORKDIR}/${BPN}.yaml.demo ${D}${sysconfdir}/xdg/AGL/
-    sed -i "s/^hostname: .*/hostname: ${CLUSTER_DEMO_VISS_HOSTNAME}/" ${D}${sysconfdir}/xdg/AGL/${BPN}.yaml.demo
-
-    install -m 0755 -d ${D}${sysconfdir}/default/ 
-    echo 'OPENROUTE_API_KEY:${OPENROUTE_API_KEY}' >> ${D}${sysconfdir}/default/openroutekey
+    install -d ${D}${sysconfdir}/xdg/AGL/cluster-dashboard
+    install -m 0644 ${WORKDIR}/cluster-dashboard.yaml ${D}${sysconfdir}/xdg/AGL/cluster-dashboard.yaml.default
+    install -m 0644 ${WORKDIR}/cluster-dashboard.yaml.demo ${D}${sysconfdir}/xdg/AGL/
+    sed -i "s/^hostname: .*/hostname: ${CLUSTER_DEMO_VISS_HOSTNAME}/" ${D}${sysconfdir}/xdg/AGL/cluster-dashboard.yaml.demo
+    install -m 0644 ${WORKDIR}/cluster-dashboard.token ${D}${sysconfdir}/xdg/AGL/cluster-dashboard/
 }
 
-ALTERNATIVE_LINK_NAME[flutter-cluster-dashboard.yaml] = "${sysconfdir}/xdg/AGL/${BPN}.yaml"
+ALTERNATIVE_LINK_NAME[cluster-dashboard.yaml] = "${sysconfdir}/xdg/AGL/cluster-dashboard.yaml"
 
-FILES:${PN} += "${datadir} ${sysconfdir}/default/"
+FILES:${PN} += "${datadir} ${sysconfdir}/xdg/AGL"
 
 RDEPENDS:${PN} += "flutter-auto agl-flutter-env liberation-fonts"
 
 PACKAGE_BEFORE_PN += "${PN}-conf ${PN}-conf-demo"
 
-FILES:${PN}-conf += "${sysconfdir}/xdg/AGL/${BPN}.yaml.default"
+FILES:${PN}-conf += "${sysconfdir}/xdg/AGL/cluster-dashboard.yaml.default"
 RDEPENDS:${PN}-conf = "${PN}"
-RPROVIDES:${PN}-conf = "${BPN}.yaml"
+RPROVIDES:${PN}-conf = "cluster-dashboard.yaml"
 RCONFLICTS:${PN}-conf = "${PN}-conf-demo"
-ALTERNATIVE:${PN}-conf = "${BPN}.yaml"
-ALTERNATIVE_TARGET_${PN}-conf = "${sysconfdir}/xdg/AGL/${BPN}.yaml.default"
+ALTERNATIVE:${PN}-conf = "cluster-dashboard.yaml"
+ALTERNATIVE_TARGET_${PN}-conf = "${sysconfdir}/xdg/AGL/cluster-dashboard.yaml.default"
 
-FILES:${PN}-conf-demo += "${sysconfdir}/xdg/AGL/${BPN}.yaml.demo"
+FILES:${PN}-conf-demo += "${sysconfdir}/xdg/AGL/cluster-dashboard.yaml.demo"
 RDEPENDS:${PN}-conf-demo = "${PN}"
-RPROVIDES:${PN}-conf-demo = "${BPN}.yaml"
+RPROVIDES:${PN}-conf-demo = "cluster-dashboard.yaml"
 RCONFLICTS:${PN}-conf-demo = "${PN}-conf"
-ALTERNATIVE:${PN}-conf-demo = "${BPN}.yaml"
-ALTERNATIVE_TARGET_${PN}-conf-demo = "${sysconfdir}/xdg/AGL/${BPN}.yaml.demo"
+ALTERNATIVE:${PN}-conf-demo = "cluster-dashboard.yaml"
+ALTERNATIVE_TARGET_${PN}-conf-demo = "${sysconfdir}/xdg/AGL/cluster-dashboard.yaml.demo"
