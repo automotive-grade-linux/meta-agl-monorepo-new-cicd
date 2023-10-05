@@ -4,6 +4,7 @@ PACKAGECONFIG:append = "${@bb.utils.contains('DISTRO_FEATURES', 'weston-remoting
 
 SRC_URI:append = "file://0001-libweston-weston-log-Add-a-iterator-helper-for-debug.patch \
 		  file://0001-toy-toolkit-Fix-rotations.patch \
+		  file://0001-clients-Handle-missing-pointer_surface-is-there-s-no.patch \
 "
 
 
