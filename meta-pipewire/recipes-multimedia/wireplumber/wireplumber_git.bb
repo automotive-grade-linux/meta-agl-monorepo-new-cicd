@@ -14,14 +14,14 @@ DEPENDS = "glib-2.0 glib-2.0-native pipewire lua"
 SRC_URI = "\
     git://gitlab.freedesktop.org/pipewire/wireplumber.git;protocol=https;branch=master \
 "
-# v0.4.14
-SRCREV = "6d0c7f7b7f484b3cd2aaf2e2b3cc902c095b4946"
+# v0.4.15
+SRCREV = "d67b48e595cb4612fd7fd47f97df6b8883ef7f60"
 
 # patches to be able to compile with lower version of meson that is available in AGL.
 SRC_URI += "\
 "
 
-PV = "0.4.14"
+PV = "0.4.15"
 S  = "${WORKDIR}/git"
 
 WPAPI="0.4"
@@ -59,6 +59,7 @@ FILES:${PN} = "\
     ${bindir}/wpexec \
     ${libdir}/wireplumber-${WPAPI}/* \
     ${datadir}/wireplumber/scripts/* \
+    ${datadir}/zsh/* \
     ${systemd_system_unitdir}/* \
 "
 RPROVIDES:${PN} += "virtual/pipewire-sessionmanager"

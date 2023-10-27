@@ -20,8 +20,8 @@ SECTION = "multimedia"
 
 DEPENDS = "dbus"
 
-# v0.3.67
-SRCREV = "26623ff8cb3c9ba774537379a1835c5efb0d5159"
+# v0.3.83
+SRCREV = "6fd7f39dbec9c3a65aa2de0123c6bfbda7c53a85"
 SRC_URI = "git://gitlab.freedesktop.org/pipewire/pipewire.git;branch=master;protocol=https"
 
 S = "${WORKDIR}/git"
@@ -238,6 +238,10 @@ FILES:${PN} = " \
     ${bindir}/pipewire-avb \
     ${datadir}/pipewire/pipewire-aes67.conf \
     ${bindir}/pipewire-aes67 \
+    ${datadir}/pipewire/pipewire.conf.avail \
+    ${datadir}/pipewire/pipewire-pulse.conf.avail \
+    ${datadir}/pipewire/client-rt.conf.avail \
+    ${datadir}/pipewire/client.conf.avail \
     ${sysconfdir}/security/limits.d \
 "
 
