@@ -4,3 +4,7 @@
 DISTRO_FEATURES:append = " agl-medium-arm-compiler"
 
 WKS_FILE = "sdimage-bootpart-uuid.wks"
+
+# meta-ti-bsp layer conf does break expectations wrt common folders
+# meta-ti-bsp/conf/layer.conf:TI_COMMON_DEPLOY ?= "${TOPDIR}/deploy-ti"
+TI_COMMON_DEPLOY := "${TMPDIR}/deploy"
