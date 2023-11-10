@@ -1,5 +1,7 @@
 SRC_URI += "\
     file://0001-systemd-Do-not-override-rootprefix.patch \
+    file://0002-gst-avoid-reporting-error-twice.patch \
+    file://0003-gstpipewiresrc-break-out-of-wait_started-also-on-STA.patch \
 "
 
 PACKAGECONFIG = "\

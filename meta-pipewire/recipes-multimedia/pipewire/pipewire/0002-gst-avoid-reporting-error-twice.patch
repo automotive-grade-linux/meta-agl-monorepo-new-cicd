@@ -1,0 +1,62 @@
+From cbb12450c2f258ef3ac8239889784e1a97dfeaa8 Mon Sep 17 00:00:00 2001
+From: George Kiagiadakis <george.kiagiadakis@collabora.com>
+Date: Wed, 8 Nov 2023 18:12:59 +0200
+Subject: [PATCH 1/2] gst: avoid reporting error twice
+
+First, make the error permanent by calling pw_stream_set_error()
+and when this emits an error state again, report that to GStreamer.
+
+Do the same in pipewiresink, which didn't even have the
+pw_stream_set_error() call before, so the stream wasn't really going
+into an error state at all.
+
+Upstream-Status: Pipewire MR1763 merged
+---
+ src/gst/gstpipewiresink.c |  9 +++++++--
+ src/gst/gstpipewiresrc.c  | 10 +++++++---
+ 2 files changed, 14 insertions(+), 5 deletions(-)
+
+diff --git a/src/gst/gstpipewiresink.c b/src/gst/gstpipewiresink.c
+index 36d158095..001ede9d5 100644
+--- a/src/gst/gstpipewiresink.c
++++ b/src/gst/gstpipewiresink.c
+@@ -532,8 +532,13 @@ on_state_changed (void *data, enum pw_stream_state old, enum pw_stream_state sta
+         pw_stream_trigger_process (pwsink->stream);
+       break;
+     case PW_STREAM_STATE_ERROR:
+-      GST_ELEMENT_ERROR (pwsink, RESOURCE, FAILED,
+-          ("stream error: %s", error), (NULL));
++      /* make the error permanent, if it is not already;
++         pw_stream_set_error() will recursively call us again */
++      if (pw_stream_get_state (pwsink->stream, NULL) != PW_STREAM_STATE_ERROR)
++        pw_stream_set_error (pwsink->stream, -EPIPE, "%s", error);
++      else
++        GST_ELEMENT_ERROR (pwsink, RESOURCE, FAILED,
++            ("stream error: %s", error), (NULL));
+       break;
+   }
+   pw_thread_loop_signal (pwsink->core->loop, FALSE);
+diff --git a/src/gst/gstpipewiresrc.c b/src/gst/gstpipewiresrc.c
+index 0514e4caa..e473338ba 100644
+--- a/src/gst/gstpipewiresrc.c
++++ b/src/gst/gstpipewiresrc.c
+@@ -681,9 +681,13 @@ on_state_changed (void *data,
+     case PW_STREAM_STATE_STREAMING:
+       break;
+     case PW_STREAM_STATE_ERROR:
+-      pw_stream_set_error (pwsrc->stream, -EPIPE, "%s", error);
+-      GST_ELEMENT_ERROR (pwsrc, RESOURCE, FAILED,
+-          ("stream error: %s", error), (NULL));
++      /* make the error permanent, if it is not already;
++         pw_stream_set_error() will recursively call us again */
++      if (pw_stream_get_state (pwsrc->stream, NULL) != PW_STREAM_STATE_ERROR)
++        pw_stream_set_error (pwsrc->stream, -EPIPE, "%s", error);
++      else
++        GST_ELEMENT_ERROR (pwsrc, RESOURCE, FAILED,
++            ("stream error: %s", error), (NULL));
+       break;
+   }
+   pw_thread_loop_signal (pwsrc->core->loop, FALSE);
+--
+2.41.0
+
