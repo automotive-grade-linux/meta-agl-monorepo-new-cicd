@@ -11,11 +11,13 @@ LIC_FILES_CHKSUM = "file://COPYING;md5=fac6abe0003c4d142ff8fa1f18316df0"
 DEPENDS = "wayland wayland-protocols wayland-native weston"
 
 SRC_URI = "git://gerrit.automotivelinux.org/gerrit/src/agl-compositor.git;protocol=https;branch=${AGL_BRANCH}"
-SRCREV = "a68408367cf5e254d981e1d43ba261b9aade6166"
+SRCREV = "bdc551314dc5511be31550b8c2e06641b9a94639"
 AGL_BRANCH:aglnext = "next"
 SRCREV:aglnext = "${AUTOREV}"
 
-PV = "0.0.10+git${SRCPV}"
+AGL_COMPOSITOR_VERSION = "0.0.22"
+
+PV = "${AGL_COMPOSITOR_VERSION}+git${SRCPV}"
 S = "${WORKDIR}/git"
 
 PACKAGECONFIG ?= ""
@@ -36,7 +38,7 @@ FILES:${PN} = " \
     ${bindir}/agl-compositor \
     ${bindir}/agl-screenshooter \
     ${libdir}/agl-compositor/libexec_compositor.so.0 \
-    ${libdir}/agl-compositor/libexec_compositor.so.0.0.21 \
+    ${libdir}/agl-compositor/libexec_compositor.so.${AGL_COMPOSITOR_VERSION} \
 "
 
 FILES:agl-shell-grpc-server = " \
