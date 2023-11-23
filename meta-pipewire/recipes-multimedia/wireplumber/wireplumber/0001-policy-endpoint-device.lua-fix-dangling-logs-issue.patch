@@ -1,0 +1,47 @@
+From d1624b1648512ead7f6b222bc64cda94016fb0c6 Mon Sep 17 00:00:00 2001
+From: Ashok Sidipotu <ashok.sidipotu@collabora.com>
+Date: Fri, 24 Nov 2023 02:45:41 +0100
+Subject: [PATCH] policy-endpoint-device.lua: fix dangling logs issue.
+
+When logs are enabled sometimes the new log msgs added to print the link
+string can assert.
+
+Upstream-Status: WirePlumber MR570 submitted
+---
+ src/scripts/policy-endpoint-device.lua | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
+
+diff --git a/src/scripts/policy-endpoint-device.lua b/src/scripts/policy-endpoint-device.lua
+index 4440c17c..4c74077b 100644
+--- a/src/scripts/policy-endpoint-device.lua
++++ b/src/scripts/policy-endpoint-device.lua
+@@ -116,7 +116,7 @@ function createLink (si_ep, si_target)
+   local in_item = nil
+   local ep_props = si_ep.properties
+   local target_props = si_target.properties
+-
++  local is_filter = (ep_props["node.link-group"] ~= nil)
+   if target_props["item.node.direction"] == "input" then
+     -- playback
+     out_item = si_ep
+@@ -131,10 +131,10 @@ function createLink (si_ep, si_target)
+     (is_filter and ep_props["node.name"] or ep_props["name"]),
+     target_props["node.name"])
+
+-  Log.info(si_link, link_string)
+-
+   -- create and configure link
+   local si_link = SessionItem ( "si-standard-link" )
++
++  Log.info(si_link, "creating link " .. link_string)
+   if not si_link:configure {
+     ["out.item"] = out_item,
+     ["in.item"] = in_item,
+@@ -146,6 +146,7 @@ function createLink (si_ep, si_target)
+     return
+   end
+
++
+   -- register
+   si_link:register ()
+

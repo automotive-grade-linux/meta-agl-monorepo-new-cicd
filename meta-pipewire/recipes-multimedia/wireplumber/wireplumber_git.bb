@@ -13,6 +13,7 @@ DEPENDS = "glib-2.0 glib-2.0-native pipewire lua"
 
 SRC_URI = "\
     git://gitlab.freedesktop.org/pipewire/wireplumber.git;protocol=https;branch=master \
+    file://0001-policy-endpoint-device.lua-fix-dangling-logs-issue.patch \
 "
 # v0.4.16
 SRCREV = "0d249b8a13d7168fe54fa6eb1db1c4a5fcc8d3f8"
