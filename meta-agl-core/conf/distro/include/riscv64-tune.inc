@@ -4,4 +4,4 @@
 # A double inclusion would produce a warning. This include line is just for reference
 # include conf/machine/include/arm/arch-armv8.inc
 
-DEFAULTTUNE = "riscv64"
+DEFAULTTUNE:forcevariable = "riscv64"

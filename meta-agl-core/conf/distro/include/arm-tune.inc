@@ -14,7 +14,9 @@ AGLDEFAULTTUNE := "${@bb.utils.contains('DISTRO_FEATURES', 'agl-medium-arm-compi
 
 # for armv6 (=rpi0/1)
 AGLDEFAULTTUNE := "${@bb.utils.contains('DISTRO_FEATURES', 'agl-low-arm-compiler', 'arm1176jzfshf', '${AGLDEFAULTTUNE}', d)}"
+
 DEFAULTTUNE := "${AGLDEFAULTTUNE}"
+DEFAULTTUNE:forcevariable = "${AGLDEFAULTTUNE}"
 
 QB_SYSTEM_NAME ?= "qemu-system-arm"
 QB_DEFAULT_KERNEL ?= "zImage"
