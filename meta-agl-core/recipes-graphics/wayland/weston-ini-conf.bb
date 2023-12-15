@@ -14,7 +14,6 @@ SRC_URI = " \
 	file://hdmi-a-2-180.cfg \
 	file://hdmi-a-2-270.cfg \
 	file://remote-output.cfg.in \
-	file://transmitter-output.cfg.in \
 	file://virtual-0.cfg \
 	file://virtual-90.cfg \
 	file://virtual-180.cfg \
@@ -44,10 +43,6 @@ TRANSMITTER_OUTPUT_HOST ??= "192.168.10.3"
 TRANSMITTER_OUTPUT_PORT ??= "5005"
 
 do_configure() {
-    sed -e "s#mode=.*#mode=${TRANSMITTER_OUTPUT_MODE}#" \
-        -e "s#host=.*#host=${TRANSMITTER_OUTPUT_HOST}#" \
-        -e "s#port=.*#port=${TRANSMITTER_OUTPUT_PORT}#" \
-        ${WORKDIR}/transmitter-output.cfg.in  > ${WORKDIR}/transmitter-output.cfg
     sed -e "s#host=.*#host=${TRANSMITTER_OUTPUT_HOST}#" \
         -e "s#port=.*#port=${TRANSMITTER_OUTPUT_PORT}#" \
         ${WORKDIR}/remote-output.cfg.in  > ${WORKDIR}/remote-output.cfg

@@ -1,5 +1,0 @@
-[transmitter-output]
-name=transmitter-1
-mode=640x720@30
-host=192.168.10.3
-port=5005
