@@ -37,14 +37,14 @@ WESTON_FRAGMENTS = "core shell grpc-proxy ${WESTON_DISPLAYS}"
 weston_ini_dir = "${sysconfdir}/xdg/weston"
 
 # Options for the user to change in local.conf
-# e.g. TRANSMITTER_OUTPUT_MODE = "1080x1488"
-TRANSMITTER_OUTPUT_MODE ??= "640x720@30"
-TRANSMITTER_OUTPUT_HOST ??= "192.168.10.3"
-TRANSMITTER_OUTPUT_PORT ??= "5005"
+# e.g. REMOTING_OUTPUT_MODE = "1080x1488"
+REMOTING_OUTPUT_MODE ??= "640x720@30"
+REMOTING_OUTPUT_HOST ??= "192.168.10.3"
+REMOTING_OUTPUT_PORT ??= "5005"
 
 do_configure() {
-    sed -e "s#host=.*#host=${TRANSMITTER_OUTPUT_HOST}#" \
-        -e "s#port=.*#port=${TRANSMITTER_OUTPUT_PORT}#" \
+    sed -e "s#host=.*#host=${REMOTING_OUTPUT_HOST}#" \
+        -e "s#port=.*#port=${REMOTING_OUTPUT_PORT}#" \
         ${WORKDIR}/remote-output.cfg.in  > ${WORKDIR}/remote-output.cfg
 }
 
