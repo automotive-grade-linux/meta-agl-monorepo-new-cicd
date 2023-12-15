@@ -3,7 +3,8 @@
 # We should not need the tuning include below as the BSP should include the right set already.
 # A double inclusion would produce a warning. This include line is just for reference
 #include conf/machine/include/tune-corei7.inc
-DEFAULTTUNE:forcevariable = "corei7-64"
+AGL_DEFAULTTUNE ?= "corei7-64"
+DEFAULTTUNE:agldefaulttune = "${AGL_DEFAULTTUNE}"
 
 # shortened copy of tune-corei7.inc due to bug in inclusion for tune-core2.inc
 # TUNE_ARCH is using .= x86-64 , if done twice, you get x86-64x86-64 as TUNE_ARCH :/

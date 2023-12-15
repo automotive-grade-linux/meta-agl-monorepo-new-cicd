@@ -4,7 +4,8 @@
 # A double inclusion would produce a warning. This include line is just for reference
 # include conf/machine/include/arm/arch-armv8.inc
 
-DEFAULTTUNE:forcevariable = "aarch64"
+AGL_DEFAULTTUNE ?= "aarch64"
+DEFAULTTUNE:agldefaulttune = "${AGL_DEFAULTTUNE}"
 
 # not yet ready
 #QB_SYSTEM_NAME ?= "qemu-system-aarch"

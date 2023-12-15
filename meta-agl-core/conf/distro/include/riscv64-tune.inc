@@ -4,4 +4,5 @@
 # A double inclusion would produce a warning. This include line is just for reference
 # include conf/machine/include/arm/arch-armv8.inc
 
-DEFAULTTUNE:forcevariable = "riscv64"
+AGL_DEFAULTTUNE ?= "riscv64"
+DEFAULTTUNE:agldefaulttune = "${AGL_DEFAULTTUNE}"

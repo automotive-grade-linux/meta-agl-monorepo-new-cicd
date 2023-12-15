@@ -7,16 +7,16 @@
 #   include conf/machine/include/arch/arm-armv7-a.inc
 
 # Standard target for 32bit ARM (newer than cortex-a15)
-AGLDEFAULTTUNE = "armv7vethf-neon-vfpv4"
+ARM_DEFAULTTUNE = "armv7vethf-neon-vfpv4"
 
 # for cortex-a8, cortex-a9, cortex-a7 (=rpi 2/3)
-AGLDEFAULTTUNE := "${@bb.utils.contains('DISTRO_FEATURES', 'agl-medium-arm-compiler', 'armv7athf-neon', '${AGLDEFAULTTUNE}', d)}"
+ARM_DEFAULTTUNE := "${@bb.utils.contains('DISTRO_FEATURES', 'agl-medium-arm-compiler', 'armv7athf-neon', '${ARM_DEFAULTTUNE}', d)}"
 
 # for armv6 (=rpi0/1)
-AGLDEFAULTTUNE := "${@bb.utils.contains('DISTRO_FEATURES', 'agl-low-arm-compiler', 'arm1176jzfshf', '${AGLDEFAULTTUNE}', d)}"
+ARM_DEFAULTTUNE := "${@bb.utils.contains('DISTRO_FEATURES', 'agl-low-arm-compiler', 'arm1176jzfshf', '${ARM_DEFAULTTUNE}', d)}"
 
-DEFAULTTUNE := "${AGLDEFAULTTUNE}"
-DEFAULTTUNE:forcevariable = "${AGLDEFAULTTUNE}"
+AGL_DEFAULTTUNE ?= "${ARM_DEFAULTTUNE}"
+DEFAULTTUNE:agldefaulttune := "${AGL_DEFAULTTUNE}"
 
 QB_SYSTEM_NAME ?= "qemu-system-arm"
 QB_DEFAULT_KERNEL ?= "zImage"
