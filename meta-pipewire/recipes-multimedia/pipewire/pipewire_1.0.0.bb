@@ -20,8 +20,8 @@ SECTION = "multimedia"
 
 DEPENDS = "dbus"
 
-# v0.3.83
-SRCREV = "6fd7f39dbec9c3a65aa2de0123c6bfbda7c53a85"
+# v1.0.0(El Presidente)
+SRCREV = "4debdcd40b055b3eaa83a8f4443aa990ea566bfe"
 SRC_URI = "git://gitlab.freedesktop.org/pipewire/pipewire.git;branch=master;protocol=https"
 
 S = "${WORKDIR}/git"
@@ -233,6 +233,7 @@ FILES:${PN} = " \
     ${datadir}/pipewire/filter-chain.conf \
     ${datadir}/pipewire/filter-chain \
     ${systemd_user_unitdir}/pipewire.* \
+    ${systemd_system_unitdir}/pipewire* \
     ${bindir}/pipewire \
     ${datadir}/pipewire/pipewire-avb.conf \
     ${bindir}/pipewire-avb \
