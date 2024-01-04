@@ -66,7 +66,7 @@ policy_config.policy = {
     ["Multimedia"] = {
       ["alias"] = { "Movie", "Music", "Game" },
       ["priority"] = 25,
-      ["action.default"] = "cork",
+      ["action.default"] = "mix",
     },
     ["Speech-Low"] = {
       ["priority"] = 30,
