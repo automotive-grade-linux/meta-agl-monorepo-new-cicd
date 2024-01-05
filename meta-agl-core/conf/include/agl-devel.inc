@@ -12,5 +12,5 @@ IMAGE_INSTALL:append = "${@bb.utils.contains('DISTRO_FEATURES', 'wayland', ' lib
 SDKIMAGE_FEATURES="dev-pkgs"
 
 # allows insertion of code or items specific to developement
-OVERRIDES .= ":agl-devel"
+OVERRIDES:append = ":agl-devel"
 DISTRO_FEATURES:append = " agl-devel"
