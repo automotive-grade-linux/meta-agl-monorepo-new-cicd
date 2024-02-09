@@ -62,7 +62,6 @@ FILES:${PN} = "\
     ${datadir}/zsh/* \
     ${systemd_system_unitdir}/* \
 "
-RPROVIDES:${PN} += "virtual/pipewire-sessionmanager"
 
 FILES:lib${PN}-${WPAPI} = "\
     ${libdir}/libwireplumber-${WPAPI}.so.* \
