@@ -8,7 +8,7 @@ alsa_monitor.properties = {
 }
 
 alsa_monitor.rules = {
-  -- disable ACP (PulseAudio-like profiles)
+  -- enable ACP (PulseAudio-like profiles)
   {
     matches = {
       {
@@ -16,7 +16,7 @@ alsa_monitor.rules = {
       },
     },
     apply_properties = {
-      ["api.alsa.use-acp"] = false,
+      ["api.alsa.use-acp"] = true,
     },
   },
 

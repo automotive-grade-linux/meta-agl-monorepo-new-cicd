@@ -13,4 +13,5 @@ RDEPENDS:${PN} += "\
     pipewire-modules-meta \
     ${@bb.utils.contains('DISTRO_FEATURES', 'agl-devel', 'pipewire-tools pipewire-spa-tools alsa-utils', '', d)} \
     pipewire-alsa \
+    pipewire-alsa-card-profile \
 "
