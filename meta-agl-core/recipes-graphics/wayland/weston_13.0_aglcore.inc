@@ -4,6 +4,7 @@ PACKAGECONFIG:append = "${@bb.utils.contains('DISTRO_FEATURES', 'weston-remoting
 
 SRC_URI:append = " \
 		  file://0001-clients-Handle-missing-pointer_surface-is-there-s-no.patch \
+		  file://0001-libweston-Add-paint-node-destruction-into-weston_lay.patch \
 "
 
 
