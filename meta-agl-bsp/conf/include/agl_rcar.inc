@@ -18,7 +18,6 @@ PREFERRED_PROVIDER_libgbm:rcar-gen3 = "libgbm"
 PREFERRED_PROVIDER_virtual/libgbm:rcar-gen3 = "libgbm"
 PREFERRED_RPROVIDER_libgbm-dev:rcar-gen3 = "libgbm"
 
-
 PREFERRED_RPROVIDER_libomxil:rcar-gen3 = "omx-user-module"
 PREFERRED_PROVIDER_virtual/libomxil:rcar-gen3 = "omx-user-module"
 VIRTUAL-RUNTIME_libomxil:rcar-gen3 = "omx-user-module"
@@ -53,3 +52,10 @@ MACHINE_EXTRA_RRECOMMENDS:append:rcar-gen3 = " \
     kernel-module-vspm-if \
     omx-user-module \
 "
+
+# Mask out BSP layer gstreamer* 1.22.x bbappends for now, as the BSP
+# effectively is building 1.20.x plugins and packaging them as 1.22,
+# which breaks building various things.  The whole directory is not
+# commented out because we still want the vspfilter plugin.
+BBMASK += "meta-renesas/meta-rcar-gen3/recipes-multimedia/gstreamer/gstreamer1.0-omx"
+BBMASK += "meta-renesas/meta-rcar-gen3/recipes-multimedia/gstreamer/gstreamer1.0-plugins-"
