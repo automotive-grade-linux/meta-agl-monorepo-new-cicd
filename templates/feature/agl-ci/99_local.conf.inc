@@ -30,3 +30,6 @@ INHERIT += "buildstats-summary"
 #PRSERV_HOST = "${AGL_HOST_PRSERV}:8181"
 
 IMAGE_INSTALL:append = " curl"
+
+# remote .rootfs suffix
+IMAGE_NAME_SUFFIX = ""
