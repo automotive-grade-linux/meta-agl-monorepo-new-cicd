@@ -13,7 +13,6 @@ SRC_URI = " \
 	file://hdmi-a-2-90.cfg \
 	file://hdmi-a-2-180.cfg \
 	file://hdmi-a-2-270.cfg \
-	file://remote-output.cfg.in \
 	file://virtual-0.cfg \
 	file://virtual-90.cfg \
 	file://virtual-180.cfg \
@@ -35,18 +34,6 @@ WESTON_FRAGMENTS = "core shell grpc-proxy ${WESTON_DISPLAYS}"
 
 # On-target weston.ini directory
 weston_ini_dir = "${sysconfdir}/xdg/weston"
-
-# Options for the user to change in local.conf
-# e.g. REMOTING_OUTPUT_MODE = "1080x1488"
-REMOTING_OUTPUT_MODE ??= "640x720@30"
-REMOTING_OUTPUT_HOST ??= "192.168.10.3"
-REMOTING_OUTPUT_PORT ??= "5005"
-
-do_configure() {
-    sed -e "s#host=.*#host=${REMOTING_OUTPUT_HOST}#" \
-        -e "s#port=.*#port=${REMOTING_OUTPUT_PORT}#" \
-        ${WORKDIR}/remote-output.cfg.in  > ${WORKDIR}/remote-output.cfg
-}
 
 do_compile() {
     # Put all of our cfg files together for a default portrait
@@ -109,47 +96,42 @@ PACKAGE_ARCH = "${MACHINE_ARCH}"
 ALTERNATIVE_LINK_NAME[weston.ini] = "${weston_ini_dir}/weston.ini"
 
 RPROVIDES:${PN} = "weston-ini"
-RCONFLICTS:${PN} = "${PN}-landscape"
 ALTERNATIVE:${PN} = "weston.ini"
 ALTERNATIVE_TARGET_${PN} = "${weston_ini_dir}/weston.ini.default"
 
+# landscape
+
 PACKAGE_BEFORE_PN += "${PN}-landscape"
-
 FILES:${PN}-landscape = "${weston_ini_dir}/weston.ini.landscape"
-
 RPROVIDES:${PN}-landscape = "weston-ini"
-RCONFLICTS:${PN}-landscape = "${PN}"
 ALTERNATIVE:${PN}-landscape = "weston.ini"
 ALTERNATIVE_TARGET_${PN}-landscape = "${weston_ini_dir}/weston.ini.landscape"
+ALTERNATIVE_PRIORITY_${PN}-landscape = "20"
+
+# landscape-inverted
 
 PACKAGE_BEFORE_PN += "${PN}-landscape-inverted"
-
 FILES:${PN}-landscape-inverted = "${weston_ini_dir}/weston.ini.landscape-inverted"
-
 RPROVIDES:${PN}-landscape-inverted = "weston-ini"
-RCONFLICTS:${PN}-landscape-inverted = "${PN}"
 ALTERNATIVE:${PN}-landscape-inverted = "weston.ini"
 ALTERNATIVE_TARGET_${PN}-landscape-inverted = "${weston_ini_dir}/weston.ini.landscape-inverted"
+ALTERNATIVE_PRIORITY_${PN}-landscape-inverted = "25"
 
-# no activation by default
+# no-activate, no activation by default
 PACKAGE_BEFORE_PN += "${PN}-no-activate"
-
 FILES:${PN}-no-activate = "${weston_ini_dir}/weston.ini.default-no-activate"
-
 RPROVIDES:${PN}-no-activate = "weston-ini"
-RCONFLICTS:${PN}-no-activate = "${PN}"
 ALTERNATIVE:${PN}-no-activate = "weston.ini"
 ALTERNATIVE_TARGET_${PN}-no-activate = "${weston_ini_dir}/weston.ini.default-no-activate"
+ALTERNATIVE_PRIORITY_${PN}-no-activate = "21"
 
-# landscape, no activation by default
+# landscape-no-activate, no activation by default
 PACKAGE_BEFORE_PN += "${PN}-landscape-no-activate"
-
 FILES:${PN}-landscape-no-activate = "${weston_ini_dir}/weston.ini.landscape-no-activate"
-
 RPROVIDES:${PN}-landscape-no-activate = "weston-ini"
-RCONFLICTS:${PN}-landscape-no-activate = "${PN}"
 ALTERNATIVE:${PN}-landscape-no-activate = "weston.ini"
 ALTERNATIVE_TARGET_${PN}-landscape-no-activate = "${weston_ini_dir}/weston.ini.landscape-no-activate"
+ALTERNATIVE_PRIORITY_${PN}-landscape-no-activate = "26"
 
 # This is a settings-only package, we do not need a development package
 # (and its fixed dependency to ${PN} being installed)
