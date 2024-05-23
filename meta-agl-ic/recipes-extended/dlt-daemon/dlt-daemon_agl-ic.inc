@@ -38,11 +38,11 @@ SYSTEMD_SERVICE:${PN} = "dlt.service"
 
 do_install:append() {
     install -d ${D}${sysconfdir}
-    install -m 0644 ${WORKDIR}/dlt.conf ${D}${sysconfdir}/
-    install -m 0644 ${WORKDIR}/dlt-system.conf ${D}${sysconfdir}/
+    install -m 0644 ${UNPACKDIR}/dlt.conf ${D}${sysconfdir}/
+    install -m 0644 ${UNPACKDIR}/dlt-system.conf ${D}${sysconfdir}/
 
     install -d ${D}/var/nvlog/dlt
-    install -m 0644 ${WORKDIR}/dlt_logstorage.conf ${D}/var/nvlog/dlt
+    install -m 0644 ${UNPACKDIR}/dlt_logstorage.conf ${D}/var/nvlog/dlt
 }
 
 FILES:libdlt = "${libdir}/libdlt${SOLIBS}"

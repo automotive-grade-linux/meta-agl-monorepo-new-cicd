@@ -15,8 +15,6 @@ SRC_URI = " \
     git://gitlab.freedesktop.org/pipewire/wireplumber.git;branch=master;protocol=https \
 "
 
-S = "${WORKDIR}/git"
-
 inherit meson pkgconfig gobject-introspection systemd
 
 GIR_MESON_ENABLE_FLAG = 'enabled'

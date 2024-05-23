@@ -39,5 +39,5 @@ PACKAGECONFIG[drm-lease] = "--enable-drm-lease,,drm-lease-manager"
 do_install:append () {
     # Install override
     install -d ${D}${systemd_system_unitdir}/psplash-start.service.d
-    install -m 0644 ${WORKDIR}/psplash-drmlease.conf ${D}${systemd_system_unitdir}/psplash-start.service.d/
+    install -m 0644 ${UNPACKDIR}/psplash-drmlease.conf ${D}${systemd_system_unitdir}/psplash-start.service.d/
 }

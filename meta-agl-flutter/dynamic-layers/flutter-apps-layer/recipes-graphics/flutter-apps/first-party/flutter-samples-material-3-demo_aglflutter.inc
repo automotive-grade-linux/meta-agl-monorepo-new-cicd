@@ -12,7 +12,7 @@ inherit systemd
 do_compile[network] = "1"
 
 do_install:append() {
-    install -D -m 0644 ${WORKDIR}/${BPN}.service ${D}${systemd_system_unitdir}/${BPN}.service
+    install -D -m 0644 ${UNPACKDIR}/${BPN}.service ${D}${systemd_system_unitdir}/${BPN}.service
 }
 
 RDEPENDS:${PN} += "agl-flutter-env"

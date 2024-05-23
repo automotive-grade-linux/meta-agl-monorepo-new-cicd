@@ -5,7 +5,7 @@ SRC_URI:append:raspberrypi5 = " \
 "
 
 do_install:append:raspberrypi5() {
-    install -m 0644 ${WORKDIR}/99-wlan-up.rules ${D}${sysconfdir}/udev/rules.d/
+    install -m 0644 ${UNPACKDIR}/99-wlan-up.rules ${D}${sysconfdir}/udev/rules.d/
 }
 
 FILES:${PN}:append:raspberrypi5 = " \

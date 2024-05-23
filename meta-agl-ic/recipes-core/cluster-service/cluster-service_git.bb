@@ -14,7 +14,6 @@ SRC_URI = " \
     git://github.com/agl-ic-eg/cluster-service.git;branch=main;protocol=https \
     file://cluster-service.service \
     "
-S = "${WORKDIR}/git"
 
 inherit autotools pkgconfig systemd
 
@@ -26,5 +25,5 @@ SYSTEMD_SERVICE:${PN} = "cluster-service.service"
 
 do_install:append() {
     install -d ${D}${systemd_unitdir}/system
-    install -m 0644 ${WORKDIR}/cluster-service.service ${D}${systemd_unitdir}/system/
+    install -m 0644 ${UNPACKDIR}/cluster-service.service ${D}${systemd_unitdir}/system/
 }

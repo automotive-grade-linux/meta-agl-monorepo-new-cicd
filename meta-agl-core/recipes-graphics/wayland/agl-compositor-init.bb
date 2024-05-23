@@ -15,7 +15,7 @@ SRC_URI = "file://agl-compositor.service \
            file://agl-compositor.conf.in \
 "
 
-S = "${WORKDIR}"
+S = "${UNPACKDIR}"
 
 AGL_COMPOSITOR_ARGS ?= " --config ${sysconfdir}/xdg/weston/weston.ini --idle-time=0"
 AGL_COMPOSITOR_USE_PIXMAN ??= "0"
@@ -25,10 +25,10 @@ AGL_COMPOSITOR_ARGS:append = " ${@bb.utils.contains("WESTON_USE_PIXMAN", "1", " 
 
 do_install() {
     # Install systemd service
-    install -D -p -m0644 ${WORKDIR}/agl-compositor.service ${D}${systemd_system_unitdir}/agl-compositor.service
-    install -D -p -m0644 ${WORKDIR}/agl-compositor.socket ${D}${systemd_system_unitdir}/agl-compositor.socket
+    install -D -p -m0644 ${UNPACKDIR}/agl-compositor.service ${D}${systemd_system_unitdir}/agl-compositor.service
+    install -D -p -m0644 ${UNPACKDIR}/agl-compositor.socket ${D}${systemd_system_unitdir}/agl-compositor.socket
     if [ "${@bb.utils.filter('DISTRO_FEATURES', 'pam', d)}" ]; then
-        install -D -p -m0644 ${WORKDIR}/agl-compositor-autologin ${D}${sysconfdir}/pam.d/agl-compositor-autologin
+        install -D -p -m0644 ${UNPACKDIR}/agl-compositor-autologin ${D}${sysconfdir}/pam.d/agl-compositor-autologin
     fi
 
     # Install systemd service drop-in with extra configuration
@@ -37,7 +37,7 @@ do_install() {
         g=${f%.in}
         if [ "${f}" != "${g}" ]; then
             sed -e "s,@AGL_COMPOSITOR_ARGS@,${AGL_COMPOSITOR_ARGS},g" \
-                ${WORKDIR}/${f} > ${WORKDIR}/${g}
+                ${UNPACKDIR}/${f} > ${WORKDIR}/${g}
         fi
     done
     install -d ${D}${systemd_system_unitdir}/agl-compositor.service.d

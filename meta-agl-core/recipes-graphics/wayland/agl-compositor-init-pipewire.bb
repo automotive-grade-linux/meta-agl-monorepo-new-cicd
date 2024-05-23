@@ -15,22 +15,22 @@ SRC_URI = "file://agl-compositor-pipewire.conf \
            file://agl-compositor-stream-pipewire.service \
 "
 
-S = "${WORKDIR}"
+S = "${UNPACKDIR}"
 
 AGL_KVM_REMOTE_OUTPUT_IP ?= "172.16.10.3"
 AGL_KVM_REMOTE_OUTPUT_PORT ?= "5005"
 
 do_install() {
     sed -i -e "s,@REMOTE_OUTPUT_IP@,${AGL_KVM_REMOTE_OUTPUT_IP},g" \
-	${WORKDIR}/agl-compositor-stream-pipewire.service
+	${UNPACKDIR}/agl-compositor-stream-pipewire.service
 
     sed -i -e "s,@REMOTE_OUTPUT_PORT@,${AGL_KVM_REMOTE_OUTPUT_PORT},g" \
-	${WORKDIR}/agl-compositor-stream-pipewire.service
+	${UNPACKDIR}/agl-compositor-stream-pipewire.service
 
-    install -D -p -m0644 ${WORKDIR}/agl-compositor-stream-pipewire.service ${D}${systemd_system_unitdir}/agl-compositor-stream-pipewire.service
+    install -D -p -m0644 ${UNPACKDIR}/agl-compositor-stream-pipewire.service ${D}${systemd_system_unitdir}/agl-compositor-stream-pipewire.service
 
     install -d ${D}${systemd_system_unitdir}/agl-compositor.service.d
-    install -m644 ${WORKDIR}/agl-compositor-pipewire.conf ${D}/${systemd_system_unitdir}/agl-compositor.service.d/02-agl-compositor.conf
+    install -m644 ${UNPACKDIR}/agl-compositor-pipewire.conf ${D}/${systemd_system_unitdir}/agl-compositor.service.d/02-agl-compositor.conf
 }
 
 FILES:${PN} += "\

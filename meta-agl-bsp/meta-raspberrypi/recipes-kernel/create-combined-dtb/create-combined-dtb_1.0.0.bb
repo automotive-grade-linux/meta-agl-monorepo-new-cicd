@@ -1,16 +1,12 @@
 SUMMARY = "Combine dtb and dtbo"
 DESCRIPTION = "Combine specified dtb and one or more dtbo into specified filename found in deploydir"
 SECTION = "bootloader"
-PR = "r1"
 LICENSE = "MIT"
 LIC_FILES_CHKSUM = "file://${COREBASE}/meta/COPYING.MIT;md5=3da9cfbcb788c80a0384361b4de20420"
 
 DEPENDS = "dtc-native"
 
-ALLOW_EMPTY:${PN} = "1"
-FILES:${PN} = ""
-
-S = "${WORKDIR}"
+S = "${UNPACKDIR}"
 
 do_compile[depends] += "virtual/kernel:do_deploy"
 
@@ -49,3 +45,6 @@ do_deploy () {
 }
 
 addtask deploy after do_install
+
+ALLOW_EMPTY:${PN} = "1"
+FILES:${PN} = ""

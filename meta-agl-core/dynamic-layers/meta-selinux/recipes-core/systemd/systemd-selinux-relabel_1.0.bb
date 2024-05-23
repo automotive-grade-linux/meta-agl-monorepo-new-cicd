@@ -6,6 +6,8 @@ SRC_URI = "file://systemd-selinux-relabel.service \
            file://systemd-selinux-relabel.sh \
 "
 
+S = "${UNPACKDIR}"
+
 inherit systemd allarch features_check
 
 SYSTEMD_SERVICE:${PN} = "${BPN}.service"
@@ -17,9 +19,9 @@ do_compile[noexec] = "1"
 
 do_install() {
     install -d ${D}${systemd_system_unitdir}
-    install -m 0644 ${WORKDIR}/systemd-selinux-relabel.service ${D}${systemd_system_unitdir}/
+    install -m 0644 ${UNPACKDIR}/systemd-selinux-relabel.service ${D}${systemd_system_unitdir}/
     install -d ${D}${sbindir}
-    install -m 0755 ${WORKDIR}/systemd-selinux-relabel.sh ${D}${sbindir}/
+    install -m 0755 ${UNPACKDIR}/systemd-selinux-relabel.sh ${D}${sbindir}/
 }
 
 FILES:${PN} += "${systemd_system_unitdir}"

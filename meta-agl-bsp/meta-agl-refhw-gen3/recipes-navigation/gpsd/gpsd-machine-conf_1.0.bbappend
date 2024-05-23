@@ -5,18 +5,20 @@ SRC_URI = "file://gpsd.refhw \
            file://refhw.conf \
 "
 
+S = "${UNPACKDIR}"
+
 inherit update-alternatives
 
 do_configure[noexec] = "1"
 do_compile[noexec] = "1"
 
 do_install() {
-    install -D -m 0644 ${WORKDIR}/gpsd.refhw ${D}/${sysconfdir}/default/gpsd.refhw
+    install -D -m 0644 ${UNPACKDIR}/gpsd.refhw ${D}/${sysconfdir}/default/gpsd.refhw
 
     if ${@bb.utils.contains('DISTRO_FEATURES', 'systemd', 'true', 'false', d)}; then
-        install -D -m 0755 ${WORKDIR}/refhw-gpsd-helper.sh ${D}/${sbindir}/refhw-gpsd-helper.sh
+        install -D -m 0755 ${UNPACKDIR}/refhw-gpsd-helper.sh ${D}/${sbindir}/refhw-gpsd-helper.sh
         install -d ${D}${sysconfdir}/systemd/system/gpsd.service.d
-        install -D -m 0644 ${WORKDIR}/refhw.conf ${D}${sysconfdir}/systemd/system/gpsd.service.d/refhw.conf
+        install -D -m 0644 ${UNPACKDIR}/refhw.conf ${D}${sysconfdir}/systemd/system/gpsd.service.d/refhw.conf
     fi
 }
 

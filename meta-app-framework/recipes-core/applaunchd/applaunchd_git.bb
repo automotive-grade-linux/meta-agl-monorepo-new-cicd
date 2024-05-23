@@ -27,8 +27,6 @@ SRC_URI = " \
 "
 SRCREV = "c32fe42f40d0af8b31b6113a3140f52b83be7769"
 
-S = "${WORKDIR}/git"
-
 inherit meson pkgconfig systemd useradd features_check
 
 REQUIRED_DISTRO_FEATURES = "systemd polkit"
@@ -45,15 +43,15 @@ SYSTEMD_SERVICE:${PN} = "applaunchd.service"
 do_install:append() {
     # Install generic template for all agl-app services
     install -d ${D}${systemd_system_unitdir}
-    install -m 644 ${WORKDIR}/applaunchd.service ${D}${systemd_system_unitdir}/
-    install -m 644 ${WORKDIR}/agl-app@.service ${D}${systemd_system_unitdir}/
-    install -m 644 ${WORKDIR}/agl-app-web@.service ${D}${systemd_system_unitdir}/
-    install -m 644 ${WORKDIR}/agl-app-flutter@.service ${D}${systemd_system_unitdir}/
+    install -m 644 ${UNPACKDIR}/applaunchd.service ${D}${systemd_system_unitdir}/
+    install -m 644 ${UNPACKDIR}/agl-app@.service ${D}${systemd_system_unitdir}/
+    install -m 644 ${UNPACKDIR}/agl-app-web@.service ${D}${systemd_system_unitdir}/
+    install -m 644 ${UNPACKDIR}/agl-app-flutter@.service ${D}${systemd_system_unitdir}/
 
     # Install individual sandboxing overrides/drop-ins to be used by apps
     install -d ${D}${systemd_system_unitdir}/sandboxing
-    install -m 644 ${WORKDIR}/no-network.conf ${D}${systemd_system_unitdir}/sandboxing/
-    install -m 644 ${WORKDIR}/private-tmp.conf ${D}${systemd_system_unitdir}/sandboxing/
+    install -m 644 ${UNPACKDIR}/no-network.conf ${D}${systemd_system_unitdir}/sandboxing/
+    install -m 644 ${UNPACKDIR}/private-tmp.conf ${D}${systemd_system_unitdir}/sandboxing/
 }
 
 PACKAGE_BEFORE_PN += "${PN}-template-agl-app ${PN}-template-agl-app-web ${PN}-template-agl-app-flutter"

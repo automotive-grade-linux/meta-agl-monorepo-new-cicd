@@ -10,8 +10,6 @@ require vss.inc
 
 UPSTREAM_CHECK_GITTAGREGEX = "v(?P<pver>\d+(\.\d+)+)"
 
-S = "${WORKDIR}/git"
-
 do_configure[noexec] = "1"
 
 EXTRA_OEMAKE = "TOOLSDIR=${STAGING_BINDIR_NATIVE}"

@@ -11,5 +11,5 @@ WESTON_FRAGMENTS:append:ebisu = " ebisu_output"
 WESTON_FRAGMENTS:append:salvator-x = " salvator-x_output"
 
 do_configure:append:rcar-gen3() {
-    echo repaint-window=34 >> ${WORKDIR}/core.cfg
+    echo repaint-window=34 >> ${UNPACKDIR}/core.cfg
 }

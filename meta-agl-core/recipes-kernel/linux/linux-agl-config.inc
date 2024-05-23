@@ -32,7 +32,7 @@ AGL_KERNEL_SRC ?= "${@' '.join(['file://' + x for x in d.getVar('AGL_KCONFIG_FRA
 SRC_URI:append = " ${AGL_KERNEL_SRC}"
 
 # For meta-ti and meta-qcom
-KERNEL_CONFIG_FRAGMENTS ?= "${@' '.join(['${WORKDIR}/' + x for x in d.getVar('AGL_KCONFIG_FRAGMENTS').split()])}"
+KERNEL_CONFIG_FRAGMENTS ?= "${@' '.join(['${UNPACKDIR}/' + x for x in d.getVar('AGL_KCONFIG_FRAGMENTS').split()])}"
 
 # Extra configuration options for the AGL kernel
 AGL_KCONFIG_FRAGMENTS += " \

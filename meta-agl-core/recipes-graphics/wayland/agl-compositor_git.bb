@@ -18,7 +18,6 @@ SRCREV:aglnext = "${AUTOREV}"
 AGL_COMPOSITOR_VERSION = "0.0.24"
 
 PV = "${AGL_COMPOSITOR_VERSION}+git${SRCPV}"
-S = "${WORKDIR}/git"
 
 PACKAGECONFIG ?= ""
 PACKAGECONFIG[policy-rba] = "-Dpolicy-default=rba,,librba,librba rba-config"

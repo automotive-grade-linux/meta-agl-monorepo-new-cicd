@@ -6,12 +6,14 @@ inherit systemd
 
 SRC_URI = "file://si-init.service"
 
+S = "${UNPACKDIR}"
+
 do_configure[noexec] = "1"
 do_compile[noexec] = "1"
 
 do_install() {
     install -d ${D}${systemd_system_unitdir}
-    install -m 0644 ${WORKDIR}/si-init.service ${D}${systemd_system_unitdir}
+    install -m 0644 ${UNPACKDIR}/si-init.service ${D}${systemd_system_unitdir}
 
     # Add symlink to sysinit.target.wants
     install -d ${D}${sysconfdir}/systemd/system/sysinit.target.wants

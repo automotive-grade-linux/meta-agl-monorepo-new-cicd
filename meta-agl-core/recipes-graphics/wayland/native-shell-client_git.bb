@@ -11,7 +11,6 @@ SRC_URI = "git://gerrit.automotivelinux.org/gerrit/src/native-shell-client.git;p
 SRCREV = "099e06f532eff7c56bf00eb58420f14c95a8e554"
 
 PV = "0.0.1+git${SRCPV}"
-S = "${WORKDIR}/git"
 
 inherit meson pkgconfig
 

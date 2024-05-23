@@ -20,7 +20,7 @@ SRC_URI = " \
 	file://grpc-proxy.cfg \
 "
 
-S = "${WORKDIR}"
+S = "${UNPACKDIR}"
 
 inherit update-alternatives
 
@@ -44,7 +44,7 @@ do_compile() {
     # orientation configuration
     rm -f ${WORKDIR}/weston.ini.default
     for F in ${WESTON_FRAGMENTS}; do
-        cat ${WORKDIR}/${F}.cfg >> ${WORKDIR}/weston.ini.default
+        cat ${UNPACKDIR}/${F}.cfg >> ${WORKDIR}/weston.ini.default
         echo >> ${WORKDIR}/weston.ini.default
     done
     sed -i -e '$ d' ${WORKDIR}/weston.ini.default
@@ -68,8 +68,8 @@ do_compile() {
             F="virtual-0"
             INVF="virtual-180"
         fi
-        cat ${WORKDIR}/${F}.cfg >> ${WORKDIR}/weston.ini.landscape
-        cat ${WORKDIR}/${INVF}.cfg >> ${WORKDIR}/weston.ini.landscape-inverted
+        cat ${UNPACKDIR}/${F}.cfg >> ${WORKDIR}/weston.ini.landscape
+        cat ${UNPACKDIR}/${INVF}.cfg >> ${WORKDIR}/weston.ini.landscape-inverted
         echo >> ${WORKDIR}/weston.ini.landscape
         echo >> ${WORKDIR}/weston.ini.landscape-inverted
     done

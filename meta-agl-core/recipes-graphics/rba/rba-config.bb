@@ -4,12 +4,12 @@ LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/Apache-2.0;md5=89aea4e17d99a7ca
 
 SRC_URI = "file://RBAModel.json"
 
-S = "${WORKDIR}"
+S = "${UNPACKDIR}"
 
 do_configure[noexec] = "1"
 do_compile[noexec] = "1"
 
 do_install:append() {
     install -d ${D}/${sysconfdir}/rba
-    install -m 0644 ${WORKDIR}/RBAModel.json ${D}/${sysconfdir}/rba
+    install -m 0644 ${UNPACKDIR}/RBAModel.json ${D}/${sysconfdir}/rba
 }

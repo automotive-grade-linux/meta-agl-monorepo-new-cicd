@@ -8,11 +8,11 @@ SRC_URI = "file://drm-lease-manager.ini"
 
 DRM_LEASE_MANAGER_CONF_DIR := "${sysconfdir}/xdg/drm-lease-manager"
 
-S = "${WORKDIR}"
+S = "${UNPACKDIR}"
 
 do_install() {
     install -d ${D}${DRM_LEASE_MANAGER_CONF_DIR}
-    install -m644 ${WORKDIR}/drm-lease-manager.ini ${D}/${DRM_LEASE_MANAGER_CONF_DIR}/drm-lease-manager.ini
+    install -m644 ${UNPACKDIR}/drm-lease-manager.ini ${D}/${DRM_LEASE_MANAGER_CONF_DIR}/drm-lease-manager.ini
 }
 
 RDEPENDS:${PN} = "drm-lease-manager"

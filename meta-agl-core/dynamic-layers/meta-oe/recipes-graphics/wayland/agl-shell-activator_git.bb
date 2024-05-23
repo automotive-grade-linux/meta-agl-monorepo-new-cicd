@@ -14,8 +14,6 @@ SRC_URI = "git://gerrit.automotivelinux.org/gerrit/src/agl-shell-activator.git;p
 SRCREV = "027d6f814f3d1f2e6b4b4071365b28dadec34109"
 
 PV = "0.0.10+git${SRCPV}"
-S = "${WORKDIR}/git"
-
 
 inherit meson pkgconfig python3native
 

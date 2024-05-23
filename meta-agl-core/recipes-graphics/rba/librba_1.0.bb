@@ -12,8 +12,6 @@ INHIBIT_PACKAGE_DEBUG_SPLIT = "1"
 SRC_URI = "git://gerrit.automotivelinux.org/gerrit/staging/rba;protocol=https;branch=master"
 SRCREV = "87c0278dfbcf0953330330c28a8d48636dd4df7e"
 
-S = "${WORKDIR}/git"
-
 inherit pkgconfig cmake
 
 FILES:${PN} = "${libdir}/"

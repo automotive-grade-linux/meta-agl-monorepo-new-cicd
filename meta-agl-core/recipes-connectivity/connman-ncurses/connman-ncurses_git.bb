@@ -20,8 +20,6 @@ inherit autotools pkgconfig
 
 EXTRA_AUTORECONF += " -vfi"
 
-S = "${WORKDIR}/git"
-
 do_install () {
     install -dm755 ${D}${bindir}
     install -Dm755 connman_ncurses ${D}${bindir}

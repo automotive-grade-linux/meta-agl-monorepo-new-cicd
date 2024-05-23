@@ -19,8 +19,6 @@ SRCREV = "dd9cb5d1c2da2543dd3b3aa7e5fb350d07412c66"
 
 require ${BPN}-crates.inc
 
-S = "${WORKDIR}/git"
-
 inherit cargo cargo-update-recipe-crates systemd useradd
 
 # Enable optional VISS support for potential use by e.g. the web apps
@@ -36,7 +34,7 @@ USERADD_PARAM:${PN} = "--system -g 900 -u 900 -o -d / --shell /bin/nologin kuksa
 do_install:append() {
     if ${@bb.utils.contains('DISTRO_FEATURES', 'systemd', 'true', 'false', d)}; then
         install -d ${D}${systemd_system_unitdir}
-        install -m 0644 ${WORKDIR}/${BPN}.service ${D}${systemd_system_unitdir}
+        install -m 0644 ${UNPACKDIR}/${BPN}.service ${D}${systemd_system_unitdir}
     fi
 
     # Install gRPC API protobuf files

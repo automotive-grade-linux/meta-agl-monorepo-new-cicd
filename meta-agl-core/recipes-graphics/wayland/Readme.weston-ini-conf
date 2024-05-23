@@ -6,16 +6,16 @@ overrides (i.e. use the MACHINE name where "machine" is used below):
 
 '''
 do_configure:machine() {
-    echo repaint-window=34 >> ${WORKDIR}/core.cfg
+    echo repaint-window=34 >> ${UNPACKDIR}/core.cfg
 
-    echo transition-duration=300 >> ${WORKDIR}/ivishell.cfg
-    echo cursor-theme=default >> ${WORKDIR}/ivishell.cfg
+    echo transition-duration=300 >> ${UNPACKDIR}/ivishell.cfg
+    echo cursor-theme=default >> ${UNPACKDIR}/ivishell.cfg
 }
 '''
 or:
 '''
 do_configure:machine() {
-    sed -i -e 's/drm-backend/fbdev-backend/' ${WORKDIR}/core.cfg
+    sed -i -e 's/drm-backend/fbdev-backend/' ${UNPACKDIR}/core.cfg
 }
 '''
 

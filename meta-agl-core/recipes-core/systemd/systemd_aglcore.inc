@@ -21,15 +21,15 @@ PACKAGECONFIG:append:agl-devel = " coredump"
 
 do_install:append() {
     # Install /etc/e2fsck.conf to avoid boot stuck by wrong clock time
-    install -m 644 -p -D ${WORKDIR}/e2fsck.conf ${D}${sysconfdir}/e2fsck.conf
+    install -m 644 -p -D ${UNPACKDIR}/e2fsck.conf ${D}${sysconfdir}/e2fsck.conf
 
     if [ "${VIRTUAL-RUNTIME_net_manager}" = "systemd" ]; then
        # Install DHCP configuration for Ethernet adapters
-       install -m 644 ${WORKDIR}/wired.network ${D}${sysconfdir}/systemd/network
+       install -m 644 ${UNPACKDIR}/wired.network ${D}${sysconfdir}/systemd/network
     elif [ "${VIRTUAL-RUNTIME_net_manager}" = "connman" ]; then
        # Disable systemd-networkd-wait-online by default
        install -d ${D}${systemd_system_unitdir}/systemd-networkd-wait-online.service.d
-       install -m 0644 ${WORKDIR}/wait-disable.conf ${D}${systemd_system_unitdir}/systemd-networkd-wait-online.service.d/
+       install -m 0644 ${UNPACKDIR}/wait-disable.conf ${D}${systemd_system_unitdir}/systemd-networkd-wait-online.service.d/
     fi
 }
 

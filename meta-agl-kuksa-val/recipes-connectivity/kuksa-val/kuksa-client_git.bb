@@ -20,7 +20,7 @@ SRC_URI = "gitsm://github.com/eclipse-kuksa/kuksa-python-sdk.git;protocol=https;
 "
 SRCREV = "cdf8f8215043b56cad3deaacb59322926b70418a"
 
-S = "${WORKDIR}/git/kuksa-client"
+S = "${UNPACKDIR}/${BPN}-${PV}/kuksa-client"
 
 inherit python_setuptools_build_meta
 

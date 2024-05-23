@@ -8,6 +8,8 @@ SRC_URI = "file://hci-uart-helper.service \
            file://hci-uart-helper.sh \
 "
 
+S = "${UNPACKDIR}"
+
 COMPATIBLE_MACHINE = "imx8mq-evk"
 
 do_configure[noexec] = "1"
@@ -16,11 +18,11 @@ do_compile[noexec] = "1"
 do_install() {
     # Install helper script
     install -d ${D}${sbindir}
-    install -m 0755 ${WORKDIR}/hci-uart-helper.sh ${D}${sbindir}/
+    install -m 0755 ${UNPACKDIR}/hci-uart-helper.sh ${D}${sbindir}/
 
     # Install systemd unit
     install -d ${D}${systemd_system_unitdir}/
-    install -m 0644 ${WORKDIR}/hci-uart-helper.service ${D}${systemd_system_unitdir}/
+    install -m 0644 ${UNPACKDIR}/hci-uart-helper.service ${D}${systemd_system_unitdir}/
     install -d ${D}${systemd_system_unitdir}/bluetooth.service.wants
     ln -s ../hci-uart-helper.service ${D}${systemd_system_unitdir}/bluetooth.service.wants/
 }

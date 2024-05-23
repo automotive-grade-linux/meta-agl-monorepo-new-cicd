@@ -6,8 +6,6 @@ LIC_FILES_CHKSUM = "file://LICENSE;md5=9741c346eef56131163e13b9db1241b3"
 SRC_URI = "git://github.com/COVESA/vss-tools.git;protocol=https;branch=release/6.0"
 SRCREV = "db47df2f454939bb3f2cb6f80e9951083f81fee5"
 
-S = "${WORKDIR}/git"
-
 inherit python_hatchling
 
 RDEPENDS:${PN} += " \

@@ -4,6 +4,8 @@ LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/MIT;md5=0835ade698e0bcf8506ecda
 
 SRC_URI = "file://resolv-conf-relabel.service"
 
+S = "${UNPACKDIR}"
+
 inherit systemd allarch features_check
 
 SYSTEMD_SERVICE:${PN} = "${BPN}.service"
@@ -15,7 +17,7 @@ do_compile[noexec] = "1"
 
 do_install() {
     install -d ${D}${systemd_system_unitdir}
-    install -m 0644 ${WORKDIR}/resolv-conf-relabel.service ${D}${systemd_system_unitdir}/
+    install -m 0644 ${UNPACKDIR}/resolv-conf-relabel.service ${D}${systemd_system_unitdir}/
 }
 
 FILES:${PN} += "${systemd_system_unitdir}"

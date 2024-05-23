@@ -36,7 +36,6 @@ TARGET_CFLAGS += "-Wno-extra -Wno-error=stringop-overflow -Wno-error=array-bound
 TARGET_CC_ARCH += "${LDFLAGS}"
 INSANE_SKIP:${PN} = "ldflags"
 
-S = "${WORKDIR}/git"
 EXTRA_OEMAKE = "-e MAKEFLAGS="
 
 do_compile() {
