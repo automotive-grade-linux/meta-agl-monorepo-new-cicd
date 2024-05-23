@@ -8,8 +8,8 @@ SRC_URI:append = " \
 DRM_LEASE_DEVICE = "lease"
 
 do_install:append() {
-    install -Dm644 ${WORKDIR}/agl-compositor.env ${D}${sysconfdir}/default/agl-compositor
-    install -m644 ${WORKDIR}/agl-compositor-guest.conf ${D}/${systemd_system_unitdir}/agl-compositor.service.d/agl-compositor-guest.conf
+    install -Dm644 ${UNPACKDIR}/agl-compositor.env ${D}${sysconfdir}/default/agl-compositor
+    install -m644 ${UNPACKDIR}/agl-compositor-guest.conf ${D}/${systemd_system_unitdir}/agl-compositor.service.d/agl-compositor-guest.conf
 }
 
 FILES:${PN} += "\

@@ -6,7 +6,6 @@ SRC_URI = "git://gerrit.automotivelinux.org/gerrit/src/agl-dbc;protocol=https;br
 SRCREV  = "ad41d4910236f617cafe36e7145668fb7693f72c"
 
 PV = "1.0+git${SRCPV}"
-S  = "${WORKDIR}/git"
 
 inherit allarch
 

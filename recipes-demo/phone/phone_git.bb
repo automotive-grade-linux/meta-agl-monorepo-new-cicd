@@ -13,8 +13,6 @@ PV = "1.0+git${SRCPV}"
 SRC_URI = "git://gerrit.automotivelinux.org/gerrit/apps/phone;protocol=https;branch=${AGL_BRANCH}"
 SRCREV  = "513de36724cfd7f56babc5ce47466f6e46737f4c"
 
-S = "${WORKDIR}/git"
-
 inherit qt6-qmake pkgconfig agl-app
 
 AGL_APP_NAME = "Phone"

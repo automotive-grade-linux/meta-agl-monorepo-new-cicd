@@ -17,8 +17,6 @@ SRC_URI = " \
 "
 SRCREV = "181f28b8d147d10b9160e106694fbca811c911b9"
 
-S = "${WORKDIR}/git"
-
 inherit qt6-cmake pkgconfig
 
 EXTRA_OECMAKE += "-DMLN_WITH_OPENGL=ON"

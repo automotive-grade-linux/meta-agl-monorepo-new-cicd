@@ -10,8 +10,6 @@ PV = "1.0+git${SRCPV}"
 SRC_URI = "git://gerrit.automotivelinux.org/gerrit/src/qtquickcontrols2-agl-style;protocol=https;branch=${AGL_BRANCH}"
 SRCREV = "4059077eb23b6338e153036c602972cbbb46cbb8"
 
-S = "${WORKDIR}/git"
-
 inherit qt6-qmake
 
 FILES:${PN} += "${OE_QMAKE_PATH_QML}/QtQuick/Controls.2/AGL/*"

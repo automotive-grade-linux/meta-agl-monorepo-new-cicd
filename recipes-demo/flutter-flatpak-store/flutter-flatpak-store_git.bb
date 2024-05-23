@@ -10,8 +10,6 @@ LIC_FILES_CHKSUM = "file://LICENSE;md5=d73cf6ba84211d8b7fd0d2865b678fe8"
 SRCREV = "44de1e21bbe1701a498d8303385f116cb07fd708"
 SRC_URI = "git://github.com/toyota-connected/tcna-packages.git;lfs=0;branch=v2.0;protocol=https"
 
-S = "${WORKDIR}/git"
-
 inherit flutter-app agl-app
 
 PUBSPEC_APPNAME = "flatpak_flutter_example"

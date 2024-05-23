@@ -12,7 +12,7 @@ SRC_URI = "http://downloads.sourceforge.net/hts-engine/hts_voice_cmu_us_arctic_s
 SRC_URI[md5sum] = "0d76f505e7fbc5fa68a437d29f591dcd"
 SRC_URI[sha256sum] = "3aa86d810e04548814b83db36a1d5a187d95a136890a378913d0b1b97ef90ba4"
 
-S = "${WORKDIR}/hts_voice_cmu_us_arctic_slt-${PV}"
+S = "${UNPACKDIR}/hts_voice_cmu_us_arctic_slt-${PV}"
 
 do_install() {
     install -m 0755 -d ${D}/${datadir}/Voice/us

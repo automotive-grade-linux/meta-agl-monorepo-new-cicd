@@ -7,6 +7,6 @@ SRC_URI:append = " file://cleaner.py"
 
 do_install:prepend() {
     for TTF in ${S}/*.ttf; do
-        fontforge -script ${WORKDIR}/cleaner.py ${TTF}
+        fontforge -script ${UNPACKDIR}/cleaner.py ${TTF}
     done
 }

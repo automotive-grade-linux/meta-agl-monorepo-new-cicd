@@ -16,8 +16,6 @@ PV = "1.0+git${SRCPV}"
 SRC_URI = "git://gerrit.automotivelinux.org/gerrit/apps/camera-gstreamer;protocol=https;branch=${AGL_BRANCH}"
 SRCREV  = "97faa830c65258ba8b60fa53cdbfb3f9d810abb3"
 
-S  = "${WORKDIR}/git"
-
 inherit meson pkgconfig agl-app
 
 AGL_APP_NAME = "Camera"

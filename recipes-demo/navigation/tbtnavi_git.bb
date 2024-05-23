@@ -32,24 +32,22 @@ SRC_URI = "git://gerrit.automotivelinux.org/gerrit/apps/tbtnavi;protocol=https;b
 "
 SRCREV = "a89eac8f101fd6cd88b4a93dee02de03dab36c21"
 
-S = "${WORKDIR}/git"
-
 inherit meson systemd pkgconfig
 
 SYSTEMD_SERVICE:${PN} = "${BPN}.service"
 
 do_install:append() {
-    install -D -m 0644 ${WORKDIR}/${BPN}.service ${D}${systemd_system_unitdir}/${BPN}.service
+    install -D -m 0644 ${UNPACKDIR}/${BPN}.service ${D}${systemd_system_unitdir}/${BPN}.service
 
-    install -D -m 0644 ${WORKDIR}/kvm.conf ${D}${systemd_system_unitdir}/${BPN}.service.d/kvm.conf
+    install -D -m 0644 ${UNPACKDIR}/kvm.conf ${D}${systemd_system_unitdir}/${BPN}.service.d/kvm.conf
 
     # VIS authorization token file for KUKSA.val should ideally not
     # be readable by other users, but currently that's not doable
     # until a packaging/sandboxing/MAC scheme is (re)implemented or
     # something like OAuth is plumbed in as an alternative.
     install -d ${D}${sysconfdir}/xdg/AGL/tbtnavi
-    install -m 0644 ${WORKDIR}/kuksa.toml ${D}${sysconfdir}/xdg/AGL/tbtnavi/
-    install -m 0644 ${WORKDIR}/tbtnavi.token ${D}${sysconfdir}/xdg/AGL/tbtnavi/
+    install -m 0644 ${UNPACKDIR}/kuksa.toml ${D}${sysconfdir}/xdg/AGL/tbtnavi/
+    install -m 0644 ${UNPACKDIR}/tbtnavi.token ${D}${sysconfdir}/xdg/AGL/tbtnavi/
 }
 
 RDEPENDS:${PN} += " \

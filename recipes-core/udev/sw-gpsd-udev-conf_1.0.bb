@@ -4,12 +4,14 @@ LIC_FILES_CHKSUM = "file://${COREBASE}/meta/COPYING.MIT;md5=3da9cfbcb788c80a0384
 
 SRC_URI = "file://60-sw-gpsd.rules"
 
+S = "${UNPACKDIR}"
+
 do_compile[noexec] = "1"
 
 do_install() {
     if ${@bb.utils.contains('DISTRO_FEATURES', 'systemd', 'true', 'false', d)}; then
         install -d ${D}${sysconfdir}/udev/rules.d
-        install -m 0644 ${WORKDIR}/60-sw-gpsd.rules ${D}${sysconfdir}/udev/rules.d/
+        install -m 0644 ${UNPACKDIR}/60-sw-gpsd.rules ${D}${sysconfdir}/udev/rules.d/
     fi
 }
 

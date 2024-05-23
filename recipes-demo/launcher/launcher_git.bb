@@ -25,8 +25,6 @@ SRC_URI = "git://gerrit.automotivelinux.org/gerrit/apps/launcher;protocol=https;
            "
 SRCREV = "83e68bfb154332e591da318301f604d2252a81fd"
 
-S = "${WORKDIR}/git"
-
 inherit qt6-qmake systemd pkgconfig
 
 PATH:prepend = "${STAGING_DIR_NATIVE}${OE_QMAKE_PATH_QT_BINS}:"
@@ -34,7 +32,7 @@ PATH:prepend = "${STAGING_DIR_NATIVE}${OE_QMAKE_PATH_QT_BINS}:"
 SYSTEMD_SERVICE:${PN} = "${BPN}.service"
 
 do_install:append() {
-    install -D -m0644 ${WORKDIR}/launcher.service ${D}${systemd_system_unitdir}/launcher.service
+    install -D -m0644 ${UNPACKDIR}/launcher.service ${D}${systemd_system_unitdir}/launcher.service
 }
 
 RDEPENDS:${PN} += " \

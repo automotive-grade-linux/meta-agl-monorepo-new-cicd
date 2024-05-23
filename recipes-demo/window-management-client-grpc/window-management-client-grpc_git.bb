@@ -15,8 +15,6 @@ PV = "2.0+git${SRCPV}"
 SRC_URI = "git://gerrit.automotivelinux.org/gerrit/src/window-management-client-grpc.git;protocol=https;branch=${AGL_BRANCH}"
 SRCREV  = "dac8504bba9558f3123f9238770c2544ed70e851"
 
-S  = "${WORKDIR}/git"
-
 inherit  meson pkgconfig
 
 AGL_APP_NAME = "window-management-client-grpc"

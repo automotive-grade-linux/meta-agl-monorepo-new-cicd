@@ -4,17 +4,13 @@ SECTION = "base"
 LICENSE = "GPL-2.0-only"
 LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/GPL-2.0-only;md5=801f80980d171dd6425610833a22dbe6"
 
-SRC_URI = " \
-    file://fstab \
-"
-S = "${WORKDIR}"
+SRC_URI = "file://fstab"
 
-#INHIBIT_DEFAULT_DEPS = "1"
+S = "${UNPACKDIR}"
 
 do_install () {
 	install -m 0755 -d ${D}${sysconfdir}
-
-	install -m 0644 ${WORKDIR}/fstab ${D}${sysconfdir}/fstab-guest
+	install -m 0644 ${UNPACKDIR}/fstab ${D}${sysconfdir}/fstab-guest
 }
 
 PACKAGES = "${PN}"

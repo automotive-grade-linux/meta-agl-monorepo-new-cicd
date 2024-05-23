@@ -10,9 +10,9 @@ inherit systemd
 do_install:append() {
     if [ "${PN}" != "nativesdk-dbus" ]; then
         if ${@bb.utils.contains('DISTRO_FEATURES', 'systemd', 'true', 'false', d)}; then
-            install -m 644 -p -D ${WORKDIR}/dbus.service ${D}${systemd_user_unitdir}/dbus.service
-            install -m 644 -p -D ${WORKDIR}/dbus.socket ${D}${systemd_user_unitdir}/dbus.socket
-            install -m 644 -p -D ${WORKDIR}/dbus_env.conf ${D}${systemd_system_unitdir}/user@.service.d/dbus_env.conf
+            install -m 644 -p -D ${UNPACKDIR}/dbus.service ${D}${systemd_user_unitdir}/dbus.service
+            install -m 644 -p -D ${UNPACKDIR}/dbus.socket ${D}${systemd_user_unitdir}/dbus.socket
+            install -m 644 -p -D ${UNPACKDIR}/dbus_env.conf ${D}${systemd_system_unitdir}/user@.service.d/dbus_env.conf
 
             # Execute these manually on behalf of systemctl script (from systemd-systemctl-native.bb)
             # because it does not support systemd's user mode.

@@ -24,15 +24,14 @@ SRC_URI = "git://gerrit.automotivelinux.org/gerrit/apps/agl-service-radio;protoc
 SRCREV  = "3720c2c4888b75ed7ca4c01bf6cf1903b551c4eb"
 
 PV = "2.0+git${SRCPV}"
-S  = "${WORKDIR}/git"
 
 inherit meson pkgconfig systemd
 
 SYSTEMD_SERVICE:${PN} = "agl-service-radio.service"
 
 do_install:append() {
-    install -D -m 0644 ${WORKDIR}/radio.conf.kvm-demo ${D}${sysconfdir}/xdg/AGL.conf
-    install -D -m 0644 ${WORKDIR}/udev-settle.conf ${D}${systemd_system_unitdir}/${BPN}.service.d/udev-settle.conf
+    install -D -m 0644 ${UNPACKDIR}/radio.conf.kvm-demo ${D}${sysconfdir}/xdg/AGL.conf
+    install -D -m 0644 ${UNPACKDIR}/udev-settle.conf ${D}${systemd_system_unitdir}/${BPN}.service.d/udev-settle.conf
 }
 
 PACKAGE_BEFORE_PN += "${PN}-conf-kvm-demo ${PN}-conf-udev-settle"

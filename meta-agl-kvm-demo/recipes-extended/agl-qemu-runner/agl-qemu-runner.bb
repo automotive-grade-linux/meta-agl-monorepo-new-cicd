@@ -8,16 +8,18 @@ SRC_URI = "file://agl-qemu-runner.sh \
            file://agl-qemu-runner@.service \
 "
 
+S = "${UNPACKDIR}"
+
 do_configure[noexec] = "1"
 do_compile[noexec] = "1"
 
 do_install() {
     # Install template unit
     install -d ${D}${systemd_system_unitdir}
-    install -m 0644 ${WORKDIR}/agl-qemu-runner@.service ${D}${systemd_system_unitdir}/
+    install -m 0644 ${UNPACKDIR}/agl-qemu-runner@.service ${D}${systemd_system_unitdir}/
 
     # Install script
-    install -D -m 0755 ${WORKDIR}/agl-qemu-runner.sh ${D}${sbindir}/agl-qemu-runner.sh
+    install -D -m 0755 ${UNPACKDIR}/agl-qemu-runner.sh ${D}${sbindir}/agl-qemu-runner.sh
 }
 
 FILES:${PN} += "${systemd_system_unitdir}"

@@ -10,7 +10,6 @@ SRC_URI = "git://gerrit.automotivelinux.org/gerrit/apps/videoplayer;protocol=htt
 SRCREV = "2f4d09aec6531c64356a52255bcfaf8df7c4f3e4"
 
 PV = "1.0+git${SRCPV}"
-S  = "${WORKDIR}/git"
 
 # build-time dependencies
 DEPENDS += " \

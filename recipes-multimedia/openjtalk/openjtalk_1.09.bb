@@ -28,8 +28,7 @@ RDEPENDS:${PN}:class-native = " "
 
 inherit autotools-brokensep
 
-S = "${WORKDIR}/open_jtalk-${PV}"
-
+S = "${UNPACKDIR}/open_jtalk-${PV}"
 
 EXTRA_OECONF = " \
  --with-hts-engine-header-path=${PKG_CONFIG_SYSROOT_DIR}/usr/include \

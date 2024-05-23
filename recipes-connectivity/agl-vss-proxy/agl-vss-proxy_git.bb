@@ -22,7 +22,6 @@ SRC_URI = "git://gerrit.automotivelinux.org/gerrit/src/agl-vss-proxy;protocol=ht
 SRCREV  = "2b123af2c621869fa844d0443cb3853dac059d22"
 
 PV = "1.0+git${SRCPV}"
-S  = "${WORKDIR}/git"
 
 inherit meson pkgconfig systemd
 
@@ -39,7 +38,7 @@ do_install:append() {
     # until a packaging/sandboxing/MAC scheme is (re)implemented or
     # something like OAuth is plumbed in as an alternative.
     install -d ${D}${sysconfdir}/agl-vss-proxy
-    install -m 0644 ${WORKDIR}/agl-vss-proxy.token ${D}${sysconfdir}/agl-vss-proxy/
+    install -m 0644 ${UNPACKDIR}/agl-vss-proxy.token ${D}${sysconfdir}/agl-vss-proxy/
 }
 
 FILES:${PN} += "${systemd_system_unitdir}"

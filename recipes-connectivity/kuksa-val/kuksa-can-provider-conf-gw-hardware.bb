@@ -8,7 +8,7 @@ SRC_URI = "file://kuksa-can-provider.gw-hardware \
            file://kuksa-can-provider-can1.service \
 "
 
-S = "${WORKDIR}"
+S = "${UNPACKDIR}"
 
 inherit systemd update-alternatives
 
@@ -18,12 +18,12 @@ do_compile[noexec] = "1"
 
 do_install() {
     install -d ${D}${sysconfdir}/default
-    install -m 0644 ${WORKDIR}/kuksa-can-provider.gw-hardware ${D}${sysconfdir}/default/
+    install -m 0644 ${UNPACKDIR}/kuksa-can-provider.gw-hardware ${D}${sysconfdir}/default/
     install -d ${D}${sysconfdir}/kuksa-can-provider
-    install -m 0644 ${WORKDIR}/config.ini.gw-hardware ${D}${sysconfdir}/kuksa-can-provider/
+    install -m 0644 ${UNPACKDIR}/config.ini.gw-hardware ${D}${sysconfdir}/kuksa-can-provider/
     if ${@bb.utils.contains('DISTRO_FEATURES', 'systemd', 'true', 'false', d)}; then
         install -d ${D}${systemd_system_unitdir}
-        install -m 0644 ${WORKDIR}/kuksa-can-provider-can1.service ${D}${systemd_system_unitdir}
+        install -m 0644 ${UNPACKDIR}/kuksa-can-provider-can1.service ${D}${systemd_system_unitdir}
     fi
 }
 

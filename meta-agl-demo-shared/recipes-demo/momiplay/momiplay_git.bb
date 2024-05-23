@@ -21,16 +21,14 @@ SRC_URI = "git://git.automotivelinux.org/apps/momiplayer;protocol=https;branch=$
           "
 SRCREV = "e22a2d57ec08bfff591a0bc3494d359e80830791"
 
-S = "${WORKDIR}/git"
-
 inherit cmake qt6-cmake systemd pkgconfig
 
 do_install:append() {
 	install -d ${D}/${systemd_unitdir}/system
-	install -m 0644 ${WORKDIR}/momiplay.service ${D}/${systemd_unitdir}/system
+	install -m 0644 ${UNPACKDIR}/momiplay.service ${D}/${systemd_unitdir}/system
 
 	install -m 0755 -d ${D}${sysconfdir}/default/
-	install -m 0755 ${WORKDIR}/momiplay ${D}${sysconfdir}/default/
+	install -m 0755 ${UNPACKDIR}/momiplay ${D}${sysconfdir}/default/
 }
 
 FILES:${PN} += " \

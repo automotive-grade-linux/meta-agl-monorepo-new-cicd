@@ -8,6 +8,8 @@ SRC_URI = "file://agl-vss-helper.py \
            file://agl-vss-helper.service \
 "
 
+S = "${UNPACKDIR}"
+
 inherit systemd
 
 SYSTEMD_SERVICE:${PN} = "${BPN}.service"
@@ -17,11 +19,11 @@ do_compile[noexec] = "1"
 
 do_install() {
     install -d ${D}${sbindir}
-    install -m 0755 ${WORKDIR}/${BPN}.py ${D}${sbindir}
+    install -m 0755 ${UNPACKDIR}/${BPN}.py ${D}${sbindir}
     install -d ${D}${sysconfdir}/xdg/AGL/${BPN}
-    install -m 0644 ${WORKDIR}/${BPN}.yaml ${D}${sysconfdir}/xdg/AGL/
-    install -m 0644 ${WORKDIR}/${BPN}.token ${D}${sysconfdir}/xdg/AGL/${BPN}/
-    install -D -m 0644 ${WORKDIR}/${BPN}.service ${D}${systemd_system_unitdir}/${BPN}.service
+    install -m 0644 ${UNPACKDIR}/${BPN}.yaml ${D}${sysconfdir}/xdg/AGL/
+    install -m 0644 ${UNPACKDIR}/${BPN}.token ${D}${sysconfdir}/xdg/AGL/${BPN}/
+    install -D -m 0644 ${UNPACKDIR}/${BPN}.service ${D}${systemd_system_unitdir}/${BPN}.service
 }
 
 RDEPENDS:${PN} = " \

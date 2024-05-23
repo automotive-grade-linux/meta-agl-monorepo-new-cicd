@@ -11,7 +11,6 @@ SRC_URI = " \
     file://gcc10.patch \
 "
 SRCREV = "855e9674232808ff3be7191b697dfb56917db21f"
-S = "${WORKDIR}/git"
 PV = "2.1.0+git${SRCPV}"
 
 

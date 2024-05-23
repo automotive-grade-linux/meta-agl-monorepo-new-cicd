@@ -12,17 +12,19 @@ SRC_URI = "file://kuksa.toml.default \
            file://kuksa.toml.kvm-demo-tradeshow \
 "
 
+S = "${UNPACKDIR}"
+
 inherit allarch update-alternatives
 
 do_compile[noexec] = "1"
 
 do_install() {
     install -d ${D}${sysconfdir}/xdg/AGL
-    install -m 0644 ${WORKDIR}/kuksa.toml.default ${D}${sysconfdir}/xdg/AGL/
-    install -m 0644 ${WORKDIR}/kuksa.toml.demo-tradeshow ${D}${sysconfdir}/xdg/AGL/
-    install -m 0644 ${WORKDIR}/kuksa.toml.gateway-demo ${D}${sysconfdir}/xdg/AGL/
-    install -m 0644 ${WORKDIR}/kuksa.toml.kvm-demo ${D}${sysconfdir}/xdg/AGL/
-    install -m 0644 ${WORKDIR}/kuksa.toml.kvm-demo-tradeshow ${D}${sysconfdir}/xdg/AGL/
+    install -m 0644 ${UNPACKDIR}/kuksa.toml.default ${D}${sysconfdir}/xdg/AGL/
+    install -m 0644 ${UNPACKDIR}/kuksa.toml.demo-tradeshow ${D}${sysconfdir}/xdg/AGL/
+    install -m 0644 ${UNPACKDIR}/kuksa.toml.gateway-demo ${D}${sysconfdir}/xdg/AGL/
+    install -m 0644 ${UNPACKDIR}/kuksa.toml.kvm-demo ${D}${sysconfdir}/xdg/AGL/
+    install -m 0644 ${UNPACKDIR}/kuksa.toml.kvm-demo-tradeshow ${D}${sysconfdir}/xdg/AGL/
 }
 
 ALTERNATIVE_LINK_NAME[kuksa-toml] = "${sysconfdir}/xdg/AGL/kuksa.toml"

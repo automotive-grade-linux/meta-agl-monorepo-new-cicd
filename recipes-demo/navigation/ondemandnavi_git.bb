@@ -16,8 +16,6 @@ SRC_URI = "git://gerrit.automotivelinux.org/gerrit/apps/ondemandnavi;protocol=ht
            "
 SRCREV = "ba7ba4fbf393b6288717344f1a9bcd6a1a6965a1"
 
-S = "${WORKDIR}/git"
-
 inherit qt6-qmake pkgconfig agl-app
 
 AGL_APP_ID = "navigation"
@@ -29,8 +27,8 @@ do_install:append() {
     # until a packaging/sandboxing/MAC scheme is (re)implemented or
     # something like OAuth is plumbed in as an alternative.
     install -d ${D}${sysconfdir}/xdg/AGL/navigation
-    install -m 0644 ${WORKDIR}/kuksa.toml ${D}${sysconfdir}/xdg/AGL/navigation/
-    install -m 0644 ${WORKDIR}/navigation.token ${D}${sysconfdir}/xdg/AGL/navigation/
+    install -m 0644 ${UNPACKDIR}/kuksa.toml ${D}${sysconfdir}/xdg/AGL/navigation/
+    install -m 0644 ${UNPACKDIR}/navigation.token ${D}${sysconfdir}/xdg/AGL/navigation/
 }
 
 RDEPENDS:${PN} += " \

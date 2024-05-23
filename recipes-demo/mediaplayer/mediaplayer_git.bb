@@ -16,8 +16,6 @@ SRC_URI = "git://gerrit.automotivelinux.org/gerrit/apps/mediaplayer;protocol=htt
            "
 SRCREV  = "4f733db769ac96df3e83b9c90506924ee6f19800"
 
-S  = "${WORKDIR}/git"
-
 inherit qt6-qmake pkgconfig agl-app
 
 AGL_APP_NAME = "Mediaplayer"
@@ -28,8 +26,8 @@ do_install:append() {
     # until a packaging/sandboxing/MAC scheme is (re)implemented or
     # something like OAuth is plumbed in as an alternative.
     install -d ${D}${sysconfdir}/xdg/AGL/mediaplayer
-    install -m 0644 ${WORKDIR}/kuksa.toml ${D}${sysconfdir}/xdg/AGL/mediaplayer/
-    install -m 0644 ${WORKDIR}/mediaplayer.token ${D}${sysconfdir}/xdg/AGL/mediaplayer/
+    install -m 0644 ${UNPACKDIR}/kuksa.toml ${D}${sysconfdir}/xdg/AGL/mediaplayer/
+    install -m 0644 ${UNPACKDIR}/mediaplayer.token ${D}${sysconfdir}/xdg/AGL/mediaplayer/
 }
 
 RDEPENDS:${PN} += "libqtappfw mpd"

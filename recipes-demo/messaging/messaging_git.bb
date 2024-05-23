@@ -13,8 +13,6 @@ PV = "1.0+git${SRCPV}"
 SRC_URI = "git://gerrit.automotivelinux.org/gerrit/apps/messaging;protocol=https;branch=${AGL_BRANCH}"
 SRCREV  = "77ea1b245737d0cfc4d20035e6476dae6969e699"
 
-S  = "${WORKDIR}/git"
-
 inherit qt6-qmake pkgconfig agl-app
 
 AGL_APP_NAME = "Messaging"

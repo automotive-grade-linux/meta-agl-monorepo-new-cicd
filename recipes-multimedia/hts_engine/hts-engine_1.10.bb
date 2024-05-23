@@ -9,7 +9,7 @@ inherit autotools
 
 BBCLASSEXTEND = "native"
 
-S = "${WORKDIR}/hts_engine_API-${PV}"
+S = "${UNPACKDIR}/hts_engine_API-${PV}"
 
 
 SRC_URI = "http://downloads.sourceforge.net/hts-engine/hts_engine_API-${PV}.tar.gz \

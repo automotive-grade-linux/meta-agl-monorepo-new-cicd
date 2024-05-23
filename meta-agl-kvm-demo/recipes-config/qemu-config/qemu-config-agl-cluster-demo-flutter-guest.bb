@@ -6,6 +6,8 @@ inherit systemd allarch
 
 SRC_URI = "file://${QEMU_IMAGE}.conf"
 
+S = "${UNPACKDIR}"
+
 do_configure[noexec] = "1"
 do_compile[noexec] = "1"
 
@@ -21,7 +23,7 @@ do_install() {
 
     # Install conf file
     install -d ${D}${sysconfdir}/agl-qemu-runner
-    install -m 0644 ${WORKDIR}/${QEMU_IMAGE}.conf ${D}${sysconfdir}/agl-qemu-runner/
+    install -m 0644 ${UNPACKDIR}/${QEMU_IMAGE}.conf ${D}${sysconfdir}/agl-qemu-runner/
 }
 
 FILES:${PN} += "${systemd_system_unitdir}"

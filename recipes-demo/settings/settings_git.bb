@@ -18,8 +18,6 @@ PV = "2.0+git${SRCPV}"
 SRC_URI = "git://gerrit.automotivelinux.org/gerrit/apps/settings;protocol=https;branch=${AGL_BRANCH}"
 SRCREV = "1b6527c1f74dfa97c899b6f3b21f612eac574753"
 
-S  = "${WORKDIR}/git"
-
 inherit qt6-qmake pkgconfig agl-app
 
 AGL_APP_NAME = "Settings"

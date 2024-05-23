@@ -18,7 +18,7 @@ RDEPENDS:${PN} += " flite-voicedata "
 
 inherit autotools-brokensep
 
-S = "${WORKDIR}/flite+hts_engine-${PV}"
+S = "${UNPACKDIR}/flite+hts_engine-${PV}"
 
 EXTRA_OECONF = " \
  --with-hts-engine-header-path=${PKG_CONFIG_SYSROOT_DIR}/usr/include \

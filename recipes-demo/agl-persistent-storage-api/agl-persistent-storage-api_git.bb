@@ -12,8 +12,6 @@ SRC_URI = "git://github.com/LSchwiedrzik/agl-persistent-storage-api.git;protocol
 PV = "1.0+git${SRCPV}"
 SRCREV = "de8ecba1279ee2bcb55f0595017165c606fac835"
 
-S = "${WORKDIR}/git"
-
 DEPENDS = "protobuf-native grpc-native rocksdb clang-native"
 TOOLCHAIN = "clang"
 
@@ -40,7 +38,7 @@ do_install:append () {
     mv ${D}/usr/bin/server ${D}/usr/bin/agl-service-persistent-storage
     if ${@bb.utils.contains('DISTRO_FEATURES', 'systemd', 'true', 'false', d)}; then
         install -d ${D}${systemd_system_unitdir}
-        install -m 0644 ${WORKDIR}/${BPN}.service ${D}${systemd_system_unitdir}
+        install -m 0644 ${UNPACKDIR}/${BPN}.service ${D}${systemd_system_unitdir}
     fi
 }
 

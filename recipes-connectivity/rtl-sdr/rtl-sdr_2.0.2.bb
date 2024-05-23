@@ -13,8 +13,6 @@ SRC_URI = "git://git.osmocom.org/rtl-sdr;branch=master \
 "
 SRCREV = "619ac3186ea0ffc092615e1f59f7397e5e6f668c"
 
-S = "${WORKDIR}/git"
-
 inherit cmake pkgconfig
 
 PACKAGECONFIG ??= "detach-kernel-driver usbfs-zero-copy"

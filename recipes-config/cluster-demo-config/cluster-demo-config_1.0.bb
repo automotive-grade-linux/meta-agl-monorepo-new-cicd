@@ -2,16 +2,18 @@ SUMMARY = "AGL cluster demo configuration file"
 LICENSE = "MIT"
 LIC_FILES_CHKSUM = "file://${COREBASE}/meta/COPYING.MIT;md5=3da9cfbcb788c80a0384361b4de20420"
 
-SRC_URI += " \
+SRC_URI = " \
     file://AGL.conf.default \
     file://AGL.conf.flutter \
 "
 
+S = "${UNPACKDIR}"
+
 inherit allarch update-alternatives
 
 do_install() {
-    install -D -m 0644 ${WORKDIR}/AGL.conf.default ${D}${sysconfdir}/xdg/AGL.conf.default
-    install -m 0644 ${WORKDIR}/AGL.conf.flutter ${D}${sysconfdir}/xdg/ 
+    install -D -m 0644 ${UNPACKDIR}/AGL.conf.default ${D}${sysconfdir}/xdg/AGL.conf.default
+    install -m 0644 ${UNPACKDIR}/AGL.conf.flutter ${D}${sysconfdir}/xdg/ 
 }
 
 ALTERNATIVE_LINK_NAME[AGL.conf] = "${sysconfdir}/xdg/AGL.conf"

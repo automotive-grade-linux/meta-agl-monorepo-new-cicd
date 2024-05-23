@@ -7,16 +7,18 @@ SRC_URI = "file://60-usb-can.rules \
            file://slcand-default \
 "
 
+S = "${UNPACKDIR}"
+
 do_compile[noexec] = "1"
 
 do_install() {
     if ${@bb.utils.contains('DISTRO_FEATURES', 'systemd', 'true', 'false', d)}; then
         install -d ${D}${sysconfdir}/udev/rules.d
-        install -m 0644 ${WORKDIR}/60-usb-can.rules ${D}${sysconfdir}/udev/rules.d/
+        install -m 0644 ${UNPACKDIR}/60-usb-can.rules ${D}${sysconfdir}/udev/rules.d/
         install -d ${D}${systemd_system_unitdir}
-        install -m 0644 ${WORKDIR}/slcand@.service ${D}${systemd_system_unitdir}/
+        install -m 0644 ${UNPACKDIR}/slcand@.service ${D}${systemd_system_unitdir}/
         install -d ${D}${sysconfdir}/default
-        install -m 0644 ${WORKDIR}/slcand-default ${D}${sysconfdir}/default/slcand
+        install -m 0644 ${UNPACKDIR}/slcand-default ${D}${sysconfdir}/default/slcand
     fi
 }
 

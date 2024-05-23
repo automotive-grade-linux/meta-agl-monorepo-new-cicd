@@ -12,13 +12,13 @@ do_install:append () {
     sed -i 's/^WantedBy=.*/WantedBy=multi-user.target/' ${D}${systemd_unitdir}/system/udisks2.service
 
     install -d ${D}${base_libdir}/systemd/system
-    install -m 0644 ${WORKDIR}/automount.service ${D}${systemd_unitdir}/system
+    install -m 0644 ${UNPACKDIR}/automount.service ${D}${systemd_unitdir}/system
 
     install -d ${D}${libexecdir}
-    install -m 0755 ${WORKDIR}/automount.sh ${D}${libexecdir}/automount.sh
+    install -m 0755 ${UNPACKDIR}/automount.sh ${D}${libexecdir}/automount.sh
 
     install -d ${D}${sysconfdir}/udev/rules.d
-    install -m 0644 ${WORKDIR}/99-udisks2.rules ${D}${sysconfdir}/udev/rules.d
+    install -m 0644 ${UNPACKDIR}/99-udisks2.rules ${D}${sysconfdir}/udev/rules.d
 }
 
 FILES:${PN}:append = " \

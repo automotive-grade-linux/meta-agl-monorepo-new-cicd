@@ -12,8 +12,6 @@ SRCREV = "c300ede365fc64ea759ca696fea676069ef80e01"
 
 inherit allarch
 
-S = "${WORKDIR}/git"
-
 INHIBIT_PACKAGE_DEBUG_SPLIT = "1"
 ERROR_QA:remove = "empty-dirs"
 

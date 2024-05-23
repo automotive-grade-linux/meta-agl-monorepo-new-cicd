@@ -45,6 +45,6 @@ USERADD_PARAM:${PN} = " \
 # lightmediascanner configuration.
 do_install:append() {
     if ${@bb.utils.contains('DISTRO_FEATURES', 'systemd', 'true', 'false', d)}; then
-	install -D -m 0644 ${WORKDIR}/mpd-volatiles.conf ${D}${sysconfdir}/tmpfiles.d/mpd.conf
+	install -D -m 0644 ${UNPACKDIR}/mpd-volatiles.conf ${D}${sysconfdir}/tmpfiles.d/mpd.conf
     fi
 }

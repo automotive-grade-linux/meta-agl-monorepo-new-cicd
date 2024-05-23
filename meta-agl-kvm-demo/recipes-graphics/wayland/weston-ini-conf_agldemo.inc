@@ -12,7 +12,7 @@ do_configure:append() {
     # KVM guest cluster version
     sed -e "s#host=.*#host=${REMOTING_KVM_OUTPUT_HOST}#" \
         -e "s#port=.*#port=${REMOTING_OUTPUT_PORT}#" \
-        ${WORKDIR}/remote-output.cfg.in  > ${WORKDIR}/remote-output-kvm.cfg
+        ${UNPACKDIR}/remote-output.cfg.in  > ${WORKDIR}/remote-output-kvm.cfg
 }
 
 do_compile:append() {
@@ -29,7 +29,7 @@ do_compile:append() {
     rm -f ${WORKDIR}/weston.ini.kvm
     sed -e "s/@GUEST_VM1_ID@/${GUEST_VM1_ID}/g" \
         -e "s/@GUEST_VM2_ID@/${GUEST_VM2_ID}/g" \
-        ${WORKDIR}/weston.ini.kvm.in > ${WORKDIR}/weston.ini.kvm
+        ${UNPACKDIR}/weston.ini.kvm.in > ${WORKDIR}/weston.ini.kvm
 }
 
 do_install:append() {

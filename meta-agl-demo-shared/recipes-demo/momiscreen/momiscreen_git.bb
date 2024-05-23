@@ -18,16 +18,14 @@ SRC_URI = "git://git.automotivelinux.org/apps/momiscreen;protocol=https;branch=$
           "
 SRCREV = "bfbac0b1f78962e19ceac8356a6c0c77ccce795b"
 
-S = "${WORKDIR}/git"
-
 inherit cmake qt6-cmake systemd pkgconfig
 
 do_install:append() {
 	install -d ${D}/${systemd_unitdir}/system
-	install -m 0644 ${WORKDIR}/momiscreen.service ${D}/${systemd_unitdir}/system
+	install -m 0644 ${UNPACKDIR}/momiscreen.service ${D}/${systemd_unitdir}/system
 
 	install -m 0755 -d ${D}${sysconfdir}/default/
-	install -m 0755 ${WORKDIR}/momiscreen ${D}${sysconfdir}/default/
+	install -m 0755 ${UNPACKDIR}/momiscreen ${D}${sysconfdir}/default/
 }
 
 SYSTEMD_PACKAGES = "${PN}"

@@ -5,7 +5,7 @@ LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/Apache-2.0;md5=89aea4e17d99a7ca
 
 SRC_URI = "file://kuksa-can-provider.gw-control-panel"
 
-S = "${WORKDIR}"
+S = "${UNPACKDIR}"
 
 inherit update-alternatives
 
@@ -13,7 +13,7 @@ do_compile[noexec] = "1"
 
 do_install() {
     install -d ${D}${sysconfdir}/default
-    install -m 0644 ${WORKDIR}/kuksa-can-provider.gw-control-panel ${D}${sysconfdir}/default/
+    install -m 0644 ${UNPACKDIR}/kuksa-can-provider.gw-control-panel ${D}${sysconfdir}/default/
 }
 
 ALTERNATIVE_LINK_NAME[kuksa-can-provider-env] = "${sysconfdir}/default/kuksa-can-provider"

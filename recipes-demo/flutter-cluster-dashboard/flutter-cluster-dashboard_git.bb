@@ -19,8 +19,6 @@ SRC_URI = "git://gerrit.automotivelinux.org/gerrit/apps/flutter-instrument-clust
 PV = "1.0+git${SRCPV}"
 SRCREV = "6c204692c9ee5ff2c1f20134d55223d2312c9be1"
 
-S = "${WORKDIR}/git"
-
 PUBSPEC_APPNAME = "flutter_cluster_dashboard"
 
 inherit flutter-app systemd
@@ -32,13 +30,15 @@ PUBSPEC_IGNORE_LOCKFILE = "1"
 SYSTEMD_SERVICE:${PN} = "flutter-cluster-dashboard.service"
 
 do_install:append() {
-    install -D -m 0644 ${WORKDIR}/${BPN}.service ${D}${systemd_system_unitdir}/${BPN}.service
+    install -D -m 0644 ${UNPACKDIR}/${BPN}.service ${D}${systemd_system_unitdir}/${BPN}.service
 
-    install -D -m 0644 ${WORKDIR}/kvm.conf ${D}${systemd_system_unitdir}/${BPN}.service.d/kvm.conf
+    install -D -m 0644 ${UNPACKDIR}/kvm.conf ${D}${systemd_system_unitdir}/${BPN}.service.d/kvm.conf
+
+    install -D -m 0644 ${UNPACKDIR}/${APP_CONFIG} ${D}${datadir}/flutter/${BPN}.json
 
     install -d ${D}${sysconfdir}/xdg/AGL/flutter-cluster-dashboard
-    install -m 0644 ${WORKDIR}/kuksa.toml ${D}${sysconfdir}/xdg/AGL/flutter-cluster-dashboard/
-    install -m 0644 ${WORKDIR}/flutter-cluster-dashboard.token ${D}${sysconfdir}/xdg/AGL/flutter-cluster-dashboard/
+    install -m 0644 ${UNPACKDIR}/kuksa.toml ${D}${sysconfdir}/xdg/AGL/flutter-cluster-dashboard/
+    install -m 0644 ${UNPACKDIR}/flutter-cluster-dashboard.token ${D}${sysconfdir}/xdg/AGL/flutter-cluster-dashboard/
 }
 
 FILES:${PN} += "${datadir} ${sysconfdir}/xdg/AGL"

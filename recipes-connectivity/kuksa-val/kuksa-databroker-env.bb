@@ -9,14 +9,16 @@ SRC_URI = "file://kuksa-databroker.default \
            file://kuksa-databroker.open \
 "
 
+S = "${UNPACKDIR}"
+
 inherit allarch update-alternatives
 
 do_compile[noexec] = "1"
 
 do_install() {
     install -d ${D}${sysconfdir}/default
-    install -m 0644 ${WORKDIR}/kuksa-databroker.default ${D}${sysconfdir}/default/
-    install -m 0644 ${WORKDIR}/kuksa-databroker.open ${D}${sysconfdir}/default/
+    install -m 0644 ${UNPACKDIR}/kuksa-databroker.default ${D}${sysconfdir}/default/
+    install -m 0644 ${UNPACKDIR}/kuksa-databroker.open ${D}${sysconfdir}/default/
 }
 
 ALTERNATIVE_LINK_NAME[kuksa-databroker-env] = "${sysconfdir}/default/kuksa-databroker"

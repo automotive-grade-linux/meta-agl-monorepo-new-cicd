@@ -6,7 +6,9 @@ WESTON_FRAGMENTS_BASE += "grpc-proxy"
 
 do_configure:append() {
     # Standalone cluster support version
-    cp ${WORKDIR}/remote-output.cfg.in ${WORKDIR}/remote-output.cfg
+    sed -e "s#host=.*#host=${REMOTING_OUTPUT_HOST}#" \
+        -e "s#port=.*#port=${REMOTING_OUTPUT_PORT}#" \
+        ${UNPACKDIR}/remote-output.cfg.in  > ${WORKDIR}/remote-output.cfg
 }
 
 do_compile:append() {

@@ -9,7 +9,7 @@ SRC_URI = "file://config.ini \
            file://can-dev-helper.conf \
 "
 
-S = "${WORKDIR}"
+S = "${UNPACKDIR}"
 
 inherit allarch systemd
 
@@ -17,11 +17,11 @@ do_compile[noexec] = "1"
 
 do_install() {
     install -d ${D}${sysconfdir}/kuksa-can-provider
-    install -m 0644 ${WORKDIR}/config.ini ${D}${sysconfdir}/kuksa-can-provider/
-    install -m 0644 ${WORKDIR}/can-provider.token ${D}${sysconfdir}/kuksa-can-provider/
-    install -m 0644 ${WORKDIR}/dbc_default_values.json ${D}${sysconfdir}/kuksa-can-provider/
+    install -m 0644 ${UNPACKDIR}/config.ini ${D}${sysconfdir}/kuksa-can-provider/
+    install -m 0644 ${UNPACKDIR}/can-provider.token ${D}${sysconfdir}/kuksa-can-provider/
+    install -m 0644 ${UNPACKDIR}/dbc_default_values.json ${D}${sysconfdir}/kuksa-can-provider/
     install -d ${D}${systemd_system_unitdir}/kuksa-can-provider.service.d
-    install -m 0644 ${WORKDIR}/can-dev-helper.conf ${D}${systemd_system_unitdir}/kuksa-can-provider.service.d/
+    install -m 0644 ${UNPACKDIR}/can-dev-helper.conf ${D}${systemd_system_unitdir}/kuksa-can-provider.service.d/
 }
 
 FILES:${PN} += "${systemd_system_unitdir}"

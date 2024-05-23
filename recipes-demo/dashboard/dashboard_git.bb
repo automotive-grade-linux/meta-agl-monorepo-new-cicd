@@ -20,8 +20,6 @@ SRC_URI = "git://gerrit.automotivelinux.org/gerrit/apps/dashboard;protocol=https
            "
 SRCREV  = "205f7f3510b4abf04c4020416c985e657e29c908"
 
-S = "${WORKDIR}/git"
-
 inherit qt6-qmake pkgconfig agl-app
 
 AGL_APP_NAME = "Dashboard"
@@ -32,8 +30,8 @@ do_install:append() {
     # until a packaging/sandboxing/MAC scheme is (re)implemented or
     # something like OAuth is plumbed in as an alternative.
     install -d ${D}${sysconfdir}/xdg/AGL/dashboard
-    install -m 0644 ${WORKDIR}/kuksa.toml ${D}${sysconfdir}/xdg/AGL/dashboard/
-    install -m 0644 ${WORKDIR}/dashboard.token ${D}${sysconfdir}/xdg/AGL/dashboard/
+    install -m 0644 ${UNPACKDIR}/kuksa.toml ${D}${sysconfdir}/xdg/AGL/dashboard/
+    install -m 0644 ${UNPACKDIR}/dashboard.token ${D}${sysconfdir}/xdg/AGL/dashboard/
 }
 
 RDEPENDS:${PN} += " \

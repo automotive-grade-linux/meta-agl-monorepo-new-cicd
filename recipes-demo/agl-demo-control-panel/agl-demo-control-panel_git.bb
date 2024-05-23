@@ -9,7 +9,6 @@ SRC_URI = "git://gerrit.automotivelinux.org/gerrit/src/agl-demo-control-panel;pr
            file://agl-demo-control-panel.token \
 "
 SRCREV = "60afa11d02a60c73116ac9b05338884dea00015f"
-S = "${WORKDIR}/git"
 
 inherit systemd allarch update-alternatives
 
@@ -33,7 +32,7 @@ do_install() {
     # avoid QA complaints
     rm -rf ${D}${libexecdir}/${BPN}/docker
 
-    install -D -m 0644 ${WORKDIR}/${BPN}.service ${D}${systemd_system_unitdir}/${BPN}.service
+    install -D -m 0644 ${UNPACKDIR}/${BPN}.service ${D}${systemd_system_unitdir}/${BPN}.service
     
     # Install conf file
     install -d ${D}${sysconfdir}/agl-demo-control-panel
@@ -47,7 +46,7 @@ do_install() {
 
     # Install databroker authorization token
     install -d ${D}${sysconfdir}/xdg/AGL/agl-demo-control-panel
-    install -m 0644 ${WORKDIR}/agl-demo-control-panel.token ${D}${sysconfdir}/xdg/AGL/agl-demo-control-panel/
+    install -m 0644 ${UNPACKDIR}/agl-demo-control-panel.token ${D}${sysconfdir}/xdg/AGL/agl-demo-control-panel/
 }
 
 

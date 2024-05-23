@@ -17,8 +17,6 @@ SRC_URI = "git://gerrit.automotivelinux.org/gerrit/src/cluster-refgui;protocol=h
 "
 SRCREV = "0e9a54fb74677c626d278473a588beab4431c101"
 
-S = "${WORKDIR}/git"
-
 inherit cmake qt6-cmake systemd pkgconfig
 
 PACKAGECONFIG = "${@bb.utils.contains('AGL_FEATURES', 'agl-ic', '', 'disable-service', d)}"
@@ -28,10 +26,10 @@ SYSTEMD_SERVICE:${PN} = "cluster.service"
 
 do_install:append() {
     install -d ${D}${systemd_unitdir}/system
-    install -m 0644 ${WORKDIR}/cluster.service ${D}${systemd_unitdir}/system/
+    install -m 0644 ${UNPACKDIR}/cluster.service ${D}${systemd_unitdir}/system/
     
     install -m 0755 -d ${D}${sysconfdir}/default/
-    install -m 0755 ${WORKDIR}/cluster ${D}${sysconfdir}/default/
+    install -m 0755 ${UNPACKDIR}/cluster ${D}${sysconfdir}/default/
 }
 
 FILES:${PN} += "/opt/apps/"

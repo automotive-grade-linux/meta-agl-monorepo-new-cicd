@@ -21,13 +21,11 @@ SRC_URI = "git://gerrit.automotivelinux.org/gerrit/apps/agl-qt-cluster-demo-rece
 "
 SRCREV  = "fee1297d91fcb499b49bcc4c0d9690f5d92ce2d4"
 
-S  = "${WORKDIR}/git"
-
 inherit qt6-cmake pkgconfig systemd
 
 do_install:append() {
     # Only install unit, do not enable it by default
-    install -D -m 0644 ${WORKDIR}/${BPN}.service ${D}${systemd_system_unitdir}/${BPN}.service
+    install -D -m 0644 ${UNPACKDIR}/${BPN}.service ${D}${systemd_system_unitdir}/${BPN}.service
 }
 
 RDEPENDS:${PN} += " \
