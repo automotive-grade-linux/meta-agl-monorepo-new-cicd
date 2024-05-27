@@ -279,9 +279,15 @@ PACKAGECONFIG:append:pn-qemu-system-native = " sdl"
 #
 # A shared hash equivalent server can be set with "<HOSTNAME>:<PORT>" format
 #
+# local only
 #BB_HASHSERVE = "auto"
 #BB_SIGNATURE_HANDLER = "OEEquivHash"
-
+#
+# online/upstream r/o
+#AGL_HOST_HASHSERV = "prserv.automotivelinux.org"
+#BB_SIGNATURE_HANDLER = "OEEquivHash"
+#BB_HASHSERVE = "auto"
+#BB_HASHSERVE_UPSTREAM = "${AGL_HOST_HASHSERV}:8888"
 
 # The network based PR service host and port
 # Uncomment the following lines to enable PRservice.
@@ -289,6 +295,10 @@ PACKAGECONFIG:append:pn-qemu-system-native = " sdl"
 # start local PRService.
 # Set to other values to use remote PRService.
 #PRSERV_HOST = "localhost:0"
+#
+# r/o upstream prserv
+#AGL_HOST_PRSERV = "prserv.automotivelinux.org"
+#PRSERV_HOST = "prserv.automotivelinux.org:8686"
 
 
 # Archive the source and put them to ${DEPLOY_DIR}/sources/.
