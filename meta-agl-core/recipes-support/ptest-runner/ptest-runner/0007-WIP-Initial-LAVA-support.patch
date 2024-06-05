@@ -23,13 +23,14 @@ Signed-off-by: Tim Orling <timothy.t.orling@linux.intel.com>
 [updated for ptest-runner 2.3.2]
 [updated for ptest-runner 2.4.1]
 [updated for ptest-runner 2.4.2]
+[updated for ptest-runner 2.4.4]
 Signed-off-by: Scott Murray <scott.murray@konsulko.com>
 ---
  flags.h | 10 ++++++++++
  main.c  |  9 ++++++++-
- utils.c | 17 ++++++++++++++++-
+ utils.c | 20 +++++++++++++++++++-
  utils.h |  2 +-
- 4 files changed, 35 insertions(+), 3 deletions(-)
+ 4 files changed, 38 insertions(+), 3 deletions(-)
  create mode 100644 flags.h
 
 diff --git a/flags.h b/flags.h
@@ -84,7 +85,7 @@ index 31e4dd5..f12d6d6 100644
  				print_usage(stdout, argv[0]);
  				exit(1);
 diff --git a/utils.c b/utils.c
-index 59b8b77..30423c4 100644
+index 6cf7705..f6a3a2a 100644
 --- a/utils.c
 +++ b/utils.c
 @@ -49,6 +49,7 @@
@@ -95,17 +96,19 @@ index 59b8b77..30423c4 100644
  
  #define GET_STIME_BUF_SIZE 1024
  #define WAIT_CHILD_BUF_MAX_SIZE 1024
-@@ -425,6 +426,7 @@ run_ptests(struct ptest_list *head, const struct ptest_options opts,
- 			}
+@@ -369,6 +370,9 @@ run_ptests(struct ptest_list *head, const struct ptest_options opts,
+ 			strcpy(ptest_dir, p->run_ptest);
+ 			dirname(ptest_dir);
  
- 			char *ptest_dir = strdup(p->run_ptest);
 +			char *ptest = strdup(p->ptest);
- 			if (ptest_dir == NULL) {
++			CHECK_ALLOCATION(ptest, 1, 1);
++
+ 			if (pipe2(pipefd_stdout, 0) == -1) {
+ 				fprintf(fp, "ERROR: pipe2() failed with: %s.\n", strerror(errno));
  				rc = -1;
- 				break;
-@@ -477,7 +479,10 @@ run_ptests(struct ptest_list *head, const struct ptest_options opts,
- 					fprintf(fp, "ERROR: setpgid() failed, %s\n", strerror(errno));
- 				}
+@@ -425,7 +429,10 @@ run_ptests(struct ptest_list *head, const struct ptest_options opts,
+ 				do_close(&pipefd_stdout[PIPE_WRITE]);
+ 				do_close(&pipefd_stderr[PIPE_WRITE]);
  
 -				time_t start_time= time(NULL);
 +				if (opts.flags & LAVA_SIGNAL_ENABLE) {
@@ -115,7 +118,7 @@ index 59b8b77..30423c4 100644
  				fprintf(fp, "%s\n", get_stime(stime, GET_STIME_BUF_SIZE, start_time));
  				fprintf(fp, "BEGIN: %s\n", ptest_dir);
  
-@@ -594,6 +599,16 @@ run_ptests(struct ptest_list *head, const struct ptest_options opts,
+@@ -542,6 +549,16 @@ run_ptests(struct ptest_list *head, const struct ptest_options opts,
  
  				fprintf(fp, "END: %s\n", ptest_dir);
  				fprintf(fp, "%s\n", get_stime(stime, GET_STIME_BUF_SIZE, end_time));
@@ -130,8 +133,16 @@ index 59b8b77..30423c4 100644
 +					fprintf(stdout, "<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=%s RESULT=%s>\n", ptest, result);
 +				}
  			}
- 			free(ptest_dir);
- 			do_close(&pipefd_stdout[PIPE_READ]);
+ 
+ ptest_list_fail4:
+@@ -556,6 +573,7 @@ ptest_list_fail2:
+ 			do_close(&pipefd_stdout[PIPE_WRITE]);
+ 
+ ptest_list_fail1:
++			free(ptest);
+ 			fflush(fp);
+ 			fflush(fp_stderr);
+ 
 diff --git a/utils.h b/utils.h
 index 04fc666..ad702d8 100644
 --- a/utils.h
@@ -148,5 +159,5 @@ index 04fc666..ad702d8 100644
  extern struct ptest_list *get_available_ptests(const char *);
  extern int print_ptests(struct ptest_list *, FILE *);
 -- 
-2.37.3
+2.44.0
 
