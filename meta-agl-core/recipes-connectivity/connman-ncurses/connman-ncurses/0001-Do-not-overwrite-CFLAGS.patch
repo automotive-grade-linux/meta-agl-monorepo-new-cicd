@@ -3,6 +3,8 @@ From: Jan-Simon Moeller <jsmoeller@linuxfoundation.org>
 Date: Tue, 19 Jul 2022 23:28:21 +0200
 Subject: [PATCH] Do not overwrite CFLAGS
 
+Upstream-Status: Pending
+
 Signed-off-by: Jan-Simon Moeller <jsmoeller@linuxfoundation.org>
 ---
  configure.ac | 16 ++++++++--------

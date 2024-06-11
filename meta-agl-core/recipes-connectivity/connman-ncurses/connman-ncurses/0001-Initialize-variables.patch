@@ -5,6 +5,8 @@ Subject: [PATCH] Initialize variables
 
 This fixes compiler warnings.
 
+Upstream-Status: Pending
+
 Signed-off-by: Jan-Simon Moeller <jsmoeller@linuxfoundation.org>
 ---
  main.c      | 2 +-
