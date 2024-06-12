@@ -1,3 +1,9 @@
+FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
+
+SRC_URI:append = " \
+    ${@bb.utils.contains('MACHINE_FEATURES', 'canfd', 'file://0001-Porting-to-support-device-driver-Canfd-from-Control-.patch', '', d)} \
+"
+
 do_install:append () {
 
     # Remove firmware file that is not packaged in the kernel.
