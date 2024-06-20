@@ -30,7 +30,8 @@ WESTON_DISPLAYS ?= "hdmi-a-1-90"
 # Configuration fragments to use in weston.ini.*
 # Note that some may be replaced/removed when building the landscape
 # configuration.
-WESTON_FRAGMENTS = "core shell grpc-proxy ${WESTON_DISPLAYS}"
+WESTON_FRAGMENTS_BASE = "core shell"
+WESTON_FRAGMENTS = "${WESTON_FRAGMENTS_BASE} ${WESTON_DISPLAYS}"
 
 # On-target weston.ini directory
 weston_ini_dir = "${sysconfdir}/xdg/weston"
