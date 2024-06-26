@@ -26,6 +26,7 @@ Following is a "tree" look at the layer:
 |-- meta-agl-core-test
 |-- meta-agl-ic
 |-- meta-agl-ivi
+|-- meta-agl-kuksa-val
 |-- meta-agl.md
 |-- meta-netboot
 |-- meta-pipewire
@@ -46,6 +47,7 @@ in `meta-agl`:
 * `meta-agl-core-test`: recipes supporting qa images (separate layer due to external dependencies)
 * `meta-agl-ic`: Instrument Cluster platform
 * `meta-agl-ivi`: IVI platform
+* `meta-agl-kuksa-val`: Contains KUKSA.val databroker and VSS schema tooling recipes.
 * `meta-netboot`: Contains recipes and configuration adjustments to allow network
   boot through network block device (NBD) since network file system (NFS) does not
   support security labels.
