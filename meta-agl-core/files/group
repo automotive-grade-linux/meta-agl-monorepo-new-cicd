@@ -99,4 +99,5 @@ sgx::1010:
 kuksa::900:
 qemu::901:
 kvm::902:
+persistent-api::903:
 ptest::2001:
