@@ -12,4 +12,5 @@ do_install() {
     install -d ${D}${sysconfdir}/default
     echo "FLUTTER_VERSION=${FLUTTER_SDK_TAG}" > ${D}${sysconfdir}/default/flutter
     echo "FLUTTER_RUNTIME=${AGL_FLUTTER_DEFAULT_RUNTIME}" >> ${D}${sysconfdir}/default/flutter
+    echo "LIBCAMERA_LOG_LEVELS=*:ERROR" >> ${D}${sysconfdir}/default/flutter
 }

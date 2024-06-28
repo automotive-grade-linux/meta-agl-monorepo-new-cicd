@@ -1,8 +1,8 @@
 [
     {
         "uri": "https://github.com/toyota-connected/ivi-homescreen.git",
-        "rev": "ee49745485a88f23c32b8e3a62da40d4102c4623",
-        "branch": "agl"
+        "rev": "ea89b1de0a40c0d447ded305645556c978cfa696",
+        "branch": "v2.0"
     },
     {
         "uri": "https://chromium.googlesource.com/chromium/tools/depot_tools.git",
