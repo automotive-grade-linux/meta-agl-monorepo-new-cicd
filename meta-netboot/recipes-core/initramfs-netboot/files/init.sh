@@ -144,11 +144,20 @@ pivot_root . boot/initramfs || bail_out "pivot_root failed."
 if [[ -f /lib/systemd/system/connman.service ]]; then
 	newopts="-r -n"
 	iface=$(find_active_interface)
-	[[ -n "$iface" ]] && newopts="$newopts -I $iface"
+	# beside discovered iface, also ignore known renames
+	[[ -n "$iface" ]] && newopts="$newopts -I ${iface},enp2s0,enp3s0,end0,enp0s2,enp0s1 "
 
 	log_info "Adjusting Connman command line. Will be: 'connmand $newopts'"
 	sed -i "s|connmand -n\$|connmand $newopts|g" /lib/systemd/system/connman.service
 fi
+
+# workaround for systemd-network-generator bringing the interface up/down/up
+if [[ -f /usr/lib/systemd/system/systemd-network-generator.service ]] ; then
+    mkdir /etc/systemd/system/systemd-network-generator.service.d/
+    echo "[Unit]" > /etc/systemd/system/systemd-network-generator.service.d/10_disable_nbd.conf
+    echo "ConditionKernelCommandLine=!nbd.server" >> /etc/systemd/system/systemd-network-generator.service.d/10_disable_nbd.conf
+fi
+
 
 # also use /proc/net/pnp to generate /etc/resolv.conf
 rm -f /etc/resolv.conf
