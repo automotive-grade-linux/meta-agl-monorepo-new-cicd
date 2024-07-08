@@ -15,9 +15,6 @@ RDEPENDS:${KERNEL_PACKAGE_NAME}-base = ""
 # Use a common kernel recipe for all VirtIO machines
 PREFERRED_PROVIDER_virtual/kernel ??= "linux-yocto"
 
-# Use newer kernel
-PREFERRED_VERSION_linux-yocto = "5.15.%"
-
 EXTRA_IMAGEDEPENDS += "qemu-native qemu-helper-native"
 
 IMAGE_CLASSES += "qemuboot"

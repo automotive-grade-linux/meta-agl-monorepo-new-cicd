@@ -3,7 +3,8 @@
 
 DEPENDS += "kern-tools-native"
 
-include linux-agl-config.inc
+require linux-agl-config.inc
+include ${@bb.utils.contains('AGL_FEATURES', 'agl-virtio-guest', 'linux-agl-config-virtio.inc', '', d)}
 
 # returns all the elements from the src uri that are .cfg files
 def find_cfgs(d):
