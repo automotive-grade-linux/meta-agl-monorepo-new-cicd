@@ -1,7 +1,7 @@
+# PipeWire recipe comes from meta-multimedia
+AGL_META_MULTIMEDIA = "${METADIR}/external/meta-openembedded/meta-multimedia"
+AGL_META_PYTHON = "${METADIR}/external/meta-openembedded/meta-python"
 
 BBLAYERS =+ " \
-	${METADIR}/meta-agl/meta-pipewire \
-	"
-
-# we ship our own pipewire
-BBMASK += "meta-openembedded/meta-oe/recipes-multimedia/pipewire/"
+    ${METADIR}/meta-agl/meta-pipewire \
+"
