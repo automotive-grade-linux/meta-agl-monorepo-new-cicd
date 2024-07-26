@@ -1,0 +1,56 @@
+From 10fcfd66069c774e28f67b18afd329e4bcf9f5b3 Mon Sep 17 00:00:00 2001
+From: Ray Smith <rsmith@brightsign.biz>
+Date: Tue, 19 Dec 2023 11:45:45 +0000
+Subject: [PATCH 2/2] backend-drm: always create gem_handle_refcnt hash table
+
+Devices created via drm_device_create have this hash table, but those
+created via drm_backend_create don't.
+
+Signed-off-by: Ray Smith <rsmith@brightsign.biz>
+---
+ libweston/backend-drm/drm.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
+
+diff --git a/libweston/backend-drm/drm.c b/libweston/backend-drm/drm.c
+index fcececb..9d6a9cf 100644
+--- a/libweston/backend-drm/drm.c
++++ b/libweston/backend-drm/drm.c
+@@ -3364,8 +3364,7 @@ drm_destroy(struct weston_backend *backend)
+ 	weston_launcher_close(ec->launcher, device->drm.fd);
+ 	weston_launcher_destroy(ec->launcher);
+ 
+-	if (device->gem_handle_refcnt)
+-		hash_table_destroy(device->gem_handle_refcnt);
++	hash_table_destroy(device->gem_handle_refcnt);
+ 
+ 	free(device->drm.filename);
+ 	free(device);
+@@ -3867,10 +3866,13 @@ drm_backend_create(struct weston_compositor *compositor,
+ 
+ 	device = zalloc(sizeof *device);
+ 	if (device == NULL)
+-		return NULL;
++		goto err_backend;
+ 	device->state_invalid = true;
+ 	device->drm.fd = -1;
+ 	device->backend = b;
++	device->gem_handle_refcnt = hash_table_create();
++	if (!device->gem_handle_refcnt)
++		goto err_device;
+ 
+ 	b->drm = device;
+ 	wl_list_init(&b->kms_list);
+@@ -4108,6 +4110,10 @@ err_compositor:
+ 	if (b->gbm)
+ 		gbm_device_destroy(b->gbm);
+ #endif
++	hash_table_destroy(device->gem_handle_refcnt);
++err_device:
++	free(device);
++err_backend:
+ 	free(b);
+ 	return NULL;
+ }
+-- 
+2.43.0
+
