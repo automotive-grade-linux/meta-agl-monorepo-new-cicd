@@ -13,38 +13,33 @@
   "env": {
     "HOMESCREEN_SRC_DIR": "${FLUTTER_WORKSPACE}/app/ivi-homescreen",
     "HOMESCREEN_BUILD_DIR": "${FLUTTER_WORKSPACE}/app/ivi-homescreen/build",
-    "HOMESCREEN_CMAKE_ARGS": "-DCMAKE_BUILD_TYPE=Debug -DEXE_OUTPUT_NAME=flutter-auto -DSANITIZE_ADDRESS=OFF -DENABLE_DLT=OFF -DBUILD_UNIT_TESTS=OFF -DBUILD_DOCS=OFF -DBUILD_CRASH_HANDLER=OFF -DLLVM_ROOT=/usr -DBUILD_PLUGIN_FILAMENT_VIEW=OFF -DENABLE_IVI_SHELL_CLIENT=OFF -DENABLE_XDG_CLIENT=ON -DENABLE_AGL_CLIENT=ON -DENABLE_LTO=ON -DDEBUG_PLATFORM_MESSAGES=OFF -DBUILD_BACKEND_WAYLAND_EGL=ON -DBUILD_BACKEND_WAYLAND_VULKAN=OFF -DBUILD_EGL_TRANSPARENCY=ON -DBUILD_EGL_ENABLE_3D=ON -DBUILD_EGL_ENABLE_MULTISAMPLE=ON -DBUILD_PLUGIN_PDF=OFF -DBUILD_PLUGIN_FILAMENT_VIEW=OFF -DBUILD_PLUGIN_NAV_RENDER_VIEW=ON -DBUILD_PLUGIN_LAYER_PLAYGROUND_VIEW=ON -DBUILD_PLUGIN_AUDIOPLAYERS_LINUX=ON -DBUILD_PLUGIN_URL_LAUNCHER=ON -DBUILD_PLUGIN_FILE_SELECTOR=ON -DBUILD_PLUGIN_CAMERA=OFF -DBUILD_PLUGIN_GO_ROUTER=ON -DBUILD_PLUGIN_SECURE_STORAGE=ON",
-    "HOMESCREEN_EXE": "SPDLOG_LEVEL=debug ${HOMESCREEN_BUILD_DIR}/shell/flutter-auto --j=${PLATFORM_ID_DIR_RELATIVE}/default_config.json --b=${PLATFORM_ID_DIR_RELATIVE}",
+    "HOMESCREEN_CMAKE_ARGS": "-DCMAKE_BUILD_TYPE=Debug -DEXE_OUTPUT_NAME=flutter-auto -DSANITIZE_ADDRESS=OFF -DENABLE_DLT=OFF -DBUILD_UNIT_TESTS=OFF -DBUILD_DOCS=OFF -DBUILD_CRASH_HANDLER=OFF -DLLVM_ROOT=/usr -DPLUGINS_DIR=${FLUTTER_WORKSPACE}/app/ivi-homescreen-plugins -DENABLE_IVI_SHELL_CLIENT=OFF -DENABLE_XDG_CLIENT=ON -DENABLE_AGL_SHELL_CLIENT=ON -DENABLE_LTO=ON -DDEBUG_PLATFORM_MESSAGES=OFF -DBUILD_BACKEND_WAYLAND_EGL=ON -DBUILD_BACKEND_WAYLAND_VULKAN=OFF -DBUILD_EGL_TRANSPARENCY=ON -DBUILD_EGL_ENABLE_3D=ON -DBUILD_EGL_ENABLE_MULTISAMPLE=ON -DBUILD_PLUGIN_PDF=OFF -DBUILD_PLUGIN_FILAMENT_VIEW=OFF -DBUILD_PLUGIN_NAV_RENDER_VIEW=ON -DBUILD_PLUGIN_AUDIOPLAYERS_LINUX=ON -DBUILD_PLUGIN_URL_LAUNCHER=ON -DBUILD_PLUGIN_FILE_SELECTOR=ON -DBUILD_PLUGIN_CAMERA=OFF -DBUILD_PLUGIN_GO_ROUTER=ON -DBUILD_PLUGIN_SECURE_STORAGE=ON -DBUILD_PLUGIN_DESKTOP_WINDOW_LINUX=ON -DBUILD_WATCHDOG=OFF",
+    "HOMESCREEN_EXE": "SPDLOG_LEVEL=debug ${HOMESCREEN_BUILD_DIR}/shell/flutter-auto -b ${PLATFORM_ID_DIR_RELATIVE}",
     "PING_CMD": "loginctl show-session $(awk '/tty/ {print $1}' <(loginctl)) -p Type",
     "CREATE_BUNDLE_FOLDER": "mkdir -p ${PLATFORM_ID_DIR_RELATIVE}/data",
-    "COPY_PLATFORM_ID_TO_BUNDLE_FOLDER": "cp -r ${PLATFORM_ID_DIR}/default_config.json ${PLATFORM_ID_DIR_RELATIVE}/",
+    "COPY_PLATFORM_ID_TO_BUNDLE_FOLDER": "cp -r ${PLATFORM_ID_DIR}/config.toml ${PLATFORM_ID_DIR_RELATIVE}/",
     "COPY_BUNDLE_FOLDER_TO_PLATOFRM_ID": "cp -r ${BUNDLE_FOLDER}/* ${PLATFORM_ID_DIR_RELATIVE}/",
     "CREATE_ASSET_SYMLINK": "ln -rsf build/flutter_assets ${PLATFORM_ID_DIR_RELATIVE}/data/flutter_assets",
     "STAGE_BUNDLE_FOLDER": "${CREATE_BUNDLE_FOLDER} && ${COPY_PLATFORM_ID_TO_BUNDLE_FOLDER} && ${COPY_BUNDLE_FOLDER_TO_PLATOFRM_ID} && ${CREATE_ASSET_SYMLINK}"
-  },  
+  },
   "runtime": {
     "config": {
-      "view": [
-        {
-          "width": 1920,
-          "height": 1080,
-          "cursor_theme": "DMZ-White",
-          "fullscreen": false
-        }
-      ]
+      "global": {"cursor_theme": "DMZ-White"},
+      "view": {"width": 1024, "height": 768}
     },
     "pre-requisites": {
       "x86_64": {
         "ubuntu": {
           "cmds": [
             "sudo snap install cmake --classic",
+            "pip3 install clang",
             "sudo add-apt-repository -y ppa:kisak/kisak-mesa",
             "sudo apt update -y",
             "sudo apt install lsb-release wget software-properties-common gnupg apt-file",
             "sudo apt update",
             "sudo apt install -y libwayland-dev wayland-protocols mesa-common-dev libegl1-mesa-dev libgles2-mesa-dev mesa-utils libxkbcommon-dev ninja-build",
             "sudo apt install -y build-essential libvulkan-dev vulkan-tools vulkan-validationlayers vulkan-utils libtool libsecret-1-dev libsdl2-dev libjpeg-dev zenity",
-            "sudo apt install -y libllvm-ocaml-dev llvm llvm-dev llvm-runtime clang clang-tools libclang-dev libclang1 clang-format python3-clang clangd clang-tidy lldb lld libc++-dev libc++abi-dev libunwind-dev libc++1 libc++abi1",
+            "sudo apt install -y libllvm-ocaml-dev llvm llvm-dev llvm-runtime clang clang-tools libclang-dev libclang1 clang-format clangd clang-tidy lldb lld libc++-dev libc++abi-dev libunwind-dev libc++1 libc++abi1",
             "sudo apt autoremove -y",
             "sudo apt clean -y",
             "cmake --version",
@@ -73,7 +68,7 @@
         "cwd": "${HOMESCREEN_BUILD_DIR}",
         "cmds": [
           "cmake -GNinja ${HOMESCREEN_SRC_DIR} ${HOMESCREEN_CMAKE_ARGS}",
-          "ninja homescreen"
+          "ninja flutter-auto"
         ]
       }
     ]
@@ -81,7 +76,7 @@
   "overwrite-existing": true,
   "custom-device": {
     "id": "desktop-auto",
-    "label": "Toyota AGL flutter-auto",
+    "label": "Toyota flutter-auto",
     "sdkNameAndVersion": "flutter-auto x86_64",
     "platform": "linux-x64",
     "enabled": true,

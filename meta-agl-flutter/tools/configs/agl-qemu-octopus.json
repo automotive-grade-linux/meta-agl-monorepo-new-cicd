@@ -21,11 +21,11 @@
         "DEVICE_HOSTNAME": "localhost",
         "FLUTTER_AUTO_EXE": "flutter-auto --j=/tmp/${appName}/default_config.json --b=/tmp/${appName}",
         "PING_CMD": "(echo >/dev/tcp/localhost/${CONTAINER_SSH_PORT}) &>/dev/null && echo open || echo closed",
-        "DELETE_USER_PWD": "ssh -p ${CONTAINER_SSH_PORT} -t -oBatchMode=yes root@${DEVICE_HOSTNAME} passwd -d agl-driver",
-        "CREATE_BUNDLE_FOLDER": "ssh -p ${CONTAINER_SSH_PORT} -o BatchMode=yes agl-driver@${DEVICE_HOSTNAME} mkdir -p /tmp/${appName}/data",
-        "COPY_PLATFORM_ID_TO_DEVICE": "scp -P ${CONTAINER_SSH_PORT} -r ${PLATFORM_ID_DIR}/default_config.json agl-driver@${DEVICE_HOSTNAME}:/tmp/${appName}/",
-        "COPY_ASSETS_TO_DEVICE": "scp -P ${CONTAINER_SSH_PORT} -r ${localPath}/* agl-driver@${DEVICE_HOSTNAME}:/tmp/${appName}/data/flutter_assets",
-        "DELETE_APP_FOLDER": "ssh -p ${CONTAINER_SSH_PORT} -o BatchMode=yes agl-driver@${DEVICE_HOSTNAME} rm -rf /tmp/${appName}"
+        "DELETE_USER_PWD": "ssh -oStrictHostKeyChecking=no -p ${CONTAINER_SSH_PORT} -t -oBatchMode=yes root@${DEVICE_HOSTNAME} passwd -d agl-driver",
+        "CREATE_BUNDLE_FOLDER": "ssh -oStrictHostKeyChecking=no -p ${CONTAINER_SSH_PORT} -o BatchMode=yes agl-driver@${DEVICE_HOSTNAME} mkdir -p /tmp/${appName}/data",
+        "COPY_PLATFORM_ID_TO_DEVICE": "scp -oStrictHostKeyChecking=no -P ${CONTAINER_SSH_PORT} -r ${PLATFORM_ID_DIR}/default_config.json agl-driver@${DEVICE_HOSTNAME}:/tmp/${appName}/",
+        "COPY_ASSETS_TO_DEVICE": "scp -oStrictHostKeyChecking=no -P ${CONTAINER_SSH_PORT} -r ${localPath}/* agl-driver@${DEVICE_HOSTNAME}:/tmp/${appName}/data/flutter_assets",
+        "DELETE_APP_FOLDER": "ssh -oStrictHostKeyChecking=no -p ${CONTAINER_SSH_PORT} -o BatchMode=yes agl-driver@${DEVICE_HOSTNAME} rm -rf /tmp/${appName}"
     },
     "runtime": {
         "config": {
@@ -106,7 +106,7 @@
         "postBuild": "bash -c \"${DELETE_USER_PWD}\"",
         "install": "bash -c \"${CREATE_BUNDLE_FOLDER} && ${COPY_PLATFORM_ID_TO_DEVICE} && ${COPY_ASSETS_TO_DEVICE}\"",
         "uninstall": "bash -c \"${DELETE_APP_FOLDER}\"",
-        "runDebug": "bash -c \"ssh -t -t -o BatchMode=yes agl-driver@${DEVICE_HOSTNAME} ${FLUTTER_AUTO_EXE}\"",
+        "runDebug": "bash -c \"ssh -oStrictHostKeyChecking=no -t -t -o BatchMode=yes agl-driver@${DEVICE_HOSTNAME} ${FLUTTER_AUTO_EXE}\"",
         "forwardPort": null,
         "forwardPortSuccessRegex": null,
         "screenshot": null

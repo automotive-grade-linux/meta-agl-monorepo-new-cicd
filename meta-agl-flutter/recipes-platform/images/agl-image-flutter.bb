@@ -12,5 +12,5 @@ IMAGE_INSTALL += "\
     \
     flutter-auto \
     \
-    flutter-gallery \
+    flutter-samples-material-3-demo \
 "

@@ -25,5 +25,5 @@ IMAGE_INSTALL += "\
     \
     flutter-engine-sdk-dev \
     \
-    flutter-gallery \
+    flutter-samples-material-3-demo \
 "
