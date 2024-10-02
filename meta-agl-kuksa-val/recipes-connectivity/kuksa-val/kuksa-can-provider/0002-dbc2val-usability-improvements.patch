@@ -16,7 +16,7 @@ Changes:
   in the current working directory.  That likely works for upstream
   test scenarios, but prevents running on a target.
 
-Upstream-Status: pending
+Upstream-Status: Pending
 
 Signed-off-by: Scott Murray <scott.murray@konsulko.com>
 ---

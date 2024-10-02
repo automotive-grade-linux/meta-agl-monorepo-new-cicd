@@ -6,7 +6,7 @@ Subject: [PATCH 4/4] Enable val2dbc for sensor values
 Rework to allow val2dbc mode to write out sensor values in
 addition to actuator target values.
 
-Upstream-Status: pending
+Upstream-Status: Pending
 
 Signed-off-by: Scott Murray <scott.murray@konsulko.com>
 ---

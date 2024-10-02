@@ -7,7 +7,7 @@ The client library changed the token option name to
 'token_or_tokenfile', update things to match so that token
 location can be configured again for dbcfeeder.py.
 
-Upstream-Status: pending
+Upstream-Status: Pending
 
 Signed-off-by: Scott Murray <scott.murray@konsulko.com>
 ---
