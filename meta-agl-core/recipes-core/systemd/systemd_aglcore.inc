@@ -12,8 +12,9 @@ PACKAGECONFIG:append = " \
    iptc \
 "
 
-# SPEC-737: connmand also has a NTP client which races with systemd-timesyncd
-PACKAGECONFIG:remove = "timesyncd"
+PACKAGECONFIG:remove = " \
+   ${@bb.utils.contains('VIRTUAL-RUNTIME_net_manager','systemd','','timesyncd',d)} \
+"
 
 # Enable systemd-coredump when agl-devel is set on
 PACKAGECONFIG:append:agl-devel = " coredump"
