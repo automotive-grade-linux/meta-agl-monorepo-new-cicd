@@ -15,7 +15,9 @@ https://.*/.* ${AGL_HOST_PREMIRROR}/AGL/mirror/  \n \
 
 SSTATE_MIRRORS = "  file://.* ${AGL_HOST_SSTATE_MIRROR}/sstate-mirror/master/${DEFAULTTUNE}/PATH;downloadfilename=PATH \n                  "
 
-INHERIT += "cve-check"
+# disable due to fetch issues
+#INHERIT += "cve-check"
+
 INHERIT += "buildhistory"
 INHERIT += "buildstats"
 INHERIT += "buildstats-summary"
