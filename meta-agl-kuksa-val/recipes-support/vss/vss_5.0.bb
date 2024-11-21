@@ -27,7 +27,7 @@ do_install() {
     # installing the vspec files somewhere as a development package may
     # be useful, but for now things will be kept simple.
     install -d ${D}${datadir}/vss
-    install -m 0644 ${S}/vss_rel_${PV}.json ${D}${datadir}/vss/
+    install -m 0644 ${S}/vss.json ${D}${datadir}/vss/vss_${PV}.json
 }
 
 # NOTE:
@@ -40,4 +40,4 @@ do_install() {
 ALTERNATIVE_LINK_NAME[vss.json] = "${datadir}/vss/vss.json"
 
 ALTERNATIVE:${PN} = "vss.json"
-ALTERNATIVE_TARGET_${PN} = "${datadir}/vss/vss_rel_${PV}.json"
+ALTERNATIVE_TARGET_${PN} = "${datadir}/vss/vss_${PV}.json"
