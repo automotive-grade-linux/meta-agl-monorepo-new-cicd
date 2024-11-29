@@ -11,7 +11,7 @@ LIC_FILES_CHKSUM = "file://COPYING;md5=fac6abe0003c4d142ff8fa1f18316df0"
 DEPENDS = "wayland wayland-protocols wayland-native weston"
 
 SRC_URI = "git://gerrit.automotivelinux.org/gerrit/src/agl-compositor.git;protocol=https;branch=${AGL_BRANCH}"
-SRCREV = "c8ffca8f9c67114ca424b88df0740943fe7768e3"
+SRCREV = "896f27c979571452f15447bb9752fc46a99f5177"
 AGL_BRANCH:aglnext = "next"
 SRCREV:aglnext = "${AUTOREV}"
 
@@ -37,6 +37,7 @@ LDFLAGS:append:riscv64 = " -Wl,--no-as-needed -latomic -Wl,--as-needed"
 FILES:${PN} = " \
     ${bindir}/agl-compositor \
     ${bindir}/agl-screenshooter \
+    ${bindir}/agl-stream-pipewire-output \
     ${libdir}/agl-compositor/libexec_compositor.so.0 \
     ${libdir}/agl-compositor/libexec_compositor.so.${AGL_COMPOSITOR_VERSION} \
 "
@@ -48,6 +49,7 @@ FILES:agl-shell-grpc-server = " \
 RDEPENDS:${PN} += " \
     agl-compositor-init \
     xkeyboard-config \
+    bash \
 "
 
 FILES:${PN}-dev += " \
