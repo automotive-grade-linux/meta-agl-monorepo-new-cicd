@@ -1,13 +1,13 @@
 FILESEXTRAPATHS:append := ":${THISDIR}/weston"
 
-PACKAGECONFIG:append = "${@bb.utils.contains('DISTRO_FEATURES', 'weston-remoting', ' remoting', '', d)}"
-
 SRC_URI:append = " \
 		  file://0001-clients-Handle-missing-pointer_surface-is-there-s-no.patch \
 		  file://0001-backend-drm-don-t-leak-gem_handle_refcnt-in-drm_dest.patch \
 		  file://0002-backend-drm-always-create-gem_handle_refcnt-hash-tab.patch \
 "
 
+PACKAGECONFIG:append = " pipewire "
+WESTON_MAJOR_VERSION = "${@'.'.join(d.getVar('PV').split('.')[0:1])}"
 
 # Split weston-terminal out of the main package to allow installing it
 # separately for use with other compositors.  The icons, etc. that end
@@ -16,8 +16,9 @@ SRC_URI:append = " \
 # packaged in weston-examples in addition to ivi-shell in the main
 # package.
 
-PACKAGE_BEFORE_PN += "${PN}-data ${PN}-terminal"
+PACKAGE_BEFORE_PN += "${PN}-data ${PN}-terminal ${PN}-pipewire"
 
+FILES:${PN}-pipewire = "${libdir}/libweston-${WESTON_MAJOR_VERSION}/pipewire-backend.so"
 FILES:${PN}-data = "${datadir}/weston"
 
 FILES:${PN}-terminal = "${bindir}/weston-terminal"
