@@ -1,0 +1,24 @@
+[Unit]
+Description=Stream PipeWire output created by AGL compositor
+
+Requires=agl-compositor.service
+After=agl-compositor.service
+
+Before=graphical.target
+ConditionPathExists=/usr/bin/agl-stream-pipewire-output
+
+[Service]
+Type=simple
+EnvironmentFile=-/etc/default/agl-stream-pipewire-output
+ExecStart=/usr/bin/agl-stream-pipewire-output @REMOTE_OUTPUT_IP@ @REMOTE_OUTPUT_PORT@
+
+User=agl-driver
+Group=agl-driver
+
+WorkingDirectory=/home/agl-driver
+
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=graphical.target
