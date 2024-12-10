@@ -41,7 +41,7 @@ do_install() {
         fi
     done
     install -d ${D}${systemd_system_unitdir}/agl-compositor.service.d
-    install -m644 ${WORKDIR}/agl-compositor.conf ${D}/${systemd_system_unitdir}/agl-compositor.service.d/agl-compositor.conf
+    install -m644 ${WORKDIR}/agl-compositor.conf ${D}/${systemd_system_unitdir}/agl-compositor.service.d/01-agl-compositor.conf
 }
 
 FILES:${PN} += "\
