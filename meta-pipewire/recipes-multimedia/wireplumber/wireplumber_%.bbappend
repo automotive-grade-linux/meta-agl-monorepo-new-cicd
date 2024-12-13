@@ -1,3 +1,9 @@
+FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
+
+SRC_URI += " \
+    file://0001-linking-reset-link-when-moving-target.patch \
+"
+
 do_install:append() {
     systemd_dir="${D}${sysconfdir}/systemd/system/"
 
