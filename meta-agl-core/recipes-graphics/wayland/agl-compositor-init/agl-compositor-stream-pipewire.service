@@ -10,6 +10,11 @@ ConditionPathExists=/usr/bin/agl-stream-pipewire-output
 [Service]
 Type=simple
 EnvironmentFile=-/etc/default/agl-stream-pipewire-output
+# need to wait until receiver has its receiver client started; this might be a
+# bit controversial but this actually decreases the preceived time when we
+# start displaying frames on the receiver side. A proper solution would be
+# somehow have a way to convey when it is the best time start the stream
+ExecStartPre=sleep 10
 ExecStart=/usr/bin/agl-stream-pipewire-output @REMOTE_OUTPUT_IP@ @REMOTE_OUTPUT_PORT@
 
 User=agl-driver
