@@ -24,6 +24,7 @@ PACKAGECONFIG ?= ""
 PACKAGECONFIG[policy-rba] = "-Dpolicy-default=rba,,librba,librba rba-config"
 PACKAGECONFIG[policy-deny-all] = "-Dpolicy-default=deny-all,,"
 PACKAGECONFIG[grpc-proxy] = "-Dgrpc-proxy=true,-Dgrpc-proxy=false,grpc grpc-native,grpc agl-shell-grpc-server"
+PACKAGECONFIG[drm-lease] = "-Ddrm-lease=true,-Ddrm-lease=false,drm-lease-manager"
 
 inherit meson pkgconfig python3native
 
