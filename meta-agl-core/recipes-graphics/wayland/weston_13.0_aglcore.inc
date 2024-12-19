@@ -6,7 +6,6 @@ SRC_URI:append = " \
 		  file://0002-backend-drm-always-create-gem_handle_refcnt-hash-tab.patch \
 "
 
-PACKAGECONFIG:append = " pipewire "
 WESTON_MAJOR_VERSION = "${@'.'.join(d.getVar('PV').split('.')[0:1])}"
 
 # Split weston-terminal out of the main package to allow installing it
