@@ -1,12 +1,12 @@
 [
     {
         "uri": "https://github.com/toyota-connected/ivi-homescreen.git",
-        "rev": "e87c1797f838e20f0a4c1af309541d63986058ca",
+        "rev": "2341312e5118a9b96a3f0e7c13a2813b4a7e779c",
         "branch": "v2.0"
     },
     {
         "uri": "https://github.com/toyota-connected/ivi-homescreen-plugins.git",
-        "rev": "41d00635f89c064aa32f2cef3147c59b8f61694f",
+        "rev": "f2a7336c34ed4720742a42245b84de56729d56e3",
         "branch": "v2.0"
     },
     {
