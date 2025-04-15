@@ -47,4 +47,4 @@ QB_OPT_APPEND:append = " -vga virtio"
 WESTON_DRM_DEVICE = "dev-dri-card0.device"
 
 # Use our own wks file
-WKS_FILE="systemd-intel-corei7-64-bootdisk.wks"
+WKS_FILE = "systemd-intel-corei7-64-bootdisk.wks"

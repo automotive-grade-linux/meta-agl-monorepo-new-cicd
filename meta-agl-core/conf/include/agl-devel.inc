@@ -1,4 +1,4 @@
-IMAGE_FEATURES =+ "debug-tweaks tools-debug tools-profile"
+IMAGE_FEATURES =+ "allow-empty-password empty-root-password allow-root-login post-install-logging tools-debug tools-profile"
 
 IMAGE_INSTALL:append = " \
     packagegroup-agl-core-devel \
@@ -8,8 +8,8 @@ IMAGE_INSTALL:append = " \
 IMAGE_INSTALL:append = "${@bb.utils.contains('DISTRO_FEATURES', 'wayland', ' libdrm-tests', '', d)}"
 
 # disable install of debug files in SDK
-# initial value: SDKIMAGE_FEATURES="dev-pkgs dbg-pkgs staticdev-pkgs"
-SDKIMAGE_FEATURES="dev-pkgs"
+# initial value: SDKIMAGE_FEATURES = "dev-pkgs dbg-pkgs staticdev-pkgs"
+SDKIMAGE_FEATURES = "dev-pkgs"
 
 # allows insertion of code or items specific to developement
 OVERRIDES:append = ":agl-devel"
