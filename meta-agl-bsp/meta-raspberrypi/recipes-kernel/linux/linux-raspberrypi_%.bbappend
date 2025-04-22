@@ -2,10 +2,7 @@ FILESEXTRAPATHS:prepend := "${THISDIR}/${BPN}:"
 
 require recipes-kernel/linux/linux-yocto-agl.inc
 
-SRC_URI:append = " \
-    ${@oe.utils.conditional('USE_FAYTECH_MONITOR', '1', 'file://0002-faytech-fix-rpi.patch', '', d)} \
-    file://0001-mconf-menuconfig.patch \
-"
+SRC_URI += "file://0001-mconf-menuconfig.patch"
 
 # Enable support for Pi foundation touchscreen
 AGL_KCONFIG_FRAGMENTS += "raspberrypi-panel.cfg"
