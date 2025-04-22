@@ -8,6 +8,7 @@ using a format macro contant 'PRIu32' into a printf. This needs the
 inttypes.h header file to build correctly with aarch64-linux-gnu-gcc.
 
 Signed-off-by: Pierre Marzin <pierre.marzin@iot.bzh>
+Upstream-Status: Backport [https://github.com/linaro-swg/optee_examples/commit/559b2141]
 ---
  secure_storage/ta/secure_storage_ta.c | 1 +
  1 file changed, 1 insertion(+)

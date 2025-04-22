@@ -13,6 +13,7 @@ Changes include:
 - Changed initial FM frequency if not specified to the minimum of the
   band plan.
 
+Upstream-Status: Inactive-Upstream
 Signed-off-by: Scott Murray <scott.murray@konsulko.com>
 
 diff --git a/si46xx.h b/si46xx.h

@@ -20,6 +20,7 @@ Signed-off-by: Jason Wessel <jason.wessel@windriver.com>
 cc: Michal Marek <mmarek@suse.cz>
 cc: linux-kbuild@vger.kernel.org
 Signed-off-by: Bruce Ashfield <bruce.ashfield@windriver.com>
+Upstream-Status: Backport [https://git.yoctoproject.org/linux-yocto/commit/?h=v6.6/standard/x86&id=1811da09]
 ---
  scripts/kconfig/mconf-cfg.sh | 8 ++++++++
  1 file changed, 8 insertions(+)

@@ -19,6 +19,7 @@ Change-Id: Ibbb1975c2383a526a54c257fb7d68d32a042d468
 Signed-off-by: Matt Porter <mporter@konsulko.com>
 Signed-off-by: Ronan Le Martret <ronan.lemartret@iot.bzh>
 Signed-off-by: Harunobu Kurokawa <harunobu.kurokawa.dn@renesas.com>
+Upstream-Status: Inappropriate [AGL-specific workaround]
 ---
  arch/arm64/boot/dts/renesas/r8a77951.dtsi | 10 +++++-----
  arch/arm64/boot/dts/renesas/r8a77960.dtsi | 10 +++++-----

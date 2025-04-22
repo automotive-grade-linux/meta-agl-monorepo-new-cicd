@@ -12,6 +12,8 @@ r8a779f0-s4sk.dts.
 
 Signed-off-by: Phat Pham <phat.pham.zg@renesas.com>
 Signed-off-by: Duy Dang <duy.dang.yw@renesas.com>
+Upstream-Status: Inappropriate
+
 ---
  arch/arm64/boot/dts/renesas/r8a779f0-s4sk.dts |  28 ++
  .../boot/dts/renesas/r8a779f0-spider.dts      | 160 ++++++++++++

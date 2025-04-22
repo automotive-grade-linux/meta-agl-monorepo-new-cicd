@@ -14,6 +14,7 @@ abstraction.
 
 Signed-off-by: Ronan Le Martret <ronan.lemartret@iot.bzh>
 Signed-off-by: Mark Farrugia <mark.farrugia@fiberdyne.com.au>
+Upstream-Status: Inappropriate [AGL-specific workaround]
 ---
  arch/arm64/boot/dts/renesas/r8a77960-ulcb.dts | 45 ++++++++++++++++++-
  arch/arm64/boot/dts/renesas/r8a77961-ulcb.dts | 45 ++++++++++++++++++-
