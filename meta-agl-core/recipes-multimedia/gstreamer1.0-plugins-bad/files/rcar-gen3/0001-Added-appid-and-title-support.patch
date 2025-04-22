@@ -3,6 +3,8 @@ From: Marius Vlad <marius.vlad@collabora.com>
 Date: Wed, 9 Aug 2023 14:34:19 +0300
 Subject: [PATCH] Added appid and title support
 
+Upstream-Status: Pending
+
 Bug-AGL: SPEC-4870
 Signed-off-by: Marius Vlad <marius.vlad@collabora.com>
 ---

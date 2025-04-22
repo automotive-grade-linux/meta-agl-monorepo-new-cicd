@@ -7,6 +7,7 @@ Devices created via drm_device_create have this hash table, but those
 created via drm_backend_create don't.
 
 Signed-off-by: Ray Smith <rsmith@brightsign.biz>
+Upstream-Status: Backport [https://gitlab.freedesktop.org/wayland/weston/-/commit/e7960048]
 ---
  libweston/backend-drm/drm.c | 12 +++++++++---
  1 file changed, 9 insertions(+), 3 deletions(-)

@@ -4,6 +4,7 @@ Date: Fri, 13 Dec 2024 17:14:44 +0200
 Subject: [PATCH] backend: Add weston_get_backend_type
 
 Signed-off-by: Marius Vlad <marius.vlad@collabora.com>
+Upstream-Status: Backport [https://gitlab.freedesktop.org/wayland/weston/-/commit/14cfb979]
 ---
  include/libweston/libweston.h |  3 +++
  libweston/backend.h           |  5 +++++
