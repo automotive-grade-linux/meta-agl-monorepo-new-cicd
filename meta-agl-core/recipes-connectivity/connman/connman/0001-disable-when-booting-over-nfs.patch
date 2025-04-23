@@ -1,14 +1,27 @@
-Exempt when nfs is in use.
+From 8465d5d3f1dd0468baf05579444d0580861f3046 Mon Sep 17 00:00:00 2001
+From: Scott Murray <scott.murray@konsulko.com>
+Date: Wed, 23 Apr 2025 16:43:43 -0400
+Subject: [PATCH] Exempt when nfs is in use.
 
-Upstream-Status: Pending
+Upstream-Status: Inappropriate [AGL-specific]
 
---- connman-1.36.orig/src/connman.service.in	2019-02-18 18:02:07.034947373 -0500
-+++ connman-1.36/src/connman.service.in	2019-02-18 18:07:24.689959219 -0500
-@@ -7,6 +7,7 @@
+Signed-off-by: Scott Murray <scott.murray@konsulko.com>
+---
+ src/connman.service.in | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/src/connman.service.in b/src/connman.service.in
+index 7376346..9bb5356 100644
+--- a/src/connman.service.in
++++ b/src/connman.service.in
+@@ -3,6 +3,7 @@ Description=Connection service
+ DefaultDependencies=false
+ Conflicts=shutdown.target
+ RequiresMountsFor=@localstatedir@/lib/connman
++ConditionKernelCommandLine=!root=/dev/nfs
+ After=dbus.service network-pre.target systemd-sysusers.service
  Before=network.target multi-user.target shutdown.target
  Wants=network.target
- Conflicts=systemd-resolved.service
-+ConditionKernelCommandLine=!root=/dev/nfs
- 
- [Service]
- Type=dbus
+-- 
+2.49.0
+
