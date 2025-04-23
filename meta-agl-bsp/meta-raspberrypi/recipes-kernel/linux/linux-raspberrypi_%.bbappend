@@ -13,22 +13,7 @@ AGL_KCONFIG_FRAGMENTS += "raspberrypi-hciuart.cfg"
 # ENABLE NETWORK (built-in)
 AGL_KCONFIG_FRAGMENTS += "raspberrypi_network.cfg"
 
-# For Xen
-AGL_KCONFIG_FRAGMENTS += " \
-    ${@bb.utils.contains('AGL_XEN_WANTED','1','xen-be.cfg','',d)} \
-"
-
-# Take in account that linux under Xen should use the hvc0 console
-SERIAL_OPTION = "${@bb.utils.contains('AGL_XEN_WANTED','1','hvc0','ttyS0,115200',d)}"
-SERIAL = "${@oe.utils.conditional("ENABLE_UART", "1", "console=${SERIAL_OPTION}", "", d)}"
-
 CMDLINE_DEBUG = ""
-
-# Xen related option
-CMDLINE:append = ' ${@bb.utils.contains('AGL_XEN_WANTED','1','clk_ignore_unused','',d)}'
-
-# Workaround for crash during brcmfmac loading. Disable it at this moment
-CMDLINE:append = ' ${@bb.utils.contains('AGL_XEN_WANTED','1','modprobe.blacklist=brcmfmac','',d)}'
 
 CMDLINE:append = " usbhid.mousepoll=0"
 

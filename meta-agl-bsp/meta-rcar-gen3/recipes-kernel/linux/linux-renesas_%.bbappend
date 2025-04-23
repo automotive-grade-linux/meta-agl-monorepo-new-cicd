@@ -10,15 +10,3 @@ SRC_URI:append = " \
 AGL_KCONFIG_FRAGMENTS += "namespace_fix.cfg"
 AGL_KCONFIG_FRAGMENTS += "Set_GOV_PERFORMANCE.cfg"
 AGL_KCONFIG_FRAGMENTS += "vivid.cfg"
-
-# For Xen
-AGL_KCONFIG_FRAGMENTS += " \
-    ${@bb.utils.contains('AGL_XEN_WANTED','1','xen-be.cfg','',d)} \
-"
-
-SRC_URI:append:m3ulcb = " \
-    ${@bb.utils.contains('AGL_XEN_WANTED','1','file://r8a77960-ulcb-xen.dts;subdir=git/arch/${ARCH}/boot/dts/renesas','',d)} \
-"
-KERNEL_DEVICETREE:append:m3ulcb = " \
-    ${@bb.utils.contains('AGL_XEN_WANTED','1','renesas/r8a77960-ulcb-xen.dtb','',d)} \
-"

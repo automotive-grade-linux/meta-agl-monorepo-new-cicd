@@ -46,8 +46,6 @@ AGL_KCONFIG_FRAGMENTS += " \
     lttng.cfg \
 "
 
-AGL_KCONFIG_FRAGMENTS += " ${@bb.utils.contains('AGL_XEN_GUEST_WANTED','1','xen_domu.cfg','',d)}"
-
 # Base ALSA support and other sound related configuration
 AGL_KCONFIG_FRAGMENTS += "sound.cfg"
 

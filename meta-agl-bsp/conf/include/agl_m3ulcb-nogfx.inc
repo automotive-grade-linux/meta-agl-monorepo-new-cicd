@@ -23,6 +23,3 @@ BBMASK += "meta-rcar-gen3/recipes-graphics/wayland/weston_%.bbappend"
 # do use software rendering to display the compositor
 # used for images w/o binary-only driver
 WESTON_USE_PIXMAN = "1"
-
-DISTRO_FEATURES:append = "${@bb.utils.contains('AGL_XEN_WANTED', '1', ' xen', '', d)}"
-IMAGE_INSTALL:append = "${@bb.utils.contains('AGL_XEN_WANTED', '1', ' xen-base xen-mkimage', '', d)}"

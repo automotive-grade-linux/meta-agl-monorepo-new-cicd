@@ -18,10 +18,6 @@ do_deploy:append:raspberrypi4() {
                 ;;
         esac
     fi
-
-    if [ "${AGL_XEN_WANTED}" = "1" ]; then
-        echo "total_mem=${TOTAL_BOARD_MEM}" >> ${DEPLOYDIR}/bootfiles/config.txt
-    fi
 }
 
 do_deploy:append() {
