@@ -1,9 +1,6 @@
 # Maximum memory allowed to be assigned
 GPU_MEM = "256"
 
-# Add CMA to the kernel arguments for SOTA
-OSTREE_KERNEL_ARGS:sota:append = " cma=256M"
-
 # use u-boot always
 RPI_USE_U_BOOT = "1"
 

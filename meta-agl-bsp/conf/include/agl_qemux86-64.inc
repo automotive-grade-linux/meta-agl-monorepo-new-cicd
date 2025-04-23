@@ -17,9 +17,6 @@ QB_KERNEL_CMDLINE_APPEND:append = " console=ttyS0,115200n8"
 # All boot message will be off
 QB_KERNEL_CMDLINE_APPEND:append = " quiet"
 
-# Build updatable image. Only takes effect when sota.bbclass is inherited
-DISTRO_FEATURES:append = " sota"
-
 # Add firmware required by Up^2 board and default Intel mPCIe wifi card
 # sold by upshop.org
 MACHINE_EXTRA_RRECOMMENDS:append = " \
@@ -35,7 +32,6 @@ MACHINE_EXTRA_RRECOMMENDS:append = " \
 #       AGL_DEFAULT_IMAGE_FSTYPES to not include them, but for Intel
 #       we actually do want them for use on physical hardware.
 AGL_EXTRA_IMAGE_FSTYPES = "wic.xz wic.bmap ${@bb.utils.contains('AGL_FEATURES', 'AGLCI', 'wic.vmdk.xz', 'wic.vmdk', d)}"
-IMAGE_BOOT_FILES:sota = "u-boot-qemux86-64.rom"
 
 # Root device
 ROOT_VM = "root=PARTUUID=${DISK_SIGNATURE}-02"

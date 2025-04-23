@@ -1,6 +1,3 @@
-# Build updatable image. Only takes effect when sota.bbclass is inherited
-#DISTRO_FEATURES:append = " sota"
-
 # Root device
 ROOT_VM = "root=PARTUUID=${DISK_SIGNATURE}-02"
 
