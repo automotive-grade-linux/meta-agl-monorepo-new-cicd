@@ -24,7 +24,7 @@ SRC_URI = "git://gerrit.automotivelinux.org/gerrit/apps/agl-service-hvac;protoco
            file://agl-service-hvac.service \
            file://databroker.conf \
 "
-SRCREV  = "03cae3b01fe81328561a90119609a81924247cfe"
+SRCREV  = "534fefa8ddf21266d43012c2b500d6ba17690a43"
 
 PV = "2.0+git${SRCPV}"
 S  = "${WORKDIR}/git"
