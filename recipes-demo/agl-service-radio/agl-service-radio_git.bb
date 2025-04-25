@@ -19,7 +19,7 @@ DEPENDS = " \
 
 SRC_URI = "git://gerrit.automotivelinux.org/gerrit/apps/agl-service-radio;protocol=https;branch=${AGL_BRANCH} \
            file://radio.conf.kvm-demo"
-SRCREV  = "b4debfc9e238b57dace7cae6ad0ad42ce42fbaf4"
+SRCREV  = "3720c2c4888b75ed7ca4c01bf6cf1903b551c4eb"
 
 PV = "2.0+git${SRCPV}"
 S  = "${WORKDIR}/git"
