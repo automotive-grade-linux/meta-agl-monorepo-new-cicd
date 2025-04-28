@@ -9,18 +9,21 @@ LIC_FILES_CHKSUM = "file://COPYING;md5=751419260aa954499f7abaabaa882bbe \
 DEPENDS = "libusb1"
 
 SRC_URI = "git://git.osmocom.org/rtl-sdr;branch=master \
-           file://0001-remove-I-usr-include-in-pkg-config.patch \
-           "
-SRCREV = "e3c03f738f5aef4dc51e2b741fbdb542b9cc1bb1"
+           file://0001-Fix-version.patch \
+"
+SRCREV = "619ac3186ea0ffc092615e1f59f7397e5e6f668c"
+
 S = "${WORKDIR}/git"
 
-inherit autotools pkgconfig
+inherit cmake pkgconfig
 
-EXTRA_OECONF = "--enable-driver-detach"
+PACKAGECONFIG ??= "detach-kernel-driver usbfs-zero-copy"
 
-do_configure:append() {
-    # remove included temporary path from pc file due to pass-through of OE CFLAGS
-    # debug-prefix-map
-    # See: http://lists.openembedded.org/pipermail/openembedded-devel/2016-May/107456.html
-    sed -i -e "s# -fdebug-prefix-map=.*##g;s# -fmacro-prefix-map=.*##g" librtlsdr.pc
+PACKAGECONFIG[detach-kernel-driver] = "-DDETACH_KERNEL_DRIVER=ON,-DDETACH_KERNEL_DRIVER=OFF"
+PACKAGECONFIG[install-udev-rules] = "-DINSTALL_UDEV_RULES=ON,-DINSTALL_UDEV_RULES=OFF"
+PACKAGECONFIG[usbfs-zero-copy] = "-DENABLE_ZEROCOPY=ON,-DENABLE_ZEROCOPY=OFF"
+
+do_install:append() {
+    # Fix up paths in generated cmake files
+    sed -i 's|${RECIPE_SYSROOT}${prefix}|${_IMPORT_PREFIX}|g' ${D}${libdir}/cmake/rtlsdr/rtlsdrTargets.cmake
 }

@@ -1,0 +1,31 @@
+From d3876f643279aa0aba1d8be798beda95e336b0ce Mon Sep 17 00:00:00 2001
+From: Scott Murray <scott.murray@konsulko.com>
+Date: Thu, 24 Apr 2025 14:49:21 -0400
+Subject: [PATCH] Fix version
+
+Bump the version number in CMakeLists.txt to 2.0.2 to match the
+release tag.
+
+Upstream-Status: Pending
+
+Signed-off-by: Scott Murray <scott.murray@konsulko.com>
+---
+ CMakeLists.txt | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 1ff6c9a..40c8d91 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -43,7 +43,7 @@ include(CMakePackageConfigHelpers)
+ # Set the version information here
+ set(VERSION_INFO_MAJOR_VERSION 2) # increment major on api compatibility changes
+ set(VERSION_INFO_MINOR_VERSION 0) # increment minor on feature-level changes
+-set(VERSION_INFO_PATCH_VERSION 1) # increment patch for bug fixes and docs
++set(VERSION_INFO_PATCH_VERSION 2) # increment patch for bug fixes and docs
+ include(Version) # setup version info
+ 
+ ########################################################################
+-- 
+2.49.0
+
