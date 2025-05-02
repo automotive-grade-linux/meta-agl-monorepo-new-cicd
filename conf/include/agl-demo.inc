@@ -1,7 +1,7 @@
 # enable the layer
 AGL_FEATURES:append = " agldemo"
 
-IMAGE_FEATURES =+ "debug-tweaks"
+IMAGE_FEATURES =+ "allow-empty-password empty-root-password allow-root-login post-install-logging"
 
 DISTRO_FEATURES:append = " automount "
 
