@@ -32,9 +32,10 @@ EOF
 
 yocto-check-layer --no-auto-dependency \
 	-- \
-	$AGLROOT/meta-agl-devel/meta-agl-drm-lease
-#	--dependency \
-#	$AGLROOT/meta-agl/meta-agl-core \
+	$AGLROOT/meta-agl/meta-agl-drm-lease \
+	--dependency \
+	$AGLROOT/meta-agl/meta-agl-core 
+
 #
 
 [ $? = 0 ] && rm -rf ${TMPROOT}/testbuild-ycl

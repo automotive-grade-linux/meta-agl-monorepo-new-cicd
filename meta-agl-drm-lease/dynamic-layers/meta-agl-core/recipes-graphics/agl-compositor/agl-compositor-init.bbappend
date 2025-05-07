@@ -1,3 +1,2 @@
-DRM_LEASE_DEVICE ??= "lease0"
-AGL_COMPOSITOR_ARGS:append = " --drm-lease=${DRM_LEASE_DEVICE}"
+require ${@bb.utils.contains('AGL_FEATURES', 'agl-drm-lease', 'agl-compositor-init_agl-drm-lease.inc', '', d)}
 
