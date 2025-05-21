@@ -6,6 +6,7 @@ require recipes-platform/images/agl-image-boot.bb
 NO_RECOMMENDATIONS = "1"
 
 IMAGE_INSTALL += " \
+    ${MACHINE_EXTRA_RRECOMMENDS} \
     kernel-image \
     packagegroup-agl-ic-core \
     packagegroup-agl-ic-qt \
