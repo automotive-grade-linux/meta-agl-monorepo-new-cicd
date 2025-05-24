@@ -1,4 +1,4 @@
-FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
 
 DEPENDS:append = " drm-lease-manager"
 DEPENDS:remove:class-native = " drm-lease-manager"
