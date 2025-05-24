@@ -5,26 +5,24 @@ LIC_FILES_CHKSUM = "file://LICENSE;md5=5335066555b14d832335aa4660d6c376"
 DEPENDS = " \
     qttools-native \
     qtmultimedia \
-    cluster-service \
+"
+DEPENDS:append = " \
+    ${@bb.utils.contains('AGL_FEATURES', 'agl-ic', 'cluster-service', '', d)} \
 "
 
 BRANCH = "master"
-SRC_URI = "git://git.automotivelinux.org/src/cluster-refgui;protocol=https;branch=${BRANCH} \
+SRC_URI = "git://gerrit.automotivelinux.org/gerrit/src/cluster-refgui;protocol=https;branch=${BRANCH} \
            file://cluster.service \
            file://cluster \
 "
-SRCREV = "5c8f09d2c3c99f621b467ed5c1be4fac3a708e85"
+SRCREV = "0e9a54fb74677c626d278473a588beab4431c101"
 
 S = "${WORKDIR}/git"
 
 inherit cmake qt6-cmake systemd pkgconfig
 
-# NOTE:
-# The app currently assumes the mp4 video file is in the same
-# directory, so changing this to ${bindir} to better match FHS
-# requires code changes.
-APP_DIR = "/opt/apps"
-EXTRA_OECMAKE = "-DAPPS_INST_DIR=${APP_DIR}"
+PACKAGECONFIG = "${@bb.utils.contains('AGL_FEATURES', 'agl-ic', '', 'disable-service', d)}"
+PACKAGECONFIG[disable-service] = "-DDISABLE_CLUSTER_BACKEND=1"
 
 SYSTEMD_SERVICE:${PN} = "cluster.service"
 
@@ -36,7 +34,7 @@ do_install:append() {
     install -m 0755 ${WORKDIR}/cluster ${D}${sysconfdir}/default/
 }
 
-FILES:${PN} += "${APP_DIR}/"
+FILES:${PN} += "/opt/apps/"
 
 RDEPENDS:${PN} = " \
     qtbase \
