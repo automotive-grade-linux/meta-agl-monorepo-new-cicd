@@ -5,7 +5,7 @@ Requires=basic.target
 
 [Service]
 Type=notify
-ExecStart=/usr/bin/cluster_service
+ExecStart=/usr/bin/cluster_service --demo
 Restart=on-failure
 StartLimitInterval=0
 
