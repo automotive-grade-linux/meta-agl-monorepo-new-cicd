@@ -1,0 +1,103 @@
+From 96cff34af27398074c4b5c2f91704dd11c77e53a Mon Sep 17 00:00:00 2001
+From: Scott Murray <scott.murray@konsulko.com>
+Date: Mon, 26 May 2025 15:28:50 -0400
+Subject: [PATCH] Enable etnaviv driver on i.MX8MQ EVK
+
+Tweak the devicetree for i.MX8MQ EVK to add the missing pieces to
+use the etnaviv GPU driver, and enable it by default instead of
+the Vivante driver.
+
+Upstream-Status: Inappropriate [AGL-specific]
+Signed-off-by: Scott Murray <scott.murray@konsulko.com>
+---
+ arch/arm64/boot/dts/freescale/imx8mq-evk.dts |  2 +-
+ arch/arm64/boot/dts/freescale/imx8mq.dtsi    | 53 ++++++++++++++++++++
+ 2 files changed, 54 insertions(+), 1 deletion(-)
+
+diff --git a/arch/arm64/boot/dts/freescale/imx8mq-evk.dts b/arch/arm64/boot/dts/freescale/imx8mq-evk.dts
+index 89b8594c7a11..03c18ef7160a 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mq-evk.dts
++++ b/arch/arm64/boot/dts/freescale/imx8mq-evk.dts
+@@ -1219,7 +1219,7 @@ &vpu_v4l2 {
+ 	status = "okay";
+ };
+ 
+-&gpu3d {
++&gpu {
+ 	status = "okay";
+ };
+ 
+diff --git a/arch/arm64/boot/dts/freescale/imx8mq.dtsi b/arch/arm64/boot/dts/freescale/imx8mq.dtsi
+index a7b4b1dbc73c..138d37f64756 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mq.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mq.dtsi
+@@ -293,6 +293,34 @@ map0 {
+ 				};
+ 			};
+ 		};
++
++		gpu-thermal {
++			polling-delay-passive = <250>;
++			polling-delay = <2000>;
++			thermal-sensors = <&tmu 1>;
++
++			trips {
++				gpu_alert: gpu-alert {
++					temperature = <80000>;
++					hysteresis = <2000>;
++					type = "passive";
++				};
++
++				gpu-crit {
++					temperature = <90000>;
++					hysteresis = <2000>;
++					type = "critical";
++				};
++			};
++
++			cooling-maps {
++				map0 {
++					trip = <&gpu_alert>;
++					cooling-device =
++						<&gpu THERMAL_NO_LIMIT THERMAL_NO_LIMIT>;
++				};
++			};
++		};
+ 	};
+ 
+ 	timer {
+@@ -1437,6 +1465,31 @@ dcss: display-controller@32e00000 {
+ 			};
+ 		};
+ 
++		gpu: gpu@38000000 {
++			compatible = "vivante,gc";
++			reg = <0x38000000 0x40000>;
++			interrupts = <GIC_SPI 3 IRQ_TYPE_LEVEL_HIGH>;
++			clocks = <&clk IMX8MQ_CLK_GPU_ROOT>,
++			         <&clk IMX8MQ_CLK_GPU_SHADER_DIV>,
++			         <&clk IMX8MQ_CLK_GPU_AXI>,
++			         <&clk IMX8MQ_CLK_GPU_AHB>;
++			clock-names = "core", "shader", "bus", "reg";
++			#cooling-cells = <2>;
++			assigned-clocks = <&clk IMX8MQ_CLK_GPU_CORE_SRC>,
++			                  <&clk IMX8MQ_CLK_GPU_SHADER_SRC>,
++			                  <&clk IMX8MQ_CLK_GPU_AXI>,
++			                  <&clk IMX8MQ_CLK_GPU_AHB>,
++			                  <&clk IMX8MQ_GPU_PLL_BYPASS>;
++			assigned-clock-parents = <&clk IMX8MQ_GPU_PLL_OUT>,
++			                         <&clk IMX8MQ_GPU_PLL_OUT>,
++			                         <&clk IMX8MQ_GPU_PLL_OUT>,
++			                         <&clk IMX8MQ_GPU_PLL_OUT>,
++			                         <&clk IMX8MQ_GPU_PLL>;
++			assigned-clock-rates = <800000000>, <800000000>,
++			                       <800000000>, <800000000>, <0>;
++			power-domains = <&pgc_gpu>;
++		};
++
+ 		usb_dwc3_0: usb@38100000 {
+ 			compatible = "fsl,imx8mq-dwc3", "snps,dwc3";
+ 			reg = <0x38100000 0x10000>;
+-- 
+2.49.0
+
