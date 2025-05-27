@@ -2,6 +2,7 @@
 #---------------------------------------------------
 BBLAYERS =+ " \
    ${METADIR}/meta-agl-demo \
+   ${METADIR}/meta-agl-demo/meta-agl-demo-shared \
 "
 
 AGL_META_FILESYSTEMS = "${METADIR}/external/meta-openembedded/meta-filesystems"
