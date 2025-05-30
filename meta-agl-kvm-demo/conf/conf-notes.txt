@@ -1,0 +1,5 @@
+- meta-agl-kvm-demo:
+  * agl-kvm-demo-flutter-preconfigured
+
+  More details:
+  https://docs.automotivelinux.org/en/master/#01_Getting_Started/03_Build_and_Boot_guide_Profile/02_KVM_Demo_Images

@@ -1,10 +1,12 @@
-Common targets are:
-    agl-ivi-image
-    agl-ivi-image-crosssdk
-    agl-ivi-demo-flutter
-    agl-ivi-demo-html5
-    agl-ivi-demo-qt
-    agl-ivi-demo-qt-crosssdk
-    agl-cluster-demo-flutter
-    agl-cluster-demo-qt
-    agl-ivi-demo-control-panel
+- meta-agl-demo:
+  * agl-ivi-image                 (base for IVI targets)
+  * agl-ivi-image-crosssdk        (SDK for ^^)
+  * agl-ivi-demo-qt               (IVI Qt demo image)
+  * agl-ivi-demo-qt-crosssdk      (SDK for ^^)
+  * agl-ivi-demo-flutter          (IVI Flutter demo image)
+  * agl-cluster-demo-qt           (cluster Qt demo image)
+  * agl-cluster-demo-flutter      (cluster Flutter demo image)
+  * agl-ivi-demo-control-panel    (demo/test control panel image)
+
+  More details:
+  https://docs.automotivelinux.org/en/master/#01_Getting_Started/02_Building_AGL_Image/07_Available_Demo_Images
