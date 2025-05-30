@@ -1,26 +1,7 @@
 Common targets are:
 - meta-agl layer:
-  - included by default
-    * agl-image-boot                (just enough to boot)
-    * agl-image-minimal             (minimal filesystem with APIs)
-    * agl-image-minimal-crosssdk    (crosssdk for ^^)
-
-    * agl-image-weston              (minimal filesystem with weston)
-    * agl-image-compositor          (minimal filesystem with AGL compositor)
-
-- meta-agl-demo:                    (IVI demo with UI)
-  - with 'agl-demo'
-    * agl-ivi-image                 (base for IVI targets)
-    * agl-ivi-image-crosssdk        (sdk for ^^)
-
-    * agl-ivi-demo-qt               (IVI Qt demo image)
-    * agl-ivi-demo-qt-crosssdk      (sdk for ^^)
-    * agl-ivi-demo-flutter          (IVI Flutter demo image)
-    * agl-ivi-demo-html5            (IVI HTML5 demo image)
-
-    * agl-cluster-demo-qt           (cluster Qt demo image)
-    * agl-cluster-demo-flutter      (cluster Flutter demo image)
-
-    * agl-telematics-demo           (telematics demo image)
-
-    * agl-gateway-demo              (gateway demo image)
+  * agl-image-boot                (just enough to boot)
+  * agl-image-minimal             (minimal filesystem with APIs)
+  * agl-image-minimal-crosssdk    (crosssdk for above)
+  * agl-image-weston              (minimal filesystem with weston)
+  * agl-image-compositor          (minimal filesystem with AGL compositor)

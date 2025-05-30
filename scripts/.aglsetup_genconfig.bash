@@ -303,6 +303,61 @@ function find_feature_dependency() {
 	return 0;
 }
 
+function generate_conf_notes() {
+	local layers="$(grep '\${METADIR}/meta-agl' $BUILDDIR/conf/bblayers.conf | sed 's|.*\${METADIR}/\([^\ ]\+\) .*|\1|' | sort -u)"
+
+	# meta-agl-core should always be present and its info should be first
+	local notes="$METADIR/meta-agl/meta-agl-core/conf/templates/base/conf-notes.txt"
+	if [ ! -r "$notes" ]; then
+		error "meta-agl-core conf-notes.txt not present!"
+		return 1
+	fi
+	cat "$notes" > $BUILDDIR/conf/conf-notes.txt
+
+	# Other layers in meta-agl
+	for l in $layers; do
+		if [ $l = "meta-agl/meta-agl-core" ]; then
+			continue
+		fi
+			if [[ $l =~ ^meta-agl/.* ]]; then
+				notes="$METADIR/$l/conf/conf-notes.txt"
+			if [ -r "$notes" ]; then
+				echo >> $BUILDDIR/conf/conf-notes.txt
+				cat "$notes" >> $BUILDDIR/conf/conf-notes.txt
+			fi
+		fi
+	done
+
+	# Other layers
+	for l in $layers; do
+		if ! [[ $l =~ ^meta-agl/.* ]]; then
+			notes="$METADIR/$l/conf/conf-notes.txt"
+			if [ -r "$notes" ]; then
+				echo >> $BUILDDIR/conf/conf-notes.txt
+				cat "$notes" >> $BUILDDIR/conf/conf-notes.txt
+			fi
+		fi
+	done
+
+	# Add footer
+	local notes="$METADIR/meta-agl/meta-agl-core/conf/templates/base/conf-notes-footer.txt"
+	if [ -r "$notes" ]; then
+		echo >> $BUILDDIR/conf/conf-notes.txt
+		cat "$notes" >> $BUILDDIR/conf/conf-notes.txt
+	fi
+
+	# Make sure there's a trailing blank line
+	echo >> $BUILDDIR/conf/conf-notes.txt
+
+	# Fix branch name in docs URLs
+	branch="$(grep ^AGL_BRANCH $METADIR/meta-agl/meta-agl-core/conf/distro/poky-agl.conf | sed 's/[^"]\+"\([^"]\+\)".*$/\1/')"
+	if [ -n "$branch" -a "$branch" != "master" ]; then
+		sed -i "s|https://docs.automotivelinux.org/en/master/|https://docs.automotivelinux.org/en/${branch}/|g" $BUILDDIR/conf/conf-notes.txt 
+	fi
+	
+	return
+}
+
 GLOBAL_ARGS=( "$@" )
 debug "Parsing arguments: $@"
 TEMP=$(getopt -o m:b:r:t:s:fvVdh --long machine:,builddir:,rpm-revision:,topic:,script:,force,verbose,version,debug,help -n $SCRIPT -- "$@")
@@ -437,6 +492,9 @@ function genconfig() {
 		append_fragment $BUILDDIR/conf/bblayers.conf $file
 		verbose "      + $file"
 	done
+
+	# Use bblayers.conf to generate conf-notes.txt
+	generate_conf_notes
 
 	FRAGMENTS_LOCALCONF=$(sed 's/ /\n/g' <<<$FRAGMENTS_LOCALCONF | sort)
 	debug "localconf fragments: $FRAGMENTS_LOCALCONF"
