@@ -4,6 +4,8 @@ LIC_FILES_CHKSUM = "file://${COREBASE}/meta/COPYING.MIT;md5=3da9cfbcb788c80a0384
 
 inherit allarch
 
+require conf/include/flutter-version.inc
+
 AGL_FLUTTER_DEFAULT_RUNTIME ?= "release"
 
 do_compile[noexec] = "1"

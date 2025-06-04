@@ -1,3 +1,4 @@
 AGL_FEATURES += "agl-flutter"
 
-FLUTTER_SDK_TAG = "3.27.1"
+#If or as required, pin SDK:
+#FLUTTER_SDK_TAG = "3.32.0"
