@@ -18,7 +18,7 @@ SRC_URI = "git://gerrit.automotivelinux.org/gerrit/apps/flutter-ics-homescreen;p
   file://radio-presets.yaml \
   file://kvm.conf \
 "
-SRCREV = "96290f750f085f5ce53e810eb5149aa820bca98f"
+SRCREV = "f73c574dfe5642091ef586234823288b160a0fcc"
 
 S = "${WORKDIR}/git"
 
@@ -106,3 +106,5 @@ RPROVIDES:${PN}-conf-kvm-gateway-demo = "ics-homescreen.yaml"
 ALTERNATIVE:${PN}-conf-kvm-gateway-demo = "ics-homescreen.yaml"
 ALTERNATIVE_TARGET_${PN}-conf-kvm-gateway-demo = "${sysconfdir}/xdg/AGL/ics-homescreen.yaml.kvm-gateway-demo"
 ALTERNATIVE_PRIORITY_${PN}-conf-kvm-gateway-demo = "31"
+
+do_compile[network] = "1"
