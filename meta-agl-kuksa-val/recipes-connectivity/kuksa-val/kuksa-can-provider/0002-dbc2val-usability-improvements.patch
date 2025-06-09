@@ -1,6 +1,6 @@
-From 2e4e1f9147f1ebe5b545ae0cab41341e3abb00ae Mon Sep 17 00:00:00 2001
+From 2508f67302015c5f2cebabd2e48c019b259373fa Mon Sep 17 00:00:00 2001
 From: Scott Murray <scott.murray@konsulko.com>
-Date: Sat, 15 Jun 2024 13:13:17 -0400
+Date: Mon, 2 Jun 2025 15:05:32 -0400
 Subject: [PATCH 2/4] dbc2val: usability improvements
 
 Changes:
@@ -24,7 +24,7 @@ Signed-off-by: Scott Murray <scott.murray@konsulko.com>
  1 file changed, 15 insertions(+), 4 deletions(-)
 
 diff --git a/dbcfeeder.py b/dbcfeeder.py
-index a1ef174..c252503 100755
+index 782b981..c1e20c4 100755
 --- a/dbcfeeder.py
 +++ b/dbcfeeder.py
 @@ -144,7 +144,11 @@ class Feeder:
@@ -44,17 +44,17 @@ index a1ef174..c252503 100755
              # For now creating another bus
              # Maybe support different buses for downstream/upstream in the future
  
--            self._canclient = CANClient(interface="socketcan", channel=canport, can_fd=can_fd)
+-            self._canclient = CANClient(interface="socketcan", channel=canport, fd=can_fd)
 +            self._canclient = None
 +            try:
-+                self._canclient = CANClient(interface="socketcan", channel=canport, can_fd=can_fd)
++                self._canclient = CANClient(interface="socketcan", channel=canport, fd=can_fd)
 +            except:
 +                log.error("Could not open %s, exiting", canport)
 +                sys.exit(-1)
  
              transmitter = threading.Thread(target=self._run_transmitter)
              transmitter.start()
-@@ -335,8 +344,10 @@ def _parse_config(filename: str) -> configparser.ConfigParser:
+@@ -339,8 +348,10 @@ def _parse_config(filename: str) -> configparser.ConfigParser:
          configfile = filename
      else:
          config_candidates = [
@@ -66,7 +66,7 @@ index a1ef174..c252503 100755
              "config/dbc_feeder.ini",
          ]
          for candidate in config_candidates:
-@@ -534,7 +545,7 @@ def main(argv):
+@@ -538,7 +549,7 @@ def main(argv):
      elif os.environ.get("DBC_DEFAULT_FILE"):
          dbc_default = os.environ.get("DBC_DEFAULT_FILE")
      else:
@@ -76,5 +76,5 @@ index a1ef174..c252503 100755
      if args.mapping:
          mappingfile = args.mapping
 -- 
-2.44.0
+2.49.0
 

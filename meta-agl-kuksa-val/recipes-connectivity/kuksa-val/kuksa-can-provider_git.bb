@@ -7,7 +7,7 @@ LIC_FILES_CHKSUM = "file://LICENSE;md5=175792518e4ac015ab6696d16c4f607e"
 
 DEPENDS = "python3-setuptools-git-versioning-native"
 
-PV = "0.4.3+git${SRCPV}"
+PV = "0.4.4"
 
 SRC_URI = "git://github.com/eclipse-kuksa/kuksa-can-provider.git;protocol=https;branch=main \
            file://0001-dbc2val-add-installation-mechanism.patch \
@@ -17,7 +17,7 @@ SRC_URI = "git://github.com/eclipse-kuksa/kuksa-can-provider.git;protocol=https;
            file://kuksa-can-provider.service \
 	   file://kuksa-can-provider.default \
            "
-SRCREV = "d5fdcfa7574ce69059b6f449629571db0982c1cf"
+SRCREV = "669bb122c599fb17afedec5a1a866bafca497cbd"
 
 S = "${WORKDIR}/git"
 
