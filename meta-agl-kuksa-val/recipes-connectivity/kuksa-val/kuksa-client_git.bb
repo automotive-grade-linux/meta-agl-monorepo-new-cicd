@@ -11,17 +11,22 @@ DEPENDS = " \
     python3-grpcio \
 "
 
-PV = "0.4.3"
+PV = "0.5.0-a2+git${SRCPV}"
 
 SRC_URI = "gitsm://github.com/eclipse-kuksa/kuksa-python-sdk.git;protocol=https;branch=main \
            file://0001-kuksa-client-Update-cmd2-completer-usage.patch;patchdir=.. \
            file://0002-Tweak-grpcio-tools-requirement.patch;patchdir=.. \
+	   file://0003-Fix-AIO-version-of-gRPC-subscribe_target_values.patch;patchdir=.. \
 "
-SRCREV = "d72777a6aec6bd9f9a2bdf5ae5d01a9bc2de423a"
+SRCREV = "cdf8f8215043b56cad3deaacb59322926b70418a"
 
 S = "${WORKDIR}/git/kuksa-client"
 
 inherit python_setuptools_build_meta
+
+do_compile:prepend() {
+    nativepython3 -m proto
+}
 
 RDEPENDS:${PN} += " \
     python3-cmd2 \
