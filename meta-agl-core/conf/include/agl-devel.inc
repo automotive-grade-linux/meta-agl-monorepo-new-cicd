@@ -1,4 +1,4 @@
-IMAGE_FEATURES =+ "allow-empty-password empty-root-password allow-root-login post-install-logging tools-debug tools-profile"
+IMAGE_FEATURES =+ "allow-empty-password empty-root-password allow-root-login post-install-logging tools-debug tools-profile ssh-server-openssh"
 
 IMAGE_INSTALL:append = " \
     packagegroup-agl-core-devel \
