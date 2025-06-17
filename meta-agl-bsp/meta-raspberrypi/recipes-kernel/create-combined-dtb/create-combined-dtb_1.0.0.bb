@@ -28,6 +28,11 @@ do_compile () {
 			${DEPLOY_DIR_IMAGE}/${VC4DTBO}-pi4.dtbo
 	fi
 
+	# pi5
+	if [ -f "${DEPLOY_DIR_IMAGE}/bcm2712-rpi-5-b.dtb" ]; then
+		fdtoverlay -v -i ${DEPLOY_DIR_IMAGE}/bcm2712-rpi-5-b.dtb -o bcm2712-rpi-5-b-vc4.dtb \
+			${DEPLOY_DIR_IMAGE}/${VC4DTBO}-pi5.dtbo
+	fi
 }
 
 do_deploy () {
@@ -37,6 +42,9 @@ do_deploy () {
 	fi
 	if [ -f "${S}/bcm2711-rpi-4-b+vc4.dtb" ]; then
 		install -m 0644 ${S}/bcm2711-rpi-4-b+vc4.dtb ${DEPLOY_DIR_IMAGE}
+	fi
+	if [ -f "${S}/bcm2712-rpi-5-b_vc4.dtb" ]; then
+		install -m 0644 ${S}/bcm2712-rpi-5-b-vc4.dtb ${DEPLOY_DIR_IMAGE}
 	fi
 }
 
