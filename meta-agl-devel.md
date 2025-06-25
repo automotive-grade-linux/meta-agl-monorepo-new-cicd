@@ -35,7 +35,7 @@ The following list provides a summary of these sub-layers:
 
 * `meta-agl-lxc`: Provides LXC container support and example images.
 
-* `meta-agl-ros2`: Provides ROS2 and additional YDLIDAR support.
+* `meta-agl-ros2`: Provides ROS2 support.
 
 * `meta-oem-production-readiness`: Provides libraries and software packages of
   IVI product readiness
