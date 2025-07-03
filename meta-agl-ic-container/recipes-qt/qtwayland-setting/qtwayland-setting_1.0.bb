@@ -7,7 +7,7 @@ SRC_URI = "file://qtwayland-common \
           "
 
 do_install() {
-    install -Dm644 ${WORKDIR}/qtwayland-common ${D}${sysconfdir}/default/qtwayland-common
+    install -Dm644 ${UNPACKDIR}/qtwayland-common ${D}${sysconfdir}/default/qtwayland-common
 }
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"

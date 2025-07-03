@@ -8,5 +8,3 @@ PV = '1'
 
 SRC_URI = "git://gerrit.automotivelinux.org/gerrit/src/qa-test-misc;protocol=https;branch=master"
 SRCREV = "761c64f22b8a6c1202a2c9caafda36e154e81d41"
-
-S = "${WORKDIR}/git"

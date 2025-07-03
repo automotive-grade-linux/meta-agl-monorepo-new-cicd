@@ -5,8 +5,6 @@ LIC_FILES_CHKSUM = "file://LICENSE.md;md5=688693ebbe31e3eadf819d7d007fa654"
 
 require virtio-loopback-driver.inc
 
-S = "${WORKDIR}/git"
-
 inherit module
 
 EXTRA_OEMAKE = "M=${S} -C ${STAGING_KERNEL_DIR}"

@@ -18,13 +18,13 @@ SYSTEMD_AUTO_ENABLE:${PN} = "disable"
 
 do_install:append () {
     install -d ${D}/usr/bin
-    install -m 0755 ${WORKDIR}/momikey.sh ${D}/usr/bin/momikey.sh
+    install -m 0755 ${UNPACKDIR}/momikey.sh ${D}/usr/bin/momikey.sh
     
     install -d ${D}${systemd_system_unitdir}
-    install -m 0644 ${WORKDIR}/momikey.service ${D}${systemd_system_unitdir}
+    install -m 0644 ${UNPACKDIR}/momikey.service ${D}${systemd_system_unitdir}
     
     install -d ${D}${sysconfdir}/udev/rules.d
-    install -m 644 ${WORKDIR}/momikey.rules ${D}${sysconfdir}/udev/rules.d/
+    install -m 644 ${UNPACKDIR}/momikey.rules ${D}${sysconfdir}/udev/rules.d/
 }
 
 FILES:${PN} += " \

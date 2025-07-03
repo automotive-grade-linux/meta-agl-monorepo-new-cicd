@@ -9,7 +9,6 @@ SRC_URI = " \
 
 PV = "2.8.3+git${SRCPV}"
 SRCREV = "c5e6bb74b5373650527bc1f5c29ba5ad145dea48"
-S = "${WORKDIR}/git"
 
 DEPENDS += " \
     python3-aiohttp \

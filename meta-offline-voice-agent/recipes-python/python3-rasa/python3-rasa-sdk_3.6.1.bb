@@ -10,7 +10,6 @@ SRC_URI = " \
 
 PV = "3.6.1+git${SRCPV}"
 SRCREV = "b3e24199f020d876beb7a9ab3bc18afc65ebe989"
-S = "${WORKDIR}/git"
 
 DEPENDS += " \
     python3-coloredlogs \

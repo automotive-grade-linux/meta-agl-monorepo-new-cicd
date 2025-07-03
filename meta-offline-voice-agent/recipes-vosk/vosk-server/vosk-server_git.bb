@@ -9,8 +9,6 @@ SRC_URI = "git://github.com/alphacep/vosk-server;protocol=https;branch=master"
 PV = "1.0+git${SRCPV}"
 SRCREV = "70f3d5321a40f2f5dffe9c833bc1fac4b3b451e7"
 
-S = "${WORKDIR}/git"
-
 DEPENDS = "python3-vosk-api openblas vosk boost"
 
 do_configure () {

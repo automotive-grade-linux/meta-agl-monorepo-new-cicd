@@ -16,8 +16,6 @@ SRC_URI = " \
 "
 PV = "0.0+git${SRCPV}"
 
-S = "${WORKDIR}/git"
-
 export GO111MODULE="auto"
 export GOFLAGS="-modcacherw"
 
@@ -63,7 +61,7 @@ do_compile:append() {
 do_install() {
     if ${@bb.utils.contains('DISTRO_FEATURES','systemd','true','false',d)}; then
         install -d ${D}${systemd_system_unitdir}
-        install -m 644 ${WORKDIR}/*.service ${D}/${systemd_system_unitdir}
+        install -m 644 ${UNPACKDIR}/*.service ${D}/${systemd_system_unitdir}
     fi
 
     install -d ${D}${bindir}

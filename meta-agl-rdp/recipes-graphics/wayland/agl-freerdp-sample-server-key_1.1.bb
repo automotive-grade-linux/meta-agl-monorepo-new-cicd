@@ -10,9 +10,8 @@ do_configure[noexec] = "1"
 do_compile[noexec] = "1"
 
 do_install () {
-
     install -d ${D}/etc/xdg/weston
-    install -m 0644 ${WORKDIR}/server.crt ${D}/etc/xdg/weston/server.crt
-    install -m 0644 ${WORKDIR}/server.key ${D}/etc/xdg/weston/server.key
+    install -m 0644 ${UNPACKDIR}/server.crt ${D}/etc/xdg/weston/server.crt
+    install -m 0644 ${UNPACKDIR}/server.key ${D}/etc/xdg/weston/server.key
 
 }

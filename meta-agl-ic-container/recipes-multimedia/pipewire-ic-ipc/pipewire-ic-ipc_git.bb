@@ -9,8 +9,6 @@ PV = "0.1+git${SRCPV}"
 SRC_URI = "git://gerrit.automotivelinux.org/gerrit/src/pipewire-ic-ipc.git;protocol=https;branch=${AGL_BRANCH}"
 SRCREV = "f93f9cda5d8a380bc8846b5de3fc24613466adf3"
 
-S  = "${WORKDIR}/git"
-
 inherit meson pkgconfig systemd
 
 # build the server on the host

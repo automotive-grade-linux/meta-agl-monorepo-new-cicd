@@ -9,7 +9,7 @@ SRC_URI = "git://github.com/amanarora9848/voicerecognizer-gst-grpc;protocol=http
 PV = "1.0+git${SRCPV}"
 SRCREV = "d28da4cd89a5dfff823f1358816d0ff4791f8d28"
 
-S = "${WORKDIR}/git/python-server"
+S = "${UNPACKDIR}/${BP}/python-server"
 
 RDEPENDS:${PN} += " \
     vosk \

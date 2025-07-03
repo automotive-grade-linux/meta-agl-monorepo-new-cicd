@@ -8,7 +8,6 @@ SRC_URI = "\
     "
 
 PV = "0.6.1+git${SRCPV}"
-S = "${WORKDIR}/git"
 SRCREV = "f53a45d286834799207c4e225f3676bfa8eb4e1a"
 
 DEPENDS += "\

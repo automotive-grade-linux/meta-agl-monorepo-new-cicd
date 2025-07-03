@@ -13,7 +13,7 @@ SRC_URI = "https://mesa.freedesktop.org/archive/older-versions/20.x/mesa-${PV}.t
 SRC_URI[md5] = "224d7576618ef4dd8ac69f30b5b90b38"
 SRC_URI[sha256sum] = "909a72df63dfa3c0844ccf44a26ac028d148297ed333ab51560893923d7691ce"
 
-S = "${WORKDIR}/mesa-${PV}"
+S = "${UNPACKDIR}/mesa-${PV}"
 
 RDEPENDS:${PN}:append = " libgcc wayland libdrm glibc libstdc++ zlib expat"
 

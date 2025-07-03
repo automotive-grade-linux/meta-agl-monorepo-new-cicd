@@ -10,13 +10,11 @@ SRC_URI = "git://github.com/agl-ic-eg/momiweb.git;protocol=https;branch=agl-mast
           "
 SRCREV = "e720ea92df37da05ba33fc7abb4c4822f58dbcf1"
 
-S = "${WORKDIR}/git"
-
 inherit allarch
 
 do_install:append() {
 	install -d ${D}${sysconfdir}/lighttpd.d
-	install -m 0644 ${WORKDIR}/momiweb.conf ${D}${sysconfdir}/lighttpd.d/
+	install -m 0644 ${UNPACKDIR}/momiweb.conf ${D}${sysconfdir}/lighttpd.d/
 
 	install -d ${D}/www/momiweb
 	cp -R ${S}/webui/* ${D}/www/momiweb/

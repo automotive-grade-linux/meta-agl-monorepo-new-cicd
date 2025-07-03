@@ -13,7 +13,7 @@ SRC_URI += " \
 
 PV = "0.4.3+git${SRCPV}"
 SRCREV = "8cfdae50437732fcf906af90626c8db196729d30"
-S = "${WORKDIR}/git/python"
+S = "${UNPACKDIR}/${BP}/python"
 
 DEPENDS += "python3-future python3-setuptools-rust-native"
 

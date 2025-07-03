@@ -9,7 +9,7 @@ SRC_URI[sha256sum] = "60ed5bc3dd14eea856493d334349b405782ddcaf0028d4b5df4088345f
 do_install() {
     # Install the models
     install -d ${D}${datadir}/whisper-cpp/models
-    install -m 0644 ${WORKDIR}/ggml-base.bin ${D}${datadir}/whisper-cpp/models/base.bin
+    install -m 0644 ${UNPACKDIR}/ggml-base.bin ${D}${datadir}/whisper-cpp/models/base.bin
 }
 
 FILES:${PN} += " /usr /usr/share /usr/share/whisper-cpp/* "

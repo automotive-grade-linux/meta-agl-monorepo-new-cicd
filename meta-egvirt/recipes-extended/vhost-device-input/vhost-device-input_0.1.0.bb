@@ -14,8 +14,6 @@ inherit cargo
 inherit pkgconfig
 inherit cargo-update-recipe-crates
 
-S = "${WORKDIR}/git"
-
 CARGO_BUILD_FLAGS = "--bin vhost-device-input -v --offline --target ${RUST_HOST_SYS} ${BUILD_MODE} --manifest-path=${CARGO_MANIFEST_PATH}"
 
 include vhost-device-input-crates.inc

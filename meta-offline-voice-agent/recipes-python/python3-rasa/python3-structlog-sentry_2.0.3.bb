@@ -9,7 +9,6 @@ SRC_URI = " \
 
 PV = "2.0.3+git${SRCPV}"
 SRCREV = "3cae523da9fe6e022de7b6d283090ddb59966625"
-S = "${WORKDIR}/git"
 
 DEPENDS += " \
     python3-structlog \
@@ -26,7 +25,7 @@ RDEPENDS:${PN} += " \
     python3-urllib3 \
     python3-certifi \
     "
-    
+
 do_install:append() {
     # Remove extra files from the site-packages directory as they shouldn't be placed there,
     # it causes conflicts.

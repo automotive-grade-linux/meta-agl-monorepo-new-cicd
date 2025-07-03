@@ -7,7 +7,6 @@ FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}-${PV}:"
 SRC_URI = "git://gerrit.automotivelinux.org/gerrit/src/virtio/virtio-loopback-adapter;protocol=http;branch=${AGL_BRANCH}"
 SRCREV = "4bf3f656b9d58b4b99f6ddbe5ca27f4a39876ed0"
 
-S = "${WORKDIR}/git"
 TARGET_CC_ARCH += "${LDFLAGS}"
 
 do_compile() {

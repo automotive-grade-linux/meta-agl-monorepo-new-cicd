@@ -14,7 +14,7 @@ python __anonymous() {
     d.setVar('CM_CONFIG_NAME', config)
 }
 
-S = "${WORKDIR}"
+S = "${UNPACKDIR}"
 
 DRM_LEASE_DEVICE ??= "card0-HDMI-A-1"
 
@@ -25,7 +25,7 @@ do_install:append () {
     install -m 0755 -d ${D}/opt/container/guests/${CM_CONFIG_NAME}
     for f in system.conf.${CM_CONFIG_NAME}.in; do
         sed -e 's|@DRM_LEASE_DEVICE@|${DRM_LEASE_DEVICE}|g' \
-            ${WORKDIR}/$f > ${D}/opt/container/guests/${CM_CONFIG_NAME}/${f%.${CM_CONFIG_NAME}.in}
+            ${UNPACKDIR}/$f > ${D}/opt/container/guests/${CM_CONFIG_NAME}/${f%.${CM_CONFIG_NAME}.in}
     done
 }
 

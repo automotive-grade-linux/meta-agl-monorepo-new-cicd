@@ -9,8 +9,6 @@ PV = '1'
 SRC_URI = "git://gerrit.automotivelinux.org/gerrit/src/agl-test-framework;protocol=https;branch=master"
 SRCREV = "8a35e659dba8117eb0bb403cc0d2464bdd6fa052"
 
-S = "${WORKDIR}/git"
-
 # Notice:
 # This is the list of all installed tests
 #       On the installing board, if you get dirpath like:
@@ -72,16 +70,16 @@ FRAMEWORK_INSTALL_LIST = " \
 install_framework () {
     # basic essential pytest structure
     install -d ${D}/usr/bin/
-    install -m 0755 ${WORKDIR}/git/agl-test ${D}/usr/bin/
+    install -m 0755 ${S}/agl-test ${D}/usr/bin/
     install -d ${D}/usr/AGL/agl-test/plugins/
-    install -m 0644 ${WORKDIR}/git/pytest.ini ${D}/usr/AGL/agl-test/
-    install -m 0644 ${WORKDIR}/git/plugins/* ${D}/usr/AGL/agl-test/plugins/
+    install -m 0644 ${S}/pytest.ini ${D}/usr/AGL/agl-test/
+    install -m 0644 ${S}/plugins/* ${D}/usr/AGL/agl-test/plugins/
     install -d ${D}/usr/AGL/agl-test/template/
-    install -m 0644 ${WORKDIR}/git/template/* ${D}/usr/AGL/agl-test/template/
+    install -m 0644 ${S}/template/* ${D}/usr/AGL/agl-test/template/
     install -d ${D}/usr/AGL/agl-test/tests/
-    install -m 0644 ${WORKDIR}/git/tests/__init__.py ${D}/usr/AGL/agl-test/tests/
+    install -m 0644 ${S}/tests/__init__.py ${D}/usr/AGL/agl-test/tests/
     install -d ${D}/usr/AGL/agl-test/tests/LTP/
-    install -m 0644 ${WORKDIR}/git/tests/LTP/*py ${D}/usr/AGL/agl-test/tests/LTP/
+    install -m 0644 ${S}/tests/LTP/*py ${D}/usr/AGL/agl-test/tests/LTP/
 }
 
 # Function of the test file installation
@@ -89,17 +87,17 @@ install_test_files () {
     for test_name in ${FRAMEWORK_INSTALL_LIST}; do
         # Step 1 : install basic python files (no check, this is common installation)
         install -d ${D}/usr/AGL/agl-test/tests/${test_name}
-        install -m 0644 ${WORKDIR}/git/tests/${test_name}/*.py ${D}/usr/AGL/agl-test/tests/${test_name}/
+        install -m 0644 ${S}/tests/${test_name}/*.py ${D}/usr/AGL/agl-test/tests/${test_name}/
 
         # Step 2 : install spec.json (check first, not common)
-        if [ -f "${WORKDIR}/git/tests/${test_name}/spec.json" ];then
-            install -m 0644 ${WORKDIR}/git/tests/${test_name}/spec.json ${D}/usr/AGL/agl-test/tests/${test_name}
+        if [ -f "${S}/tests/${test_name}/spec.json" ];then
+            install -m 0644 ${S}/tests/${test_name}/spec.json ${D}/usr/AGL/agl-test/tests/${test_name}
         fi
 
         # Step 3 : install the resource folder (check first, not common)
-        if [ -d "${WORKDIR}/git/tests/${test_name}/resource/" ];then
+        if [ -d "${S}/tests/${test_name}/resource/" ];then
             install -d ${D}/usr/AGL/agl-test/tests/${test_name}/resource
-            install -m 0644 ${WORKDIR}/git/tests/${test_name}/resource/* ${D}/usr/AGL/agl-test/tests/${test_name}/resource/
+            install -m 0644 ${S}/tests/${test_name}/resource/* ${D}/usr/AGL/agl-test/tests/${test_name}/resource/
         fi
     done
 }

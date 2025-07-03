@@ -11,10 +11,10 @@ SRC_URI = " \
 
 do_install() {
     install -d ${D}/var/local/uhmi-app/glmark2
-    install -m 644 ${WORKDIR}/app.json ${D}/var/local/uhmi-app/glmark2/
-    install -m 644 ${WORKDIR}/initial-vscreen-agl.json ${D}/var/local/uhmi-app/glmark2/
-    install -m 644 ${WORKDIR}/initial-vscreen-weston.json ${D}/var/local/uhmi-app/glmark2/
-    install -m 644 ${WORKDIR}/initial-vscreen-wide.json ${D}/var/local/uhmi-app/glmark2/
+    install -m 644 ${UNPACKDIR}/app.json ${D}/var/local/uhmi-app/glmark2/
+    install -m 644 ${UNPACKDIR}/initial-vscreen-agl.json ${D}/var/local/uhmi-app/glmark2/
+    install -m 644 ${UNPACKDIR}/initial-vscreen-weston.json ${D}/var/local/uhmi-app/glmark2/
+    install -m 644 ${UNPACKDIR}/initial-vscreen-wide.json ${D}/var/local/uhmi-app/glmark2/
 }
 
 FILES:${PN} += " \

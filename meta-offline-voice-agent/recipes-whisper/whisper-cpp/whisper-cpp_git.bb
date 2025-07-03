@@ -9,8 +9,6 @@ SRCREV = "81c999fe0a25c4ebbfef10ed8a1a96df9cfc10fd"
 
 DEPENDS = "ffmpeg openblas"
 
-S = "${WORKDIR}/git"
-
 inherit cmake
 
 do_configure:prepend() {

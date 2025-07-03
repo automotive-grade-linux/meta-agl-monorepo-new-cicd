@@ -14,7 +14,7 @@ LIC_FILES_CHKSUM = "file://LICENSE;md5=13e8863a069f2c314d9251336e4afcbf"
 SRC_URI = "git://github.com/amanarora9848/voicerecognizer-gst-grpc.git;protocol=https;branch=master"
 
 SRCREV = "${AUTOREV}"
-S = "${WORKDIR}/git/app"
+S = "${UNPACKDIR}/${BP}/app"
 
 inherit agl-app flutter-app
 

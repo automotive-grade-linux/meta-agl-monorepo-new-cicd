@@ -19,7 +19,7 @@ do_compile_ptest() {
 }
 
 do_install_ptest() {
-    cat ${WORKDIR}/disable-tests >> ${S}/tests/data/DISABLED
+    cat ${UNPACKDIR}/disable-tests >> ${S}/tests/data/DISABLED
     rm -f ${B}/tests/configurehelp.pm
     cp -rf ${B}/tests ${D}${PTEST_PATH}
     cp -rf ${S}/tests ${D}${PTEST_PATH}

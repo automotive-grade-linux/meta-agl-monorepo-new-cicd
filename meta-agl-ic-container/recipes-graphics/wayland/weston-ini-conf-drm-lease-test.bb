@@ -7,7 +7,7 @@ SRC_URI = " \
     file://weston.ini.cluster \
 "
 
-S = "${WORKDIR}"
+S = "${UNPACKDIR}"
 
 inherit allarch update-alternatives
 
@@ -16,8 +16,8 @@ weston_ini_dir = "${sysconfdir}/xdg/weston"
 
 do_install() {
     install -d ${D}${weston_ini_dir}
-    install -m 0644 ${WORKDIR}/weston.ini.ivi ${D}${weston_ini_dir}/
-    install -m 0644 ${WORKDIR}/weston.ini.cluster ${D}${weston_ini_dir}/
+    install -m 0644 ${UNPACKDIR}/weston.ini.ivi ${D}${weston_ini_dir}/
+    install -m 0644 ${UNPACKDIR}/weston.ini.cluster ${D}${weston_ini_dir}/
 }
 
 ALTERNATIVE_LINK_NAME[weston.ini] = "${weston_ini_dir}/weston.ini"

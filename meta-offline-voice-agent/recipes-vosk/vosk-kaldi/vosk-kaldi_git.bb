@@ -11,7 +11,7 @@ SRC_URI = "git://github.com/alphacep/kaldi.git;protocol=https;branch=vosk \
 
 PV = "1.0+git${SRCPV}"
 SRCREV = "a25f216f5ce4eec5e45a6ab7651e20c9840a05cd"
-S = "${WORKDIR}/git/src"
+S = "${UNPACKDIR}/${BP}/src"
 
 DEPENDS += "openblas vosk-openfst"
 

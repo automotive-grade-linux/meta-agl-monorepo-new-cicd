@@ -9,7 +9,7 @@ do_compile[noexec] = "1"
 do_install() {
     if ${@bb.utils.contains('DISTRO_FEATURES', 'systemd', 'true', 'false', d)}; then
         install -d ${D}${sysconfdir}/udev/rules.d
-        install -m 0644 ${WORKDIR}/99-uhmi-user.rules ${D}${sysconfdir}/udev/rules.d/
+        install -m 0644 ${UNPACKDIR}/99-uhmi-user.rules ${D}${sysconfdir}/udev/rules.d/
     fi
 }
 

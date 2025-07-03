@@ -9,7 +9,7 @@ SRC_URI = "file://agl-qt-ivi-demo.json \
 inherit cm-config
 
 do_install:append() {
-    install -Dm644 ${WORKDIR}/agl-qt-ivi-demo.json ${D}/opt/container/conf/agl-qt-ivi-demo.json
+    install -Dm644 ${UNPACKDIR}/agl-qt-ivi-demo.json ${D}/opt/container/conf/agl-qt-ivi-demo.json
     install -d ${D}/opt/container/guests/agl-qt-ivi-demo/rootfs
     install -d ${D}/opt/container/guests/agl-qt-ivi-demo/nv
     install -d ${D}/opt/container/guests/agl-qt-ivi-demo/shmounts

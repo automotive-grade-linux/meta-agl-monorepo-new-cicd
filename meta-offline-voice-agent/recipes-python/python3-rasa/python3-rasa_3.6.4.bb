@@ -85,6 +85,6 @@ do_install:append() {
     # Initialize our service definition
     if ${@bb.utils.contains('DISTRO_FEATURES', 'systemd', 'true', 'false', d)}; then
         install -d ${D}${systemd_system_unitdir}
-        install -m 0644 ${WORKDIR}/rasa-service.service ${D}${systemd_system_unitdir}
+        install -m 0644 ${UNPACKDIR}/rasa-service.service ${D}${systemd_system_unitdir}
     fi
 }

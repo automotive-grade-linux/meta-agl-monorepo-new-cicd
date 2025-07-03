@@ -6,15 +6,15 @@ SRC_URI = "file://weston.env \
            file://weston.service \
           "
 
-S = "${WORKDIR}"
+S = "${UNPACKDIR}"
 
 inherit features_check systemd
 
 do_install() {
-    install -Dm644 ${WORKDIR}/weston.env ${D}${sysconfdir}/default/weston
+    install -Dm644 ${UNPACKDIR}/weston.env ${D}${sysconfdir}/default/weston
 
     # Install Weston systemd service and accompanying udev rule
-    install -D -p -m0644 ${WORKDIR}/weston.service ${D}${systemd_system_unitdir}/weston.service
+    install -D -p -m0644 ${UNPACKDIR}/weston.service ${D}${systemd_system_unitdir}/weston.service
     sed -i -e s:/etc:${sysconfdir}:g \
         -e s:/usr/bin:${bindir}:g \
         -e s:/var:${localstatedir}:g \

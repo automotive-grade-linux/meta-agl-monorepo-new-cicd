@@ -10,7 +10,7 @@ SRC_URI = "git://github.com/alphacep/vosk-api;protocol=https;branch=master \
 PV = "0.3.42+git${SRCPV}"
 SRCREV = "b1b216d4c87d708935f1601287fe502aa11ee4a9"
 
-S = "${WORKDIR}/git/src"
+S = "${UNPACKDIR}/${BP}/src"
 
 DEPENDS += " vosk-kaldi vosk-openfst openblas"
 

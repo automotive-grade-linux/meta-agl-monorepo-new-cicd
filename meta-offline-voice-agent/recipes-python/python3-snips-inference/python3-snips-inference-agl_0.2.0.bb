@@ -8,7 +8,6 @@ SRC_URI += " \
     "
 
 SRCREV = "6eee72109470897ce1e5446b2b6a0a5e579e942a"
-S = "${WORKDIR}/git"
 
 DEPENDS += " \
     python3-setuptools-native \

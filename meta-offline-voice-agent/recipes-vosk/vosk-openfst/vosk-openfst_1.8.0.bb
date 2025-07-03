@@ -9,7 +9,6 @@ SRC_URI = "git://github.com/alphacep/openfst.git;protocol=https;branch=master \
            "
 
 SRCREV = "7dfd808194105162f20084bb4d8e4ee4b65266d5"
-S = "${WORKDIR}/git"
 
 inherit autotools python3native
 

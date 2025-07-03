@@ -12,8 +12,6 @@ SRCREV = "a58624c3e721330d11d389a68c58bfe8f2e05a41"
 
 inherit allarch
 
-S = "${WORKDIR}/git"
-
 INHIBIT_PACKAGE_DEBUG_SPLIT = "1"
 
 do_compile[noexec] = "1"

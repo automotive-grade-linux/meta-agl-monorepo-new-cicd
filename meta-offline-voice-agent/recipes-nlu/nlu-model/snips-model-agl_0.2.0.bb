@@ -8,11 +8,10 @@ SRC_URI = " \
 "
 
 SRCREV = "2758be6cfabe4a8e1bb784dd5fb7e87a6a500c7c"
-S = "${WORKDIR}/git"
 
 do_install() {
     install -d ${D}/usr/share/nlu/snips
-    cp -R ${WORKDIR}/git/* ${D}/usr/share/nlu/snips/
+    cp -R ${S}/* ${D}/usr/share/nlu/snips/
 }
 
 FILES:${PN} += " /usr/share/nlu/snips"

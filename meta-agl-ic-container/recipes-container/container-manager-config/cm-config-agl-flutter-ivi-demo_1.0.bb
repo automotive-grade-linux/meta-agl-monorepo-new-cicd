@@ -9,7 +9,7 @@ SRC_URI = "file://agl-flutter-ivi-demo.json \
 inherit cm-config
 
 do_install:append() {
-    install -Dm644 ${WORKDIR}/agl-flutter-ivi-demo.json ${D}/opt/container/conf/agl-flutter-ivi-demo.json
+    install -Dm644 ${UNPACKDIR}/agl-flutter-ivi-demo.json ${D}/opt/container/conf/agl-flutter-ivi-demo.json
     install -d ${D}/opt/container/guests/agl-flutter-ivi-demo/rootfs
     install -d ${D}/opt/container/guests/agl-flutter-ivi-demo/nv
     install -d ${D}/opt/container/guests/agl-flutter-ivi-demo/shmounts

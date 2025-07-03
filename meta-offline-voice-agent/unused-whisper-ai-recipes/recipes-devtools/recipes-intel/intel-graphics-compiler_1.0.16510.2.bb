@@ -29,8 +29,6 @@ SRCREV_FORMAT = "igc_vc_spirv-tools_spirv-headers"
 # Used to replace with relative path in reproducibility patch
 export B
 
-S = "${WORKDIR}/git"
-
 inherit cmake pkgconfig qemu python3native
 
 CXXFLAGS:append = " -Wno-error=nonnull"

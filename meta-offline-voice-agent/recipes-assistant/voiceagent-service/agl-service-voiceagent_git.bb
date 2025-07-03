@@ -10,7 +10,6 @@ SRC_URI = " \
 "
 
 SRCREV = "5a8f670c3f772cfe0345ed53e5989a6dca08a905"
-S = "${WORKDIR}/git"
 
 # Speech to Text Model Name, use 'vosk-model-en-us-0.22' for better performance
 VOSK_STT_MODEL_NAME ?= "vosk-model-small-en-us-0.15" 
@@ -49,17 +48,17 @@ do_install:append() {
     install -d ${D}/usr/share/nlu/
     
     # Copy the 'mappings' folder to the destination directory
-    cp -R ${WORKDIR}/git/mappings ${D}/usr/share/nlu/
+    cp -R ${S}/mappings ${D}/usr/share/nlu/
 
     # Initialize our service definition
     if ${@bb.utils.contains('DISTRO_FEATURES', 'systemd', 'true', 'false', d)}; then
         install -d ${D}${systemd_system_unitdir}
-        install -m 0644 ${WORKDIR}/agl-service-voiceagent.service ${D}${systemd_system_unitdir}/agl-service-voiceagent.service
+        install -m 0644 ${UNPACKDIR}/agl-service-voiceagent.service ${D}${systemd_system_unitdir}/agl-service-voiceagent.service
     fi
 
     # Copy config file to etc/default
     install -d ${D}/etc/default/
-    cp -R ${WORKDIR}/voice-agent-config.ini ${D}/etc/default/
+    cp -R ${UNPACKDIR}/voice-agent-config.ini ${D}/etc/default/
 }
 
 RDEPENDS:${PN} += " \

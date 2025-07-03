@@ -7,10 +7,12 @@ SRC_URI = "\
     file://20-eth.network \
 "
 
+S = "${UNPACKDIR}"
+
 do_install() {
     # Install CAN bus network configuration
     install -d ${D}${nonarch_base_libdir}/systemd/network/
-    install -m 0644 ${WORKDIR}/20-eth.network ${D}${nonarch_base_libdir}/systemd/network/20-eth.network
+    install -m 0644 ${UNPACKDIR}/20-eth.network ${D}${nonarch_base_libdir}/systemd/network/20-eth.network
 }
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"

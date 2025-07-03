@@ -10,7 +10,7 @@ PACKAGECONFIG:remove = "templates"
 
 do_install:append () {
     for service in lxc.service lxc-net.service; do
-        install -D -m 0644 ${WORKDIR}/$service ${D}${systemd_system_unitdir}/$service
+        install -D -m 0644 ${UNPACKDIR}/$service ${D}${systemd_system_unitdir}/$service
         sed -i -e 's,@LIBEXECDIR@,${libexecdir},g' ${D}${systemd_system_unitdir}/$service
     done
 }

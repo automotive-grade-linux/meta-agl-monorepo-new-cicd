@@ -7,12 +7,12 @@ SRC_URI:append = " \
     "
 
 do_install:append() {
-    install -Dm644 ${WORKDIR}/system.pa ${D}${sysconfdir}/pulse/system.pa
-    install -Dm644 ${WORKDIR}/daemon.conf ${D}${sysconfdir}/pulse/daemon.conf
+    install -Dm644 ${UNPACKDIR}/system.pa ${D}${sysconfdir}/pulse/system.pa
+    install -Dm644 ${UNPACKDIR}/daemon.conf ${D}${sysconfdir}/pulse/daemon.conf
     rm ${D}${sysconfdir}/pulse/default.pa
 
     install -d ${D}/${systemd_unitdir}/system
-    install -m 0644 ${WORKDIR}/pulseaudio.service ${D}/${systemd_unitdir}/system
+    install -m 0644 ${UNPACKDIR}/pulseaudio.service ${D}/${systemd_unitdir}/system
     rm ${D}/${systemd_unitdir}/user/*
 }
 

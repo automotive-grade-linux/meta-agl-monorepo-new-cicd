@@ -9,7 +9,6 @@ SRC_URI = " \
 
 PV = "6.0.0+git${SRCPV}"
 SRCREV = "a7b4b203aed3251da359bf6b3069486daf441d23"
-S = "${WORKDIR}/git"
 
 DEPENDS += "python3-requests"
 

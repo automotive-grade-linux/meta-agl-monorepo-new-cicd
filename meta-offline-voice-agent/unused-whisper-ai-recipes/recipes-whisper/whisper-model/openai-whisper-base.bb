@@ -8,7 +8,7 @@ SRC_URI[sha256sum] = "ed3a0b6b1c0edf879ad9b11b1af5a0e6ab5db9205f891f668f8b0e6c63
 
 do_install(){
     install -d ${D}/usr/share/whisper
-    cp -R ${WORKDIR}/base.pt ${D}/usr/share/whisper/
+    cp -R ${UNPACKDIR}/base.pt ${D}/usr/share/whisper/
 }
 
 FILES:${PN} = " /usr/share/whisper /usr/share/whisper/base.pt "

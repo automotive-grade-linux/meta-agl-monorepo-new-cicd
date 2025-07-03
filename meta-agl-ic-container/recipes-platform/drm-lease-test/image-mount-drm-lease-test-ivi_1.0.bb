@@ -14,7 +14,7 @@ SYSTEMD_AUTO_ENABLE:${PN} = "enable"
 
 do_install:append () {
     install -d ${D}${systemd_system_unitdir}
-    install -m 0644 ${WORKDIR}/drm-lease-test-ivi.mount ${D}${systemd_system_unitdir}/var-lib-machines-guest2.mount
+    install -m 0644 ${UNPACKDIR}/drm-lease-test-ivi.mount ${D}${systemd_system_unitdir}/var-lib-machines-guest2.mount
     install -d ${D}/var/lib/machines/guest2
 }
 

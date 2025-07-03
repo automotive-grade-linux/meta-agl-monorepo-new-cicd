@@ -9,7 +9,7 @@ SRC_URI = "file://agl-momi-ivi-demo.json \
 inherit cm-config
 
 do_install:append() {
-    install -Dm644 ${WORKDIR}/agl-momi-ivi-demo.json ${D}/opt/container/conf/agl-momi-ivi-demo.json
+    install -Dm644 ${UNPACKDIR}/agl-momi-ivi-demo.json ${D}/opt/container/conf/agl-momi-ivi-demo.json
     install -d ${D}/opt/container/guests/agl-momi-ivi-demo/rootfs
     install -d ${D}/opt/container/guests/agl-momi-ivi-demo/nv
     install -d ${D}/opt/container/guests/agl-momi-ivi-demo/shmounts

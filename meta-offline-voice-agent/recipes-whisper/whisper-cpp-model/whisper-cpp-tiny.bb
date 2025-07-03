@@ -9,7 +9,7 @@ SRC_URI[sha256sum] = "921e4cf8686fdd993dcd081a5da5b6c365bfde1162e72b08d75ac75289
 do_install() {
     # Install the models
     install -d ${D}${datadir}/whisper-cpp/models
-    install -m 0644 ${WORKDIR}/ggml-tiny.en.bin ${D}${datadir}/whisper-cpp/models/tiny.en.bin
+    install -m 0644 ${UNPACKDIR}/ggml-tiny.en.bin ${D}${datadir}/whisper-cpp/models/tiny.en.bin
 }
 
 FILES:${PN} += " /usr /usr/share /usr/share/whisper-cpp/* "

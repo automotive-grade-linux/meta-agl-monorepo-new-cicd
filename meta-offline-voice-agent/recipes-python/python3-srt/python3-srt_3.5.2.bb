@@ -7,7 +7,7 @@ SRC_URI = "https://files.pythonhosted.org/packages/18/a3/e1466f7c86a9e5d3e462ed6
 SRC_URI[md5sum] = "3b68be7c46ec6152123fd801f519a63d"
 SRC_URI[sha256sum] = "7aa4ad5ce4126d3f53b3e7bc4edaa86653d0378bf1c0b1ab8c59f5ab41384450"
 
-S = "${WORKDIR}/srt-${PV}"
+S = "${UNPACKDIR}/srt-${PV}"
 
 inherit setuptools3
 

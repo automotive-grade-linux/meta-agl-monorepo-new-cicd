@@ -9,6 +9,5 @@ SRC_URI = "git://github.com/aiogram/magic-filter;protocol=https;branch=master \
 
 PV = "1.0.10+git${SRCPV}"
 SRCREV = "599e5bfa574d6cc97fd00b41a77b3247b0736ce9"
-S = "${WORKDIR}/git"
 
 inherit setuptools3

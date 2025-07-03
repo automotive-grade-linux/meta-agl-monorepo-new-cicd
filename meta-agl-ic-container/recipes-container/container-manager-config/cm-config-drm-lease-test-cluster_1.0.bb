@@ -10,7 +10,7 @@ SRC_URI = "file://drm-lease-test-cluster.json \
 inherit cm-config
 
 do_install:append() {
-    install -Dm644 ${WORKDIR}/drm-lease-test-cluster.json ${D}/opt/container/conf/drm-lease-test-cluster.json
+    install -Dm644 ${UNPACKDIR}/drm-lease-test-cluster.json ${D}/opt/container/conf/drm-lease-test-cluster.json
     install -d ${D}/opt/container/guests/drm-lease-test-cluster/rootfs
     install -d ${D}/opt/container/guests/drm-lease-test-cluster/nv
     install -d ${D}/opt/container/guests/drm-lease-test-cluster/shmounts

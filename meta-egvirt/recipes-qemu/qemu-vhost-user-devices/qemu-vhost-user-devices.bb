@@ -11,7 +11,6 @@ inherit pkgconfig
 DEPENDS = "glib-2.0 zlib pixman bison-native ninja-native"
 SRC_URI = "git://gerrit.automotivelinux.org/gerrit/src/virtio/qemu;protocol=https;branch=master"
 SRCREV = "af1a266670d040d2f4083ff309d732d648afba2a"
-S = "${WORKDIR}/git"
 
 UPSTREAM_CHECK_REGEX = "qemu-(?P<pver>\d+(\.\d+)+)\.tar"
 

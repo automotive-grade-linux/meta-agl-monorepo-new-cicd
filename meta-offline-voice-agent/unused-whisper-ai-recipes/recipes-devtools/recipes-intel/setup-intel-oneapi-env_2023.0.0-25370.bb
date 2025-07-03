@@ -9,7 +9,7 @@ SRC_URI = "file://intel-oneapi-runtime.conf"
 
 do_install() {
     mkdir -p ${D}${sysconfdir}/ld.so.conf.d/
-    install -m 644 ${WORKDIR}/intel-oneapi-runtime.conf ${D}${sysconfdir}/ld.so.conf.d/
+    install -m 644 ${UNPACKDIR}/intel-oneapi-runtime.conf ${D}${sysconfdir}/ld.so.conf.d/
 }
 
 pkg_postinst_ontarget:${PN}() {

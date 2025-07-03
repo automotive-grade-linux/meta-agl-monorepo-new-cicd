@@ -12,8 +12,6 @@ SRC_URI = " \
 "
 PV = "0.0+git${SRCPV}"
 
-S = "${WORKDIR}/git"
-
 inherit pkgconfig cmake
 
 FILES:${PN} += "/usr/bin/*"

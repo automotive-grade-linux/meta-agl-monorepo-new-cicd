@@ -10,7 +10,7 @@ SRC_URI[sha256sum] = "1077266e949c24e0291f6c350433c6f0971365ece2b173a23bc3b9f9de
 
 require ${BPN}-crates.inc
 
-S = "${WORKDIR}/tiktoken-0.7.0"
+S = "${UNPACKDIR}/tiktoken-0.7.0"
 
 DEPENDS += "python3-regex"
 

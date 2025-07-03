@@ -9,7 +9,6 @@ SRC_URI = " \
 
 PV = "0.1.5+git${SRCPV}"
 SRCREV = "1068e5107929d20b878b05d87363edfd5d83247d"
-S = "${WORKDIR}/git"
 
 DEPENDS += "python3-fire"
 

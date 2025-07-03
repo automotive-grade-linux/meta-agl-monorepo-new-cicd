@@ -18,14 +18,14 @@ do_compile[noexec] = "1"
 
 do_install() {
     install -d ${D}/etc/systemd/system/ucl-node.service.d/
-    install -m 0644 ${WORKDIR}/ucl-node.conf ${D}/etc/systemd/system/ucl-node.service.d/
+    install -m 0644 ${UNPACKDIR}/ucl-node.conf ${D}/etc/systemd/system/ucl-node.service.d/
 
     install -d ${D}/etc/systemd/system/ucl-lifecycle-manager.service.d/
-    install -m 0644 ${WORKDIR}/ucl-lifecycle-manager.conf ${D}/etc/systemd/system/ucl-lifecycle-manager.service.d/
+    install -m 0644 ${UNPACKDIR}/ucl-lifecycle-manager.conf ${D}/etc/systemd/system/ucl-lifecycle-manager.service.d/
 
     install -d ${D}/etc/systemd/system/ula-node.service.d/
-    install -m 0644 ${WORKDIR}/ula-node.conf ${D}/etc/systemd/system/ula-node.service.d/
+    install -m 0644 ${UNPACKDIR}/ula-node.conf ${D}/etc/systemd/system/ula-node.service.d/
 
     install -d ${D}/etc/systemd/system/ula-client-manager.service.d/
-    install -m 0644 ${WORKDIR}/ula-client-manager.conf ${D}/etc/systemd/system/ula-client-manager.service.d/
+    install -m 0644 ${UNPACKDIR}/ula-client-manager.conf ${D}/etc/systemd/system/ula-client-manager.service.d/
 }

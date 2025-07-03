@@ -8,7 +8,7 @@ SRC_URI = "https://files.pythonhosted.org/packages/53/be/e77206eb35eb37ccd3506fb
 SRC_URI[md5sum] = "b218d6f233c23da0bc82c372308bbf8d"
 SRC_URI[sha256sum] = "4baec3584cc43ed9948d5559079fafc2679b06b2ade273e909b3582654b2b3f5"
 
-S = "${WORKDIR}/python-mpd2-3.1.1"
+S = "${UNPACKDIR}/python-mpd2-3.1.1"
 
 RDEPENDS_${PN} = ""
 

@@ -8,11 +8,10 @@ SRC_URI = " \
 "
 
 SRCREV = "${AUTOREV}"
-S = "${WORKDIR}/git"
 
 do_install() {
     install -d ${D}/usr/share/nlu/rasa
-    cp -R ${WORKDIR}/git/* ${D}/usr/share/nlu/rasa/
+    cp -R ${S}/* ${D}/usr/share/nlu/rasa/
 }
 
 FILES:${PN} += " /usr/share/nlu/rasa"

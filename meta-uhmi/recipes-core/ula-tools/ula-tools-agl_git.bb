@@ -16,8 +16,6 @@ SRC_URI = " \
 "
 PV = "0.0+git${SRCPV}"
 
-S = "${WORKDIR}/git"
-
 export GO111MODULE="auto"
 
 GO_IMPORT = "ula-tools"
@@ -48,14 +46,14 @@ do_compile:append() {
 do_install() {
     if ${@bb.utils.contains('DISTRO_FEATURES','systemd','true','false',d)}; then
         install -d ${D}${systemd_system_unitdir}
-        install -m 644 ${WORKDIR}/*.service ${D}/${systemd_system_unitdir}
+        install -m 644 ${UNPACKDIR}/*.service ${D}/${systemd_system_unitdir}
     fi
 
     install -d ${D}${bindir}
     install -m 0755 ${B}/${GO_BUILD_BINDIR}/* ${D}${bindir}
 
     install -d ${D}/etc/uhmi-framework
-    install -m 644 ${WORKDIR}/virtual-screen-def.json ${D}/etc/uhmi-framework
+    install -m 644 ${UNPACKDIR}/virtual-screen-def.json ${D}/etc/uhmi-framework
 
     install -d ${D}${libdir}
     install -m 0755 ${B}/pkg/libulaclient.so ${D}${libdir}
