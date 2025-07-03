@@ -7,14 +7,15 @@ LIC_FILES_CHKSUM = "file://LICENSE;md5=ae6497158920d9524cf208c09cc4c984"
 
 DEPENDS = " \
     qtbase \
+    qtbase-native \
     qtdeclarative \
     libqtappfw \
     wayland-native \
     wayland \
     qtwayland \
-    qtwayland-native \
     protobuf \
-    grpc grpc-native \
+    grpc \
+    grpc-native \
     agl-compositor \
     applaunchd \
     systemd \

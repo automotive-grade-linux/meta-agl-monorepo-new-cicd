@@ -16,7 +16,6 @@ DEPENDS = " \
     qtdeclarative \
     qtlocation \
     libqtappfw \
-    qtwayland-native \
     protobuf \
     grpc \
     grpc-native \

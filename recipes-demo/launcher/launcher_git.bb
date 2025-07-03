@@ -12,7 +12,6 @@ DEPENDS = "\
         wayland-native \
         wayland \
         qtwayland \
-        qtwayland-native \
         agl-compositor \
         json-c \
         applaunchd \
