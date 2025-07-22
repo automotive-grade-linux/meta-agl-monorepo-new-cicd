@@ -2,6 +2,7 @@ FILESEXTRAPATHS:append := ":${THISDIR}/weston"
 
 SRC_URI:append = " \
 		  file://0001-clients-Handle-missing-pointer_surface-is-there-s-no.patch \
+		  file://0001-compositor-Allow-occluded-surfaces-to-receive-frame-.patch \
 "
 
 WESTON_MAJOR_VERSION = "${@'.'.join(d.getVar('PV').split('.')[0:1])}"
