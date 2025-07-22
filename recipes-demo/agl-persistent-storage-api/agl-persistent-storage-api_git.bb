@@ -4,6 +4,7 @@ LICENSE = "Apache-2.0"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=493c464569a4f93a01fc9025ee76a69b"
 
 SRC_URI = "git://github.com/LSchwiedrzik/agl-persistent-storage-api.git;protocol=https;branch=master \
+           file://0001-Update-dependencies.patch \
            file://agl-persistent-storage-api.service \
            "
 
@@ -29,9 +30,6 @@ GROUPADD_PARAM:${PN} = "-g 903 persistent-api ;"
 USERADD_PARAM:${PN} = "--system -g 903 -u 903 -o -d / --shell /bin/nologin persistent-api ;"
 
 do_compile:prepend() {
-    export ROCKSDB_CXX_STD="--std=c99"
-    export ROCKSDB_INCLUDE_DIR="${RECIPE_SYSROOT}/usr/include"
-
     # Need to set options for the rust-librocksdb-sys crate's bindgen invocation of clang,
     # or there's a good chance it will choke when trying to use the host system's headers.
     export BINDGEN_EXTRA_CLANG_ARGS="${HOST_CC_ARCH}${TOOLCHAIN_OPTIONS}"
