@@ -9,7 +9,7 @@ FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
 PN="ula-tools"
 PROVIDES += "ula-tools"
 
-SRCREV = "4403efd88fd4e79b092787ac727afe996dd7ca12"
+SRCREV = "7bcbb015554dccde3ccb567598d078b7e47eba94"
 BRANCH ?= "main"
 SRC_URI = " \
     git://github.com/unified-hmi/ula-tools.git;protocol=https;branch=${BRANCH} \

@@ -7,7 +7,7 @@ require remote-virtio-gpu.inc
 
 S = "${WORKDIR}/git"
 
-DEPENDS = "virglrenderer virtual/libgbm wayland wayland-native libepoxy libinput virtio-loopback-driver"
+DEPENDS = "virglrenderer virtual/libgbm wayland wayland-native libepoxy libinput virtio-loopback-driver jansson"
 RDEPENDS:${PN} = " wayland libgles2"
 
 inherit cmake pkgconfig
