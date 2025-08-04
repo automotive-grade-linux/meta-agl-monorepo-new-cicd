@@ -35,6 +35,9 @@ ConditionPathExists=/dev/tty0
 # Requires systemd-notify.so Weston plugin.
 Type=notify
 EnvironmentFile=-/etc/default/agl-compositor
+# NOTE: This seems necessary with newer seatd, but upstream Weston does not
+#       seem to need it, so further investigation required!
+ExecStartPre=/bin/chvt 7
 ExecStart=/usr/bin/agl-compositor --modules=systemd-notify.so
 
 # Watchdog setup
