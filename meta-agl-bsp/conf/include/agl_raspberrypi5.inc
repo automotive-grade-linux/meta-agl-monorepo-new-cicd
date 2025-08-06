@@ -20,3 +20,8 @@ IMAGE_FEATURES:remove = "splash"
 
 #DISPLAY CONFIGURATION
 WESTON_DISPLAYS:raspberrypi5 = " hdmi-a-1-90 hdmi-a-2-90"
+
+# Disable until upstream poky gets lttng-modules 2.13.16 or newer
+# that can support 6.12 kernel.
+LTTNGMODULES:raspberrypi5 = ""
+LTTNGTOOLS:raspberrypi5 = ""
