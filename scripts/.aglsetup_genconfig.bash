@@ -464,11 +464,11 @@ function genconfig() {
 	# step 1: run usual OE setup to generate conf dir
 	export TEMPLATECONF=$(cd $SCRIPTDIR/../meta-agl-core/conf/templates/base && pwd -P)
 	debug "running oe-init-build-env with TEMPLATECONF=$TEMPLATECONF"
-	info "   Running $METADIR/external/poky/oe-init-build-env"
+	info "   Running $METADIR/external/openembedded-core/oe-init-build-env"
 	info "   Templates dir: $TEMPLATECONF"
 
 	CURDIR=$(pwd -P)
-	. $METADIR/external/poky/oe-init-build-env $BUILDDIR >/dev/null
+	. $METADIR/external/openembedded-core/oe-init-build-env $BUILDDIR >/dev/null
 	cd $CURDIR
 
 	# step 2: concatenate other remaining fragments coming from base
@@ -617,7 +617,7 @@ infon "Generating setup file: $BUILDDIR/agl-init-build-env ... "
 
 cat <<EOF >$BUILDDIR/agl-init-build-env
 export TEMPLATECONF=${METADIR}/meta-agl/meta-agl-core/conf/templates/base
-. $METADIR/external/poky/oe-init-build-env $BUILDDIR
+. $METADIR/external/openembedded-core/oe-init-build-env $BUILDDIR
 if [ -n "\$DL_DIR" ]; then
 	BB_ENV_PASSTHROUGH_ADDITIONS="\$BB_ENV_PASSTHROUGH_ADDITIONS DL_DIR"
 fi

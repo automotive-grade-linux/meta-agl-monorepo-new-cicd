@@ -1,6 +1,6 @@
 BBLAYERS =+ "\
   ${METADIR}/bsp/meta-sparrow-hawk \
-  ${METADIR}/external/poky/meta-yocto-bsp \
+  ${METADIR}/external/meta-yocto//meta-yocto-bsp \
   "
 
 AGL_META_MULTIMEDIA = "${METADIR}/external/meta-openembedded/meta-multimedia"

@@ -266,8 +266,4 @@ CONF_VERSION = "2"
 AGL_FEATURES ?= ""
 AGL_EXTRA_IMAGE_FSTYPES ?= ""
 
-DISTRO_FEATURES:append = " systemd "
-DISTRO_FEATURES_BACKFILL_CONSIDERED:append = " sysvinit"
-VIRTUAL-RUNTIME_init_manager = "systemd"
-
-# soon: INIT_MANAGER = "systemd"
+INIT_MANAGER = "systemd"
