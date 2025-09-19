@@ -38,10 +38,6 @@ REQUIRED_DISTRO_FEATURES = "systemd"
 SYSTEMD_PACKAGES = "${PN}"
 SYSTEMD_SERVICE:${PN} = "ula-node.service"
 SYSTEMD_AUTO_ENABLE:${PN} = "enable"
-FILES:${PN} += " \
-    ${@bb.utils.contains('DISTRO_FEATURES', 'systemd', '${systemd_system_unitdir}/${SYSTEMD_SERVICE}', '', d)} \
-    /etc/uhmi-framework/virtual-screen-def.json \
-    "
 
 do_compile:append() {
     export CGO_ENABLED="1"
@@ -49,21 +45,28 @@ do_compile:append() {
     ${GO} build  -buildmode=c-shared -o ${GOPATH}/pkg/libulaclient.so -v -ldflags '-extldflags "-Wl,-soname=libulaclient.so"' ${GO_IMPORT}/pkg/ula-client-lib
 }
 
-do_install:append() {
+do_install() {
     if ${@bb.utils.contains('DISTRO_FEATURES','systemd','true','false',d)}; then
         install -d ${D}${systemd_system_unitdir}
-        install -m 644 ${WORKDIR}/*.service ${D}/${systemd_system_unitdir}/ula-node.service
+        install -m 644 ${WORKDIR}/*.service ${D}/${systemd_system_unitdir}
     fi
+
+    install -d ${D}${bindir}
+    install -m 0755 ${B}/${GO_BUILD_BINDIR}/* ${D}${bindir}
 
     install -d ${D}/etc/uhmi-framework
     install -m 644 ${WORKDIR}/virtual-screen-def.json ${D}/etc/uhmi-framework
 
     install -d ${D}${libdir}
-    install -m 0755 ${GOPATH}/pkg/libulaclient.so ${D}${libdir}
+    install -m 0755 ${B}/pkg/libulaclient.so ${D}${libdir}
 
     install -d ${D}${includedir}
-    install -m 644 ${GOPATH}/pkg/libulaclient.h ${D}${includedir}
+    install -m 644 ${B}/pkg/libulaclient.h ${D}${includedir}
 }
 
-FILES:${PN} += "${libdir}"
-FILES:${PN} += "${includedir}"
+FILES:${PN} += " \
+    ${@bb.utils.contains('DISTRO_FEATURES', 'systemd', '${systemd_system_unitdir}/${SYSTEMD_SERVICE}', '', d)} \
+    /etc/uhmi-framework/virtual-screen-def.json \
+    ${libdir} \
+    ${includedir} \
+    "
