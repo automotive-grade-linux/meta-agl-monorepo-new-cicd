@@ -20,7 +20,6 @@ IMAGE_INSTALL += " \
     lxc-networking \
     iptables-modules \
     dnsmasq \
-    systemd-netif-config \
     kernel-module-xt-addrtype \
     kernel-module-xt-multiport \
 "

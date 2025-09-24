@@ -4,7 +4,6 @@ LICENSE = "MIT"
 require guest-image-minimal.bb
 
 IMAGE_INSTALL += " \
-    systemd-netif-config \
     weston \
     weston-init-guest \
     weston-ini-conf-drm-lease-test-ivi \
