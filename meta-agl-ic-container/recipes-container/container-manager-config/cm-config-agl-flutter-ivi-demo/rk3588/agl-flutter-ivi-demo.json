@@ -9,8 +9,8 @@
 			"filesystem":	"ext4",
 			"mode":		"rw",
 			"blockdev": [
-				"/dev/mmcblk0p7",
-				"/dev/mmcblk0p7"
+				"/dev/mmcblk1p13",
+				"/dev/mmcblk1p13"
 			]
 		},
 		"extended": {
@@ -116,24 +116,6 @@
 				"from": 		"/dev/snd",
 				"to":			"dev/snd",
 				"devnode":		"/dev/snd/controlC0",
-				"optional": 		1,
-				"wideallow": 	1,
-				"exclusive": 	0
-			},
-			{
-				"type": 		"devnode",
-				"from": 		"/dev/mali0",
-				"to":			"dev/mali0",
-				"devnode":		"/dev/mali0",
-				"optional": 		0,
-				"wideallow": 	0,
-				"exclusive": 	0
-			},
-			{
-				"type": 		"devnode",
-				"from": 		"/dev/mpp_service",
-				"to":			"dev/mpp_service",
-				"devnode":		"/dev/mpp_service",
 				"optional": 		1,
 				"wideallow": 	1,
 				"exclusive": 	0

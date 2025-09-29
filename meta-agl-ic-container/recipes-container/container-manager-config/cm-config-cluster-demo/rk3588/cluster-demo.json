@@ -9,8 +9,8 @@
 			"filesystem":	"ext4",
 			"mode":		"rw",
 			"blockdev": [
-				"/dev/mmcblk0p4",
-				"/dev/mmcblk0p4"
+				"/dev/mmcblk1p10",
+				"/dev/mmcblk1p10"
 			]
 		},
 		"lifecycle": {
@@ -86,15 +86,6 @@
 				"devnode":		"/dev/dri/card0",
 				"optional": 		0,
 				"wideallow": 	1,
-				"exclusive": 	0
-			},
-			{
-				"type": 		"devnode",
-				"from": 		"/dev/mali0",
-				"to":			"dev/mali0",
-				"devnode":		"/dev/mali0",
-				"optional": 		0,
-				"wideallow": 	0,
 				"exclusive": 	0
 			}
 		]
