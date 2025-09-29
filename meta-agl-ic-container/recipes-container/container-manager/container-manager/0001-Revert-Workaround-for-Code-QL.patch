@@ -1,0 +1,61 @@
+From bf7e4adaa955af9665dcb498942e0e576a4e01d6 Mon Sep 17 00:00:00 2001
+From: Naoto Yamaguchi <naoto.yamaguchi@aisin.co.jp>
+Date: Tue, 30 Sep 2025 00:22:18 +0900
+Subject: [PATCH] Revert "Workaround for Code QL"
+
+This reverts commit f11e65144dddde03c86056d00d4b202298de80a8.
+
+Upstream-Status: Pending
+
+---
+ configure.ac    | 2 +-
+ src/Makefile.am | 6 +++---
+ 2 files changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/configure.ac b/configure.ac
+index b83fd03..9f974b7 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -59,7 +59,7 @@ PKG_PROG_PKG_CONFIG
+ PKG_CHECK_MODULES([LIBSYSTEMD], [libsystemd])
+ PKG_CHECK_MODULES([LIBUDEV], [libudev])
+ PKG_CHECK_MODULES([LIBMNL], [libmnl])
+-#PKG_CHECK_MODULES([LIBCJSON], [libcjson])
++PKG_CHECK_MODULES([LIBCJSON], [libcjson])
+ PKG_CHECK_MODULES([LIBLXC], [lxc])
+ PKG_CHECK_MODULES([LIBBLKID], [blkid])
+ PKG_CHECK_MODULES([GTEST_MAIN], [gtest_main], , enable_test=no)
+diff --git a/src/Makefile.am b/src/Makefile.am
+index 0c78b8b..6b9aa24 100644
+--- a/src/Makefile.am
++++ b/src/Makefile.am
+@@ -41,7 +41,7 @@ containermanager_LDADD = \
+ 	@LIBSYSTEMD_LIBS@ \
+ 	@LIBUDEV_LIBS@ \
+ 	@LIBMNL_LIBS@ \
+-	-lcjson \
++	@LIBCJSON_LIBS@ \
+ 	@LIBLXC_LIBS@ \
+ 	@LIBBLKID_LIBS@
+ 
+@@ -54,7 +54,7 @@ containermanager_CFLAGS = \
+ 	@LIBSYSTEMD_CFLAGS@ \
+ 	@LIBUDEV_CFLAGS@ \
+ 	@LIBMNL_CFLAGS@ \
+-	-I/usr/include/cjson \
++	@LIBCJSON_CFLAGS@ \
+ 	@LIBLXC_CFLAGS@ \
+ 	@LIBBLKID_CFLAGS@ \
+ 	-D_GNU_SOURCE
+@@ -68,7 +68,7 @@ containermanager_CXXFLAGS = \
+ 	@LIBSYSTEMD_CFLAGS@ \
+ 	@LIBUDEV_CFLAGS@ \
+ 	@LIBMNL_CFLAGS@ \
+-	-I/usr/include/cjson \
++	@LIBCJSON_CFLAGS@ \
+ 	@LIBLXC_CFLAGS@ \
+ 	@LIBBLKID_CFLAGS@ \
+ 	-D_GNU_SOURCE
+-- 
+2.43.0
+

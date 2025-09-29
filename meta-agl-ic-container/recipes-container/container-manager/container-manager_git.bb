@@ -12,6 +12,7 @@ PV = "0.1.0+rev${SRCPV}"
 
 SRC_URI = " \
     git://github.com/AGLExport/container-manager.git;branch=master;protocol=https \
+    file://0001-Revert-Workaround-for-Code-QL.patch \
     file://container-manager.service \
     file://container-manager.json \
     "
