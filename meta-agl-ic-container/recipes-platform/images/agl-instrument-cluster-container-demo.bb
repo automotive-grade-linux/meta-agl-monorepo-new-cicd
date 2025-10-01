@@ -8,6 +8,8 @@ CONTAINER_IMAGES ?= "agl-container-cluster:guest-image-cluster-demo \
                      agl-container-ivi:guest-image-ivi-demo \
                     "
 
+IMAGE_FEATURES =+ "allow-empty-password empty-root-password allow-root-login post-install-logging"
+
 IMAGE_INSTALL += " \
     kernel-modules \
     alsa-utils \
