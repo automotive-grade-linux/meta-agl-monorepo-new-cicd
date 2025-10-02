@@ -7,6 +7,7 @@ IMAGE_INSTALL += " \
     lxc \
     drm-lease-manager \
     packagegroup-agl-container-feature-logging-host \
+    ${@bb.utils.contains('VIRTUAL-RUNTIME_net_manager', 'systemd', 'systemd-networkd', '', d)} \
 "
 
 CONTAINER_IMAGES ??= ""

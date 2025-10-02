@@ -21,7 +21,7 @@ IMAGE_INSTALL += " \
     container-manager \
     cm-config-cluster-demo \
     cm-config-agl-momi-ivi-demo \
-    systemd-conf-canbus systemd-conf-ether systemd-conf-usb \
+    systemd-networkd systemd-conf-canbus systemd-conf-ether systemd-conf-usb \
     lxc-networking \
     iptables-modules \
     dnsmasq \
