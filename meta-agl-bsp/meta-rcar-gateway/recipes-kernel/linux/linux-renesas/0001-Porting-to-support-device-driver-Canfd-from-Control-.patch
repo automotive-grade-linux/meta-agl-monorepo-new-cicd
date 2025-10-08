@@ -259,7 +259,7 @@ index ddda2fc3acd0..b930b93ab3f7 100644
 +	can_clk: can {
 +		compatible = "fixed-clock";
 +		#clock-cells = <0>;
-+		clock-frequency = <40000000>;
++		clock-frequency = <20000000>;
 +	};
 +
  	cluster1_opp: opp_table10 {
@@ -357,7 +357,7 @@ index ddda2fc3acd0..b930b93ab3f7 100644
 +			clocks = <&can_clk>;
 +			clock-names = "can_clk";
 +			assigned-clocks = <&can_clk>;
-+			assigned-clock-rates = <40000000>;
++			assigned-clock-rates = <20000000>;
 +			power-domains = <&sysc R8A779F0_PD_ALWAYS_ON>;
 +			status = "okay";
 +
@@ -409,7 +409,7 @@ index ddda2fc3acd0..b930b93ab3f7 100644
 +			clocks = <&can_clk>;
 +			clock-names = "can_clk";
 +			assigned-clocks = <&can_clk>;
-+			assigned-clock-rates = <40000000>;
++			assigned-clock-rates = <20000000>;
 +			power-domains = <&sysc R8A779F0_PD_ALWAYS_ON>;
 +			status = "okay";
 +
