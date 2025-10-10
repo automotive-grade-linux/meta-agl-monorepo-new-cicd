@@ -14,3 +14,5 @@ IMAGE_INSTALL += "\
     \
     flutter-samples-material-3-demo \
 "
+
+TOOLCHAIN_HOST_TASK:append = " nativesdk-flutter-sdk"
