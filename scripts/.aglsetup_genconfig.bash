@@ -350,7 +350,7 @@ function generate_conf_notes() {
 	echo >> $BUILDDIR/conf/conf-notes.txt
 
 	# Fix branch name in docs URLs
-	branch="$(grep ^AGL_BRANCH $METADIR/meta-agl/meta-agl-core/conf/distro/poky-agl.conf | sed 's/[^"]\+"\([^"]\+\)".*$/\1/')"
+	branch="$(grep ^AGL_BRANCH $METADIR/meta-agl/meta-agl-core/conf/distro/agl.conf | sed 's/[^"]\+"\([^"]\+\)".*$/\1/')"
 	if [ -n "$branch" -a "$branch" != "master" ]; then
 		sed -i "s|https://docs.automotivelinux.org/en/master/|https://docs.automotivelinux.org/en/${branch}/|g" $BUILDDIR/conf/conf-notes.txt 
 	fi

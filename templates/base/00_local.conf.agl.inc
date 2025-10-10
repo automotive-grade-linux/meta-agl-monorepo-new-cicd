@@ -2,7 +2,7 @@
 #---------------------------------
 
 # Set DISTRO for AGL
-DISTRO = "poky-agl"
+DISTRO = "agl"
 
 #see meta-agl/meta-agl-profile-core/conf/include/base-agl.inc
 require conf/include/base-agl.inc
