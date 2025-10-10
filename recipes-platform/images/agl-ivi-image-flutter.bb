@@ -7,3 +7,5 @@ IMAGE_INSTALL += " \
     agl-persistent-storage-api \
     weston-terminal-conf \
 "
+
+TOOLCHAIN_HOST_TASK:append = " nativesdk-flutter-sdk"
