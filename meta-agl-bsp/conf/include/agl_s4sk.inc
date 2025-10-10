@@ -8,7 +8,3 @@ IMAGE_INSTALL:append = " \
     kernel-devicetree \
 "
 
-# For systemd CAN bus configuration
-#MACHINE_FEATURES:append = " canfd"
-CANBUS_NETWORK_CONFIG = "canbus-can-fd.network"
-
