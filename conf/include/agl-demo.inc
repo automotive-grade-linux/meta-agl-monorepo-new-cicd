@@ -1,3 +1,6 @@
+# enable the layer
+AGL_FEATURES:append = " agldemo"
+
 IMAGE_FEATURES =+ "debug-tweaks"
 
 DISTRO_FEATURES:append = " automount "
@@ -12,8 +15,6 @@ IMAGE_INSTALL:append = " screen mc "
 # individually.
 IMAGE_INSTALL:append = " ${@'kernel-modules' if d.getVar('PREFERRED_PROVIDER_virtual/kernel') != 'linux-dummy' else ''}"
 
-# enable the layer
-AGL_FEATURES:append = " agldemo"
 
 # install virtualbox drivers for vmdk
 #IMAGE_INSTALL:append = "${@bb.utils.contains_any('IMAGE_FSTYPES', 'wic.vmdk wic.vmdk.xz', ' open-vm-tools vboxguestdrivers', '', d)}"
@@ -33,3 +34,9 @@ PREFERRED_PROVIDER_nativesdk-llvm = "nativesdk-clang"
 PROVIDES:pn-clang = "llvm"
 PROVIDES:pn-clang-native = "llvm-native"
 PROVIDES:pn-nativesdk-clang = "nativesdk-llvm"
+
+
+### s4sk can bus for demo images:
+# For systemd CAN bus configuration
+MACHINE_FEATURES:append:s4sk = " canfd"
+CANBUS_NETWORK_CONFIG:s4sk = "canbus-can-fd.network"
