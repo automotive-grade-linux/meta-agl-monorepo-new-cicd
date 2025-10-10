@@ -2,7 +2,7 @@ SUMMARY = "Vehicle Signal Specification with AGL overlays"
 LICENSE = "MPL-2.0"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=9741c346eef56131163e13b9db1241b3"
 
-DEPENDS = "vss-tools-native"
+DEPENDS = "vss-tools-native python3-pydantic-core-native python3-annotated-types-native"
 
 inherit allarch update-alternatives
 
