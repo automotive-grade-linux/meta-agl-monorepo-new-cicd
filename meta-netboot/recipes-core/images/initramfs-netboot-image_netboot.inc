@@ -21,3 +21,6 @@ IMAGE_ROOTFS_SIZE = "8192"
 IMAGE_ROOTFS_EXTRA_SPACE = "256"
 
 BAD_RECOMMENDATIONS += "busybox-syslog"
+
+# exclude depends from the main filesystem image
+EXTRA_IMAGEDEPENDS = ""
