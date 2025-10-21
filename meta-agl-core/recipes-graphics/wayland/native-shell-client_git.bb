@@ -14,3 +14,6 @@ PV = "0.0.1+git${SRCPV}"
 S = "${WORKDIR}/git"
 
 inherit meson pkgconfig
+
+# Reuse include file from upstream weston since we have the same requirements
+require recipes-graphics/wayland/required-distro-features.inc
