@@ -10,7 +10,7 @@ PACKAGES = "\
 
 RDEPENDS:packagegroup-agl-kuksa-val-databroker = "\
     kuksa-databroker \
-    kuksa-databroker-agl \
+    kuksa-databroker-env \
     kuksa-certificates-agl \
     kuksa-can-provider \
     kuksa-can-provider-conf-agl \

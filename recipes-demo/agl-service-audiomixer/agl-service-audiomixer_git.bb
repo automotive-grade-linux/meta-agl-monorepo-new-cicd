@@ -7,7 +7,7 @@ LIC_FILES_CHKSUM = "file://LICENSE;beginline=3;md5=e8ad01a5182f2c1b3a2640e9ea268
 
 DEPENDS = " \
     glib-2.0 \
-    boost \
+    libtoml11 \
     openssl \
     systemd \
     pipewire \
@@ -20,34 +20,29 @@ DEPENDS = " \
 "
 
 SRC_URI = "git://gerrit.automotivelinux.org/gerrit/apps/agl-service-audiomixer.git;protocol=https;branch=${AGL_BRANCH} \
-           file://agl-service-audiomixer.conf.default \
-           file://agl-service-audiomixer.conf.gateway-demo \
            file://agl-service-audiomixer.token \
+           file://kuksa.toml \
            file://agl-service-audiomixer.service \
            file://databroker.conf \
 "
-SRCREV  = "2e51350c91272fddaee4a6ac48629217b45d826f"
+SRCREV  = "b51d14b84894a1ff8faa10183bd67470aeb75e8e"
 
 PV = "2.0+git${SRCPV}"
 S  = "${WORKDIR}/git"
 
-inherit meson pkgconfig systemd update-alternatives
+inherit meson pkgconfig systemd
 
 EXTRA_OEMESON += "-Dprotos=${STAGING_INCDIR}"
 
 SYSTEMD_SERVICE:${PN} = "agl-service-audiomixer.service" 
 
 do_install:append() {
-    # Currently using default global client and CA certificates
-    # for KUKSA.val SSL, installing app specific ones would go here.
-
     # VIS authorization token file for KUKSA.val should ideally not
     # be readable by other users, but currently that's not doable
     # until a packaging/sandboxing/MAC scheme is (re)implemented or
     # something like OAuth is plumbed in as an alternative.
     install -d ${D}${sysconfdir}/xdg/AGL/agl-service-audiomixer
-    install -m 0644 ${WORKDIR}/agl-service-audiomixer.conf.default ${D}${sysconfdir}/xdg/AGL/
-    install -m 0644 ${WORKDIR}/agl-service-audiomixer.conf.gateway-demo ${D}${sysconfdir}/xdg/AGL/
+    install -m 0644 ${WORKDIR}/kuksa.toml ${D}${sysconfdir}/xdg/AGL/agl-service-audiomixer/
     install -m 0644 ${WORKDIR}/agl-service-audiomixer.token ${D}${sysconfdir}/xdg/AGL/agl-service-audiomixer/
 
     # Replace the default systemd unit
@@ -57,23 +52,6 @@ do_install:append() {
 
 FILES:${PN} += "${systemd_system_unitdir}"
 
-RDEPENDS:${PN} += "${PN}-conf"
-
-ALTERNATIVE_LINK_NAME[agl-service-audiomixer.conf] = "${sysconfdir}/xdg/AGL/agl-service-audiomixer.conf"
-
-PACKAGE_BEFORE_PN += "${PN}-conf ${PN}-conf-gateway-demo ${PN}-systemd-databroker"
-
-FILES:${PN}-conf += "${sysconfdir}/xdg/AGL/agl-service-audiomixer.conf.default"
-RDEPENDS:${PN}-conf = "${PN}"
-RPROVIDES:${PN}-conf = "agl-service-audiomixer.conf"
-ALTERNATIVE:${PN}-conf = "agl-service-audiomixer.conf"
-ALTERNATIVE_TARGET_${PN}-conf = "${sysconfdir}/xdg/AGL/agl-service-audiomixer.conf.default"
-
-FILES:${PN}-conf-gateway-demo += "${sysconfdir}/xdg/AGL/agl-service-audiomixer.conf.gateway-demo"
-RDEPENDS:${PN}-conf-gateway-demo = "${PN}"
-RPROVIDES:${PN}-conf-gateway-demo = "agl-service-audiomixer.conf"
-ALTERNATIVE:${PN}-conf-gateway-demo = "agl-service-audiomixer.conf"
-ALTERNATIVE_TARGET_${PN}-conf-gateway-demo = "${sysconfdir}/xdg/AGL/agl-service-audiomixer.conf.gateway-demo"
-ALTERNATIVE_PRIORITY_${PN}-conf-gateway-demo = "20"
+PACKAGE_BEFORE_PN += "${PN}-systemd-databroker"
 
 FILES:${PN}-systemd-databroker += "${systemd_system_unitdir}/agl-service-audiomixer.d/databroker.conf"

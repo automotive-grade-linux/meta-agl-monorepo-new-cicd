@@ -26,13 +26,13 @@ IMAGE_INSTALL += "\
     ${@bb.utils.contains("DISTRO_FEATURES", "agl-devel", "${AGL_DEVEL_INSTALL}" , "", d)} \
 "
 
-# Flutter
-FLUTTER_CLUSTER_DASHBOARD_CONF = "flutter-cluster-dashboard-conf"
+# Application KUKSA configuration
+KUKSA_CONF = "kuksa-conf"
 
 IMAGE_INSTALL += "\
     flutter-auto \
     flutter-cluster-dashboard \
-    ${FLUTTER_CLUSTER_DASHBOARD_CONF} \
+    ${KUKSA_CONF} \
     cluster-demo-config-flutter \
 "
 

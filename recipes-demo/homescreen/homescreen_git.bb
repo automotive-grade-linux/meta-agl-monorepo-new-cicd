@@ -23,7 +23,7 @@ PV = "1.0+git${SRCPV}"
 
 SRC_URI = "git://gerrit.automotivelinux.org/gerrit/apps/homescreen;protocol=https;branch=${AGL_BRANCH} \
            file://homescreen.service \
-           file://homescreen.conf \
+           file://kuksa.toml \
            file://homescreen.token \
            "
 SRCREV = "0253013fb268f820a965bbebd8388f78686ccef6"
@@ -41,15 +41,12 @@ SYSTEMD_SERVICE:${PN} = "${BPN}.service"
 do_install:append() {
     install -D -m0644 ${WORKDIR}/homescreen.service ${D}${systemd_system_unitdir}/homescreen.service
 
-    # Currently using default global client and CA certificates
-    # for KUKSA.val SSL, installing app specific ones would go here.
-
     # VIS authorization token file for KUKSA.val should ideally not
     # be readable by other users, but currently that's not doable
     # until a packaging/sandboxing/MAC scheme is (re)implemented or
     # something like OAuth is plumbed in as an alternative.
     install -d ${D}${sysconfdir}/xdg/AGL/homescreen
-    install -m 0644 ${WORKDIR}/homescreen.conf ${D}${sysconfdir}/xdg/AGL/
+    install -m 0644 ${WORKDIR}/kuksa.toml ${D}${sysconfdir}/xdg/AGL/homescreen/
     install -m 0644 ${WORKDIR}/homescreen.token ${D}${sysconfdir}/xdg/AGL/homescreen/
 }
 

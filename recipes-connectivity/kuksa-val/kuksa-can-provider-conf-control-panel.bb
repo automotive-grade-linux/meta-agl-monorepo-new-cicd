@@ -16,10 +16,10 @@ do_install() {
     install -m 0644 ${WORKDIR}/kuksa-can-provider.control-panel ${D}${sysconfdir}/default/
 }
 
-ALTERNATIVE_LINK_NAME[kuksa-can-provider.env] = "${sysconfdir}/default/kuksa-can-provider"
+ALTERNATIVE_LINK_NAME[kuksa-can-provider-env] = "${sysconfdir}/default/kuksa-can-provider"
 
-RPROVIDES:${PN} = "kuksa-can-provider.env"
-ALTERNATIVE:${PN} = "kuksa-can-provider.env"
+RPROVIDES:${PN} = "kuksa-can-provider-env"
+ALTERNATIVE:${PN} = "kuksa-can-provider-env"
 ALTERNATIVE_TARGET_${PN} = "${sysconfdir}/default/kuksa-can-provider.control-panel"
 
 RDEPENDS:${PN} += "kuksa-can-provider kuksa-can-provider-conf-agl"

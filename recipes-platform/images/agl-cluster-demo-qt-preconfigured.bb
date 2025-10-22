@@ -12,7 +12,7 @@ IMAGE_INSTALL:remove = "weston-terminal-conf"
 # default compositor configuration needs to be replaced.
 IMAGE_INSTALL:remove = "weston-ini-conf-landscape"
 
-QT_CLUSTER_DASHBOARD_CONF = "cluster-dashboard-conf-demo"
+KUKSA_CONF = "kuksa-conf-demo-preconfigured"
 
 IMAGE_INSTALL += " \
     cluster-demo-config \

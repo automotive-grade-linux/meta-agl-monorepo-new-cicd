@@ -22,12 +22,12 @@ AGL_DEVEL_INSTALL = " \
     simple-can-simulator \
 "
 
-QT_CLUSTER_DASHBOARD_CONF = "cluster-dashboard-conf"
+KUKSA_CONF = "kuksa-conf"
 
 # add packages for cluster demo platform (include demo apps) here
 IMAGE_INSTALL += " \
     packagegroup-agl-cluster-demo-platform \
-    ${QT_CLUSTER_DASHBOARD_CONF} \
+    ${KUKSA_CONF} \
     kuksa-certificates-agl-ca \
     weston-ini-conf-landscape \
     ${@bb.utils.contains("DISTRO_FEATURES", "agl-devel", "${AGL_DEVEL_INSTALL}" , "", d)} \

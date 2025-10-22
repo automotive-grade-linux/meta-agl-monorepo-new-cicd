@@ -7,14 +7,14 @@ SRC_URI = "file://hvac-conf-in-rewrite.sh \
            file://hvac-conf-in-rewrite@.service \
            file://rtc-i2c-attach@.service \
            file://99-agl-led-rtc.rules \
-           file://agl-service-hvac-leds.conf.in \
+           file://agl-service-hvac-leds.toml.in \
 "
 
 do_compile[noexec] = "1"
 
 do_install() {
-    install -d ${D}${sysconfdir}/xdg/AGL
-    install -m 0644 ${WORKDIR}/agl-service-hvac-leds.conf.in ${D}${sysconfdir}/xdg/AGL
+    install -d ${D}${sysconfdir}/xdg/AGL/agl-service-hvac
+    install -m 0644 ${WORKDIR}/agl-service-hvac-leds.toml.in ${D}${sysconfdir}/xdg/AGL/agl-service-hvac/leds.toml.in
 
     install -d ${D}${sbindir}
     install -m 0755 ${WORKDIR}/hvac-conf-in-rewrite.sh ${D}${sbindir}

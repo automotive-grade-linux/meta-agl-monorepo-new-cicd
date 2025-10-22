@@ -7,6 +7,8 @@ IMAGE_FEATURES += "agl-demo-cluster-support"
 # We do not want weston-terminal visible
 IMAGE_INSTALL:remove = "weston-terminal-conf"
 
+KUKSA_CONF = "kuksa-conf-demo-preconfigured"
+
 IMAGE_INSTALL += " \
     weston-ini-conf-remoting \
     demo-i2c-udev-conf \

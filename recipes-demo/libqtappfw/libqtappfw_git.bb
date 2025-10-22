@@ -19,10 +19,11 @@ DEPENDS = " \
     protobuf \
     grpc \
     kuksa-databroker \
+    libtoml11 \
 "
 
 SRC_URI = "git://gerrit.automotivelinux.org/gerrit/src/libqtappfw;protocol=https;branch=${AGL_BRANCH}"
-SRCREV  = "c9a3824734ce41773c4306b43bb4d1add82f9b96"
+SRCREV  = "352c84f60ff6e2a916443a7bb7c19dd704ffc727"
 S       = "${WORKDIR}/git"
 
 # PV needs to be modified with SRCPV to work AUTOREV correctly

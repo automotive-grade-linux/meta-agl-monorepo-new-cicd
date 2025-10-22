@@ -9,9 +9,9 @@ IMAGE_FEATURES:remove = "kuksa-val-databroker"
 # default compositor configuration needs to be replaced.
 IMAGE_INSTALL:remove = "weston-ini-conf-landscape"
 
-# Cluster application configuration needs to be replaced for
+# Application KUKSA configuration needs to be replaced for
 # the full demo to handle different databroker configuration.
-FLUTTER_CLUSTER_DASHBOARD_CONF = "flutter-cluster-dashboard-conf-demo"
+KUKSA_CONF = "kuksa-conf-demo-preconfigured"
 
 IMAGE_INSTALL += " \
     psplash-inverted-config \

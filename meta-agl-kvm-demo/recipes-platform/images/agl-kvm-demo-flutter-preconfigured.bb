@@ -29,8 +29,11 @@ HOST_AUDIO_INSTALL = " \
     ${@bb.utils.contains("DISTRO_FEATURES", "agl-devel", "packagegroup-pipewire-tools mpc" , "", d)} \
 "
 
+KUKSA_CONF = "kuksa-conf"
+
 IMAGE_INSTALL += "\
-    kuksa-databroker-agl-demo-cluster \
+    ${KUKSA_CONF} \
+    kuksa-databroker-env-open \
     ${HOST_AUDIO_INSTALL} \
 "
 

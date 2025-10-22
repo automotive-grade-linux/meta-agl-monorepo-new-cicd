@@ -29,7 +29,7 @@ RDEPENDS:${PN} = " \
     python3-asyncio \
     python3-systemd \
     kuksa-databroker \
-    kuksa-databroker-agl \
+    kuksa-databroker-env \
     kuksa-client \
     kuksa-certificates-agl-ca \
 "

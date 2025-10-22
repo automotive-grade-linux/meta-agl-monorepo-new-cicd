@@ -4,6 +4,7 @@ SUMMARY = "AGL KVM demo preconfigured guest IVI Flutter image"
 
 # KUKSA.val always runs externally
 IMAGE_FEATURES:remove = "kuksa-val-databroker"
+KUKSA_CONF = "kuksa-conf-kvm-demo-preconfigured"
 
 # Everything runs on the host for now
 PLATFORM_SERVICES_INSTALL = ""

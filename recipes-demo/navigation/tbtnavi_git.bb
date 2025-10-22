@@ -26,9 +26,7 @@ PV = "2.0+git${SRCPV}"
 
 SRC_URI = "git://gerrit.automotivelinux.org/gerrit/apps/tbtnavi;protocol=https;branch=${AGL_BRANCH} \
            file://tbtnavi.service \
-           file://tbtnavi.conf \
-           file://tbtnavi.conf.kvm-demo \
-           file://tbtnavi.conf.gateway-demo \
+           file://kuksa.toml \
            file://tbtnavi.token \
            file://kvm.conf \
 "
@@ -36,7 +34,7 @@ SRCREV = "a89eac8f101fd6cd88b4a93dee02de03dab36c21"
 
 S = "${WORKDIR}/git"
 
-inherit meson systemd pkgconfig update-alternatives
+inherit meson systemd pkgconfig
 
 SYSTEMD_SERVICE:${PN} = "${BPN}.service"
 
@@ -45,21 +43,14 @@ do_install:append() {
 
     install -D -m 0644 ${WORKDIR}/kvm.conf ${D}${systemd_system_unitdir}/${BPN}.service.d/kvm.conf
 
-    # Currently using default global client and CA certificates
-    # for KUKSA.val SSL, installing app specific ones would go here.
-
     # VIS authorization token file for KUKSA.val should ideally not
     # be readable by other users, but currently that's not doable
     # until a packaging/sandboxing/MAC scheme is (re)implemented or
     # something like OAuth is plumbed in as an alternative.
     install -d ${D}${sysconfdir}/xdg/AGL/tbtnavi
-    install -m 0644 ${WORKDIR}/tbtnavi.conf ${D}${sysconfdir}/xdg/AGL/tbtnavi.conf.default
-    install -m 0644 ${WORKDIR}/tbtnavi.conf.kvm-demo ${D}${sysconfdir}/xdg/AGL/
-    install -m 0644 ${WORKDIR}/tbtnavi.conf.gateway-demo ${D}${sysconfdir}/xdg/AGL/
+    install -m 0644 ${WORKDIR}/kuksa.toml ${D}${sysconfdir}/xdg/AGL/tbtnavi/
     install -m 0644 ${WORKDIR}/tbtnavi.token ${D}${sysconfdir}/xdg/AGL/tbtnavi/
 }
-
-ALTERNATIVE_LINK_NAME[tbtnavi.conf] = "${sysconfdir}/xdg/AGL/tbtnavi.conf"
 
 RDEPENDS:${PN} += " \
     qtwayland \
@@ -70,33 +61,8 @@ RDEPENDS:${PN} += " \
     libqtappfw \
 "
 
-PACKAGE_BEFORE_PN += "${PN}-conf ${PN}-conf-kvm ${PN}-conf-kvm-demo ${PN}-conf-gateway-demo"
-
-FILES:${PN}-conf += "${sysconfdir}/xdg/AGL/tbtnavi.conf.default"
-RDEPENDS:${PN}-conf = "${PN}"
-RPROVIDES:${PN}-conf = "tbtnavi.conf"
-ALTERNATIVE:${PN}-conf = "tbtnavi.conf"
-ALTERNATIVE_TARGET_${PN}-conf = "${sysconfdir}/xdg/AGL/tbtnavi.conf.default"
-
-FILES:${PN}-conf-gateway-demo += " \
-    ${sysconfdir}/xdg/AGL/tbtnavi.conf.gateway-demo \
-"
-RDEPENDS:${PN}-conf-gateway-demo = "${PN}"
-RPROVIDES:${PN}-conf-gateway-demo = "tbtnavi.conf"
-ALTERNATIVE:${PN}-conf-gateway-demo = "tbtnavi.conf"
-ALTERNATIVE_TARGET_${PN}-conf-gateway-demo = "${sysconfdir}/xdg/AGL/tbtnavi.conf.gateway-demo"
-ALTERNATIVE_PRIORITY_${PN}-conf-gateway-demo = "20"
+PACKAGE_BEFORE_PN += "${PN}-conf-kvm"
 
 FILES:${PN}-conf-kvm += " \
     ${systemd_system_unitdir}/tbtnavi.service.d/kvm.conf \
 "
-RDEPENDS:${PN}-conf-kvm = "${PN}"
-
-FILES:${PN}-conf-kvm-demo += " \
-    ${sysconfdir}/xdg/AGL/tbtnavi.conf.kvm-demo \
-"
-RDEPENDS:${PN}-conf-kvm-demo = "${PN} ${PN}-conf-kvm"
-RPROVIDES:${PN}-conf-kvm-demo = "tbtnavi.conf"
-ALTERNATIVE:${PN}-conf-kvm-demo = "tbtnavi.conf"
-ALTERNATIVE_TARGET_${PN}-conf-kvm-demo = "${sysconfdir}/xdg/AGL/tbtnavi.conf.kvm-demo"
-ALTERNATIVE_PRIORITY_${PN}-conf-kvm-demo = "30"

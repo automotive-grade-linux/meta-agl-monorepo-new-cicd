@@ -15,7 +15,7 @@ DEPENDS = " \
 PV = "2.0+git${SRCPV}"
 
 SRC_URI = "git://gerrit.automotivelinux.org/gerrit/apps/dashboard;protocol=https;branch=${AGL_BRANCH} \
-           file://dashboard.conf \
+           file://kuksa.toml \
            file://dashboard.token \
            "
 SRCREV  = "205f7f3510b4abf04c4020416c985e657e29c908"
@@ -27,15 +27,12 @@ inherit qt6-qmake pkgconfig agl-app
 AGL_APP_NAME = "Dashboard"
 
 do_install:append() {
-    # Currently using default global client and CA certificates
-    # for KUKSA.val SSL, installing app specific ones would go here.
-
     # VIS authorization token file for KUKSA.val should ideally not
     # be readable by other users, but currently that's not doable
     # until a packaging/sandboxing/MAC scheme is (re)implemented or
     # something like OAuth is plumbed in as an alternative.
     install -d ${D}${sysconfdir}/xdg/AGL/dashboard
-    install -m 0644 ${WORKDIR}/dashboard.conf ${D}${sysconfdir}/xdg/AGL/
+    install -m 0644 ${WORKDIR}/kuksa.toml ${D}${sysconfdir}/xdg/AGL/dashboard/
     install -m 0644 ${WORKDIR}/dashboard.token ${D}${sysconfdir}/xdg/AGL/dashboard/
 }
 

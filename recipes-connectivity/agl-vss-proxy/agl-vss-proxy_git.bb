@@ -44,4 +44,4 @@ do_install:append() {
 
 FILES:${PN} += "${systemd_system_unitdir}"
 
-RDEPENDS:${PN} += "kuksa-databroker kuksa-databroker-agl"
+RDEPENDS:${PN} += "kuksa-databroker kuksa-databroker-env"
