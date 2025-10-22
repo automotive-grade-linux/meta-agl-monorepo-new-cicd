@@ -50,7 +50,7 @@ do_install:append() {
     install -m 0644 ${S}/candump.log ${D}${datadir}/can/
 }
 
-ALTERNATIVE_LINK_NAME[kuksa-can-provider.env] = "${sysconfdir}/default/kuksa-can-provider"
+ALTERNATIVE_LINK_NAME[kuksa-can-provider-env] = "${sysconfdir}/default/kuksa-can-provider"
 
 FILES:${PN} += "${systemd_system_unitdir}"
 
@@ -59,6 +59,8 @@ FILES:${PN} += "${systemd_system_unitdir}"
 # with the it in the main package, and the alternative scheme is set up
 # against that. Replacement configuration packages can still configure
 # the alternative as required.
+RPROVIDES:${PN} = "kuksa-can-provider-env"
+ALTERNATIVE:${PN} = "kuksa-can-provider-env"
 ALTERNATIVE_TARGET_${PN} = "${sysconfdir}/default/kuksa-can-provider.default"
 
 PACKAGE_BEFORE_PN += "${PN}-conf-example"
