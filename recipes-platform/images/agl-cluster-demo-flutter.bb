@@ -36,6 +36,4 @@ IMAGE_INSTALL += "\
     cluster-demo-config-flutter \
 "
 
-CLANGSDK = "1"
-
 TOOLCHAIN_HOST_TASK:append = " nativesdk-flutter-sdk"
