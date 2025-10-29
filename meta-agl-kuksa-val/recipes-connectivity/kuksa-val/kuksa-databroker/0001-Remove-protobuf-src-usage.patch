@@ -1,4 +1,4 @@
-From 9e5b68749fb8e9fe932b90f92a95aa2d18d83795 Mon Sep 17 00:00:00 2001
+From e53c582959210b0047f3b27eadf29d07d8b2bcf0 Mon Sep 17 00:00:00 2001
 From: Scott Murray <scott.murray@konsulko.com>
 Date: Wed, 4 Dec 2024 09:53:15 -0500
 Subject: [PATCH] Remove protobuf-src usage
@@ -20,12 +20,12 @@ Signed-off-by: Scott Murray <scott.murray@konsulko.com>
  4 files changed, 40 deletions(-)
 
 diff --git a/Cargo.lock b/Cargo.lock
-index df1ef1a..56837b5 100644
+index 1ea94f9..1f3ff09 100644
 --- a/Cargo.lock
 +++ b/Cargo.lock
-@@ -180,15 +180,6 @@ version = "1.4.0"
+@@ -175,15 +175,6 @@ version = "1.5.0"
  source = "registry+https://github.com/rust-lang/crates.io-index"
- checksum = "ace50bade8e6234aa140d9a2f552bbee1db4d353f69b8217bc503490fc1a9f26"
+ checksum = "c08606f8c3cbf4ce6ec8e28fb0014a2c086708fe954eaa885384a6165172e7e8"
  
 -[[package]]
 -name = "autotools"
@@ -39,16 +39,16 @@ index df1ef1a..56837b5 100644
  [[package]]
  name = "axum"
  version = "0.6.20"
-@@ -664,7 +655,6 @@ version = "0.5.0"
+@@ -688,7 +679,6 @@ version = "0.6.0"
  dependencies = [
-  "prost",
+  "prost 0.12.6",
   "prost-types",
 - "protobuf-src",
-  "tonic",
+  "tonic 0.11.0",
   "tonic-build",
  ]
-@@ -2494,15 +2484,6 @@ dependencies = [
-  "prost",
+@@ -2724,15 +2714,6 @@ dependencies = [
+  "prost 0.12.6",
  ]
  
 -[[package]]
@@ -62,9 +62,9 @@ index df1ef1a..56837b5 100644
 -
  [[package]]
  name = "quote"
- version = "1.0.37"
+ version = "1.0.40"
 diff --git a/databroker-proto/Cargo.toml b/databroker-proto/Cargo.toml
-index 2475412..877c270 100644
+index 3585a90..49bcaae 100644
 --- a/databroker-proto/Cargo.toml
 +++ b/databroker-proto/Cargo.toml
 @@ -25,4 +25,3 @@ prost-types = { workspace = true }
@@ -73,7 +73,7 @@ index 2475412..877c270 100644
  tonic-build = { workspace = true, features = ["transport", "prost"] }
 -protobuf-src = "1.1.0"
 diff --git a/databroker-proto/build.rs b/databroker-proto/build.rs
-index 1a832c9..8a85b9d 100644
+index 4eec3f1..edb1c81 100644
 --- a/databroker-proto/build.rs
 +++ b/databroker-proto/build.rs
 @@ -14,7 +14,6 @@
@@ -85,12 +85,12 @@ index 1a832c9..8a85b9d 100644
          .compile_well_known_types(false)
          .protoc_arg("--experimental_allow_proto3_optional")
 diff --git a/lib/Cargo.lock b/lib/Cargo.lock
-index 2a147ff..0835e6f 100644
+index 9a1ab95..183ed6d 100644
 --- a/lib/Cargo.lock
 +++ b/lib/Cargo.lock
-@@ -71,15 +71,6 @@ version = "1.4.0"
+@@ -121,15 +121,6 @@ version = "1.5.0"
  source = "registry+https://github.com/rust-lang/crates.io-index"
- checksum = "ace50bade8e6234aa140d9a2f552bbee1db4d353f69b8217bc503490fc1a9f26"
+ checksum = "c08606f8c3cbf4ce6ec8e28fb0014a2c086708fe954eaa885384a6165172e7e8"
  
 -[[package]]
 -name = "autotools"
@@ -104,16 +104,16 @@ index 2a147ff..0835e6f 100644
  [[package]]
  name = "axum"
  version = "0.6.20"
-@@ -191,7 +182,6 @@ version = "0.5.0"
+@@ -257,7 +248,6 @@ version = "0.6.0"
  dependencies = [
-  "prost",
+  "prost 0.12.6",
   "prost-types",
 - "protobuf-src",
   "tonic",
   "tonic-build",
  ]
-@@ -682,15 +672,6 @@ dependencies = [
-  "prost",
+@@ -928,15 +918,6 @@ dependencies = [
+  "prost 0.12.6",
  ]
  
 -[[package]]
@@ -127,7 +127,7 @@ index 2a147ff..0835e6f 100644
 -
  [[package]]
  name = "quote"
- version = "1.0.37"
+ version = "1.0.40"
 -- 
-2.47.0
+2.51.0
 
