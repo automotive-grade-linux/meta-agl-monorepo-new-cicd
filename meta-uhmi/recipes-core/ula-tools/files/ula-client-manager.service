@@ -1,11 +1,11 @@
 [Unit]
-Description=ula-node
+Description=ula-client-manager
+After=ula-node.service
 
 [Service]
 Type=simple
 User=agl-driver
-ExecStart=/usr/bin/ula-node
-KillSignal=SIGTERM
+ExecStart=/usr/bin/ula-client-manager
 TimeoutStopSec=10
 Restart=always
 RestartSec=2

@@ -10,6 +10,8 @@ KillSignal=SIGTERM
 TimeoutStopSec=10
 Restart=always
 RestartSec=2
+StartLimitIntervalSec=10
+StartLimitBurst=3
 
 [Install]
 WantedBy=multi-user.target

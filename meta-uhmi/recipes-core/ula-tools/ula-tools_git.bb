@@ -9,7 +9,7 @@ FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
 PN="ula-tools"
 PROVIDES += "ula-tools"
 
-SRCREV = "7bcbb015554dccde3ccb567598d078b7e47eba94"
+SRCREV = "82778493c7c8b4d5ba539e62625f063b4239e364"
 BRANCH ?= "main"
 SRC_URI = " \
     git://github.com/unified-hmi/ula-tools.git;protocol=https;branch=${BRANCH} \
@@ -19,9 +19,10 @@ PV = "0.0+git${SRCPV}"
 S = "${WORKDIR}/git"
 
 export GO111MODULE="auto"
+export GOFLAGS="-modcacherw"
 
 GO_IMPORT = "ula-tools"
-GO_INSTALL = " ${GO_IMPORT}/cmd/ula-distrib-com  ${GO_IMPORT}/cmd/ula-node"
+GO_INSTALL = " ${GO_IMPORT}/cmd/ula-node  ${GO_IMPORT}/cmd/ula-client-manager ${GO_IMPORT}/cmd/ula-grpc-client "
 
 inherit go
 RDEPENDS:${PN}  = "jq bash"
@@ -31,17 +32,26 @@ inherit systemd features_check
 
 SRC_URI += " \
 	file://ula-node.service \
+	file://ula-client-manager.service \
 	file://virtual-screen-def.json \
 	"
 
 REQUIRED_DISTRO_FEATURES = "systemd"
 SYSTEMD_PACKAGES = "${PN}"
-SYSTEMD_SERVICE:${PN} = "ula-node.service"
+SYSTEMD_SERVICE:${PN} = "ula-node.service ula-client-manager.service"
 SYSTEMD_AUTO_ENABLE:${PN} = "enable"
+
+do_compile[network] = "1"
+do_compile:prepend() {
+    export http_proxy=${http_proxy}
+    export https_proxy=${https_proxy}
+    cd ${GOPATH}/src/ula-tools
+    oe_runmake mod
+}
 
 do_compile:append() {
     export CGO_ENABLED="1"
-    export GOFLAGS="-mod=vendor -trimpath"
+    export GOFLAGS="-trimpath"
     ${GO} build  -buildmode=c-shared -o ${GOPATH}/pkg/libulaclient.so -v -ldflags '-extldflags "-Wl,-soname=libulaclient.so"' ${GO_IMPORT}/pkg/ula-client-lib
 }
 

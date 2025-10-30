@@ -19,15 +19,13 @@ RVGPU is open-source software (OSS). For more details, visit the [Unified HMI - 
 ## Distributed Display Framework(DDFW)
 DDFW is an open-source software layer that provides essential services for managing distributed display applications. This framework is designed to work with a variety of hardware and software configurations, making it a versatile choice for developers looking to create scalable and robust display solutions.
 
-Now, DDFW only supports build images that run on weston and for which the wayland-ivi-extension is available like `agl-image-weston`.
-
-DDFW consists of three main components:
+DDFW consists of two main components:
 
 * [ucl-tools](https://github.com/unified-hmi/ucl-tools): Unified Clustering Tools (UCL), launch applications for multiple platforms and manage execution order and survival.
 
 * [ula-tools](https://github.com/unified-hmi/ula-tools): Unified Layout Tools (ULA), application layout for virtual displays on virtual screen (mapped from physical displays).
 
-* [uhmi-ivi-wm](https://github.com/unified-hmi/uhmi-ivi-wm): apply ivi-layer and ivi-surface layouts to the screen using the layout design output by ula-tools.
+The API functionality of both UCL and ULA are both exposed with gRPC. Once the gRPC Servers (`ucl-lifecycle-manager` for UCL and `ula-client-manager` for ULA) are running, you can launch gRPC Client API from any application or command line and easily use their functions.
 
 For more details about these frameworks, please visit our GitHub repository.
 
@@ -50,7 +48,7 @@ After adding the feature, execute the command:
 ```
 $ bitbake <image_name>
 ```
-Replace the `<image_name>` with the appropriate values you want. We have confirmed the operation with the **agl-image-weston**.
+Replace the `<image_name>` with the appropriate values you want. We have confirmed the operation with the **agl-ivi-demo-flutter**.
 
 ## How to setup and boot
 For Environment setup instructions for each platform, refer to the following links in the AGL Documentation:
@@ -101,7 +99,7 @@ qemu-system-x86_64 -enable-kvm -m 2048 \
 ```
 Save the file and run the following to start QEMU.
 ```
-sudo <WORKDIR>/run_qemu_bridge.sh <build_directory>/tmp/deploy/images/qemux86-64/bzImage <build_directory>/tmp/deploy/images/qemux86-64/agl-image-weston-qemux86-64.rootfs.ext4
+sudo <WORKDIR>/run_qemu_bridge.sh <build_directory>/tmp/deploy/images/qemux86-64/bzImage <build_directory>/tmp/deploy/images/qemux86-64/agl-ivi-demo-flutter-qemux86-64.rootfs.ext4
 ```
 When QEMU boot, you can log in to qemu on the terminal where you executed above command, so please assign an IP address there.
 
@@ -162,93 +160,19 @@ $ WAYLAND_DISPLAY=<your_WAYLAND_DISPLAY> <WORKDIR>/run_remote_app.sh weston-edit
 ```
 
 **Appendix**  
-- By building the RVGPU on Ubuntu, it is possible to enable bidirectional remote rendering between the agl-demo-platform and Ubuntu.  
+- By building the RVGPU on Ubuntu, it is possible to enable bidirectional remote rendering between the agl-ivi-demo-flutter and Ubuntu.
 For the build procedure on Ubuntu, see the following URL: https://github.com/unified-hmi/remote-virtio-gpu .
 
 ## How to set up Distributed Display Framework (DDFW)
 
-To utilize DDFW, you need to set up each image with a distinct hostname and static IP address, and ensure that ivi-shell is running using the wayland-ivi-extension. Please note that the following configurations are examples and should be adapted to fit your specific network environment.
+To utilize DDFW, you need to set up each image with a distinct hostname and static IP address. Please note that the following configurations are examples and should be adapted to fit your specific network environment.
 
-In the following sections, introducing the steps to run DDFW on the `agl-image-weston` image.
+### Configurations to run RVGPU from UCL.
 
-### Run weston with ivi-shell
-
-Before setting unique hostnames and configuring static IP addresses, it is essential to start Weston with ivi-shell since DDFW controls the layout of applications using ivi-shell. To initialize ivi-shell, follow these steps:
-
-First, please create the following content as /etc/xdg/weston/weston_ivi-shell.ini 
-```
-[core]
-shell=ivi-shell.so
-modules=ivi-controller.so
-require-input=false
-
-[output]
-name=HDMI-A-1
-mode=1920x1080@60
-
-[output]
-name=HDMI-A-2
-mode=1920x1080@60
-
-[output]
-name=HDMI-A-3
-mode=1920x1080@60
-
-[output]
-name=DSI-1
-mode=1920x1080@60
-
-[output]
-name=DSI-2
-mode=1920x1080@60
-
-[output]
-name=DP-1
-mode=1920x1080@60
-
-[output]
-name=Virtual-1
-mode=1920x1080
-
-[output]
-name=Virtual-2
-mode=1920x1080
-
-[output]
-name=VGA-1
-mode=1920x1080
-
-[output]
-name=VGA-2
-mode=1920x1080
-
-[ivi-shell]
-ivi-input-module=ivi-input-controller.so
-#ivi-client-name=/usr/bin/simple-weston-client
-bkgnd-surface-id=1000000
-bkgnd-color=0xFF000000
-```
-
-Next, to start Weston with the configuration created above, please execute the following command.
-```
-ln -sf /etc/xdg/weston/weston_ivi-shell.ini /etc/xdg/weston/weston.ini
-systemctl restart weston
-```
-
-**Note**: Even after the launch of the ivi-shell is complete, the screen remains black and nothing is displayed until the application is shown.
-
-### Configuration to run Unified HMI frameworks on launched weston.
-
-By setting XDG_RUNTIME_DIR=/run/user/<your_UID> and WAYLAND_DISPLAY=<your_WAYLAND_DISPLAY> in /lib/systemd/system/uhmi-ivi-wm.service, you can display the applications launched by Unified HMI on Weston.
+By setting XDG_RUNTIME_DIR=/run/user/<your_UID> and WAYLAND_DISPLAY=<your_WAYLAND_DISPLAY> correctly in /lib/systemd/system/ucl-node.service, you can display the applications launched by Unified HMI on the Wayland compositor (e.g., agl-compositor, Weston, etc...).
 
 Please execute `$ls /run/user/` in your environment to check <your_UID>.
-Additionally, when Weston is launched, <your_WAYLAND_DISPLAY> will be generated under /run/user/<your_UID>, so please check that as well.
-
-e.g. In agl-image-weston, <your_UID> is set to 200 and <your_WAYLAND_DISPLAY> is set to wayland-1. Please create **/etc/default/uhmi-ivi-wm** as follows and set correct valiables:
-```
-XDG_RUNTIME_DIR=/run/user/200
-WAYLAND_DISPLAY=wayland-1
-```
+Additionally, when the Wayland compositor is launched, <your_WAYLAND_DISPLAY> will be generated under /run/user/<your_UID>, so please check that as well.
 
 ### Set Unique Hostnames
 
@@ -267,7 +191,7 @@ echo "agl-host1" | tee /etc/hostname
 
 Configure a static IP address for each image by editing the `/etc/systemd/network/wired.network` file. If this file does not exist, please create a new one. Use the following template and replace `<IP_address>` and `<Netmask>` with your network's specific settings:
 
-```ini
+```
 [Match]
 KernelCommandLine=!root=/dev/nfs
 Name=eth* en*
@@ -322,10 +246,15 @@ Adjust the `/etc/uhmi-framework/virtual-screen-def.json` file to match your envi
         {"node_id": 1, "hostname": "agl-host1", "ip": "192.168.0.101"}
     ],
     "distributed_window_system": {
-        "window_manager": {},
+        "ucl_lifecycle_manager" : {"node_id" : 0, "port": 6543},
+        "ula_client_manager" : {"node_id" : 0, "port": 6443},
         "framework_node": [
-            {"node_id": 0, "ula": {"debug": false, "debug_port": 8080, "port": 10100}, "ucl": {"port": 7654}},
-            {"node_id": 1, "ula": {"debug": false, "debug_port": 8080, "port": 10100}, "ucl": {"port": 7654}}
+            {"node_id": 0,"ula": {"debug": false, "debug_port": 8080, "port": 10100},"ucl_node": {"port": 7654},
+             "compositor": [{"vdisplay_ids": [0], "sock_domain_name": "rvgpu-compositor-0", "listen_port": 36000}]
+            },
+            {"node_id": 1,"ula": {"debug": false, "debug_port": 8080, "port": 10100},"ucl_node": {"port": 7654},
+             "compositor": [{"vdisplay_ids": [1], "sock_domain_name": "rvgpu-compositor-1", "listen_port": 36001}]
+            }
         ]
     }
 }
@@ -336,9 +265,14 @@ Be sure to update the virtual_w, virtual_h, virtual_x, virtual_y, pixel_w, pixel
 ### Restarting Services
 Once you have prepared the virtual-screen-def.json file and configured the system, you need to restart the system or the following services for the changes to take effect:
 ```
-systemctl restart uhmi-ivi-wm
 systemctl restart ula-node
-systemctl restart ucl-launcher
+systemctl restart ucl-node
+```
+
+Please execute the following command only on the nodes specified as ucl_lifecycle_manager and ula_client_manager in the virtual-screen-def.json file.
+```
+systemctl restart ucl-lifecycle-manager
+systemctl restart ula-client-manager
 ```
 
 After restarting these services, your system should be ready to use the DDFW with the new configuration.
@@ -347,6 +281,13 @@ After restarting these services, your system should be ready to use the DDFW wit
 
 The Unified Clustering (UCL) Framework provides a distributed launch feature for applications using remote virtio GPU (rvgpu). By preparing a JSON configuration, you can enable the launch of applications across multiple devices in a distributed environment.
 
+### Launching rvgpu-renderer on receiver nodes using UCL Client API
+
+If you define the `compositor` in the `framework_node` section of virtual-screen-def.json, you can launch rvgpu-renderer on the all receiver nodes using the following command:
+```
+ucl-api-comm -c launch_compositor_async
+```
+
 ### Setting Up for Application Launch using UCL
 
 To facilitate the distributed launch of an application with UCL, you need to create a JSON configuration file that specifies the details of the application and how it should be executed on the sender and receiver nodes. 
@@ -354,71 +295,52 @@ To facilitate the distributed launch of an application with UCL, you need to cre
 Here's an example of such a JSON configuration named `app.json`:
 ```
 {
-    "format_v1": {
-        "command_type" : "remote_virtio_gpu",
-        "appli_name" : "weston-simple-egl",
-        "sender" : {
-            "launcher" : "agl-host0",
-            "command" : "/usr/bin/ucl-virtio-gpu-wl-send",
-            "frontend_params" : {
-                "scanout_x" : 0,
-                "scanout_y" : 0,
-                "scanout_w" : 1920,
-                "scanout_h" : 1080,
-                "server_port" : 33445
-            },
-            "appli" : "/usr/bin/weston-simple-egl -s 1920x1080",
-            "env" : "LD_LIBRARY_PATH=/usr/lib/mesa-virtio"
-        },
-        "receivers" : [
-            {
-                "launcher" : "agl-host0",
-                "command" : "/usr/bin/ucl-virtio-gpu-wl-recv",
-                "backend_params" : {
-                    "ivi_surface_id" : 101000,
-                    "scanout_x" : 0,
-                    "scanout_y" : 0,
-                    "scanout_w" : 1920,
-                    "scanout_h" : 1080,
-                    "listen_port" : 33445,
-                    "initial_screen_color" : "0x33333333"
-                },
-                "env" : "XDG_RUNTIME_DIR=/run/user/200 WAYLAND_DISPLAY=wayland-1"
-            },
-            {
-                "launcher" : "agl-host1",
-                "command" : "/usr/bin/ucl-virtio-gpu-wl-recv",
-                "backend_params" : {
-                    "ivi_surface_id" : 101000,
-                    "scanout_x" : 0,
-                    "scanout_y" : 0,
-                    "scanout_w" : 1920,
-                    "scanout_h" : 1080,
-                    "listen_port" : 33445,
-                    "initial_screen_color" : "0x33333333"
-                },
-                "env" : "XDG_RUNTIME_DIR=/run/user/200 WAYLAND_DISPLAY=wayland-1"
-            }
-        ]
-    }
+  "format_v1": {
+    "command_type": "remote_virtio_gpu",
+    "appli_name": "glmark2-es2-wayland",
+    "sender": {
+      "launcher": "agl-host0",
+      "command": "ucl-virtio-gpu-wl-send",
+      "frontend_params": {
+        "scanout_x": 0,
+        "scanout_y": 0,
+        "scanout_w": 1920,
+        "scanout_h": 1080
+      },
+      "appli": "/usr/bin/glmark2-es2-wayland --fullscreen"
+    },
+    "receivers": [
+      {
+        "launcher": "agl-host0",
+        "backend_params": {
+          "listen_port": 36000
+        }
+      },
+      {
+        "launcher": "agl-host1",
+        "backend_params": {
+          "listen_port": 36001
+        }
+      }
+    ]
+  }
 }
 ```
 
-In this example, the application weston-simple-egl is configured to launch on the sender node `agl-host0` and display its output on the receiver nodes `agl-host0` and `agl-host1`. The `scanout_x`, `scanout_y`, `scanout_w`, `scanout_h` parameters define the size of the window, while `server_port` and `listen_port` ensure the communication between sender and receivers.
+In this example, the application glmark2-es2-wayland is configured to launch on the sender node `agl-host0` and render it on the receiver nodes `agl-host0` and `agl-host1`. The `scanout_x`, `scanout_y`, `scanout_w`, `scanout_h` parameters define the size of the window.
 
-### Launching the Application
+### Launching the Application using UCL Client API
 
-Once the JSON configuration file is ready, you can execute the application across the distributed system by piping the JSON content to the `ucl-distrib-com` command along with the path to the `virtual-screen-def.json` file:
-
+Once the JSON configuration file is ready, you can execute the application across the distributed system by piping the JSON content to the UCL Client API:
 ```
-cat app.json | ucl-distrib-com /etc/uhmi-framework/virtual-screen-def.json
+ucl-api-comm -c run_command <path to app.json>
 ```
 
 This command will read the configuration and initiate the application launch process, distributing the workload as defined in the JSON file.
 
 Please ensure that the JSON configuration file you create (`app.json` in the example) is correctly formatted and contains the appropriate parameters for your specific use case.
 
-**Note**: Please be aware that when using ivi-shell, applications will not be displayed unless layout configuration is specified as described later in this document. If you wish to display applications without specific layout configuration, you should run weston with desktop-shell. This distinction is crucial to ensure that your applications are visible in your chosen environment.
+**Note**: To check other options for ucl-api-comm, please use the -h option.
 
 ## How to use ULA (Unified Layout) Framework
 
@@ -426,24 +348,40 @@ The Unified Layout (ULA) Framework allows for the definition of physical display
 
 ### Creating a Layout Configuration File
 
-To define the layout for your applications, you need to create a JSON file, such as `initial_vscreen.json`, with the necessary configuration details. This file will contain the layout settings that specify how applications should be positioned and sized within the virtual screen. Here is an example of what the contents of `initial_vscreen.json` file might look like:
+To define the layout for your applications, you need to create a JSON file, such as `initial-vscreen.json`, with the necessary configuration details. This file will contain the layout settings that specify how applications should be positioned and sized within the virtual screen. Here is an example of what the contents of `initial-vscreen.json` file might look like:
 
 ```
 {
-  "command": "initial_vscreen",
+  "command": "initial-vscreen",
   "vlayer": [
     {
-      "VID": 1010000,
+      "appli_name": "glmark2-es2-wayland",
+      "VID": 910000,
       "coord": "global",
-      "virtual_w": 1920, "virtual_h": 1080,
-      "vsrc_x": 0, "vsrc_y": 0, "vsrc_w": 1920, "vsrc_h": 1080,
-      "vdst_x": 960, "vdst_y": 0, "vdst_w": 1920, "vdst_h": 1080,
+      "virtual_w": 1920,
+      "virtual_h": 1080,
+      "vsrc_x": 0,
+      "vsrc_y": 0,
+      "vsrc_w": 1920,
+      "vsrc_h": 1080,
+      "vdst_x": 960,
+      "vdst_y": 0,
+      "vdst_w": 1920,
+      "vdst_h": 1080,
+      "z_order": 1,
       "vsurface": [
         {
-          "VID": 101000,
-          "pixel_w": 1920, "pixel_h": 1080,
-          "psrc_x": 0, "psrc_y": 0, "psrc_w": 1920, "psrc_h": 1080,
-          "vdst_x": 0, "vdst_y": 0, "vdst_w": 1920, "vdst_h": 1080
+          "VID": 5100,
+          "pixel_w": 1920,
+          "pixel_h": 1080,
+          "psrc_x": 0,
+          "psrc_y": 0,
+          "psrc_w": 1920,
+          "psrc_h": 1080,
+          "vdst_x": 0,
+          "vdst_y": 0,
+          "vdst_w": 1920,
+          "vdst_h": 1080
         }
       ]
     }
@@ -459,16 +397,16 @@ In this configuration:
 
 - **vsurface**  defines individual surfaces within the virtual layer. Each surface also has a VID, and its pixel dimensions (`pixel_w`, `pixel_h`) represent the actual size of the content. The source (`psrc_x`, `psrc_y`, `psrc_w`, `psrc_h`) and destination (`vdst_x`, `vdst_y`, `vdst_w`, `vdst_h`) coordinates determine the portion of the content to display and its location within the layer.
 
+**Note**: If you want to change layouts of the application launched by UCL, please define the same `appli_name` as in app.json.
+
 ### Applying the Layout Configuration
 
-Once you have created the `initial_vscreen.json` file with your layout configuration, you can apply it to your system using the following command:
+Once you have created the `initial-vscreen.json` file with your layout configuration, you can apply it to your system using the following command:
 
 ```
-cat initial_vscreen.json | ula-distrib-com
+ula-grpc-client -c DwmSetLayoutCommand <path to initial-vscreen.json>
 ```
 
 Executing this command will process the configuration from the JSON file and apply the layout settings to the virtual screen. As a result, the applications will appear in the specified positions and sizes according to the layout defined in the file.
 
-Ensure that `initial_vscreen.json` file you create accurately reflects the desired layout for your applications and display setup.
-
-**Note**: Due to the specifications of ivi_shell, when an application is stopped after being displayed, the image that was shown just before stopping remains on the screen. To avoid this, please eigther restart weston or display another image on ivi_shell to update the displayed content.
+Ensure that `initial-vscreen.json` file you create accurately reflects the desired layout for your applications and display setup.

@@ -9,7 +9,7 @@ FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
 PN="ucl-tools"
 PROVIDES += "ucl-tools"
 
-SRCREV = "e882b2f19c1f255002326897df9f3aa3386c178f"
+SRCREV = "2e779ffa5d0042ae61beb690934a18eadab3934e"
 BRANCH ?= "main"
 SRC_URI = " \
     git://github.com/unified-hmi/ucl-tools.git;protocol=https;branch=${BRANCH} \
@@ -19,12 +19,12 @@ PV = "0.0+git${SRCPV}"
 S = "${WORKDIR}/git"
 
 export GO111MODULE="auto"
+export GOFLAGS="-modcacherw"
 
 GO_IMPORT = "ucl-tools"
 GO_INSTALL = " \
     ${GO_IMPORT}/cmd/ucl-node \
     ${GO_IMPORT}/cmd/ucl-lifecycle-manager \
-    ${GO_IMPORT}/cmd/ucl-distrib-com \
     ${GO_IMPORT}/cmd/ucl-api-comm \
     ${GO_IMPORT}/cmd/ucl-virtio-gpu-wl-send \
     ${GO_IMPORT}/cmd/ucl-virtio-gpu-wl-recv \
@@ -46,9 +46,17 @@ REQUIRED_DISTRO_FEATURES = "systemd"
 SYSTEMD_SERVICE:${PN} = "ucl-node.service ucl-lifecycle-manager.service"
 SYSTEMD_AUTO_ENABLE:${PN} = "enable"
 
+do_compile[network] = "1"
+do_compile:prepend() {
+    export http_proxy=${http_proxy}
+    export https_proxy=${https_proxy}
+    cd ${GOPATH}/src/ucl-tools
+    oe_runmake mod
+}
+
 do_compile:append() {
     export CGO_ENABLED="1"
-    export GOFLAGS="-mod=vendor -trimpath"
+    export GOFLAGS="-trimpath"
     ${GO} build  -buildmode=c-shared -o ${GOPATH}/pkg/libuclclient.so -v -ldflags '-extldflags "-Wl,-soname=libuclclient.so"' ${GO_IMPORT}/pkg/ucl-client-lib
 }
 
@@ -69,8 +77,7 @@ do_install() {
 }
 
 FILES:${PN} += " \
-    ${@bb.utils.contains('DISTRO_FEATURES', 'systemd', '${systemd_system_unitdir}/ucl-node.service', '', d)} \
-    ${@bb.utils.contains('DISTRO_FEATURES', 'systemd', '${systemd_system_unitdir}/ucl-lifecycle-manager.service', '', d)} \
+    ${@bb.utils.contains('DISTRO_FEATURES', 'systemd', '${systemd_system_unitdir}/${SYSTEMD_SERVICE}', '', d)} \
     ${libdir} \
     ${includedir} \
 "
