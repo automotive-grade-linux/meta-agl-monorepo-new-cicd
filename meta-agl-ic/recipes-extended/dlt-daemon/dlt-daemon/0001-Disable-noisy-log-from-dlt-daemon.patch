@@ -7,6 +7,8 @@ The dlt-daemon out some own log. But it's a verbose log.
 On the other hand, these verbose log difficult to mask by dlt-viewer.
 This patch disable these verbose log.
 
+Upstream-Status: Pending
+
 Signed-off-by: Naoto Yamaguchi <naoto.yamaguchi@aisin.co.jp>
 ---
  src/daemon/dlt-daemon.c               |  7 -------
