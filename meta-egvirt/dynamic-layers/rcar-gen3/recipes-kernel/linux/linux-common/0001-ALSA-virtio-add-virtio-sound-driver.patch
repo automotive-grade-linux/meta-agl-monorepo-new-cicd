@@ -10,6 +10,7 @@ virtio standard.
 Initial initialization of the device, virtqueues and creation of an
 empty ALSA sound device.
 
+Upstream-Status: Backport [https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=de3a9980d8c3]
 Signed-off-by: Anton Yakovlev <anton.yakovlev@opensynergy.com>
 Link: https://lore.kernel.org/r/20210302164709.3142702-3-anton.yakovlev@opensynergy.com
 Signed-off-by: Takashi Iwai <tiwai@suse.de>

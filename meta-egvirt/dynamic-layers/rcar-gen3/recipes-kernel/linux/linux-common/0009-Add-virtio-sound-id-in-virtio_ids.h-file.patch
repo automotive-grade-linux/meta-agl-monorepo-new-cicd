@@ -3,6 +3,7 @@ From: Timos Ampelikiotis <t.ampelikiotis@virtualopensystems.com>
 Date: Tue, 28 Nov 2023 14:27:36 +0000
 Subject: [PATCH 9/9] Add virtio sound id in virtio_ids.h file
 
+Upstream-Status: Backport [https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=0ae0337f929a]
 Signed-off-by: Timos Ampelikiotis <t.ampelikiotis@virtualopensystems.com>
 ---
  include/uapi/linux/virtio_ids.h | 1 +
