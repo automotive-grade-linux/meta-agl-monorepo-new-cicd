@@ -8,6 +8,8 @@ In this case, container management daemon catch exit from guest init, but it can
 reboot guest.  This mean container manager can't re-assign dynamic devices.
 This patch disable automatic reboot.
 
+Upstream-Status: Inappropriate [AGL specific]
+
 Signed-off-by: Naoto Yamaguchi <naoto.yamaguchi@aisin.co.jp>
 ---
  src/lxc/lxccontainer.c | 5 -----
