@@ -6,7 +6,7 @@ Subject: [PATCH] Fixup wrappers for compilation with openblas 0.3.27
 vosk-kaldi if compiled with openblas from meta-python-ai
 needs these wrappers adapted to function.
 
-Upstream-Status: Inaproppriate.
+Upstream-Status: Inaproppriate [AGL specific]
 Signed-off-by: Anuj Solanki <anuj603362@gmail.com>
 ---
  src/matrix/cblas-wrappers.h | 24 ++++++++++++------------

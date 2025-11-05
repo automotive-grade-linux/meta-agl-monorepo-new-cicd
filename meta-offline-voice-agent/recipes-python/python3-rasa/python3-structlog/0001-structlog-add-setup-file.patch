@@ -4,6 +4,9 @@ Date: Mon, 7 Aug 2023 00:19:14 +0500
 Subject: [PATCH] structlog add setup file
 
 add setup.py to replace hatchling build system as its not supported
+
+Upstream-Status: Inappropriate [AGL specific]
+
 ---
  setup.py | 44 ++++++++++++++++++++++++++++++++++++++++++++
  1 file changed, 44 insertions(+)

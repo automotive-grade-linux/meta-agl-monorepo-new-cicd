@@ -4,6 +4,9 @@ Date: Sun, 6 Aug 2023 23:54:27 +0500
 Subject: [PATCH] magic-filter add setup file
 
 setup.py backend instead of hatchling which is not supported
+
+Upstream-Status: Inappropriate [AGL specific]
+
 ---
  setup.py | 55 +++++++++++++++++++++++++++++++++++++++++++++++++++++++
  1 file changed, 55 insertions(+)

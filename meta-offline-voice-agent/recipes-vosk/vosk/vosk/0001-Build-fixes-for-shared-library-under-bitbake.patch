@@ -3,6 +3,7 @@ From: Jan-Simon Moeller <jsmoeller@linuxfoundation.org>
 Date: Thu, 14 Jul 2022 18:31:47 +0200
 Subject: [PATCH] Build fixes for shared library under bitbake
 
+Upstream-Status: Inappropriate [AGL specific]
 Signed-off-by: Jan-Simon Moeller <jsmoeller@linuxfoundation.org>
 ---
  Makefile | 18 ++++++++++++------

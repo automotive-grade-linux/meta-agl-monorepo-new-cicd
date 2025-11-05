@@ -5,6 +5,7 @@ Subject: [PATCH] Change library search path to /usr/lib/
 
 Make the standard location known to the python library.
 
+Upstream-Status: Inappropriate [AGL specific]
 Signed-off-by: amanarora_09 <aman.arora9848@gmail.com>
 ---
  python/vosk/__init__.py | 1 +

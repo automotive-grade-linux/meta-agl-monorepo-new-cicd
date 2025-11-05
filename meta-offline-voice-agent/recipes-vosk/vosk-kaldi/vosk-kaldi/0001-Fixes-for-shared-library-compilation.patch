@@ -3,6 +3,7 @@ From: Jan-Simon Moeller <jsmoeller@linuxfoundation.org>
 Date: Thu, 14 Jul 2022 11:00:07 +0000
 Subject: [PATCH] Fixes for shared library compilation
 
+Upstream-Status: Inaproppriate [AGL specific]
 Signed-off-by: Jan-Simon Moeller <jsmoeller@linuxfoundation.org>
 ---
  src/configure                   | 2 +-

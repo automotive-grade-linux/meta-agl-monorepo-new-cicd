@@ -4,6 +4,9 @@ Date: Mon, 24 Jul 2023 12:17:35 +0500
 Subject: [PATCH] rasa remove group from poetry as its not supported 
 
 poetry version < 1.20 deos not support group in pyproject.toml
+
+Upstream-Status: Inappropriate [AGL specific]
+
 ---
  pyproject.toml | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)

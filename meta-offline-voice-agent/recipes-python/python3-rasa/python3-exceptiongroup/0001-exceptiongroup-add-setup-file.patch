@@ -4,6 +4,9 @@ Date: Tue, 8 Aug 2023 16:40:54 +0500
 Subject: [PATCH] exceptiongroup add setup file
 
 add setup.py to replace flit_scm build system as its not supported
+
+Upstream-Status: Inappropriate [AGL specific]
+
 ---
  setup.py | 29 +++++++++++++++++++++++++++++
  1 file changed, 29 insertions(+)

@@ -4,6 +4,9 @@ Date: Tue, 8 Aug 2023 17:26:30 +0500
 Subject: [PATCH] anyio add setup file
 
 add setup.py to replace build_meta system as its not working properly
+
+Upstream-Status: Inappropriate [AGL specific]
+
 ---
  setup.py | 59 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
  1 file changed, 59 insertions(+)
