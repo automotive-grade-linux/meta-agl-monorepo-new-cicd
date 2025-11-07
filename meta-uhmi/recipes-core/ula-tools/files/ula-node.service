@@ -5,7 +5,6 @@ Description=ula-node
 Type=simple
 User=agl-driver
 ExecStart=/usr/bin/ula-node
-KillSignal=SIGTERM
 TimeoutStopSec=10
 Restart=always
 RestartSec=2

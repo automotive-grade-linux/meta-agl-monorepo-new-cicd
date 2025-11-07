@@ -8,7 +8,6 @@ User=agl-driver
 Environment=XDG_RUNTIME_DIR=/run/user/1001
 EnvironmentFile=-/etc/default/uhmi-agl-wm
 ExecStart=/usr/bin/uhmi-agl-wm
-KillSignal=SIGKILL
 Restart=always
 RestartSec=1s
 

@@ -6,7 +6,6 @@ Type=simple
 User=agl-driver
 Environment=XDG_RUNTIME_DIR=/run/user/1001
 ExecStart=/usr/bin/ucl-lifecycle-manager
-KillSignal=SIGTERM
 TimeoutStopSec=10
 Restart=always
 RestartSec=2
