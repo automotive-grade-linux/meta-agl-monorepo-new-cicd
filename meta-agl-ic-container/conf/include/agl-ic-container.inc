@@ -11,3 +11,6 @@ include mc-conf-${BB_CURRENT_MC}.inc
 
 # network manager to use
 VIRTUAL-RUNTIME_net_manager = "systemd"
+
+# Enable demo gstreamer plugin usage
+LICENSE_FLAGS_ACCEPTED += "commercial_gstreamer1.0-plugins-ugly commercial_gstreamer1.0-libav commercial_ffmpeg"
