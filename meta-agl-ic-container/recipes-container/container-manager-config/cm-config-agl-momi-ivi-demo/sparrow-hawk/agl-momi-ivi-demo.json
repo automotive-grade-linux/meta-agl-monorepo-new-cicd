@@ -1,21 +1,22 @@
 {
-	"name": "agl-flutter-ivi-demo",
+	"name": "agl-momi-ivi-demo",
 	"role": "ivi",
 	"base": {
 		"autoboot": true,
-		"bootpriority": 20,
+		"bootpriority": 10,
 		"rootfs": {
-			"path": "/opt/container/guests/agl-flutter-ivi-demo/rootfs",
+			"path": "/opt/container/guests/agl-momi-ivi-demo/rootfs",
 			"filesystem":	"ext4",
 			"mode":		"rw",
 			"blockdev": [
-				"/dev/mmcblk0p7",
-				"/dev/mmcblk0p7"
+				"/dev/mmcblk0p3",
+				"/dev/mmcblk0p3"
 			]
 		},
 		"lifecycle": {
 			"halt": "SIGRTMIN+3",
-			"reboot": "SIGTERM"
+			"reboot": "SIGTERM",
+			"timeout": 15000
 		},
 		"cap": {
 			"drop": "sys_module mac_admin mac_override",
@@ -26,6 +27,18 @@
 			"HOME=/home/root"
 		]
 	},
+	"resource": [
+		{
+			"type":		"cgroupv2",
+			"object":	"cpuset.cpus",
+			"value":	"1-3"
+		},
+		{
+			"type":		"prlimit",
+			"object":	"rtprio",
+			"value":	"50"
+		}
+	],
 	"fs": {
 		"mount": [
 			{
@@ -58,13 +71,6 @@
 			},
 			{
 				"type": 	"directory",
-				"from": 	"/run/pipewire/pipewire-0",
-				"to":		"var/pipewire-0",
-				"fstype":	"none",
-				"option": 	"bind,optional,create=file"
-			},
-			{
-				"type": 	"directory",
 				"from": 	"/run/dlt",
 				"to":		"run/dlt",
 				"fstype":	"none",
@@ -72,7 +78,7 @@
 			},
 			{
 				"type": 	"directory",
-				"from": 	"/opt/container/guests/agl-flutter-ivi-demo/system.conf",
+				"from": 	"/opt/container/guests/agl-momi-ivi-demo/system.conf",
 				"to":		"etc/systemd/system.conf.d/10-environment.conf",
 				"fstype":	"none",
 				"option": 	"bind,optional,create=file"
@@ -98,61 +104,15 @@
 				"optional": 		1,
 				"wideallow": 	1,
 				"exclusive": 	0
-			}
-		],
-		"dynamic": [
-			{
-				"devpath": "/devices/platform/scb/fd500000.pcie/pci0000:00/0000:00:00.0/0000:01:00.0/usb1/",
-				"items": [
-					{
-						"subsystem": "usb",
-						"rule": {
-							"devtype": ["usb_device","usb_interface"],
-							"action": ["add", "remove"]
-						},
-						"behavior": {
-							"injection": 1,
-							"devnode": 0,
-							"allow": 0,
-							"permission": "rw"
-						}
-					},
-					{
-						"subsystem": "block",
-						"rule": {
-							"action": ["add", "remove","change"],
-							"extra" : [
-								{
-									"checker": "exclude-fs",
-									"value": "ext4"
-								}
-							]
-						},
-						"behavior": {
-							"injection": 1,
-							"devnode": 0,
-							"allow": 1,
-							"permission": "rwm"
-						}
-					}
-				]
 			},
 			{
-				"devpath": "/devices/platform/scb/fd500000.pcie/pci0000:00/0000:00:00.0/0000:01:00.0/usb1/",
-				"items": [
-					{
-						"subsystem": "hid",
-						"rule": {
-							"action": ["add", "remove"]
-						},
-						"behavior": {
-							"injection": 1,
-							"devnode": 1,
-							"allow": 1,
-							"permission": "rw"
-						}
-					}
-				]
+				"type": 		"devdir",
+				"from": 		"/dev/snd",
+				"to":			"dev/snd",
+				"devnode":		"/dev/snd/controlC0",
+				"optional": 		1,
+				"wideallow": 	1,
+				"exclusive": 	0
 			}
 		]
 	},
@@ -161,18 +121,11 @@
 			{
 				"type": 	"veth",
 				"param": {
-					"name":	"veth0",
+					"name":	"eth0",
 					"link":	"lxcbr0",
 					"flags":	"up",
 					"hwaddr":	"00:16:3e:xx:xx:xx",
 					"mode": "bridge"
-				}
-			},
-			{
-				"type": 	"vxcan",
-				"param": {
-					"name":	"can0",
-					"upstream": 	"can0"
 				}
 			}
 		]
