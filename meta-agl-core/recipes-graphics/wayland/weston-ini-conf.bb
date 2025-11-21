@@ -24,6 +24,9 @@ S = "${WORKDIR}"
 
 inherit update-alternatives
 
+# Reuse include file from upstream weston since we have the same requirements
+require recipes-graphics/wayland/required-distro-features.inc
+
 # Default primary display/orientation fragment
 WESTON_DISPLAYS ?= "hdmi-a-1-90"
 
