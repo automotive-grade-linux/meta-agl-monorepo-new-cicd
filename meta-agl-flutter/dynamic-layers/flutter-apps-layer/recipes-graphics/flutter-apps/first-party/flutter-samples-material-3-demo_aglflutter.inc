@@ -8,6 +8,9 @@ APP_CONFIG = "flutter-samples-material-3-demo.toml"
 
 inherit systemd
 
+# Required after meta-flutter 3.35.7 update, revisit in future
+do_compile[network] = "1"
+
 do_install:append() {
     install -D -m 0644 ${WORKDIR}/${BPN}.service ${D}${systemd_system_unitdir}/${BPN}.service
 }
