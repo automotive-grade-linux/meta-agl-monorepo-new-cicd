@@ -6,7 +6,4 @@ inherit packagegroup
 RDEPENDS:${PN} += " \
     ucl-tools \
     ula-tools \
-    uhmi-ivi-wm \
-    weston \
-    wayland-ivi-extension \
 "

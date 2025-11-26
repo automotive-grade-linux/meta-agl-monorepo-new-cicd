@@ -1,8 +1,6 @@
 SUMMARY = "AGL Unified HMI demo preconfigured weston sender image"
 LICENSE = "MIT"
 
-DEPENDS = "uhmi-ivi-wm"
-
 require recipes-platform/images/agl-image-weston.bb
 
 IMAGE_FEATURES += "ssh-server-openssh"
