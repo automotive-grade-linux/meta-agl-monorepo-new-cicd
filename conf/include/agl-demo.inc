@@ -40,3 +40,5 @@ PROVIDES:pn-nativesdk-clang = "nativesdk-llvm"
 # For systemd CAN bus configuration
 MACHINE_FEATURES:append:s4sk = " canfd"
 CANBUS_NETWORK_CONFIG:s4sk = "canbus-can-fd.network"
+# Assume CAN FD HATs now
+CANBUS_NETWORK_CONFIG:rpi = "canbus-can-fd.network"
