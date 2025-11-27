@@ -8,3 +8,7 @@ IMAGE_INSTALL:append = " \
     kernel-devicetree \
 "
 
+# Mask out base-files and systemd bbappends to avoid changing systemd-tmpfiles
+# behavior, see SPEC-4256 for a more involved explanation.
+BBMASK += "meta-renesas/meta-rcar-gateway/recipes-core/base-files/ meta-renesas/meta-rcar-gateway/recipes-core/systemd/"
+
