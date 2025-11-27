@@ -5,6 +5,7 @@ SUMMARY = "AGL demo control panel image"
 require agl-demo-features.inc
 
 IMAGE_FEATURES += "splash package-management ssh-server-openssh"
+IMAGE_FEATURES += "${@bb.utils.contains('DISTRO_FEATURES', 'agl-devel', 'can-test-tools' , '', d)}"
 
 # NOTE: The client key and certificate in kuksa-certificates-agl-client
 #       seem required by kuksa-client at the moment even though client
