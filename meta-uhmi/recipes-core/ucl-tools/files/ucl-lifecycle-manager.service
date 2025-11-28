@@ -4,7 +4,7 @@ Description=ucl-lifecycle-manager
 [Service]
 Type=simple
 User=agl-driver
-Environment=XDG_RUNTIME_DIR=/run/user/1001
+EnvironmentFile=-/etc/default/ucl-lifecycle-manager
 ExecStart=/usr/bin/ucl-lifecycle-manager
 TimeoutStopSec=10
 Restart=always

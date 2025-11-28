@@ -5,6 +5,7 @@ After=ula-node.service
 [Service]
 Type=simple
 User=agl-driver
+EnvironmentFile=-/etc/default/ula-client-manager
 ExecStart=/usr/bin/ula-client-manager
 TimeoutStopSec=10
 Restart=always

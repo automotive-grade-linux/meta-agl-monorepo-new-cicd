@@ -12,6 +12,7 @@ IMAGE_FEATURES += "ssh-server-openssh"
 IMAGE_INSTALL += " \
     packagegroup-rvgpu \
     packagegroup-ddfw-agl \
+    uhmi-config-agl \
     agl-compositor \
     native-shell-client \
     uhmi-udev-conf \

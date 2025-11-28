@@ -9,6 +9,7 @@ IMAGE_FEATURES += "ssh-server-openssh"
 IMAGE_INSTALL += " \
     packagegroup-rvgpu \
     packagegroup-ddfw \
+    uhmi-config-weston \
 "
 
 UHMI_HOSTNAME ?= "agl-host1"

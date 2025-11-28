@@ -5,6 +5,7 @@ Description=ucl-node
 Type=simple
 User=agl-driver
 Environment=XDG_RUNTIME_DIR=/run/user/1001
+EnvironmentFile=-/etc/default/ucl-node
 ExecStart=/usr/bin/ucl-node
 TimeoutStopSec=10
 Restart=always

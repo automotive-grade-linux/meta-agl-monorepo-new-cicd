@@ -4,6 +4,7 @@ Description=ula-node
 [Service]
 Type=simple
 User=agl-driver
+EnvironmentFile=-/etc/default/ula-node
 ExecStart=/usr/bin/ula-node
 TimeoutStopSec=10
 Restart=always

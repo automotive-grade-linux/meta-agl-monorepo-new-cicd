@@ -12,7 +12,7 @@ IMAGE_FEATURES += "ssh-server-openssh package-management"
 IMAGE_INSTALL += " \
     packagegroup-rvgpu \
     packagegroup-ddfw-agl \
-    uhmi-config-sender \
+    uhmi-config-agl \
     agl-compositor \
     native-shell-client \
     glmark2 \
