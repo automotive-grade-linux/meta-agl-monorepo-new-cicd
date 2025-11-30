@@ -11,11 +11,11 @@ DEPENDS = "systemd libmnl cjson lxc util-linux"
 PV = "0.1.0+rev${SRCPV}"
 
 SRC_URI = " \
-    git://github.com/AGLExport/container-manager.git;branch=staging2;protocol=https \
+    git://github.com/AGLExport/container-manager.git;branch=master;protocol=https \
     file://container-manager.service \
     file://container-manager.json \
     "
-SRCREV = "58c1fbc64aafec86fc64a65a18a77f348257cb2b"
+SRCREV = "0f578e0d93be14c31b56c6944ff9e60217e6df17"
 
 S = "${WORKDIR}/git"
 
