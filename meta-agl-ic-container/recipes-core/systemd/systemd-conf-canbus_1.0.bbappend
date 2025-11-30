@@ -1,1 +1,2 @@
-CANBUS_NETWORK_CONFIG = "${@bb.utils.contains('AGL_FEATURES', 'agl-refhw-h3', 'canbus-can-fd.network', 'canbus-can.network', d)}"
+CANBUS_NETWORK_CONFIG:rcar-gen3 = "canbus-can-fd.network"
+CANBUS_NETWORK_CONFIG:rcar-gen4 = "canbus-can-fd.network"
