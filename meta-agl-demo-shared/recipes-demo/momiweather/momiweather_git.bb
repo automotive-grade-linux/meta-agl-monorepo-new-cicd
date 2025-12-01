@@ -13,7 +13,7 @@ DEPENDS = " \
 
 PV = "1.0.0"
 
-SRC_URI = "git://github.com/AGLExport/momiweather.git;protocol=https;branch=main \
+SRC_URI = "git://git.automotivelinux.org/apps/momiweather.git;protocol=https;branch=${AGL_BRANCH} \
            file://momiweather.service \
            file://momiweather \
           "
