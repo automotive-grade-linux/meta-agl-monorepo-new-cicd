@@ -1,3 +1,8 @@
+# Add Feature specific packages
+FEATURE_PACKAGES:aglros2 = " \
+    packagegroup-agl-ros2 \
+"
+
 # Add minimal core ROS
 IMAGE_INSTALL:append = " \
     ros-core \
