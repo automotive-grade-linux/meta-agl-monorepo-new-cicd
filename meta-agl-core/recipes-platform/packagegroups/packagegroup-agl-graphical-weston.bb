@@ -3,8 +3,8 @@ LICENSE = "MIT"
 
 inherit packagegroup features_check
 
-# weston needs wayland in DISTRO_FEATURES
-REQUIRED_DISTRO_FEATURES = "wayland"
+# Reuse include file from upstream weston since we have the same requirements
+require recipes-graphics/wayland/required-distro-features.inc
 
 RDEPENDS:${PN} += " \
     weston \
