@@ -1,0 +1,90 @@
+From ffdd201e93baea5b8375e34e1f52ab9ac86e1bee Mon Sep 17 00:00:00 2001
+From: Naoto Yamaguchi <naoto.yamaguchi@aisin.co.jp>
+Date: Fri, 5 Dec 2025 23:27:10 +0900
+Subject: [PATCH] Fix installation path for the native linux environment
+ (maplibre#179)
+
+Upstream-Status: Pending
+
+Signed-off-by: Naoto Yamaguchi <naoto.yamaguchi@aisin.co.jp>
+---
+ src/location/plugins/CMakeLists.txt | 20 ++++++++++----------
+ src/quick/plugins/CMakeLists.txt    | 12 ++++++------
+ 2 files changed, 16 insertions(+), 16 deletions(-)
+
+diff --git a/src/location/plugins/CMakeLists.txt b/src/location/plugins/CMakeLists.txt
+index 94cbc85..d8d47b0 100644
+--- a/src/location/plugins/CMakeLists.txt
++++ b/src/location/plugins/CMakeLists.txt
+@@ -70,10 +70,10 @@ install(
+ install(
+     TARGETS ${MLN_QT_GEOSERVICES_PLUGIN} ${GeoServicesPluginOutputTargets}
+     EXPORT ${MLN_QT_NAME}LocationPluginGeoServicesTargets
+-    ARCHIVE DESTINATION "plugins/geoservices"
+-    LIBRARY DESTINATION "plugins/geoservices"
+-    OBJECTS DESTINATION "plugins/geoservices"
+-    RUNTIME DESTINATION "plugins/geoservices"
++    ARCHIVE DESTINATION "${QT6_INSTALL_PLUGINS}/geoservices"
++    LIBRARY DESTINATION "${QT6_INSTALL_PLUGINS}/geoservices"
++    OBJECTS DESTINATION "${QT6_INSTALL_PLUGINS}/geoservices"
++    RUNTIME DESTINATION "${QT6_INSTALL_PLUGINS}/geoservices"
+ )
+ 
+ # QtLocation QML extension plugin
+@@ -165,18 +165,18 @@ install(
+ install(
+     TARGETS ${MLN_QT_QML_PLUGIN_LOCATION} ${QmlLocationPluginOutputTargets}
+     EXPORT ${MLN_QT_NAME}LocationPluginQmlTargets
+-    ARCHIVE DESTINATION "qml/MapLibre/Location"
+-    LIBRARY DESTINATION "qml/MapLibre/Location"
+-    OBJECTS DESTINATION "qml/MapLibre/Location"
+-    RUNTIME DESTINATION "qml/MapLibre/Location"
++    ARCHIVE DESTINATION "${QT6_INSTALL_QML}/MapLibre/Location"
++    LIBRARY DESTINATION "${QT6_INSTALL_QML}/MapLibre/Location"
++    OBJECTS DESTINATION "${QT6_INSTALL_QML}/MapLibre/Location"
++    RUNTIME DESTINATION "${QT6_INSTALL_QML}/MapLibre/Location"
+ )
+ install(
+     FILES
+         "${CMAKE_CURRENT_BINARY_DIR}/MapLibre/Location/qmldir"
+-    DESTINATION "qml/MapLibre/Location"
++    DESTINATION "${QT6_INSTALL_QML}/MapLibre/Location"
+ )
+ install(
+     FILES
+         "${CMAKE_CURRENT_BINARY_DIR}/MapLibre/Location/${MLN_QT_QML_PLUGIN_LOCATION}.qmltypes"
+-    DESTINATION "qml/MapLibre/Location"
++    DESTINATION "${QT6_INSTALL_QML}/MapLibre/Location"
+ )
+diff --git a/src/quick/plugins/CMakeLists.txt b/src/quick/plugins/CMakeLists.txt
+index 7540b50..83f67b0 100644
+--- a/src/quick/plugins/CMakeLists.txt
++++ b/src/quick/plugins/CMakeLists.txt
+@@ -83,18 +83,18 @@ install(
+ install(
+     TARGETS ${MLN_QT_QML_PLUGIN} ${QmlPluginOutputTargets}
+     EXPORT ${MLN_QT_NAME}QuickPluginQmlTargets
+-    ARCHIVE DESTINATION "qml/MapLibre"
+-    LIBRARY DESTINATION "qml/MapLibre"
+-    OBJECTS DESTINATION "qml/MapLibre"
+-    RUNTIME DESTINATION "qml/MapLibre"
++    ARCHIVE DESTINATION "${QT6_INSTALL_QML}/MapLibre"
++    LIBRARY DESTINATION "${QT6_INSTALL_QML}/MapLibre"
++    OBJECTS DESTINATION "${QT6_INSTALL_QML}/MapLibre"
++    RUNTIME DESTINATION "${QT6_INSTALL_QML}/MapLibre"
+ )
+ install(
+     FILES
+         "${CMAKE_CURRENT_BINARY_DIR}/MapLibre/qmldir"
+-    DESTINATION "qml/MapLibre"
++    DESTINATION "${QT6_INSTALL_QML}/MapLibre"
+ )
+ install(
+     FILES
+         "${CMAKE_CURRENT_BINARY_DIR}/MapLibre/${MLN_QT_QML_PLUGIN}.qmltypes"
+-    DESTINATION "qml/MapLibre"
++    DESTINATION "${QT6_INSTALL_QML}/MapLibre"
+ )
+-- 
+2.43.0
+
