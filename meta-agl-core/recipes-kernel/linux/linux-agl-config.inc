@@ -43,7 +43,6 @@ AGL_KCONFIG_FRAGMENTS += " \
     ${@bb.utils.contains('DISTRO_FEATURES', 'selinux', 'selinux.cfg', '', d)} \
     ${@bb.utils.contains('DISTRO_FEATURES', 'systemd', 'systemd-required.cfg', '', d)} \
     ${@bb.utils.contains('DISTRO_FEATURES', 'systemd', 'systemd-sandbox.cfg', '', d)} \
-    lttng.cfg \
 "
 
 # Base ALSA support and other sound related configuration

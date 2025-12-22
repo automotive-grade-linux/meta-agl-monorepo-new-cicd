@@ -14,7 +14,3 @@ INHERIT:remove = "create-spdx"
 # enforce nvme0n1p1
 TNSPEC_BOOTDEV:forcevariable = "nvme0n1p1"
 TNSPEC_BOOTDEV_DEFAULT:forcevariable = "nvme0n1p1"
-
-# DISABLE LTTNG due to FTBS
-LTTNGMODULES:forcevariable = ""
-LTTNGTOOLS:forcevariable = ""

@@ -33,14 +33,3 @@ RPI_KERNEL_DEVICETREE_OVERLAYS:append:rpi = " \
     overlays/seeed-can-fd-hat-v1.dtbo \
     overlays/seeed-can-fd-hat-v2.dtbo \
 "
-
-# Disable until upstream poky gets lttng-modules 2.13.16 or newer
-# that can support 6.12 kernel.
-# NOTE:
-#   lttng-tools & babeltrace do compile, but will not be useful without
-#   lttng-modules.
-LTTNGMODULES:rpi = ""
-LTTNGTOOLS:rpi = ""
-LTTNGUST:rpi = ""
-BABELTRACE:rpi = ""
-BABELTRACE2:rpi = ""

@@ -9,7 +9,3 @@ BBMASK += " \
 MACHINE_EXTRA_RRECOMMENDS:append = " \
     alsa-state \
 "
-
-# lttng-modules does not build against the meta-rockchip kernel, remove
-# lttng-tools from packagegroup-core-tools-profile to avoid it being built.
-LTTNGTOOLS:rockchip = ""
