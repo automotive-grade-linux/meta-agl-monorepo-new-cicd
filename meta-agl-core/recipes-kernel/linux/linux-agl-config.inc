@@ -49,8 +49,8 @@ AGL_KCONFIG_FRAGMENTS += " \
 # Base ALSA support and other sound related configuration
 AGL_KCONFIG_FRAGMENTS += "sound.cfg"
 
-# Enable support for SystemTap
-AGL_KCONFIG_FRAGMENTS += "${@bb.utils.contains('DISTRO_FEATURES', 'agl-devel', 'systemtap.cfg', '', d)}"
+# Enable basic perf tracing support
+AGL_KCONFIG_FRAGMENTS += "${@bb.utils.contains('DISTRO_FEATURES', 'agl-devel', 'tracing-basic.cfg', '', d)}"
 
 #
 # Feature override and qemu specific appends:
