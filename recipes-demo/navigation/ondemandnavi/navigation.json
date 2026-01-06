@@ -4,7 +4,7 @@
   "aud": [
     "kuksa.val"
   ],
-  "iat": 1516239022,
-  "exp": 1767225599,
+  "iat": 1767733200,
+  "exp": 1924991999,
   "scope": "provide:Vehicle.Cabin.Infotainment.Navigation provide:Vehicle.CurrentLocation"
 }

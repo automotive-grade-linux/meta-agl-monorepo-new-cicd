@@ -6,5 +6,5 @@
   ],
   "iat": 1767733200,
   "exp": 1924991999,
-  "scope": "read:Vehicle.Cabin.SteeringWheel.Switches"
+  "scope": "provide"
 }
