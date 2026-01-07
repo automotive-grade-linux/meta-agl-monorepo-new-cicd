@@ -17,6 +17,7 @@ DEPENDS = " \
     grpc grpc-native \
     agl-compositor \
     applaunchd \
+    systemd \
 "
 
 PV = "1.0+git${SRCPV}"
@@ -26,7 +27,7 @@ SRC_URI = "git://gerrit.automotivelinux.org/gerrit/apps/homescreen;protocol=http
            file://kuksa.toml \
            file://homescreen.token \
            "
-SRCREV = "0253013fb268f820a965bbebd8388f78686ccef6"
+SRCREV = "64356028637665f8762bd0c4845f630c17f25f10"
 
 S = "${WORKDIR}/git"
 

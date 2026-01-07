@@ -4,9 +4,10 @@ After=agl-compositor.service applaunchd.service
 Before=graphical.target
 
 [Service]
-Type=simple
+Type=notify
 User=agl-driver
 Environment=XDG_RUNTIME_DIR=/run/user/1001/
+Environment=LANG=C.utf8
 EnvironmentFile=-/etc/default/homescreen
 ExecStart=/usr/bin/homescreen
 Restart=on-failure
