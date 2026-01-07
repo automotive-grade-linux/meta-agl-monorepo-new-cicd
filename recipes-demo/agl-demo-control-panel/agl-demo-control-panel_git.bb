@@ -6,8 +6,9 @@ PV = "1.0+git${SRCPV}"
 
 SRC_URI = "git://gerrit.automotivelinux.org/gerrit/src/agl-demo-control-panel;protocol=https;branch=${AGL_BRANCH} \
            file://agl-demo-control-panel.service \
+           file://agl-demo-control-panel.token \
 "
-SRCREV = "2cfe669d76c27268693d8f51888e56ec4f88f6c8"
+SRCREV = "92060bb196fb9a9573a62ebe0587593db59d4100"
 S = "${WORKDIR}/git"
 
 inherit systemd allarch update-alternatives
@@ -43,6 +44,10 @@ do_install() {
         -e 's/steering-wheel-enabled = true/steering-wheel-enabled = false/' \
         ${S}/extras/config.ini > \
         ${D}${sysconfdir}/agl-demo-control-panel/config.ini.gateway-demo
+
+    # Install databroker authorization token
+    install -d ${D}${sysconfdir}/xdg/AGL/agl-demo-control-panel
+    install -m 0644 ${WORKDIR}/agl-demo-control-panel.token ${D}${sysconfdir}/xdg/AGL/agl-demo-control-panel/
 }
 
 
