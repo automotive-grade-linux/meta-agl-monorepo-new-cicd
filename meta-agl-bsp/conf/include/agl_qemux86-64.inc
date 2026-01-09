@@ -1,3 +1,5 @@
+require agl_qemu.inc
+
 # Configurations to run on VirtualBox/VMWare
 #
 # To get wide screen than default, there are a selection of resolutions
@@ -31,7 +33,7 @@ MACHINE_EXTRA_RRECOMMENDS:append = " \
 # NOTE: wic.{xz,bmap} are here since qemu targets override
 #       AGL_DEFAULT_IMAGE_FSTYPES to not include them, but for Intel
 #       we actually do want them for use on physical hardware.
-AGL_EXTRA_IMAGE_FSTYPES = "wic.xz wic.bmap ${@bb.utils.contains('AGL_FEATURES', 'AGLCI', 'wic.vmdk.xz', 'wic.vmdk', d)}"
+AGL_EXTRA_IMAGE_FSTYPES = "wic.zst wic.bmap ${@bb.utils.contains('AGL_FEATURES', 'AGLCI', 'wic.vmdk.zst', 'wic.vmdk', d)}"
 
 # Root device
 ROOT_VM = "root=PARTUUID=${DISK_SIGNATURE}-02"

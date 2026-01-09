@@ -1,8 +1,7 @@
+require agl_qemu.inc
+
 # Root device
 ROOT_VM = "root=PARTUUID=${DISK_SIGNATURE}-02"
-
-# Use our own wks file
-WKS_FILE = "directdisk.wks.in"
 
 # Use pixman as software renderer to avoid high cpu consumption by GL-renderer
 WESTON_USE_PIXMAN = "1"
