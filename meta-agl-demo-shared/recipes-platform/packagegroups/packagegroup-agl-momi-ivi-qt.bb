@@ -14,13 +14,14 @@ PACKAGES = "\
 RDEPENDS:${PN} += "\
     qtbase qtbase-plugins qtbase-qmlplugins \
     qtdeclarative qtdeclarative-qmlplugins \
-    qt3d qt3d-plugins qt3d-qmlplugins\
-    qtquick3d qtquick3d \
+    qt3d qt3d-plugins qt3d-qmlplugins \
+    qtquick3d qtquick3d-plugins qtquick3d-qmlplugins \
     qtwayland qtwayland-plugins qtwayland-qmlplugins \
     qtlocation qtlocation-plugins qtlocation-qmlplugins \
     qtpositioning qtpositioning-plugins qtpositioning-qmlplugins \
     qtsvg qtsvg-plugins qtsvg-qmlplugins \
     qtmultimedia qtmultimedia-plugins qtmultimedia-qmlplugins \
+    maplibre-native-qt maplibre-native-qt-plugins maplibre-native-qt-qmlplugins \
     \
     gstreamer1.0 \
     gstreamer1.0-plugins-base-meta \

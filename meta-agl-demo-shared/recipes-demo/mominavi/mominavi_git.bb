@@ -15,11 +15,11 @@ DEPENDS = " \
 
 PV = "2.0.0"
 
-SRC_URI = "git://git.automotivelinux.org/apps/mominavi;protocol=https;branch=${AGL_BRANCH} \
+SRC_URI = "git://gerrit.automotivelinux.org/gerrit/apps/mominavi;protocol=https;branch=${AGL_BRANCH} \
            file://mominavi.service \
            file://mominavi \
           "
-SRCREV = "e36c747c21907b154d6170132933d5ee6d0596eb"
+SRCREV = "1310154658b45a1d3d3685fb2efad62f40f2efe9"
 
 S = "${WORKDIR}/git"
 
@@ -51,4 +51,5 @@ RDEPENDS:${PN} = " \
     qtsvg qtsvg-plugins qtsvg-qmlplugins \
     qtwebsockets qtwebsockets-plugins qtwebsockets-qmlplugins \
     qtlocation qtlocation-plugins qtlocation-qmlplugins \
+    maplibre-native-qt maplibre-native-qt-plugins maplibre-native-qt-qmlplugins \
     "
