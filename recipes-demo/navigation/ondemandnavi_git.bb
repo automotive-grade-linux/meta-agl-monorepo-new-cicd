@@ -14,7 +14,7 @@ SRC_URI = "git://gerrit.automotivelinux.org/gerrit/apps/ondemandnavi;protocol=ht
            file://kuksa.toml \
            file://navigation.token \
            "
-SRCREV = "5fdb5a29f54919a9ab6050f7408bfa31037a8d7d"
+SRCREV = "ba7ba4fbf393b6288717344f1a9bcd6a1a6965a1"
 
 S = "${WORKDIR}/git"
 
@@ -40,6 +40,9 @@ RDEPENDS:${PN} += " \
     qtquickcontrols2-agl \
     qtquickcontrols2-agl-style \
     qtlocation \
+    maplibre-native-qt \
+    maplibre-native-qt-plugins \
+    maplibre-native-qt-qmlplugins \
     flite \
     libqtappfw \
     openjtalk \
