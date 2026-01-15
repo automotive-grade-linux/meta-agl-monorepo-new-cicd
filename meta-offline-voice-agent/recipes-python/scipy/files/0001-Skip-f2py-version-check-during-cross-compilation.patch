@@ -1,0 +1,32 @@
+From f940710bd171615d6e65cbc138816f1c28177f26 Mon Sep 17 00:00:00 2001
+From: Anuj Solanki <anuj603362@gmail.com>
+Date: Sun, 4 Jan 2026 10:13:24 +0000
+Subject: [PATCH] Skip f2py version check during cross-compilation
+
+Skip f2py version check in scipy's build to avoid compilation
+errors, f2py -v may fail when scipy-native attempts to import
+modules that depend on LAPACK symbols not available in the build
+environment.
+
+Upstream-Status: Inappropriate [AGL specific]
+Signed-off-by: Anuj Solanki <anuj603362@gmail.com>
+---
+ scipy/meson.build | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
+
+diff --git a/scipy/meson.build b/scipy/meson.build
+index a085784..b1d319c 100644
+--- a/scipy/meson.build
++++ b/scipy/meson.build
+@@ -153,10 +153,7 @@ f2py = find_program('f2py')
+ # details).
+ # This should be robust enough. If not, we can make this more complex, using
+ # a fallback to `python -m f2py` rather than erroring out.
+-f2py_version = run_command([f2py, '-v'], check: true).stdout().strip()
+-if f2py_version.version_compare('<'+min_numpy_version)
+-  error(f'Found f2py executable is too old: @f2py_version@')
+-endif
++f2py_version = run_command([f2py, '-v'], check: false).stdout().strip()
+ 
+ # Note: this generato cannot handle:
+ # 1. `.pyf.src` files, because `@BASENAME@` will still include .pyf
