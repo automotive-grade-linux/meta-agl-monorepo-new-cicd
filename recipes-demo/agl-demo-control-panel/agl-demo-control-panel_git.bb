@@ -8,7 +8,7 @@ SRC_URI = "git://gerrit.automotivelinux.org/gerrit/src/agl-demo-control-panel;pr
            file://agl-demo-control-panel.service \
            file://agl-demo-control-panel.token \
 "
-SRCREV = "92060bb196fb9a9573a62ebe0587593db59d4100"
+SRCREV = "7bfb3681f42d83e8909723567d35af5415d05414"
 S = "${WORKDIR}/git"
 
 inherit systemd allarch update-alternatives
