@@ -15,6 +15,7 @@ AGL_DEVEL_INSTALL = " \
     packagegroup-agl-kuksa-val-databroker-devel \
     tcpdump \
     simple-can-simulator \
+    kuksa-client \
 "
 
 IMAGE_INSTALL += " \

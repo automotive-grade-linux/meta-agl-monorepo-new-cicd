@@ -12,5 +12,9 @@ IMAGE_INSTALL:remove = " \
     kuksa-databroker-env-open \
 "
 
+IMAGE_INSTALL += "\
+    ${@bb.utils.contains("DISTRO_FEATURES", "agl-devel", "kuksa-client" , "", d)} \
+"
+
 GUEST_VM1_IMAGE = "agl-ivi-demo-flutter-guest-preconfigured-gateway"
 GUEST_VM2_IMAGE = "agl-cluster-demo-flutter-guest-preconfigured-gateway"
