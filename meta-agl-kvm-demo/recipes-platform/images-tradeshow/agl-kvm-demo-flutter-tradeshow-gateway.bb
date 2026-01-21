@@ -1,6 +1,6 @@
-require agl-kvm-demo-flutter-preconfigured.bb
+require agl-kvm-demo-flutter-tradeshow.bb
 
-SUMMARY = "AGL KVM + gateway preconfigured Flutter demo image"
+SUMMARY = "AGL KVM + gateway tradeshow Flutter demo image"
 
 # We only want KUKSA.val client support, not the databroker (since
 # that will be running on the gateway)
@@ -16,5 +16,5 @@ IMAGE_INSTALL += "\
     ${@bb.utils.contains("DISTRO_FEATURES", "agl-devel", "kuksa-client" , "", d)} \
 "
 
-GUEST_VM1_IMAGE = "agl-ivi-demo-flutter-guest-preconfigured-gateway"
-GUEST_VM2_IMAGE = "agl-cluster-demo-flutter-guest-preconfigured-gateway"
+GUEST_VM1_IMAGE = "agl-ivi-demo-flutter-guest-tradeshow-gateway"
+GUEST_VM2_IMAGE = "agl-cluster-demo-flutter-guest-tradeshow-gateway"

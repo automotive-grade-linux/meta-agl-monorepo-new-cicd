@@ -1,6 +1,6 @@
-require agl-ivi-demo-flutter-preconfigured.bb
+require agl-ivi-demo-flutter-tradeshow.bb
 
-SUMMARY = "AGL IVI preconfigured gateway demo Flutter image"
+SUMMARY = "AGL IVI tradeshow gateway demo Flutter image"
 
 # We do not want a local databroker instance
 IMAGE_FEATURES:remove = "kuksa-val-databroker"

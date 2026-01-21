@@ -1,6 +1,6 @@
-require agl-cluster-demo-qt.bb
+require recipes-platform/images/agl-cluster-demo-qt.bb
 
-SUMMARY = "AGL Cluster preconfigured demo Qt image"
+SUMMARY = "AGL Cluster tradeshow demo Qt image"
 
 # We do not want a local databroker instance
 IMAGE_FEATURES:remove = "kuksa-val-databroker"
@@ -12,7 +12,7 @@ IMAGE_INSTALL:remove = "weston-terminal-conf"
 # default compositor configuration needs to be replaced.
 IMAGE_INSTALL:remove = "weston-ini-conf-landscape"
 
-KUKSA_CONF = "kuksa-conf-demo-preconfigured"
+KUKSA_CONF = "kuksa-conf-demo-tradeshow"
 
 IMAGE_INSTALL += " \
     cluster-demo-config \

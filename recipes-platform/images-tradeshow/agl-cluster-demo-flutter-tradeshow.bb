@@ -1,6 +1,6 @@
-require agl-cluster-demo-flutter.bb
+require recipes-platform/images/agl-cluster-demo-flutter.bb
 
-SUMMARY = "AGL Cluster preconfigured demo Flutter image"
+SUMMARY = "AGL Cluster tradeshow demo Flutter image"
 
 # We do not want a local databroker instance
 IMAGE_FEATURES:remove = "kuksa-val-databroker"
@@ -11,7 +11,7 @@ IMAGE_INSTALL:remove = "weston-ini-conf-landscape"
 
 # Application KUKSA configuration needs to be replaced for
 # the full demo to handle different databroker configuration.
-KUKSA_CONF = "kuksa-conf-demo-preconfigured"
+KUKSA_CONF = "kuksa-conf-demo-tradeshow"
 
 IMAGE_INSTALL += " \
     psplash-inverted-config \

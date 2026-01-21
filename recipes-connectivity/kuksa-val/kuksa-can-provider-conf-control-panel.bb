@@ -21,5 +21,6 @@ ALTERNATIVE_LINK_NAME[kuksa-can-provider-env] = "${sysconfdir}/default/kuksa-can
 RPROVIDES:${PN} = "kuksa-can-provider-env"
 ALTERNATIVE:${PN} = "kuksa-can-provider-env"
 ALTERNATIVE_TARGET_${PN} = "${sysconfdir}/default/kuksa-can-provider.control-panel"
+ALTERNATIVE_PRIORITY_${PN} = "10"
 
 RDEPENDS:${PN} += "kuksa-can-provider kuksa-can-provider-conf-agl"

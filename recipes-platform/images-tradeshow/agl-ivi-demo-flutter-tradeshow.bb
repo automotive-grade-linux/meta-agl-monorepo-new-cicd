@@ -1,13 +1,11 @@
-require agl-ivi-demo-qt.bb
+require recipes-platform/images/agl-ivi-demo-flutter.bb
 
-SUMMARY = "AGL IVI preconfigured demo Qt image"
+SUMMARY = "AGL IVI tradeshow demo Flutter image"
 
 IMAGE_FEATURES += "agl-demo-cluster-support"
 
 # We do not want weston-terminal visible
 IMAGE_INSTALL:remove = "weston-terminal-conf"
-
-KUKSA_CONF = "kuksa-conf-demo-preconfigured"
 
 IMAGE_INSTALL += " \
     weston-ini-conf-remoting \

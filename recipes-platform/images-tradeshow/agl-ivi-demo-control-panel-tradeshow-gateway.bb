@@ -1,4 +1,4 @@
-require agl-ivi-demo-control-panel.bb
+require recipes-platform/images/agl-ivi-demo-control-panel.bb
 
 SUMMARY = "AGL gateway demo control panel image"
 

@@ -1,6 +1,6 @@
-require agl-kvm-demo.bb
+require recipes-platform/images/agl-kvm-demo.bb
 
-SUMMARY = "AGL KVM preconfigured Flutter demo image"
+SUMMARY = "AGL KVM tradeshow Flutter demo image"
 
 # The databroker runs on the host to simplify things when running
 # clients on the host instead of just in the guests.
@@ -37,5 +37,5 @@ IMAGE_INSTALL += "\
     ${HOST_AUDIO_INSTALL} \
 "
 
-GUEST_VM1_IMAGE = "agl-ivi-demo-flutter-guest-preconfigured"
-GUEST_VM2_IMAGE = "agl-cluster-demo-flutter-guest-preconfigured"
+GUEST_VM1_IMAGE = "agl-ivi-demo-flutter-guest-tradeshow"
+GUEST_VM2_IMAGE = "agl-cluster-demo-flutter-guest-tradeshow"
