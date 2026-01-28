@@ -1,0 +1,91 @@
+From e39fa57f6b323ced18d57d48dbc74a0c915fb3f3 Mon Sep 17 00:00:00 2001
+From: Laszlo Agocs <lagocs83@gmail.com>
+Date: Wed, 2 Apr 2025 11:08:48 +0200
+Subject: [PATCH] Revert "rhi: gl: Maintain Qt 5 compat wrt disk cache
+ behavior"
+
+This reverts commit 38279dea558b06cef6c1d345962df3063fd12c5b.
+
+Causes endless complaints about old GPUs (e.g. PowerVR) on Android and
+embedded Linux.
+
+Qt 6.8.2 restored the Qt 5 behavior of writing program binaries to files
+every time a GL shader program is linked. That is in addition to the Qt
+6 pipeline cache, which writes out all collected program binaries once
+in one go, when the QQuickWindow is closing.
+
+The Qt 6 abstractions are modeled after the VkPipelineCache-style
+system, meaning no way to query and write out individual
+program/pipleline binaries, just an ever-growing blob containing
+everything encountered so far, which we then want to do rarely due to
+the potential cost and the size of the blob, so e.g. when the Quick
+scene is shutting down.
+
+Before 6.8.2, Qt 6 did the logical thing and disabled the Qt 5 legacy GL
+disk cache code path, since we do not need two caches concurrently. From
+6.8.2 on, when running with OpenGL, there are now two parallel disk
+caches. Because the Qt 5 style one works even if the application is
+killed. Which is unexpectedly common on mobile/embedded.
+
+Pick-to: 6.8
+Fixes: QTBUG-133904
+Fixes: QTBUG-134245
+Fixes: QTBUG-134089
+Fixes: QTBUG-135411
+Fixes: QTBUG-134496
+Fixes: QTBUG-135810
+Change-Id: Icbd880898941195fcbc2da544e1599867c6d5f51
+Reviewed-by: Eskil Abrahamsen Blomfeldt <eskil.abrahamsen-blomfeldt@qt.io>
+(cherry picked from commit a589ef5cff160701316b3eebf2139ea9b55b0de5)
+Reviewed-by: Qt Cherry-pick Bot <cherrypick_bot@qt-project.org>
+(cherry picked from commit cdb2b134bc3cd45ae164ae6ee310ece6c1f339f8)
+Upstream-Status: Backport [https://code.qt.io/cgit/qt/qtbase.git/commit/?h=6.9&id=e39fa57f]
+Signed-off-by: Scott Murray <scott.murray@konsulko.com>
+---
+ src/gui/rhi/qrhigles2.cpp | 21 ++++++++-------------
+ 1 file changed, 8 insertions(+), 13 deletions(-)
+
+diff --git a/src/gui/rhi/qrhigles2.cpp b/src/gui/rhi/qrhigles2.cpp
+index cd02cca8f94..34590bc9728 100644
+--- a/src/gui/rhi/qrhigles2.cpp
++++ b/src/gui/rhi/qrhigles2.cpp
+@@ -6549,18 +6549,11 @@ bool QGles2GraphicsPipeline::create()
+             // force replacing existing cache entry (if there is one, then
+             // something is wrong with it, as there was no hit)
+             rhiD->trySaveToPipelineCache(program, cacheKey, true);
++        } else {
++            // legacy QOpenGLShaderProgram style behavior: the "pipeline cache"
++            // was not enabled, so instead store to the Qt 5 disk cache
++            rhiD->trySaveToDiskCache(program, cacheKey);
+         }
+-        // legacy QOpenGLShaderProgram style behavior: do this always, even
+-        // though it is superfluous with the "pipeline cache" enabled. Continue
+-        // storing to the Qt 5 style individual-file disk cache, because there
+-        // is no guarantee one retrieves the "pipeline cache" blob and writes it
+-        // out. Classic example: if Qt Quick only retrieves and stores the
+-        // combined cache contents when exiting, applications that never exit
+-        // cleanly (because they are killed, Ctrl+C'd, etc.) never store any
+-        // program binaries! Therefore, to maintain Qt 5 behavioral
+-        // compatibility, continue writing out the individual files no matter
+-        // what.
+-        rhiD->trySaveToDiskCache(program, cacheKey);
+     } else {
+         Q_ASSERT(cacheResult == QRhiGles2::ProgramCacheHit);
+         if (rhiD->rhiFlags.testFlag(QRhi::EnablePipelineCacheDataSave)) {
+@@ -6676,9 +6669,11 @@ bool QGles2ComputePipeline::create()
+             // force replacing existing cache entry (if there is one, then
+             // something is wrong with it, as there was no hit)
+             rhiD->trySaveToPipelineCache(program, cacheKey, true);
++        } else {
++            // legacy QOpenGLShaderProgram style behavior: the "pipeline cache"
++            // was not enabled, so instead store to the Qt 5 disk cache
++            rhiD->trySaveToDiskCache(program, cacheKey);
+         }
+-        // legacy QOpenGLShaderProgram style behavior
+-        rhiD->trySaveToDiskCache(program, cacheKey);
+     } else {
+         Q_ASSERT(cacheResult == QRhiGles2::ProgramCacheHit);
+         if (rhiD->rhiFlags.testFlag(QRhi::EnablePipelineCacheDataSave)) {
+-- 
+2.51.0
+
