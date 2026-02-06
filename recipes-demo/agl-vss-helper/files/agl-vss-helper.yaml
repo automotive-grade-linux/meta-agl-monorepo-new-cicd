@@ -7,7 +7,7 @@ initialize:
   value: 70
 - signal: Vehicle.Powertrain.FuelSystem.Range
   value: 300000
-- signal: Vehicle.Powertrain.CombustionEngine.ECT
+- signal: Vehicle.Powertrain.CombustionEngine.EngineCoolant.Temperature
   value: 70
 - signal: Vehicle.Body.Lights.DirectionIndicator.Left.IsSignaling
   value: false
@@ -45,7 +45,7 @@ initialize:
   value: 217
 - signal: Vehicle.Chassis.Axle.Row2.Wheel.Right.Tire.Pressure
   value: 222
-- signal: Vehicle.OBD.Status.IsMILOn
+- signal: Vehicle.Service.IsServiceDue
   value: false
 - signal: Vehicle.Cabin.Infotainment.HMI.DistanceUnit
   value: "KILOMETERS"

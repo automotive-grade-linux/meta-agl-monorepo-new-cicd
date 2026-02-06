@@ -55,13 +55,6 @@ Vehicle.Body.Lights.DirectionIndicator.Right.IsSignaling:
         - from: 1
           to: true
 
-Vehicle.OBD.ThrottlePosition:
-  datatype: float
-  type: sensor
-  dbc2vss:
-    signal: ThrottlePosition
-    interval_ms: 100
-
 Vehicle.Chassis.SteeringWheel.Angle:
   datatype: int16
   type: sensor
@@ -77,6 +70,13 @@ Vehicle.Chassis.Brake.PedalPosition:
     interval_ms: 100
     transform:
       math: "floor(x / 19125 * 100 + 0.5)"
+
+Vehicle.Powertrain.CombustionEngine.TPS:
+  datatype: uint8
+  type: sensor
+  dbc2vss:
+    signal: ThrottlePosition
+    interval_ms: 100
 
 Vehicle.Powertrain.Transmission.SelectedGear:
   datatype: int8

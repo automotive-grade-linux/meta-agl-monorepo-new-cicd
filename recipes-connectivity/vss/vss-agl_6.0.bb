@@ -27,7 +27,6 @@ VSPEC_JSON_OPTS = " \
     --vspec ${S}/spec/VehicleSignalSpecification.vspec \
     -e dbc2vss \
     -e vss2dbc \
-    --no-uuid \
     --pretty \
 "
 
