@@ -1,5 +1,5 @@
-SRC_URI = "git://github.com/COVESA/vehicle_signal_specification.git;branch=release/5.0;protocol=https"
-# v5.0
-SRCREV = "f23ba53be78a8bf2b8df2496bbfccb2860913892"
+SRC_URI = "git://github.com/COVESA/vehicle_signal_specification.git;branch=release/6.0;protocol=https"
+# v6.0
+SRCREV = "20c609bf95c73b51d483fb8f81a099d1d5b73066"
 
 S = "${WORKDIR}/git"
