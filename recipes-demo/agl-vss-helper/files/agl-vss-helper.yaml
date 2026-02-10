@@ -8,7 +8,7 @@ initialize:
 - signal: Vehicle.Powertrain.FuelSystem.Range
   value: 300000
 - signal: Vehicle.Powertrain.CombustionEngine.EngineCoolant.Temperature
-  value: 70
+  value: 95
 - signal: Vehicle.Body.Lights.DirectionIndicator.Left.IsSignaling
   value: false
 - signal: Vehicle.Body.Lights.DirectionIndicator.Right.IsSignaling
