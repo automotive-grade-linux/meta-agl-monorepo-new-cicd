@@ -28,6 +28,7 @@ HOST_AUDIO_INSTALL = " \
     udisks2 \
     ${@bb.utils.contains("DISTRO_FEATURES", "agl-devel", "packagegroup-pipewire-tools mpc" , "", d)} \
 "
+HOST_AUDIO_INSTALL:append:sparrow-hawk = " agl-service-radio-conf-udev-settle"
 
 KUKSA_CONF = "kuksa-conf"
 

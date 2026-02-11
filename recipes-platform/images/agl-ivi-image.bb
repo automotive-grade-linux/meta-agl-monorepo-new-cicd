@@ -22,6 +22,7 @@ PLATFORM_SERVICES_INSTALL = " \
     agl-service-audiomixer-systemd-databroker \
     agl-service-hvac-systemd-databroker \
 "
+PLATFORM_SERVICES_INSTALL:append:sparrow-hawk = " agl-service-radio-conf-udev-settle"
 
 IMAGE_INSTALL += " \
     packagegroup-agl-ivi-connectivity \

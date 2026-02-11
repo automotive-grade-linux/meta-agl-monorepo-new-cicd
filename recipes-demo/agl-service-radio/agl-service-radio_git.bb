@@ -18,7 +18,9 @@ DEPENDS = " \
 "
 
 SRC_URI = "git://gerrit.automotivelinux.org/gerrit/apps/agl-service-radio;protocol=https;branch=${AGL_BRANCH} \
-           file://radio.conf.kvm-demo"
+           file://radio.conf.kvm-demo \
+           file://udev-settle.conf \
+"
 SRCREV  = "3720c2c4888b75ed7ca4c01bf6cf1903b551c4eb"
 
 PV = "2.0+git${SRCPV}"
@@ -30,15 +32,16 @@ SYSTEMD_SERVICE:${PN} = "agl-service-radio.service"
 
 do_install:append() {
     install -D -m 0644 ${WORKDIR}/radio.conf.kvm-demo ${D}${sysconfdir}/xdg/AGL.conf
+    install -D -m 0644 ${WORKDIR}/udev-settle.conf ${D}${systemd_system_unitdir}/${BPN}.service.d/udev-settle.conf
 }
 
-PACKAGE_BEFORE_PN += "${PN}-conf-kvm-demo"
+PACKAGE_BEFORE_PN += "${PN}-conf-kvm-demo ${PN}-conf-udev-settle"
 
 FILES:${PN} += "${systemd_system_unitdir}"
 
-FILES:${PN}-conf-kvm-demo += " \
-    ${sysconfdir}/xdg/AGL.conf \
-"
+FILES:${PN}-conf-kvm-demo += "${sysconfdir}/xdg/AGL.conf"
+
+FILES:${PN}-conf-udev-settle += "${systemd_system_unitdir}/${BPN}.service.d/udev-settle.conf"
 
 RDEPENDS:${PN} += " \
     gstreamer1.0 \
