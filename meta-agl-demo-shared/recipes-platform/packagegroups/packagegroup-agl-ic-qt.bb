@@ -1,5 +1,5 @@
 SUMMARY = "AGL Instrument Cluster Demo Qt Packages"
-DESCRIPTION = "This pacage group including Qt packages for AGL Instrument Cluster Demo."
+DESCRIPTION = "This package group including Qt packages for AGL Instrument Cluster Demo."
 HOMEPAGE = "https://confluence.automotivelinux.org/display/IC"
 
 LICENSE = "Apache-2.0"

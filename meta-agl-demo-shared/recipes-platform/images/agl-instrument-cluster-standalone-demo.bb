@@ -12,6 +12,7 @@ AGLIC_CORE_PACKAGES = " \
 "
 AGLIC_DEMO_PACKAGES = " \
     packagegroup-agl-ic-qt \
+    packagegroup-agl-shared-demo-board-support \
     cluster-refgui \
 "
 AGLIVI_DEMO_PACKAGES = " \
@@ -27,5 +28,3 @@ IMAGE_INSTALL += " \
     ${@bb.utils.contains('AGL_FEATURES', 'agl-ic', '${AGLIC_CORE_PACKAGES}', '${AGLIVI_DEMO_PACKAGES}', d)} \
     ${@bb.utils.contains('AGL_FEATURES', 'agldemo', '${AGLIVI_DEMO_PACKAGES}', '', d)} \
 "
-
-IMAGE_INSTALL:append:rpi = " mesa-megadriver"
