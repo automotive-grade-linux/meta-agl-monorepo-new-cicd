@@ -6,6 +6,7 @@ require guest-image-minimal.bb
 IMAGE_INSTALL += " \
     packagegroup-drm-lease-client-support \
     packagegroup-agl-momi-ivi-qt \
+    packagegroup-agl-shared-demo-board-support \
     qtwayland-setting \
     momiscreen \
     mominavi \
@@ -22,8 +23,6 @@ IMAGE_INSTALL += " \
     ca-certificates \
     pre-install-video-data \
 "
-
-IMAGE_INSTALL:append:rpi = " mesa-megadriver"
 
 IMAGE_OVERHEAD_FACTOR = "0"
 EXTRA_IMAGECMD:append = " -L agl-momi-ivi"
