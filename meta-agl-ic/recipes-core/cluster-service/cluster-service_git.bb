@@ -9,7 +9,7 @@ LIC_FILES_CHKSUM = "file://LICENSE;md5=ae6497158920d9524cf208c09cc4c984"
 DEPENDS = "systemd alsa-lib"
 PV = "1.0.0+rev${SRCREV}"
 
-SRCREV = "d1cf2d48cbbb7a1d0b0739190c616be01f9612e1"
+SRCREV = "7b3d33d4ae10b9a2d14709f97c05d4166abc5378"
 SRC_URI = " \
     git://github.com/agl-ic-eg/cluster-service.git;branch=main;protocol=https \
     file://cluster-service.service \
