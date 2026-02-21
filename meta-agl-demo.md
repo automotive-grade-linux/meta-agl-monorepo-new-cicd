@@ -4,6 +4,23 @@ The `meta-agl-demo` layer is the reference user interface layer for the DEMO
 platform of Automotive Grade Linux (AGL).
 The layer provides a demo applications and images.
 
+## Sub-Layers
+
+The `meta-agl` layer itself contains many sub-layers and files.
+Following is a "tree" look at the layer:
+
+```
+.
+├── meta-agl-demo-shared
+└── meta-agl-kvm-demo
+```
+
+This list provides some overview information on the sub-layers
+in `meta-agl-demo`:
+
+* `meta-agl-demo-shared`: The layer for common recipe between AGL Demo IVI and AGL Container based instrument cluster platform demo.
+* `meta-agl-kvm-demo`: The layer for KVM demo.
+
 ## Layer Dependencies
 
 This section describes dependencies for the `meta-agl-demo` layer.
@@ -16,20 +33,19 @@ The `meta-agl-demo` layer has the following base dependencies:
 * Yocto Project Release:
 
   - URI: git://git.yoctoproject.org/poky
-  - Branch: "dunfell"
-  - Tested Revision: See the [`default.xml`](https://github.com/leon-anavi/AGL-repo/blob/master/default.xml)
-    manifest file for the `AGL-repo` repository for revision
-    information.<br/><br/>
+  - Branch: "scarthgap"
+  - Tested Revision: See the [`default.xml`](https://git.automotivelinux.org/AGL/AGL-repo/tree/default.xml)
+    manifest file for the `AGL-repo` repository for revision information.
 
 * AGL `meta-agl` Layer:
 
   - URI: https://gerrit.automotivelinux.org/gerrit/AGL/meta-agl
-  - Branch: "master"<br/><br/>
+  - Branch: "master"
 
 * OpenEmbedded `meta-openembedded` Layer:
 
-  - Branch: "thud"
-  - Tested Revision: See the [`default.xml`](https://github.com/leon-anavi/AGL-repo/blob/master/default.xml)
+  - Branch: "scarthgap"
+  - Tested Revision: See the [`default.xml`](https://git.automotivelinux.org/AGL/AGL-repo/tree/default.xml)
     manifest file for the `AGL-repo` repository for revision
     information.
 
@@ -38,16 +54,25 @@ The `meta-agl-demo` layer has the following base dependencies:
     - `meta-oe`
     - `meta-multimedia`
     - `meta-networking`
-    - `meta-python`<br/><br/>
+    - `meta-python`
 
-* Yocto Project `meta-qt5` Layer from the
-  [OpenEmbedded Layer Index](https://layers.openembedded.org/layerindex/branch/master/layers/):
+* qt.io `meta-qt6` Layer from the
+  [code.qt.io](https://code.qt.io/cgit/yocto/meta-qt6.git/):
 
-  - URI: https://github.com/meta-qt5/meta-qt5.git
-  - Branch:   "dunfell"
-  - Tested Revision: See the [`default.xml`](https://github.com/leon-anavi/AGL-repo/blob/master/default.xml)
+  - URI: https://code.qt.io/yocto/meta-qt6.git
+  - Branch: "6.8"
+  - Tested Revision: See the [`default.xml`](https://git.automotivelinux.org/AGL/AGL-repo/tree/default.xml)
     manifest file for the `AGL-repo` repository for revision
-    information.<br/><br/>
+    information.
+
+* meta-flutter `meta-flutter` Layer from the
+  [github/meta-flutter](https://github.com/meta-flutter):
+
+  - URI: https://github.com/meta-flutter/meta-flutter.git
+  - Branch: "scarthgap"
+  - Tested Revision: See the [`default.xml`](https://git.automotivelinux.org/AGL/AGL-repo/tree/default.xml)
+    manifest file for the `AGL-repo` repository for revision
+    information.
 
 
 ### Feature Dependencies
@@ -59,21 +84,21 @@ dependencies:
 * Yocto Project `meta-security` Layer:
 
   - URI: https://git.yoctoproject.org/cgit/cgit.cgi/meta-security
-  - Branch: "master"
-  - Tested Revision: See the [`default.xml`](https://github.com/leon-anavi/AGL-repo/blob/master/default.xml)
+  - Branch: "scarthgap"
+  - Tested Revision: See the [`default.xml`](https://git.automotivelinux.org/AGL/AGL-repo/tree/default.xml)
     manifest file for the `AGL-repo` repository for revision
-    information.<br/><br/>
+    information.
 
-* AGL's `meta-app-framework` Layer within the `meta-agl` Layer:
+* `meta-agl` sub layers:
 
-  - URI: https://gerrit.automotivelinux.org/gerrit/gitweb?p=AGL/meta-agl.git
-  - Branch: "master"<br/><br/>
+  - URI: https://gerrit.automotivelinux.org/gerrit/AGL/meta-agl
+  - Branch: "master"
 
 * OpenEmbedded's `meta-openembedded` Layer:
 
   - URI: https://github.com/openembedded/meta-openembedded
-  - Branch: "dunfell"
-  - Tested Revision: See the [`default.xml`](https://github.com/leon-anavi/AGL-repo/blob/master/default.xml)
+  - Branch: "scarthgap"
+  - Tested Revision: See the [`default.xml`](https://git.automotivelinux.org/AGL/AGL-repo/tree/default.xml)
     manifest file for the `AGL-repo` repository for revision
     information.
 
@@ -82,13 +107,6 @@ dependencies:
     - `meta-filesystems`
     - `meta-oe`
     - `meta-python`<br/><br/>
-
-**The `agl-netboot` Feature:**
-
-* AGL's `meta-netboot` Layer within the `meta-agl` Layer:
-
-  - URI: https://gerrit.automotivelinux.org/gerrit/gitweb?p=AGL/meta-agl.git
-  - Branch: "master"
 
 ## Maintenance
 
