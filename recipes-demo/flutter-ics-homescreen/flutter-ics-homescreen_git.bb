@@ -7,13 +7,14 @@ LICENSE = "Apache-2.0"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=3b83ef96387f14655fc854ddc3c6bd57"
 
 SRC_URI = "git://gerrit.automotivelinux.org/gerrit/apps/flutter-ics-homescreen;protocol=https;branch=${AGL_BRANCH} \
-  file://ics-homescreen.toml \
-  file://flutter-ics-homescreen.service \
-  file://flutter-ics-homescreen.env \
-  file://kuksa.toml \
-  file://flutter-ics-homescreen.token \
-  file://radio-presets.toml \
-  file://kvm.conf \
+           file://ics-homescreen.toml \
+           file://flutter-ics-homescreen.service \
+           file://flutter-ics-homescreen.env \
+           file://kuksa.toml \
+           file://flutter-ics-homescreen.token \
+           file://radio-presets.toml \
+           file://flutter-ics-homescreen.toml.kvm-tradeshow \
+           file://kvm.conf \
 "
 SRCREV = "9705b5be973dd8d0bfc0271d524a233f5e2a5a1c"
 
@@ -21,7 +22,7 @@ S = "${WORKDIR}/git"
 
 PUBSPEC_APPNAME = "flutter_ics_homescreen"
 
-inherit flutter-app systemd
+inherit flutter-app systemd update-alternatives
 
 APP_CONFIG = "ics-homescreen.toml"
 
@@ -45,6 +46,9 @@ do_install:append() {
 
     install -D -m 0644 ${WORKDIR}/kvm.conf ${D}${systemd_system_unitdir}/${BPN}.service.d/kvm.conf
 
+    install -d ${D}${sysconfdir}/xdg/AGL
+    install -m 0644 ${WORKDIR}/flutter-ics-homescreen.toml.kvm-tradeshow ${D}${sysconfdir}/xdg/AGL/
+
     # VIS authorization token file for KUKSA.val should ideally not
     # be readable by other users, but currently that's not doable
     # until a packaging/sandboxing/MAC scheme is (re)implemented or
@@ -55,6 +59,8 @@ do_install:append() {
     install -m 0644 ${WORKDIR}/radio-presets.toml ${D}${sysconfdir}/xdg/AGL/flutter-ics-homescreen/
 }
 
+ALTERNATIVE_LINK_NAME[flutter-ics-homescreen.toml] = "${sysconfdir}/xdg/AGL/flutter-ics-homescreen.toml"
+
 FILES:${PN} += "${datadir} ${sysconfdir}/xdg/AGL ${sysconfdir}/default"
 
 RDEPENDS:${PN} += " \
@@ -63,9 +69,18 @@ RDEPENDS:${PN} += " \
     applaunchd \
 "
 
-# systemd override to add network-online.target dependency for KVM setups
-PACKAGE_BEFORE_PN += "${PN}-conf-kvm"
-FILES:${PN}-conf-kvm += "${systemd_system_unitdir}/flutter-ics-homescreen.service.d/kvm.conf"
-RDEPENDS:${PN}-conf-kvm = "${PN}"
+# KVM tradeshow demo specific configuration:
+# - override radio and mediaplayer backend locations
+# - systemd override to add network-online.target dependency
+PACKAGE_BEFORE_PN += "${PN}-conf-kvm-tradeshow"
+FILES:${PN}-conf-kvm-tradeshow += " \
+    ${sysconfdir}/xdg/AGL/flutter-ics-homescreen.toml.kvm-tradeshow \
+    ${systemd_system_unitdir}/flutter-ics-homescreen.service.d/kvm.conf \
+"
+RDEPENDS:${PN}-conf-kvm-tradeshow = "${PN}"
+RPROVIDES:${PN}-conf-kvm-tradeshow = "flutter-ics-homescreen.toml"
+ALTERNATIVE:${PN}-conf-kvm-tradeshow = "flutter-ics-homescreen.toml"
+ALTERNATIVE_TARGET_${PN}-conf-kvm-tradeshow = "${sysconfdir}/xdg/AGL/flutter-ics-homescreen.toml.kvm-tradeshow"
+ALTERNATIVE_PRIORITY_${PN}-conf-kvm-tradeshow = "11"
 
 do_compile[network] = "1"

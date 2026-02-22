@@ -8,6 +8,9 @@ KUKSA_CONF = "kuksa-conf-kvm-demo-tradeshow"
 # default compositor configuration needs to be replaced.
 IMAGE_INSTALL:remove = "weston-ini-conf-landscape"
 
+# Remove receiver for now due to SPEC-5384
+IMAGE_INSTALL:remove = "cluster-receiver"
+
 IMAGE_INSTALL += " \
     psplash-inverted-config \
     weston-ini-conf-landscape-inverted \

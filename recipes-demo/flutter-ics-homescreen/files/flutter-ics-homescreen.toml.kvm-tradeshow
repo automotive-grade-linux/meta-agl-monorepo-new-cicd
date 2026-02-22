@@ -1,0 +1,5 @@
+[radio]
+hostname = "172.16.10.1"
+
+[mpd]
+hostname = "172.16.10.1"
