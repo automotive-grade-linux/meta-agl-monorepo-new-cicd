@@ -1,0 +1,23 @@
+[core]
+backend=drm-backend.so
+require-input=false
+modules=systemd-notify.so
+
+[shell]
+locking=true
+panel-position=none
+
+# IVI display connected to DP-1
+[output]
+name=DP-1
+agl-shell-app-id=@GUEST_VM1_ID@
+
+# Cluster display connected to DSI-1
+[output]
+name=DSI-1
+agl-shell-app-id=@GUEST_VM2_ID@
+
+# Cluster display connected via DSI to HDMI adapter
+[output]
+name=HDMI-A-1
+agl-shell-app-id=@GUEST_VM2_ID@
