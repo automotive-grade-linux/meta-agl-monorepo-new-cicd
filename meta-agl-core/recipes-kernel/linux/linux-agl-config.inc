@@ -51,6 +51,10 @@ AGL_KCONFIG_FRAGMENTS += "sound.cfg"
 # Enable basic perf tracing support
 AGL_KCONFIG_FRAGMENTS += "${@bb.utils.contains('DISTRO_FEATURES', 'agl-devel', 'tracing-basic.cfg', '', d)}"
 
+# Enable KVM support if required
+AGL_KCONFIG_FRAGMENTS_KVM = "kvm-host.cfg kvm-host-net.cfg virtio-vhost.cfg"
+AGL_KCONFIG_FRAGMENTS += "${@bb.utils.contains('AGL_FEATURES', 'agl-kvm', '${AGL_KCONFIG_FRAGMENTS_KVM}', '', d)}"
+
 #
 # Feature override and qemu specific appends:
 #
