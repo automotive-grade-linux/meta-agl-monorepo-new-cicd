@@ -36,9 +36,11 @@ PROVIDES:pn-clang-native = "llvm-native"
 PROVIDES:pn-nativesdk-clang = "nativesdk-llvm"
 
 
-### s4sk can bus for demo images:
+# S4SK needs CAN FD enabled
 # For systemd CAN bus configuration
 MACHINE_FEATURES:append:s4sk = " canfd"
 CANBUS_NETWORK_CONFIG:s4sk = "canbus-can-fd.network"
-# Assume CAN FD HATs now
+# Also Sparrow Hawk
+CANBUS_NETWORK_CONFIG:sparrow-hawk = "canbus-can-fd.network"
+# Assume RPi CAN HATs are FD now
 CANBUS_NETWORK_CONFIG:rpi = "canbus-can-fd.network"
