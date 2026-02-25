@@ -28,3 +28,7 @@ IMAGE_INSTALL += " \
     ${@bb.utils.contains('AGL_FEATURES', 'agl-ic', '${AGLIC_CORE_PACKAGES}', '${AGLIVI_DEMO_PACKAGES}', d)} \
     ${@bb.utils.contains('AGL_FEATURES', 'agldemo', '${AGLIVI_DEMO_PACKAGES}', '', d)} \
 "
+
+# Enable SDK build support
+require recipes-platform/images/agl-sdk-build-support.inc
+require recipes-platform/images/agl-sdk-build-support-qt6.inc
