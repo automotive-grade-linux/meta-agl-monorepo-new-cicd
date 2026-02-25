@@ -30,6 +30,8 @@ IMAGE_INSTALL += " \
 # network manager to use
 VIRTUAL-RUNTIME_net_manager = "systemd"
 
+# Enable SDK build support
+require recipes-platform/images/agl-sdk-build-support.inc
 
 # Under the this line, shall describe machine specific package.
 IMAGE_INSTALL:append:rcar-gen3 = " kernel-module-gles gles-user-module-firmware"

@@ -28,3 +28,8 @@ IMAGE_OVERHEAD_FACTOR = "0"
 EXTRA_IMAGECMD:append = " -L agl-momi-ivi"
 IMAGE_ROOTFS_EXTRA_SPACE = "0"
 IMAGE_ROOTFS_SIZE = "2097152"
+
+
+# Enable SDK build support
+require recipes-platform/images/agl-sdk-build-support.inc
+require recipes-platform/images/agl-sdk-build-support-qt6.inc
