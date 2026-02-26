@@ -38,3 +38,5 @@ IMAGE_INSTALL += " \
     ${@bb.utils.contains("DISTRO_FEATURES", "agl-devel", "${AGL_DEVEL_INSTALL}" , "", d)} \
 "
 
+# Enable SDK build support
+require recipes-platform/images/agl-sdk-build-support-ivi.inc

@@ -28,3 +28,5 @@ IMAGE_INSTALL += " \
     ${MUSICDATA} \
 "
 
+# Enable SDK build support
+require recipes-platform/images/agl-sdk-build-support-qt6.inc
