@@ -4,7 +4,7 @@ LIC_FILES_CHKSUM = "file://COPYING;md5=361b6b837cad26c6900a926b62aada5f"
 
 
 SRC_URI = "git://github.com/dhobsong/qemu-set-display.git;protocol=https;branch=main"
-SRCREV = "${AUTOREV}"
+SRCREV = "31aa12acf0d760ab972507d5cdc2237840646822"
 S = "${WORKDIR}/git"
 
 DEPENDS += "libvncserver"
