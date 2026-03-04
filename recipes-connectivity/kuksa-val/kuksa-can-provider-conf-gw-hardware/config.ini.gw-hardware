@@ -3,7 +3,7 @@
 # switch between kuksa_databroker and kuksa_val_server
 server_type = kuksa_databroker
 # VSS mapping file
-mapping = /usr/share/vss/vss_5.0-agl-gw-hardware.json
+mapping = /usr/share/vss/vss_6.0-agl-gw-hardware.json
 
 # IP address for server (KUKSA.val Server or Databroker)
 ip = localhost
