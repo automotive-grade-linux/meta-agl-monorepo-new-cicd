@@ -1,7 +1,7 @@
 DISABLE_OVERSCAN = "1"
 TOTAL_BOARD_MEM = "3072"
 
-do_deploy:append:raspberrypi4() {
+do_deploy:append:rpi() {
     # Populate optional CAN HAT configuration
     cat <<EOF >>${DEPLOYDIR}/bootfiles/config.txt
 
@@ -52,10 +52,13 @@ dtparam=audio=on
 EOF
 }
 
-do_deploy:append:raspberrypi4() {
+do_deploy:append:rpi() {
     cat <<EOF >>${DEPLOYDIR}/bootfiles/config.txt
 
 [pi4]
+max_framebuffers=2
+
+[pi5]
 max_framebuffers=2
 EOF
 }
