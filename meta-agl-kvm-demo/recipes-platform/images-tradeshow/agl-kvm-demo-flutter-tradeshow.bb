@@ -36,6 +36,7 @@ IMAGE_INSTALL += "\
     ${KUKSA_CONF} \
     kuksa-databroker-env-open \
     ${HOST_AUDIO_INSTALL} \
+    demo-i2c-udev-conf \
 "
 
 GUEST_VM1_IMAGE = "agl-ivi-demo-flutter-guest-tradeshow"
