@@ -1,4 +1,4 @@
-From ca16dfe52ae4ba557d1108ea8cebae4c1a5335bf Mon Sep 17 00:00:00 2001
+From 8d51c46d773b99522cbf0731774a1a77e9e0203a Mon Sep 17 00:00:00 2001
 From: Marius Vlad <marius.vlad@collabora.com>
 Date: Mon, 21 Jul 2025 20:52:50 +0300
 Subject: [PATCH] compositor: Allow occluded surfaces to receive frame
@@ -26,10 +26,10 @@ Signed-off-by: Marius Vlad <marius.vlad@collabora.com>
  3 files changed, 9 insertions(+), 1 deletion(-)
 
 diff --git a/frontend/main.c b/frontend/main.c
-index d135e77..2339209 100644
+index ad83bb5..9293355 100644
 --- a/frontend/main.c
 +++ b/frontend/main.c
-@@ -4640,6 +4640,8 @@ wet_main(int argc, char *argv[], const struct weston_testsuite_data *test_data)
+@@ -5528,6 +5528,8 @@ wet_main(int argc, char *argv[], const struct weston_testsuite_data *test_data)
  
  	weston_config_section_get_bool(section, "require-input",
  				       &wet.compositor->require_input, true);
@@ -39,12 +39,12 @@ index d135e77..2339209 100644
  	wet.require_outputs = REQUIRE_OUTPUTS_ANY;
  	weston_config_section_get_string(section, "require-outputs",
 diff --git a/include/libweston/libweston.h b/include/libweston/libweston.h
-index 4d3930d..947b921 100644
+index 2c223c8..0e67541 100644
 --- a/include/libweston/libweston.h
 +++ b/include/libweston/libweston.h
-@@ -1592,6 +1592,9 @@ struct weston_compositor {
- 	/* Whether to let the compositor run without any input device. */
- 	bool require_input;
+@@ -1489,6 +1489,9 @@ struct weston_compositor {
+ 	/* Ignore all libinput-based input devices */
+ 	bool disable_input;
  
 +	/* Whether to send frame callbacks to occluded surfaces */
 +	bool send_frame_cb_occluded_surface;
@@ -53,19 +53,19 @@ index 4d3930d..947b921 100644
  	bool multi_backend;
  
 diff --git a/libweston/compositor.c b/libweston/compositor.c
-index 84c25b6..288e67e 100644
+index 03e8b37..4630a91 100644
 --- a/libweston/compositor.c
 +++ b/libweston/compositor.c
-@@ -3746,6 +3746,8 @@ weston_output_repaint(struct weston_output *output, struct timespec *now)
+@@ -3720,6 +3720,8 @@ weston_output_repaint(struct weston_output *output)
  	int r;
  	uint32_t frame_time_msec;
  	enum weston_hdcp_protection highest_requested = WESTON_HDCP_DISABLE;
 +	bool send_frame_cb_occluded_surface =
 +		ec->send_frame_cb_occluded_surface;
  
- 	TL_POINT(ec, "core_repaint_begin", TLP_OUTPUT(output), TLP_END);
+ 	weston_output_latch(output);
  
-@@ -3822,7 +3824,8 @@ weston_output_repaint(struct weston_output *output, struct timespec *now)
+@@ -3822,7 +3824,8 @@ weston_output_repaint(struct weston_output *output)
  		 * feedback to the respective lists if pnode/surface is
  		 * occluded
  		 */
@@ -76,5 +76,5 @@ index 84c25b6..288e67e 100644
  
  		wl_list_insert_list(&frame_callback_list,
 -- 
-2.47.2
+2.53.0
 
