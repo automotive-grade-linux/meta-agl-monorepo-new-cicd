@@ -1,4 +1,4 @@
-From bdcbb0e78bbffe45719d0a27954544120f37442a Mon Sep 17 00:00:00 2001
+From 44ab7f7e609ce2cac3fd46aad98225b204bc2faf Mon Sep 17 00:00:00 2001
 From: Tim Orling <timothy.t.orling@linux.intel.com>
 Date: Mon, 15 Oct 2018 18:30:42 -0700
 Subject: [PATCH] Initial LAVA support
@@ -50,7 +50,7 @@ index 0000000..0dac223
 +
 +#endif				/* __FLAGS_H__ */
 diff --git a/main.c b/main.c
-index 31e4dd5..f12d6d6 100644
+index 3d5b0d4..4da2e3b 100644
 --- a/main.c
 +++ b/main.c
 @@ -38,6 +38,7 @@
@@ -61,7 +61,7 @@ index 31e4dd5..f12d6d6 100644
  
  #ifndef DEFAULT_DIRECTORY
  #define DEFAULT_DIRECTORY "/usr/lib"
-@@ -130,8 +131,9 @@ main(int argc, char *argv[])
+@@ -150,8 +151,9 @@ main(int argc, char *argv[])
  	opts.timeout = DEFAULT_TIMEOUT;
  	opts.ptests = NULL;
  	opts.xml_filename = NULL;
@@ -72,7 +72,7 @@ index 31e4dd5..f12d6d6 100644
  		switch (opt) {
  			case 'd':
  				free(opts.dirs[0]);
-@@ -156,6 +158,11 @@ main(int argc, char *argv[])
+@@ -176,6 +178,11 @@ main(int argc, char *argv[])
  				opts.xml_filename = strdup(optarg);
  				CHECK_ALLOCATION(opts.xml_filename, 1, 1);
  			break;
@@ -85,7 +85,7 @@ index 31e4dd5..f12d6d6 100644
  				print_usage(stdout, argv[0]);
  				exit(1);
 diff --git a/utils.c b/utils.c
-index 6cf7705..f6a3a2a 100644
+index 227ee7d..8dbbd28 100644
 --- a/utils.c
 +++ b/utils.c
 @@ -49,6 +49,7 @@
@@ -96,9 +96,9 @@ index 6cf7705..f6a3a2a 100644
  
  #define GET_STIME_BUF_SIZE 1024
  #define WAIT_CHILD_BUF_MAX_SIZE 1024
-@@ -369,6 +370,9 @@ run_ptests(struct ptest_list *head, const struct ptest_options opts,
- 			strcpy(ptest_dir, p->run_ptest);
- 			dirname(ptest_dir);
+@@ -375,6 +376,9 @@ run_ptests(struct ptest_list *head, const struct ptest_options opts,
+ 			}
+ 			ptest_dir = dirname(ptest_dir_tmp);
  
 +			char *ptest = strdup(p->ptest);
 +			CHECK_ALLOCATION(ptest, 1, 1);
@@ -106,7 +106,7 @@ index 6cf7705..f6a3a2a 100644
  			if (pipe2(pipefd_stdout, 0) == -1) {
  				fprintf(fp, "ERROR: pipe2() failed with: %s.\n", strerror(errno));
  				rc = -1;
-@@ -425,7 +429,10 @@ run_ptests(struct ptest_list *head, const struct ptest_options opts,
+@@ -431,7 +435,10 @@ run_ptests(struct ptest_list *head, const struct ptest_options opts,
  				do_close(&pipefd_stdout[PIPE_WRITE]);
  				do_close(&pipefd_stderr[PIPE_WRITE]);
  
@@ -118,7 +118,7 @@ index 6cf7705..f6a3a2a 100644
  				fprintf(fp, "%s\n", get_stime(stime, GET_STIME_BUF_SIZE, start_time));
  				fprintf(fp, "BEGIN: %s\n", ptest_dir);
  
-@@ -542,6 +549,16 @@ run_ptests(struct ptest_list *head, const struct ptest_options opts,
+@@ -551,6 +558,16 @@ run_ptests(struct ptest_list *head, const struct ptest_options opts,
  
  				fprintf(fp, "END: %s\n", ptest_dir);
  				fprintf(fp, "%s\n", get_stime(stime, GET_STIME_BUF_SIZE, end_time));
@@ -135,7 +135,7 @@ index 6cf7705..f6a3a2a 100644
  			}
  
  ptest_list_fail4:
-@@ -556,6 +573,7 @@ ptest_list_fail2:
+@@ -565,6 +582,7 @@ ptest_list_fail2:
  			do_close(&pipefd_stdout[PIPE_WRITE]);
  
  ptest_list_fail1:
@@ -158,6 +158,3 @@ index 04fc666..ad702d8 100644
  extern void check_allocation1(void *, size_t, char *, int, int);
  extern struct ptest_list *get_available_ptests(const char *);
  extern int print_ptests(struct ptest_list *, FILE *);
--- 
-2.44.0
-
