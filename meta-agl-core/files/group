@@ -68,7 +68,6 @@ builder::977:
 rpc::976:
 crontab::975:
 lpadmin::974:
-_apt::972:
 rpcuser::970:
 avahi-autoipd::969:
 ntp::968:
