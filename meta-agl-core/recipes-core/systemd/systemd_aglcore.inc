@@ -9,7 +9,6 @@ SRC_URI += "\
 # Enable networkd/resolved support if using systemd for network management
 PACKAGECONFIG:append = " \
    ${@bb.utils.contains('VIRTUAL-RUNTIME_net_manager','systemd','networkd resolved','',d)} \
-   iptc \
 "
 
 PACKAGECONFIG:remove = " \
