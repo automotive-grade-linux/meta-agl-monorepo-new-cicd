@@ -1,7 +1,7 @@
-From 46e5ec89cad434b1a1dd9ca49a35e1c6992c54c1 Mon Sep 17 00:00:00 2001
+From 5a9162616ea10b51cf0299b4c4d8b5f4536f2b1a Mon Sep 17 00:00:00 2001
 From: Marius Vlad <marius.vlad@collabora.com>
 Date: Thu, 2 May 2024 19:11:06 +0300
-Subject: [PATCH 1/2] backend-drm: Add method to import DRM fd
+Subject: [PATCH] backend-drm: Add method to import DRM fd
 
 Allow the compositor to provide a file descriptor for a
 DRM device.
@@ -25,25 +25,25 @@ Signed-off-by: Damian Hobson-Garcia <dhobsong@igel.co.jp>
  2 files changed, 64 insertions(+), 21 deletions(-)
 
 diff --git a/include/libweston/backend-drm.h b/include/libweston/backend-drm.h
-index d47955c..889848a 100644
+index 62cd3e6..0f265d5 100644
 --- a/include/libweston/backend-drm.h
 +++ b/include/libweston/backend-drm.h
-@@ -258,6 +258,13 @@ struct weston_drm_backend_config {
- 	 * rendering device.
+@@ -266,6 +266,13 @@ struct weston_drm_backend_config {
+ 	 * "color-management" to be enabled.
  	 */
- 	char *additional_devices;
+ 	bool offload_blend_to_output;
 +
 +	/** DRM device file descriptor to use
-+         *
-+         * An openeded DRM device file descriptor.  If <0, open a DRM
-+         * device in the backend using `specific_device` or heuristics.
-+         */
++	  *
++	  * An openeded DRM device file descriptor.  If <0, open a DRM
++	  * device in the backend using `specific_device` or heuristics.
++	  */
 +	int device_fd;
  };
  
  #ifdef  __cplusplus
 diff --git a/libweston/backend-drm/drm.c b/libweston/backend-drm/drm.c
-index 8092789..4e78ad0 100644
+index b60503d..8e1e4a0 100644
 --- a/libweston/backend-drm/drm.c
 +++ b/libweston/backend-drm/drm.c
 @@ -40,6 +40,7 @@
@@ -54,7 +54,7 @@ index 8092789..4e78ad0 100644
  #include <time.h>
  #include <poll.h>
  
-@@ -3431,31 +3432,22 @@ drm_device_changed(struct weston_backend *backend,
+@@ -4141,31 +4142,22 @@ drm_device_changed(struct weston_backend *backend,
  	wl_signal_emit(&compositor->session_signal, compositor);
  }
  
@@ -92,7 +92,7 @@ index 8092789..4e78ad0 100644
  
  	if (res->count_crtcs <= 0 || res->count_connectors <= 0 ||
  	    res->count_encoders <= 0)
-@@ -3464,7 +3456,7 @@ drm_device_is_kms(struct drm_backend *b, struct drm_device *device,
+@@ -4174,7 +4166,7 @@ drm_device_is_kms(struct drm_backend *b, struct drm_device *device,
  	if (sysnum)
  		id = atoi(sysnum);
  	if (!sysnum || id < 0) {
@@ -101,7 +101,7 @@ index 8092789..4e78ad0 100644
  		goto out_res;
  	}
  
-@@ -3474,9 +3466,9 @@ drm_device_is_kms(struct drm_backend *b, struct drm_device *device,
+@@ -4184,9 +4176,9 @@ drm_device_is_kms(struct drm_backend *b, struct drm_device *device,
  		weston_launcher_close(compositor->launcher, device->drm.fd);
  	free(device->drm.filename);
  
@@ -113,7 +113,7 @@ index 8092789..4e78ad0 100644
  	device->drm.devnum = devnum;
  
  	drmModeFreeResources(res);
-@@ -3485,11 +3477,34 @@ drm_device_is_kms(struct drm_backend *b, struct drm_device *device,
+@@ -4195,11 +4187,34 @@ drm_device_is_kms(struct drm_backend *b, struct drm_device *device,
  
  out_res:
  	drmModeFreeResources(res);
@@ -150,7 +150,7 @@ index 8092789..4e78ad0 100644
  /*
   * Find primary GPU
   * Some systems may have multiple DRM devices attached to a single seat. This
-@@ -3578,6 +3593,25 @@ find_primary_gpu(struct drm_backend *b, const char *seat)
+@@ -4288,6 +4303,25 @@ find_primary_gpu(struct drm_backend *b, const char *seat)
  	return drm_device;
  }
  
@@ -176,7 +176,7 @@ index 8092789..4e78ad0 100644
  static struct udev_device *
  open_specific_drm_device(struct drm_backend *b, struct drm_device *device,
  			 const char *name)
-@@ -3904,7 +3938,9 @@ drm_backend_create(struct weston_compositor *compositor,
+@@ -4624,7 +4658,9 @@ drm_backend_create(struct weston_compositor *compositor,
  	b->session_listener.notify = session_notify;
  	wl_signal_add(&compositor->session_signal, &b->session_listener);
  
@@ -188,5 +188,5 @@ index 8092789..4e78ad0 100644
  						      config->specific_device);
  	else
 -- 
-2.43.0
+2.53.0
 
