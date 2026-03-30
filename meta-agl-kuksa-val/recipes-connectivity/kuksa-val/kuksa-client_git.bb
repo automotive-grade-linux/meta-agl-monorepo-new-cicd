@@ -32,7 +32,6 @@ do_compile:prepend() {
 RDEPENDS:${PN} += " \
     python3-cmd2 \
     python3-importlib-metadata \
-    python3-pkg-resources \
     python3-pygments \
     python3-websockets \
     python3-grpcio \
