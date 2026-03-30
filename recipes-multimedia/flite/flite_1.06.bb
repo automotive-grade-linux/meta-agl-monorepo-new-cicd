@@ -21,6 +21,6 @@ inherit autotools-brokensep
 S = "${UNPACKDIR}/flite+hts_engine-${PV}"
 
 EXTRA_OECONF = " \
- --with-hts-engine-header-path=${PKG_CONFIG_SYSROOT_DIR}/usr/include \
- --with-hts-engine-library-path=${PKG_CONFIG_SYSROOT_DIR}/usr/lib \
+ --with-hts-engine-header-path=${STAGING_INCDIR} \
+ --with-hts-engine-library-path=${STAGING_LIBDIR} \
 "
