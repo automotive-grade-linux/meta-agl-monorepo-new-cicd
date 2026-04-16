@@ -9,13 +9,13 @@ LIC_FILES_CHKSUM = "file://LICENSE;md5=86d3f3a95c324c9479bd8986968f4327 \
  
 DEPENDS = "protobuf-native grpc-native"
 
-PV = "0.6.0"
+PV = "0.6.1"
 
-SRC_URI = "git://github.com/eclipse-kuksa/kuksa-databroker.git;protocol=https;branch=release/0.6.0 \
+SRC_URI = "git://github.com/eclipse-kuksa/kuksa-databroker.git;protocol=https;branch=release/0.6.1 \
            file://0001-Remove-protobuf-src-usage.patch \
            file://kuksa-databroker.service \
 "
-SRCREV = "92855fc390566f28bf60fe193b82be7a624777b2"
+SRCREV = "dd9cb5d1c2da2543dd3b3aa7e5fb350d07412c66"
 
 require ${BPN}-crates.inc
 
