@@ -21,9 +21,6 @@ BBMASK:append:rcar-gen4 = " mesa-gl"
 # To build gstreamer plugins
 LICENSE_FLAGS_ACCEPTED:rcar-gen4 = "commercial"
 
-# Need to force 6.12 since kernel-module-gles fails to build with 6.18
-PREFERRED_VERSION_linux-renesas:rcar-gen4 = "6.12%"
-
 BBMASK += " \
     meta-sparrow-hawk/recipes-core/base-files/base-files_%.bbappend \
     meta-sparrow-hawk/recipes-core/systemd/ \
