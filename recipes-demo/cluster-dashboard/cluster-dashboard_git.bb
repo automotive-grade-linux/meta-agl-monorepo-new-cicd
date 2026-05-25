@@ -9,13 +9,15 @@ LIC_FILES_CHKSUM = "file://LICENSE;md5=ae6497158920d9524cf208c09cc4c984 \
                     file://app/cluster-dashboard.qml;beginline=9;endline=48;md5=54187d50b29429abee6095fe8b7c1a78"
 
 DEPENDS = " \
+    qtbase \
+    qtbase-native \
     qtdeclarative \
     libqtappfw \
     glib-2.0 \
-    wayland \
     wayland-native \
+    wayland \
     qtwayland \
-    qtwayland-native \
+    agl-compositor \
 "
 
 PV = "1.0+git${SRCPV}"
@@ -25,9 +27,9 @@ SRC_URI = "git://gerrit.automotivelinux.org/gerrit/apps/agl-cluster-demo-dashboa
            file://kuksa.toml \
            file://cluster-dashboard.token \
 "
-SRCREV  = "034c412264d3a51e1d400976225a783a1e15d9a2"
+SRCREV  = "8fc7bac3725097d26bbf7ccb710ec114f99db222"
 
-inherit pkgconfig qt6-cmake systemd
+inherit meson meson_qt6_path pkgconfig systemd
 
 CLUSTER_DEMO_VSS_HOSTNAME ??= "192.168.10.2"
 
