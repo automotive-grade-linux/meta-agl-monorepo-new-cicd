@@ -72,9 +72,6 @@ AGL_KCONFIG_FRAGMENTS:append:qemuall = " \
     qemu-drm.cfg \
 "
 
-# Configuration for using the ARM virt machine (and not versatilepb)
-AGL_KCONFIG_FRAGMENTS:append:qemuarm = " qemuarm.cfg"
-
 # Additional drivers for virtual machines
 # OVERRIDES save us some c'n'p below ...
 OVERRIDES:prepend:qemux86 = "virtualmachine:"
