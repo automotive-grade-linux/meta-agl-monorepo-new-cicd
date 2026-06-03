@@ -15,7 +15,7 @@ SRC_URI = " \
     git://github.com/iotbzh/optee_user_app_template;branch=master;protocol=https \
 "
 
-COMPATIBLE_MACHINE = "(salvator-x|h3ulcb|m3ulcb|m3nulcb|ebisu)"
+COMPATIBLE_MACHINE = "(salvator-x|h3ulcb|m3ulcb|m3nulcb)"
 PLATFORM = "rcar"
 
 DEPENDS = "optee-os optee-client python-pycrypto-native"
