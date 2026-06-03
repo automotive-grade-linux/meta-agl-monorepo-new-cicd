@@ -17,7 +17,7 @@ SRC_URI = " \
     file://0001-secure_storage-ta-Add-a-missing-include-file.patch \
 "
 
-COMPATIBLE_MACHINE = "(salvator-x|h3ulcb|m3ulcb|m3nulcb)"
+COMPATIBLE_MACHINE = "(h3ulcb|m3ulcb|m3nulcb)"
 PLATFORM = "rcar"
 
 DEPENDS = "optee-os optee-client python-pycrypto-native"

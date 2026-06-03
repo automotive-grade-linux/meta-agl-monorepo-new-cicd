@@ -16,7 +16,7 @@ SRC_URI = " \
     file://optee_xtest_fix.diff \
 "
 
-COMPATIBLE_MACHINE = "(salvator-x|h3ulcb|m3ulcb|m3nulcb)"
+COMPATIBLE_MACHINE = "(h3ulcb|m3ulcb|m3nulcb)"
 PLATFORM = "rcar"
 
 DEPENDS = "optee-os optee-client python3-pycrypto-native"
