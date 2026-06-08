@@ -5,4 +5,7 @@ SRC_URI:append:rk3588s = " \
     file://0002-Enable-can1-interface.patch \
 "
 
-AGL_KCONFIG_FRAGMENTS:append:rk3588s = " rockchip-sound.cfg rockchip-can.cfg"
+AGL_KCONFIG_FRAGMENTS:append:rk3588s = " \
+    rockchip-sound.cfg rockchip-can.cfg rockchip-drm.cfg \
+    rockchip-media.cfg rockchip-misc.cfg \
+"
