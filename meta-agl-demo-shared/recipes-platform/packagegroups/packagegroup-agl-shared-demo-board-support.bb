@@ -21,6 +21,11 @@ RDEPENDS:${PN}:append:rpi = " \
     mesa-megadriver \
 "
 
+# For Rockchip rK3588 boards.
+RDEPENDS:${PN}:append:rk3588 = " \
+    mesa-megadriver \
+"
+
 # For Virtio.
 RDEPENDS:${PN}:append:virtio-all = " \
     mesa-megadriver \
