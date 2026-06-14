@@ -19,16 +19,19 @@ RDEPENDS:${PN} = " \
 # For Raspberry Pi boards.
 RDEPENDS:${PN}:append:rpi = " \
     mesa-megadriver \
+    mesa-vulkan-drivers \
 "
 
 # For Rockchip rK3588 boards.
 RDEPENDS:${PN}:append:rk3588 = " \
     mesa-megadriver \
+    mesa-vulkan-drivers \
 "
 
 # For Virtio.
 RDEPENDS:${PN}:append:virtio-all = " \
     mesa-megadriver \
+    mesa-vulkan-drivers \
 "
 
 # For R-Car Gen3
