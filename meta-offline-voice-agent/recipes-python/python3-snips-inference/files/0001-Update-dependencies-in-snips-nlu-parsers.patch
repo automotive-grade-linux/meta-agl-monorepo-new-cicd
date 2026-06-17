@@ -6,7 +6,7 @@ Subject: [PATCH] Update dependencies in snips-nlu-parsers
  - Use the latest `gazetteer-entity-parser`.
  - Change `snips-nlu-parsers-ffi-macros` to a local path.
 
-Upstream-Status: Inaproppriate.
+Upstream-Status: Inappropriate
 Signed-off-by: Anuj Solanki <anuj603362@gmail.com>
 ---
  Cargo.toml              | 2 +-

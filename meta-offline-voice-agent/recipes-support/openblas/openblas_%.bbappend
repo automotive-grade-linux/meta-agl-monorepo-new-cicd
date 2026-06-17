@@ -1,6 +1,5 @@
 # Required to build python3-scipy
 PACKAGECONFIG = "cblas affinity dynarch"
-PACKAGECONFIG:remove = "openmp"
 PACKAGECONFIG:append:class-target = " lapacke lapack"
 
 # Skip building tests for native

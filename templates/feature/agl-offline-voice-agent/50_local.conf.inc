@@ -8,8 +8,6 @@ HOSTTOOLS += "gfortran"
 # FIXME check if needed and/or submit upstream
 BBCLASSEXTEND:pn-python3-charset-normalizer = "native nativesdk"
 
-PACKAGECONFIG:pn-openblas := "cblas lapack lapack-deprecated"
-
 FEATURE_PACKAGES_agl-offline-voice-agent:append = " \
     python3-snips-inference-agl \ 
     snips-model-agl \

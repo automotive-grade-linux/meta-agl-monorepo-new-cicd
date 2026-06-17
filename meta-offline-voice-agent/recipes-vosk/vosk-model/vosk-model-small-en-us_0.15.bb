@@ -11,7 +11,7 @@ SRC_URI = " \
 # License listed on https://alphacephei.com/vosk/models
 
 SRC_URI[model.sha256sum] = "30f26242c4eb449f948e42cb302dd7a686cb29a3423a8367f99ff41780942498"
-SRC_URI[license.sha256sum] = "a6041bf64c2609f58a9d3ced727c4629ed8b2bc4f7af78090d36da2e1beb3344"
+SRC_URI[license.sha256sum] = "be3599963ee12a6424f194c50f5358e190a19f125a27611f77b590549d8e4915"
 
 S = "${UNPACKDIR}/vosk-model-small-en-us-0.15"
 

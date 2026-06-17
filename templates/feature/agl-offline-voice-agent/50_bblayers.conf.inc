@@ -4,6 +4,7 @@ AGL_META_PYTHON = "${METADIR}/external/meta-openembedded/meta-python"
 
 BBLAYERS =+ " \
     ${METADIR}/meta-agl-devel/meta-offline-voice-agent \
+    ${METADIR}/external/meta-virtualization \
     ${METADIR}/external/meta-python-ai \
 "
 

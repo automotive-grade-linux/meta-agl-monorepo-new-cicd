@@ -4,7 +4,9 @@ HOMEPAGE = "https://github.com/alphacep/vosk-server"
 LICENSE = "Apache-2.0"
 LIC_FILES_CHKSUM = "file://COPYING;md5=d09bbd7a3746b6052fbd78b26a87396b"
 
-SRC_URI = "git://github.com/alphacep/vosk-server;protocol=https;branch=master"
+SRC_URI = "git://github.com/alphacep/vosk-server;protocol=https;branch=master \
+           file://0001-Handle-removal-of-boost-asio-buffer_cast.patch \
+"
 
 PV = "1.0+git${SRCPV}"
 SRCREV = "70f3d5321a40f2f5dffe9c833bc1fac4b3b451e7"
@@ -18,7 +20,7 @@ do_configure () {
 do_compile () {
 	# websocket-cpp
 	cd websocket-cpp
-	${CXX} -I${STAGING_INCDIR}/vosk -lvosk ${LDFLAGS} -o vosk-websocket-cpp asr_server.cpp
+	${CXX} ${CXXFLAGS} -I${STAGING_INCDIR}/vosk -lvosk ${LDFLAGS} -o vosk-websocket-cpp asr_server.cpp
 }
 
 do_install () {

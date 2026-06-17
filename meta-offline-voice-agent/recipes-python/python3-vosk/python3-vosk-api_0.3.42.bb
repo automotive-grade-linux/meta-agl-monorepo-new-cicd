@@ -21,6 +21,7 @@ DEPENDS += " \
     python3-requests-native \
     python3-pip-native \
     python3-charset-normalizer-native \
+    python3-cffi-native \
 "
 
 RDEPENDS:${PN} += " \

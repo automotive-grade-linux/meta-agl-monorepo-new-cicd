@@ -6,6 +6,8 @@ LIC_FILES_CHKSUM = "file://${THISDIR}/../../licenses/LICENSE;md5=7a3cb8450513216
 SRC_URI = "https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-tiny.en.bin"
 SRC_URI[sha256sum] = "921e4cf8686fdd993dcd081a5da5b6c365bfde1162e72b08d75ac75289920b1f"
 
+S = "${UNPACKDIR}"
+
 do_install() {
     # Install the models
     install -d ${D}${datadir}/whisper-cpp/models
