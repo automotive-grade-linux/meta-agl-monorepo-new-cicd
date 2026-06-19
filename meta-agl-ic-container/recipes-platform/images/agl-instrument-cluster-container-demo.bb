@@ -39,5 +39,5 @@ require recipes-platform/images/agl-sdk-build-support.inc
 IMAGE_INSTALL:append:rcar-gen3 = " kernel-module-gles gles-user-module-firmware"
 IMAGE_INSTALL:append:sparrow-hawk = " \
     kernel-module-gles gles-user-module-firmware \
-    linux-fitimage \
+    linux-fitimage linux-firmware-pcie-rcar \
     "
