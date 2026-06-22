@@ -52,3 +52,16 @@ BBMASK += "meta-renesas/meta-rcar-gen3/recipes-graphics/cogl/cogl-1.0_1.%.bbappe
 # packagegroup bbclass is inherited.  This can be removed when upstream
 # is fixed to add the required PACKAGE_ARCH = "${MACHINE_ARCH}".
 PACKAGE_ARCH:pn-packagegroup-multimedia-libs = "${MACHINE_ARCH}"
+
+# Changes for wrynose-dev branch, June 2026
+# These are hopefully temporary, and can be removed when full wrynose
+# compatibility arrives.
+
+# Mask out the forward ported Weston 14 recipe and assocated bbappend,
+# as we need Weston 15 for agl-compositor, even for nogfx builds.
+BBMASK += "meta-renesas/meta-rcar-gen3/recipes-graphics/wayland/weston_*"
+
+# ndctl fails to build, likely due to the old 5.10 kernel API headers,
+# so remove it
+RDEPENDS:packagegroup-meta-oe-core:remove:rcar-gen3 = "ndctl"
+PACKAGECONFIG:remove:pn-libblockdev:rcar-gen3 = "nvdimm"

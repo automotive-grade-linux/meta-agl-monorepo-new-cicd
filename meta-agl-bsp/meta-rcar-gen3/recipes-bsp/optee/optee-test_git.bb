@@ -21,13 +21,13 @@ PLATFORM = "rcar"
 
 DEPENDS = "optee-os optee-client python3-pycrypto-native"
 
-export CROSS_COMPILE64="${TARGET_PREFIX}"
+export CROSS_COMPILE64 = "${TARGET_PREFIX}"
 
 # Let the Makefile handle setting up the flags as it is a standalone application
 LD[unexport] = "1"
 LDFLAGS[unexport] = "1"
-export CCcore="${CC}"
-export LDcore="${LD}"
+export CCcore = "${CC}"
+export LDcore = "${LD}"
 libdir[unexport] = "1"
 
 CFLAGS += "-Wno-extra -Wno-error=stringop-overflow -Wno-error=array-bounds"
