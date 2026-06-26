@@ -38,6 +38,7 @@ staff::50:
 games::60:
 shutdown::70:
 users::100:
+gpio::101:
 nogroup::65534:
 cynagora::999:
 dhcp::998:
