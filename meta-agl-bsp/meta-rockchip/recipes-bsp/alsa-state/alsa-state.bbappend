@@ -1,3 +1,3 @@
-FILESEXTRAPATHS:prepend:nanopc-t6 := "${THISDIR}/${PN}:"
+FILESEXTRAPATHS:prepend:rk3588 := "${THISDIR}/${PN}:"
 
-PACKAGE_ARCH:nanopc-t6 = "${MACHINE_ARCH}"
+PACKAGE_ARCH:rk3588 = "${MACHINE_ARCH}"
