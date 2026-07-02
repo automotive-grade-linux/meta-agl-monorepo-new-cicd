@@ -1,0 +1,24 @@
+# vf2_uEnv.txt for StarFive VisionFive U-boot 2021.x
+# Derived from uEnv-visionfive2.txt in meta-riscv.
+#
+# This file is intended for use in images assuming use of the
+# upstream U-Boot 2026.01 to allow them to still boot on boards
+# with the StarFive U-Boot 2021 fork.
+#
+
+#devnum=1
+partnum=3
+
+# Assume root partition is labelled as meta-riscv does in its wks file
+bootargs_new_efi=setenv bootargs "console=ttyS0,115200 rootwait root=PARTLABEL=root earlycon=sbi"
+
+# Make sure load addresses are at the expected defaults
+fdt_addr_r=0x46000000
+kernel_addr_r=0x40200000
+
+# Boot kernel directly instead of loading grub, as the kernel crashes when
+# chain-loaded in that scenario.  This works since the kernel has an EFI
+# entry point.
+bootcmd_new_efi=load mmc ${devnum}:${partnum} ${kernel_addr_r} Image; load mmc ${devnum}:${partnum} ${fdt_addr_r} jh7110-starfive-visionfive-2-v1.3b.dtb; bootefi ${kernel_addr_r} ${fdt_addr_r}
+boot2=run bootargs_new_efi; mmc dev ${devnum}; run bootcmd_new_efi
+~
