@@ -65,3 +65,19 @@ BBMASK += "meta-renesas/meta-rcar-gen3/recipes-graphics/wayland/weston_*"
 # so remove it
 RDEPENDS:packagegroup-meta-oe-core:remove:rcar-gen3 = "ndctl"
 PACKAGECONFIG:remove:pn-libblockdev:rcar-gen3 = "nvdimm"
+
+# Mask out the old gstreamer 1.20.3 as the tests fail to compile with
+# the newer gcc in wrynose, breaking CI.  If the Renesas hardware
+# acceleration changes are required by someone, an investigation into
+# backporting fixes will need to be done.
+#
+# Note that the whole directory is not just masked to keep the
+# gstreamer1.0-plugin-vspfilter* recipes, and the related (for libav)
+# old ffmpeg recipe is also masked out.
+BBMASK += " \
+    meta-renesas/meta-rcar-gen3/recipes-multimedia/gstreamer/gstreamer1.0_ \
+    meta-renesas/meta-rcar-gen3/recipes-multimedia/gstreamer/gstreamer1.0-libav_ \
+    meta-renesas/meta-rcar-gen3/recipes-multimedia/gstreamer/gstreamer1.0-meta-base_ \
+    meta-renesas/meta-rcar-gen3/recipes-multimedia/gstreamer/gstreamer1.0-plugins \
+    meta-renesas/meta-rcar-gen3/recipes-multimedia/ffmpeg/ \
+"
