@@ -25,9 +25,6 @@ IMAGE_INSTALL:append:rpi = " kernel-modules create-combined-dtb"
 # Display configuration
 WESTON_DISPLAYS:rpi = " hdmi-a-1-90 hdmi-a-2-90"
 
-# Use 6.12.x by default to better match Raspbian, etc.
-PREFERRED_VERSION_linux-raspberrypi ?= "6.12.%"
-
 RPI_KERNEL_DEVICETREE_OVERLAYS:append:rpi = " \
     overlays/mcp251xfd.dtbo \
     overlays/seeed-can-fd-hat-v1.dtbo \
