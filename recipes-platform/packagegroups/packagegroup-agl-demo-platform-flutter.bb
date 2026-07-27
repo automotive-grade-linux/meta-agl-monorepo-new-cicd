@@ -16,6 +16,7 @@ RDEPENDS:${PN} += "\
 
 RDEPENDS:${PN}:append = " \
     agl-compositor \
+    weston-ini-conf-flutter \
     flutter-auto \
     agl-flutter-env \
     applaunchd-template-agl-app-flutter \
