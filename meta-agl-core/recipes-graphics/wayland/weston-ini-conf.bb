@@ -18,6 +18,7 @@ SRC_URI = " \
 	file://virtual-180.cfg \
 	file://virtual-270.cfg \
 	file://grpc-proxy.cfg \
+	file://shell-flutter-auto.cfg \
 "
 
 S = "${UNPACKDIR}"
@@ -33,7 +34,7 @@ WESTON_DISPLAYS ?= "hdmi-a-1-90"
 # Configuration fragments to use in weston.ini.*
 # Note that some may be replaced/removed when building the landscape
 # configuration.
-WESTON_FRAGMENTS_BASE = "core shell"
+WESTON_FRAGMENTS_BASE = "core shell shell-flutter-auto"
 WESTON_FRAGMENTS = "${WESTON_FRAGMENTS_BASE} ${WESTON_DISPLAYS}"
 
 # On-target weston.ini directory
@@ -50,6 +51,9 @@ do_compile() {
     sed -i -e '$ d' ${WORKDIR}/weston.ini.default
 
     cat ${WORKDIR}/weston.ini.default > ${WORKDIR}/weston.ini.default-no-activate
+    cat ${WORKDIR}/weston.ini.default > ${WORKDIR}/weston.ini.flutter
+
+    sed -i -E 's|(flutter-embedder-quirk)=(.*)|\1=true|' ${WORKDIR}/weston.ini.flutter
 
     # Do it again, but filter fragments to configure for landscape
     # and a corresponding landscape-inverted that is 180 degrees
@@ -83,6 +87,7 @@ do_install:append() {
     install -d ${D}${weston_ini_dir}
     install -m 0644 ${WORKDIR}/weston.ini.default ${D}${weston_ini_dir}/
     install -m 0644 ${WORKDIR}/weston.ini.default-no-activate ${D}${weston_ini_dir}/
+    install -m 0644 ${WORKDIR}/weston.ini.flutter ${D}${weston_ini_dir}/
     install -m 0644 ${WORKDIR}/weston.ini.landscape-no-activate ${D}${weston_ini_dir}/
     install -m 0644 ${WORKDIR}/weston.ini.landscape ${D}${weston_ini_dir}/
     install -m 0644 ${WORKDIR}/weston.ini.landscape-inverted ${D}${weston_ini_dir}/
@@ -136,6 +141,13 @@ RPROVIDES:${PN}-landscape-no-activate = "weston-ini"
 ALTERNATIVE:${PN}-landscape-no-activate = "weston.ini"
 ALTERNATIVE_TARGET_${PN}-landscape-no-activate = "${weston_ini_dir}/weston.ini.landscape-no-activate"
 ALTERNATIVE_PRIORITY_${PN}-landscape-no-activate = "26"
+
+PACKAGE_BEFORE_PN += "${PN}-flutter"
+FILES:${PN}-flutter = "${weston_ini_dir}/weston.ini.flutter"
+RPROVIDES:${PN}-flutter = "weston-ini"
+ALTERNATIVE:${PN}-flutter = "weston.ini"
+ALTERNATIVE_TARGET_${PN}-flutter = "${weston_ini_dir}/weston.ini.flutter"
+ALTERNATIVE_PRIORITY_${PN}-flutter = "31"
 
 # This is a settings-only package, we do not need a development package
 # (and its fixed dependency to ${PN} being installed)
