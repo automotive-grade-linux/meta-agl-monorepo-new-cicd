@@ -12,12 +12,12 @@ SRC_URI = "git://github.com/LSchwiedrzik/agl-persistent-storage-api.git;protocol
 PV = "1.0+git${SRCPV}"
 SRCREV = "de8ecba1279ee2bcb55f0595017165c606fac835"
 
-DEPENDS = "protobuf-native grpc-native rocksdb clang-native"
+DEPENDS = "clang-native protobuf-native grpc-native rocksdb zstd"
 TOOLCHAIN = "clang"
 
 require ${BPN}-crates.inc
 
-inherit cargo cargo-update-recipe-crates systemd 
+inherit cargo cargo-update-recipe-crates pkgconfig systemd
 #useradd
 
 SYSTEMD_SERVICE:${PN} = "${BPN}.service"
