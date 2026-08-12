@@ -5,7 +5,7 @@ LIC_FILES_CHKSUM = "file://LICENSE;md5=ae6497158920d9524cf208c09cc4c984"
 DEPENDS = "systemd glib-2.0"
 
 SRC_URI = "git://gerrit.automotivelinux.org/gerrit/src/bluez-glib;protocol=https;branch=${AGL_BRANCH}"
-SRCREV = "045d4a1ffc823665b068be96b5d8532e68838e18"
+SRCREV = "e4d541dc8d859bdf944b976d3e386352f58d8d4e"
 
 # PV needs to be modified with SRCPV to work AUTOREV correctly
 PV = "1.0+git${SRCPV}"
