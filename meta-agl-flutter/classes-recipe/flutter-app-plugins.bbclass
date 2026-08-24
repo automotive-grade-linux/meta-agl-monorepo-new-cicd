@@ -7,6 +7,19 @@ TOOLCHAIN = "clang"
 # Required to make dart happy
 DEPENDS:append = " lld-native"
 
+# Force lld use and using compiler-rt and libunwind instead of libgcc
+# Ideally these could just be added to LDFLAGS, but we have to live
+# with putting them into the general flags variables, as the
+# resulting CMAKE_<LANG>_LINK_FLAGS variables in toolchain.cmake
+# created by cmake.bbclass do not seem to be getting used, perhaps
+# due to behavior changes with cmake 4.3.
+DEPENDS:append = " libunwind"
+CFLAGS += "-rtlib=compiler-rt -unwindlib=libunwind -fuse-ld=lld"
+CXXFLAGS += "-rtlib=compiler-rt -unwindlib=libunwind -fuse-ld=lld"
+
+# Force libc++ use instead of default libstdc++
+CXXFLAGS += "-stdlib=libc++"
+
 # Needed until meta-flutter is updated, flutter-app.bbclass does this already
 # in newer versions
 include conf/include/gn-utils.inc
@@ -63,7 +76,7 @@ do_install:append() {
 }
 
 # Ensure do_compile has a clean slate when it runs
-do_compile[cleandirs] = "${S}/.dart_tool"
+do_compile[cleandirs] += "${S}/.dart_tool/hooks_runner"
 
 # Quiet QA warnings about debug libraries under /usr/share/flutter/.../lib/.debug
 INSANE_SKIP:${PN}-dbg += " libdir"
