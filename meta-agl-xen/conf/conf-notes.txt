@@ -1,0 +1,2 @@
+- meta-agl-xen:
+  * agl-xen-image-test            (Xen test image)
