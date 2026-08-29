@@ -39,7 +39,7 @@ do_deploy () {
 	if [ -f "${S}/bcm2711-rpi-4-b+vc4.dtb" ]; then
 		install -m 0644 ${S}/bcm2711-rpi-4-b+vc4.dtb ${DEPLOY_DIR_IMAGE}
 	fi
-	if [ -f "${S}/bcm2712-rpi-5-b_vc4.dtb" ]; then
+	if [ -f "${S}/bcm2712-rpi-5-b-vc4.dtb" ]; then
 		install -m 0644 ${S}/bcm2712-rpi-5-b-vc4.dtb ${DEPLOY_DIR_IMAGE}
 	fi
 }
