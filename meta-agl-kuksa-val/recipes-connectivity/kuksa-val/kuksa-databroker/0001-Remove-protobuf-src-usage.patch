@@ -1,4 +1,4 @@
-From 76745cebc34fc0dca6f14d28893122686af3aeb5 Mon Sep 17 00:00:00 2001
+From c2ce57ed386b8f5a3ca139da0fac3afca8464ef0 Mon Sep 17 00:00:00 2001
 From: Scott Murray <scott.murray@konsulko.com>
 Date: Sun, 2 Aug 2026 16:01:30 -0400
 Subject: [PATCH] Remove protobuf-src usage
@@ -20,10 +20,10 @@ Signed-off-by: Scott Murray <scott.murray@konsulko.com>
  4 files changed, 40 deletions(-)
 
 diff --git a/Cargo.lock b/Cargo.lock
-index 244a4af..9673f33 100644
+index 9bfac72..c2184f9 100644
 --- a/Cargo.lock
 +++ b/Cargo.lock
-@@ -453,15 +453,6 @@ dependencies = [
+@@ -451,15 +451,6 @@ dependencies = [
   "hashbrown 0.16.1",
  ]
  
@@ -39,16 +39,16 @@ index 244a4af..9673f33 100644
  [[package]]
  name = "colorchoice"
  version = "1.0.5"
-@@ -799,7 +790,6 @@ version = "0.7.1-dev.0"
+@@ -784,7 +775,6 @@ version = "0.7.1"
  dependencies = [
-  "prost 0.14.4",
+  "prost",
   "prost-types",
 - "protobuf-src",
-  "tonic 0.14.6",
+  "tonic",
   "tonic-prost",
   "tonic-prost-build",
-@@ -3605,15 +3595,6 @@ dependencies = [
-  "prost 0.14.4",
+@@ -3517,15 +3507,6 @@ dependencies = [
+  "prost",
  ]
  
 -[[package]]
@@ -62,9 +62,9 @@ index 244a4af..9673f33 100644
 -
  [[package]]
  name = "quote"
- version = "1.0.46"
+ version = "1.0.47"
 diff --git a/databroker-proto/Cargo.toml b/databroker-proto/Cargo.toml
-index fd5d6a3..0dea4ca 100644
+index a0108ba..0ee14e7 100644
 --- a/databroker-proto/Cargo.toml
 +++ b/databroker-proto/Cargo.toml
 @@ -26,4 +26,3 @@ prost-types = { workspace = true }
@@ -85,7 +85,7 @@ index d0f2b34..2c2224a 100644
          .compile_well_known_types(false)
          .protoc_arg("--experimental_allow_proto3_optional")
 diff --git a/lib/Cargo.lock b/lib/Cargo.lock
-index df04394..1882414 100644
+index cc095f8..02514da 100644
 --- a/lib/Cargo.lock
 +++ b/lib/Cargo.lock
 @@ -124,15 +124,6 @@ version = "1.0.4"
@@ -104,7 +104,7 @@ index df04394..1882414 100644
  [[package]]
  name = "colorchoice"
  version = "1.0.5"
-@@ -159,7 +150,6 @@ version = "0.7.1-dev.0"
+@@ -159,7 +150,6 @@ version = "0.7.1"
  dependencies = [
   "prost",
   "prost-types",
@@ -112,7 +112,7 @@ index df04394..1882414 100644
   "tonic",
   "tonic-prost",
   "tonic-prost-build",
-@@ -806,15 +796,6 @@ dependencies = [
+@@ -794,15 +784,6 @@ dependencies = [
   "prost",
  ]
  
@@ -127,7 +127,7 @@ index df04394..1882414 100644
 -
  [[package]]
  name = "quote"
- version = "1.0.46"
+ version = "1.0.47"
 -- 
 2.55.0
 
