@@ -6,6 +6,9 @@ SECTION = "graphics"
 LICENSE = "Apache-2.0"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=3b83ef96387f14655fc854ddc3c6bd57"
 
+# Needed for sd-bus for bluez-native plugin
+DEPENDS = "systemd"
+
 SRC_URI = "git://gerrit.automotivelinux.org/gerrit/apps/flutter-ics-homescreen;protocol=https;branch=${AGL_BRANCH} \
            file://ics-homescreen.toml \
            file://flutter-ics-homescreen.service \
@@ -16,11 +19,11 @@ SRC_URI = "git://gerrit.automotivelinux.org/gerrit/apps/flutter-ics-homescreen;p
            file://flutter-ics-homescreen.toml.kvm-tradeshow \
            file://kvm.conf \
 "
-SRCREV = "27c6af705b57b627b90d85007228e918903c7560"
+SRCREV = "2ce5a77cec61aed021f54100eeb21d98a2c30e84"
 
 PUBSPEC_APPNAME = "flutter_ics_homescreen"
 
-inherit flutter-app systemd update-alternatives
+inherit flutter-app-plugins systemd update-alternatives
 
 APP_CONFIG = "ics-homescreen.toml"
 
