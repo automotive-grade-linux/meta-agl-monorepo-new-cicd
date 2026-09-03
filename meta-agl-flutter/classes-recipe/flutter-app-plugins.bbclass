@@ -23,7 +23,12 @@ CXXFLAGS += "-stdlib=libc++"
 # Needed until meta-flutter is updated, flutter-app.bbclass does this already
 # in newer versions
 include conf/include/gn-utils.inc
-FLUTTER_BUILD_ARGS:append = " --target-platform linux-${@gn_target_arch_name(d)}"
+FLUTTER_BUILD_ARGS_PLUGIN = "--target-platform linux-${@gn_target_arch_name(d)}"
+# Need to pretend riscv64 is x86-64 with Flutter 3.38.3, this works for
+# now since the plugins we're currently using use cmake instead of relying
+# on the compiler/linker specified via the hook environment.
+FLUTTER_BUILD_ARGS_PLUGIN:riscv64 = "--target-platform linux-x64"
+FLUTTER_BUILD_ARGS:append = " ${FLUTTER_BUILD_ARGS_PLUGIN}"
 
 # Mask out build path in compiled plugin code
 DEBUG_PREFIX_MAP += "-ffile-prefix-map=${PUB_CACHE}/hosted/pub.dev=${TARGET_DBGSRC_DIR}"
