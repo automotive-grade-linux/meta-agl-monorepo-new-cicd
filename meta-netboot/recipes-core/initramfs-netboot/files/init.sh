@@ -124,6 +124,8 @@ while :;do
 	bail_out "Unable to mount NBD device $NBD_DEV using server $NBD_SERVER:$NBD_PORT"
 done
 
+# The NBD0 took some time to be ready.
+sleep 2
 # mount NBD device
 mkdir -p /sysroot
 mount $NBD_DEV -o noatime /sysroot || bail_out "Unable to mount root NBD device"
