@@ -39,3 +39,11 @@ RDEPENDS:${PN} += " \
 # This should probably be addressed with finer-grained packaging or some
 # other change worked out with upstream.
 RDEPENDS:${PN} += "bash"
+
+# Workaround for SPEC-5713
+# for now remove the whole directory
+do_install:append () {
+
+rm -rf ${D}/${PYTHON_SITEPACKAGES_DIR}/tests
+
+}
