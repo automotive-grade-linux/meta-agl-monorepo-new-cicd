@@ -1,0 +1,12 @@
+[Unit]
+Requires=native-shell-client.service
+After=native-shell-client.service
+
+[Service]
+Type=simple
+ExecStart=/usr/sbin/agl-qemu-runner.sh %i
+#Restart=on-failure
+Restart=no
+
+[Install]
+WantedBy=multi-user.target

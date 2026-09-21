@@ -1,0 +1,10 @@
+[Unit]
+Description=CAN interface helper
+Before=kuksa-can-provider.service
+
+[Service]
+ExecStart=/usr/sbin/can-dev-helper.sh
+Type=oneshot
+
+[Install]
+WantedBy=multi-user.target

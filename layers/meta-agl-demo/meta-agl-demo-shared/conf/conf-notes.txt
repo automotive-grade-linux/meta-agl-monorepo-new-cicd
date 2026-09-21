@@ -1,0 +1,3 @@
+- meta-agl-demo-shared:
+  * agl-instrument-cluster-standalone-demo
+    ('agl-ic' or 'agl-ic-container' feature is required. IC EG non-container cluster demo image.)

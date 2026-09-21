@@ -1,0 +1,446 @@
+# DBC mappings for vehicle and engine speeds
+
+Vehicle.Speed:
+  datatype: float
+  type: sensor
+  vss2dbc:
+    signal: PT_VehicleSpeed
+
+Vehicle.Powertrain.CombustionEngine.Speed:
+  datatype: uint16
+  type: sensor
+  vss2dbc:
+    signal: PT_EngineSpeed
+
+# DBC mappings for other signals for V2C demo
+
+Vehicle.Body.Lights.Hazard.IsSignaling:
+  datatype: boolean
+  type: actuator
+  vss2dbc:
+    signal: PT_HazardOn
+    transform:
+      mapping:
+        - from: false
+          to: 0
+        - from: true
+          to: 1
+
+Vehicle.Body.Lights.DirectionIndicator.Left.IsSignaling:
+  datatype: boolean
+  type: actuator
+  vss2dbc:
+    signal: PT_LeftTurnOn
+    transform:
+      mapping:
+        - from: false
+          to: 0
+        - from: true
+          to: 1
+
+Vehicle.Body.Lights.DirectionIndicator.Right.IsSignaling:
+  datatype: boolean
+  type: actuator
+  vss2dbc:
+    signal: PT_RightTurnOn
+    transform:
+      mapping:
+        - from: false
+          to: 0
+        - from: true
+          to: 1
+
+Vehicle.Chassis.SteeringWheel.Angle:
+  datatype: int16
+  type: sensor
+  vss2dbc:
+    signal: SteeringPosition
+
+Vehicle.Chassis.Brake.PedalPosition:
+  datatype: uint8
+  type: sensor
+  vss2dbc:
+    signal: BrakePressure
+    transform:
+      math: "x * 191.25"
+
+Vehicle.Powertrain.CombustionEngine.TPS:
+  datatype: uint8
+  type: sensor
+  vss2dbc:
+    signal: ThrottlePosition
+
+Vehicle.Powertrain.Transmission.SelectedGear:
+  datatype: int8
+  type: sensor
+  vss2dbc:
+    signal: Gear
+
+Vehicle.Acceleration.Lateral:
+  datatype: float
+  type: sensor
+  vss2dbc:
+    signal: AccelerationX
+
+Vehicle.Acceleration.Longitudinal:
+  datatype: float
+  type: sensor
+  vss2dbc:
+    signal: AccelerationY
+
+Vehicle.Acceleration.Vertical:
+  datatype: float
+  type: sensor
+  vss2dbc:
+    signal: AccelerationZ
+
+Vehicle.AngularVelocity.Pitch:
+  datatype: float
+  type: sensor
+  vss2dbc:
+    signal: GyroscopeX
+
+Vehicle.AngularVelocity.Roll:
+  datatype: float
+  type: sensor
+  vss2dbc:
+    signal: GyroscopeY
+
+Vehicle.AngularVelocity.Yaw:
+  datatype: float
+  type: sensor
+  vss2dbc:
+    signal: GyroscopeZ
+
+Vehicle.CurrentLocation.Latitude:
+  datatype: double
+  type: sensor
+  vss2dbc:
+    signal: Latitude
+
+Vehicle.CurrentLocation.Longitude:
+  datatype: double
+  type: sensor
+  vss2dbc:
+    signal: Longitude
+
+
+#
+# AGL VSS additions
+#
+
+# Extra navigation state signals
+
+Vehicle.Cabin.Infotainment.Navigation.State:
+  datatype: string
+  type: sensor
+  allowed: [ 'UNKNOWN', 'ACTIVE', 'ARRIVED', 'STOPPED' ]
+  description: Navigation state.
+
+Vehicle.Cabin.Infotainment.Navigation.ElapsedDistance:
+  datatype: float
+  type: sensor
+  unit: km
+  description: Navigation elapsed distance.
+
+
+# Extra audio control signals
+
+Vehicle.Cabin.Infotainment.Media.Audio:
+  type: branch
+  description: Media audio controls.
+
+Vehicle.Cabin.Infotainment.Media.Audio.Balance:
+  datatype: int8
+  type: actuator
+  min: -100
+  max: 100
+  unit: percent
+  description: Audio left/right balance.
+
+Vehicle.Cabin.Infotainment.Media.Audio.Fade:
+  datatype: int8
+  type: actuator
+  min: -100
+  max: 100
+  unit: percent
+  description: Audio front/rear balance.
+
+Vehicle.Cabin.Infotainment.Media.Audio.Bass:
+  datatype: int8
+  type: actuator
+  min: -100
+  max: 100
+  unit: percent
+  description: Audio low-frequency filter control.
+
+Vehicle.Cabin.Infotainment.Media.Audio.Treble:
+  datatype: int8
+  type: actuator
+  min: -100
+  max: 100
+  unit: percent
+  description: Audio high-frequency filter control.
+
+
+# Extra steering wheel switch signals, including DBC mappings
+
+Vehicle.Cabin.SteeringWheel:
+  type: branch
+  description: AGL steering wheel demo data.
+
+Vehicle.Cabin.SteeringWheel.Switches:
+  type: branch
+  description: AGL steering wheel demo switch data.
+
+Vehicle.Cabin.SteeringWheel.Switches.VolumeUp:
+  datatype: boolean
+  type: sensor
+  description: Steering wheel volume up switch engaged.
+  dbc2vss:
+    signal: SW_VolumeUp
+    on_change: true
+    transform:
+      mapping:
+        - from: 0
+          to: false
+        - from: 1
+          to: true
+
+Vehicle.Cabin.SteeringWheel.Switches.VolumeDown:
+  datatype: boolean
+  type: sensor
+  description: Steering wheel volume down switch engaged.
+  dbc2vss:
+    signal: SW_VolumeDown
+    on_change: true
+    transform:
+      mapping:
+        - from: 0
+          to: false
+        - from: 1
+          to: true
+
+Vehicle.Cabin.SteeringWheel.Switches.VolumeMute:
+  datatype: boolean
+  type: sensor
+  description: Steering wheel volume mute switch engaged.
+  dbc2vss:
+    signal: SW_VolumeMute
+    on_change: true
+    transform:
+      mapping:
+        - from: 0
+          to: false
+        - from: 1
+          to: true
+
+Vehicle.Cabin.SteeringWheel.Switches.Next:
+  datatype: boolean
+  type: sensor
+  description: Steering wheel next switch engaged.
+  dbc2vss:
+    signal: SW_Next
+    on_change: true
+    transform:
+      mapping:
+        - from: 0
+          to: false
+        - from: 1
+          to: true
+
+Vehicle.Cabin.SteeringWheel.Switches.Previous:
+  datatype: boolean
+  type: sensor
+  description: Steering wheel previous switch engaged.
+  dbc2vss:
+    signal: SW_Previous
+    on_change: true
+    transform:
+      mapping:
+        - from: 0
+          to: false
+        - from: 1
+          to: true
+
+Vehicle.Cabin.SteeringWheel.Switches.Mode:
+  datatype: boolean
+  type: sensor
+  description: Steering wheel mode switch engaged.
+  dbc2vss:
+    signal: SW_Mode
+    on_change: true
+    transform:
+      mapping:
+        - from: 0
+          to: false
+        - from: 1
+          to: true
+
+Vehicle.Cabin.SteeringWheel.Switches.Info:
+  datatype: boolean
+  type: sensor
+  description: Steering wheel info switch engaged.
+  dbc2vss:
+    signal: SW_Info
+    on_change: true
+    transform:
+      mapping:
+        - from: 0
+          to: false
+        - from: 1
+          to: true
+
+Vehicle.Cabin.SteeringWheel.Switches.CruiseEnable:
+  datatype: boolean
+  type: sensor
+  description: Steering wheel cruise enable switch engaged.
+  dbc2vss:
+    signal: SW_CruiseEnable
+    on_change: true
+    transform:
+      mapping:
+        - from: 0
+          to: false
+        - from: 1
+          to: true
+
+Vehicle.Cabin.SteeringWheel.Switches.CruiseSet:
+  datatype: boolean
+  type: sensor
+  description: Steering wheel cruise set switch engaged.
+  dbc2vss:
+    signal: SW_CruiseSet
+    on_change: true
+    transform:
+      mapping:
+        - from: 0
+          to: false
+        - from: 1
+          to: true
+
+Vehicle.Cabin.SteeringWheel.Switches.CruiseResume:
+  datatype: boolean
+  type: sensor
+  description: Steering wheel cruise resume switch engaged.
+  dbc2vss:
+    signal: SW_CruiseResume
+    on_change: true
+    transform:
+      mapping:
+        - from: 0
+          to: false
+        - from: 1
+          to: true
+
+Vehicle.Cabin.SteeringWheel.Switches.CruiseCancel:
+  datatype: boolean
+  type: sensor
+  description: Steering wheel cruise cancel switch engaged.
+  dbc2vss:
+    signal: SW_CruiseCancel
+    on_change: true
+    transform:
+      mapping:
+        - from: 0
+          to: false
+        - from: 1
+          to: true
+
+Vehicle.Cabin.SteeringWheel.Switches.CruiseLimit:
+  datatype: boolean
+  type: sensor
+  description: Steering wheel cruise limit switch engaged.
+  dbc2vss:
+    signal: SW_CruiseLimit
+    on_change: true
+    transform:
+      mapping:
+        - from: 0
+          to: false
+        - from: 1
+          to: true
+
+Vehicle.Cabin.SteeringWheel.Switches.CruiseDistance:
+  datatype: boolean
+  type: sensor
+  description: Steering wheel cruise distance switch engaged.
+  dbc2vss:
+    signal: SW_CruiseDistance
+    on_change: true
+    transform:
+      mapping:
+        - from: 0
+          to: false
+        - from: 1
+          to: true
+
+Vehicle.Cabin.SteeringWheel.Switches.Voice:
+  datatype: boolean
+  type: sensor
+  description: Steering wheel voice switch engaged.
+  dbc2vss:
+    signal: SW_Voice
+    on_change: true
+    transform:
+      mapping:
+        - from: 0
+          to: false
+        - from: 1
+          to: true
+
+Vehicle.Cabin.SteeringWheel.Switches.PhoneCall:
+  datatype: boolean
+  type: sensor
+  description: Steering wheel phone call switch engaged.
+  dbc2vss:
+    signal: SW_PhoneCall
+    on_change: true
+    transform:
+      mapping:
+        - from: 0
+          to: false
+        - from: 1
+          to: true
+
+Vehicle.Cabin.SteeringWheel.Switches.PhoneHangup:
+  datatype: boolean
+  type: sensor
+  description: Steering wheel phone hangup switch engaged.
+  dbc2vss:
+    signal: SW_PhoneHangup
+    on_change: true
+    transform:
+      mapping:
+        - from: 0
+          to: false
+        - from: 1
+          to: true
+
+Vehicle.Cabin.SteeringWheel.Switches.Horn:
+  datatype: boolean
+  type: sensor
+  description: Steering wheel horn switch engaged.
+  dbc2vss:
+    signal: SW_Horn
+    on_change: true
+    transform:
+      mapping:
+        - from: 0
+          to: false
+        - from: 1
+          to: true
+
+Vehicle.Cabin.SteeringWheel.Switches.LaneDepartureWarning:
+  datatype: boolean
+  type: sensor
+  description: Steering wheel lane departure warning switch engaged.
+  dbc2vss:
+    signal: SW_LaneDepartureWarning
+    on_change: true
+    transform:
+      mapping:
+        - from: 0
+          to: false
+        - from: 1
+          to: true

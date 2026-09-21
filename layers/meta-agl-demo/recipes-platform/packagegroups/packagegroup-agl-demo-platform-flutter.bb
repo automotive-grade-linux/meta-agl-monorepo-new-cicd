@@ -1,0 +1,36 @@
+SUMMARY = "The software for Flutter Demo platform of AGL IVI profile"
+DESCRIPTION = "A set of packages for AGL Flutter Demo Platform"
+
+LICENSE = "MIT"
+
+inherit packagegroup
+
+PROVIDES = "${PACKAGES}"
+PACKAGES = "\
+    packagegroup-agl-demo-platform-flutter \
+    "
+
+RDEPENDS:${PN} += "\
+    packagegroup-agl-demo \
+    "
+
+RDEPENDS:${PN}:append = " \
+    agl-compositor \
+    weston-ini-conf-flutter \
+    flutter-auto \
+    agl-flutter-env \
+    applaunchd-template-agl-app-flutter \
+    psplash-portrait-config \
+    "
+
+# set FLUTTER_CAMERA_ENABLE to "1" to enable
+FLUTTER_CAMERA_STREAMS_ENABLE ??= "0"
+FLUTTER_CAMERA_PACKAGES = "camera-infer-models  flutter-camera-streams-app"
+
+RDEPENDS:${PN}:append = " ${@bb.utils.contains('FLUTTER_CAMERA_STREAMS_ENABLE', '1', ' ${FLUTTER_CAMERA_PACKAGES} ', '', d)}"
+
+# Appstore demo: set FLUTTER_APPSTORE_ENABLE to "1" to enable
+FLUTTER_APPSTORE_ENABLE ??= "0"
+FLUTTER_APPSTORE_PACKAGES = "flutter-flatpak-store"
+
+RDEPENDS:${PN}:append = " ${@bb.utils.contains('FLUTTER_APPSTORE_ENABLE', '1', ' ${FLUTTER_APPSTORE_PACKAGES} ', '', d)} "

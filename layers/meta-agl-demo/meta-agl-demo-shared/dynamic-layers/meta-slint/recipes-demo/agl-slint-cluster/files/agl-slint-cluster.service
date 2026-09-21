@@ -1,0 +1,10 @@
+[Unit]
+Description=Slint demo Cluster
+
+[Service]
+ExecStart=/usr/bin/agl-slint-cluster
+Restart=always
+RestartSec=1
+
+[Install]
+WantedBy=multi-user.target

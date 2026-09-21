@@ -1,0 +1,19 @@
+require recipes-platform/images/agl-cluster-demo-flutter.bb
+
+SUMMARY = "AGL Cluster tradeshow demo Flutter image"
+
+# We do not want a local databroker instance
+IMAGE_FEATURES:remove = "kuksa-val-databroker"
+
+# The cluster screen is rotated in the full demo setup, so the
+# default compositor configuration needs to be replaced.
+IMAGE_INSTALL:remove = "weston-ini-conf-landscape"
+
+# Application KUKSA configuration needs to be replaced for
+# the full demo to handle different databroker configuration.
+KUKSA_CONF = "kuksa-conf-demo-tradeshow"
+
+IMAGE_INSTALL += " \
+    psplash-inverted-config \
+    weston-ini-conf-landscape-inverted \
+"

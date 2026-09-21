@@ -1,0 +1,40 @@
+# enable the layer
+AGL_FEATURES:append = " agldemo"
+
+IMAGE_FEATURES =+ "allow-empty-password empty-root-password allow-root-login post-install-logging"
+
+DISTRO_FEATURES:append = " automount "
+
+# convenience
+IMAGE_INSTALL:append = " screen mc "
+
+# Include all kernel modules here for ease-of-use during development.
+# Note that this is conditional on virtual/kernel not being linux-dummy
+# in order to allow building the demo images as containers.
+# Comment this out to switch to selecting the kernel modules
+# individually.
+IMAGE_INSTALL:append = " ${@'kernel-modules' if d.getVar('PREFERRED_PROVIDER_virtual/kernel') != 'linux-dummy' else ''}"
+
+
+# install virtualbox drivers for vmdk
+#IMAGE_INSTALL:append = "${@bb.utils.contains_any('IMAGE_FSTYPES', 'wic.vmdk wic.vmdk.xz', ' open-vm-tools vboxguestdrivers', '', d)}"
+
+# It is not clear these definitions affect image generation in a robust
+# way, but define them to both show our intent and quiet the warnings
+# that get spammed otherwise.
+PREFERRED_RPROVIDER_kuksa-val-certificates-ca = "kuksa-certificates-agl"
+PREFERRED_RPROVIDER_kuksa-val-certificates-server = "kuksa-certificates-agl"
+PREFERRED_RPROVIDER_kuksa-val-certificates-client = "kuksa-certificates-agl"
+
+
+# S4SK needs CAN FD enabled
+# For systemd CAN bus configuration
+MACHINE_FEATURES:append:s4sk = " canfd"
+CANBUS_NETWORK_CONFIG:s4sk = "canbus-can-fd.network"
+# Also Sparrow Hawk
+CANBUS_NETWORK_CONFIG:sparrow-hawk = "canbus-can-fd.network"
+# Assume RPi CAN HATs are FD now
+CANBUS_NETWORK_CONFIG:rpi = "canbus-can-fd.network"
+
+# Mask out pyqt6 bbappend until latest Qt supports it
+BBMASK += "meta-agl-demo/recipes-devtools/python/python3-pyqt6_%.bbappend"

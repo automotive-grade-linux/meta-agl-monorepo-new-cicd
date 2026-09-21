@@ -1,0 +1,46 @@
+From adae0e94fcea391ab3a94aa2a1ad40d1fa504637 Mon Sep 17 00:00:00 2001
+From: Scott Murray <scott.murray@konsulko.com>
+Date: Tue, 1 Sep 2026 17:23:12 -0400
+Subject: [PATCH] Add preliminary Qt6 6.12 compatibility
+
+Add conditional to handle the removal of the EnterEditFocus and
+ExitEditFocus QEvents in 6.12 to allow compiling against it.
+
+Upstream-Status: Pending
+Signed-off-by: Scott Murray <scott.murray@konsulko.com>
+---
+ sip/QtCore/QtCoremod.sip  | 2 +-
+ sip/QtCore/qcoreevent.sip | 2 ++
+ 2 files changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/sip/QtCore/QtCoremod.sip b/sip/QtCore/QtCoremod.sip
+index de16dc7..6f0c181 100644
+--- a/sip/QtCore/QtCoremod.sip
++++ b/sip/QtCore/QtCoremod.sip
+@@ -22,7 +22,7 @@
+ 
+ %Module(name=PyQt6.QtCore, call_super_init=True, default_VirtualErrorHandler=PyQt6, keyword_arguments="Optional", use_limited_api=True, py_ssize_t_clean=True)
+ 
+-%Timeline {Qt_6_0_0 Qt_6_1_0 Qt_6_2_0 Qt_6_3_0 Qt_6_4_0 Qt_6_5_0 Qt_6_6_0 Qt_6_7_0 Qt_6_8_0 Qt_6_9_0 Qt_6_10_0 Qt_6_11_0}
++%Timeline {Qt_6_0_0 Qt_6_1_0 Qt_6_2_0 Qt_6_3_0 Qt_6_4_0 Qt_6_5_0 Qt_6_6_0 Qt_6_7_0 Qt_6_8_0 Qt_6_9_0 Qt_6_10_0 Qt_6_11_0 Qt_6_12_0}
+ 
+ %Platforms {Android iOS Linux macOS WebAssembly Windows}
+ 
+diff --git a/sip/QtCore/qcoreevent.sip b/sip/QtCore/qcoreevent.sip
+index 10a4405..26acca4 100644
+--- a/sip/QtCore/qcoreevent.sip
++++ b/sip/QtCore/qcoreevent.sip
+@@ -200,8 +200,10 @@ public:
+         PlatformSurface,
+         TabletTrackingChange,
+         GraphicsSceneLeave,
++%If (- Qt_6_12_0)
+         EnterEditFocus,
+         LeaveEditFocus,
++%End
+ %If (Qt_6_6_0 -)
+         DevicePixelRatioChange,
+ %End
+-- 
+2.55.0
+
