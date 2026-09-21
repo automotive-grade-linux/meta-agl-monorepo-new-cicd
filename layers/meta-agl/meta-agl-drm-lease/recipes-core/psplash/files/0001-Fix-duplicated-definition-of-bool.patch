@@ -1,0 +1,34 @@
+From 07bdb100fef80eb381e5557d12c75271c2c510f3 Mon Sep 17 00:00:00 2001
+From: Hiroyuki Ishii <ishii.hiroyuki002@jp.panasonic.com>
+Date: Tue, 27 Dec 2022 14:44:14 +0900
+Subject: [PATCH 01/17] Fix duplicated definition of bool
+
+We'd like to use stdbool.h instead of defining bool type
+duplicatedly to avoid build issue in future changes.
+
+drm-backend backport from:
+https://patchwork.yoctoproject.org/project/yocto/cover/20220425075954.10427-1-vasyl.vavrychuk@opensynergy.com/
+
+Upstream-Status: Pending
+
+Signed-off-by: Hiroyuki Ishii <ishii.hiroyuki002@jp.panasonic.com>
+Signed-off-by: Naoto Yamaguchi <naoto.yamaguchi@aisin.co.jp>
+---
+ psplash.h | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/psplash.h b/psplash.h
+index 138e49d..5f5db63 100644
+--- a/psplash.h
++++ b/psplash.h
+@@ -34,6 +34,7 @@
+ #include <sys/types.h>
+ #include <termios.h>
+ #include <unistd.h>
++#include <stdbool.h>
+ 
+ typedef uint8_t  uint8;
+ typedef uint16_t uint16;
+-- 
+2.43.0
+

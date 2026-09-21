@@ -1,0 +1,154 @@
+From caba0117dc30f2357eac6d04f3510095dcbaa7f4 Mon Sep 17 00:00:00 2001
+From: Paul Barker <pbarker@konsulko.com>
+Date: Fri, 18 Dec 2020 23:00:07 +0000
+Subject: [PATCH] fdtoverlay: Prevent overlays from modifying phandle
+ properties
+To: David Gibson <david@gibson.dropbear.id.au>,
+    Jon Loeliger <jdl@jdl.com>,
+    devicetree-compiler@vger.kernel.org
+Cc: Rob Herring <robh@kernel.org>,
+    Pantelis Antoniou <pantelis.antoniou@konsulko.com>,
+    Scott Murray <scott.murray@konsulko.com>,
+    Jan Simon Moeller <jsmoeller@linuxfoundation.org>
+
+When applying an overlay fragment, we should take care not to overwrite
+an existing phandle property of the target node as this could break
+references to the target node elsewhere in the base dtb.
+
+In addition to potentially breaking references within the resulting fdt,
+if the overlay is built with symbols enabled (`-@` option to dtc) then
+fdtoverlay will be unable to merge the overlay with a base dtb file.
+
+A new test case is added to check how fdtoverlay handles this case.
+Attempting to apply this test overlay without the fix in this patch
+results in the following output:
+
+    input  = tests/overlay_base_ref.test.dtb
+    output = tests/overlay_overlay_ref.fdtoverlay.dtb
+    overlay[0] = tests/overlay_overlay_ref.test.dtb
+
+    Failed to apply 'tests/overlay_overlay_ref.test.dtb': FDT_ERR_NOTFOUND
+
+In this test case the __overlay__ node in question does not explicitly
+contain a phandle property in the dts file, the phandle is added during
+compilation as it is referenced by another node within the overlay dts.
+
+This failure occurs due to a sequence of events in the functions called
+by fdt_overlay_apply():
+
+1) In overlay_fixup_phandles(), the target of the overlay fragment is
+   looked up and the target property is set to the phandle of the target
+   node.
+
+2) In overlay_merge(), the target node is looked up by phandle via
+   overlay_get_target(). As the __overlay__ node in this test case
+   itself has a phandle property, the phandle of the target node is
+   modified.
+
+3) In overlay_symbol_update(), the target node is again looked up by
+   phandle via overlay_get_target(). But this time the target node
+   cannot be found as its phandle property was modified.
+
+The fix for this issue is to skip modification of the phandle property
+of the target node in step (2) of the above sequence. If the target node
+doesn't already contain a phandle property, we can add one without risk.
+
+Upstream-Status: Submitted
+    https://www.spinics.net/lists/devicetree-compiler/msg03537.html
+Signed-off-by: Paul Barker <pbarker@konsulko.com>
+---
+ libfdt/fdt_overlay.c          |  2 ++
+ tests/overlay_base_ref.dts    | 19 +++++++++++++++++++
+ tests/overlay_overlay_ref.dts | 24 ++++++++++++++++++++++++
+ tests/run_tests.sh            |  5 +++++
+ 4 files changed, 50 insertions(+)
+ create mode 100644 tests/overlay_base_ref.dts
+ create mode 100644 tests/overlay_overlay_ref.dts
+
+diff --git a/libfdt/fdt_overlay.c b/libfdt/fdt_overlay.c
+index d217e79..b3c217a 100644
+--- a/libfdt/fdt_overlay.c
++++ b/libfdt/fdt_overlay.c
+@@ -573,6 +573,8 @@ static int overlay_apply_node(void *fdt, int target,
+ 		if (prop_len < 0)
+ 			return prop_len;
+ 
++		if (!strcmp(name, "phandle") && fdt_getprop(fdt, target, name, NULL))
++			continue;
+ 		ret = fdt_setprop(fdt, target, name, prop, prop_len);
+ 		if (ret)
+ 			return ret;
+diff --git a/tests/overlay_base_ref.dts b/tests/overlay_base_ref.dts
+new file mode 100644
+index 0000000..1fc02a2
+--- /dev/null
++++ b/tests/overlay_base_ref.dts
+@@ -0,0 +1,19 @@
++/*
++ * Copyright (c) 2016 NextThing Co
++ * Copyright (c) 2016 Free Electrons
++ * Copyright (c) 2016 Konsulko Inc.
++ *
++ * SPDX-License-Identifier:	GPL-2.0+
++ */
++
++/dts-v1/;
++
++/ {
++	test: test-node {
++		test-int-property = <42>;
++	};
++
++	test-refs {
++		refs = <&test>;
++	};
++};
+diff --git a/tests/overlay_overlay_ref.dts b/tests/overlay_overlay_ref.dts
+new file mode 100644
+index 0000000..a45c95d
+--- /dev/null
++++ b/tests/overlay_overlay_ref.dts
+@@ -0,0 +1,24 @@
++/*
++ * Copyright (c) 2016 NextThing Co
++ * Copyright (c) 2016 Free Electrons
++ * Copyright (c) 2016 Konsulko Inc.
++ *
++ * SPDX-License-Identifier:	GPL-2.0+
++ */
++
++/dts-v1/;
++/plugin/;
++
++/ {
++	fragment@0 {
++		target = <&test>;
++
++		frag0: __overlay__ {
++			test-int-property = <43>;
++		};
++	};
++
++    test-ref {
++        ref = <&frag0>;
++    };
++};
+diff --git a/tests/run_tests.sh b/tests/run_tests.sh
+index 294585b..a65b166 100755
+--- a/tests/run_tests.sh
++++ b/tests/run_tests.sh
+@@ -329,6 +329,11 @@ dtc_overlay_tests () {
+     run_test check_path overlay_base_with_aliases.dtb not-exists "/__symbols__"
+     run_test check_path overlay_base_with_aliases.dtb not-exists "/__fixups__"
+     run_test check_path overlay_base_with_aliases.dtb not-exists "/__local_fixups__"
++
++    # Test taking a reference to an overlay fragment
++    run_dtc_test -@ -I dts -O dtb -o overlay_base_ref.test.dtb "$SRCDIR/overlay_base_ref.dts"
++    run_dtc_test -@ -I dts -O dtb -o overlay_overlay_ref.test.dtb "$SRCDIR/overlay_overlay_ref.dts"
++    run_wrap_test $FDTOVERLAY -i overlay_base_ref.test.dtb overlay_overlay_ref.test.dtb -o overlay_overlay_ref.fdtoverlay.dtb
+ }
+ 
+ tree1_tests () {
+-- 
+2.26.2
+

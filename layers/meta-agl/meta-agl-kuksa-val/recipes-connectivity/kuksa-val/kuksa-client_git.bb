@@ -1,0 +1,49 @@
+SUMMARY = "Python client for KUKSA.val, the KUKSA Vehicle Abstraction Layer"
+HOMEPAGE = "https://github.com/eclipse/kuksa.val"
+BUGTRACKER = "https://github.com/eclipse/kuksa.val/issues"
+
+LICENSE = "Apache-2.0"
+LIC_FILES_CHKSUM = "file://../LICENSE;md5=86d3f3a95c324c9479bd8986968f4327"
+
+DEPENDS = " \
+    python3-setuptools-git-versioning-native \
+    python3-protobuf-native \
+    python3-grpcio-tools-native \
+"
+
+PV = "0.6.0"
+
+SRC_URI = "gitsm://github.com/eclipse-kuksa/kuksa-python-sdk.git;protocol=https;branch=main \
+           file://0001-Tweak-requirements-for-wrynose.patch;patchdir=.. \
+"
+SRCREV = "08a6ec5c1906e805caca968c895c8dd4122afc6a"
+
+S = "${UNPACKDIR}/${BPN}-${PV}/kuksa-client"
+
+inherit python_setuptools_build_meta
+
+#PEP517_BUILD_OPTS = "--skip-dependency-check"
+
+RDEPENDS:${PN} += " \
+    python3-cmd2 \
+    python3-importlib-metadata \
+    python3-pygments \
+    python3-websockets \
+    python3-grpcio \
+    python3-grpcio-tools \
+    python3-jsonpath-ng \
+"
+
+# A script for generating new certificates currently gets shipped inside
+# the client module, for now add bash to RDEPENDS to quiet the QA error.
+# This should probably be addressed with finer-grained packaging or some
+# other change worked out with upstream.
+RDEPENDS:${PN} += "bash"
+
+# Workaround for SPEC-5713
+# for now remove the whole directory
+do_install:append () {
+
+rm -rf ${D}/${PYTHON_SITEPACKAGES_DIR}/tests
+
+}

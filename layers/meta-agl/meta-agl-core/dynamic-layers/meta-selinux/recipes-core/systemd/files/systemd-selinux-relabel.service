@@ -1,0 +1,12 @@
+[Unit]
+Description=Generated file SELinux relabeling
+DefaultDependencies=no
+After=local-fs.target systemd-machine-id-commit.service
+Before=sysinit.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/sbin/systemd-selinux-relabel.sh
+
+[Install]
+WantedBy=sysinit.target

@@ -1,0 +1,239 @@
+From 8e7736f491ed9d930e04d76abdea07f90214ca51 Mon Sep 17 00:00:00 2001
+From: Marius Vlad <marius.vlad@collabora.com>
+Date: Thu, 2 May 2024 19:45:41 +0300
+Subject: [PATCH] Add DRM lease support
+
+Add a command line option to use a DRM lease instead of a primary node for
+output when using the DRM backend.
+
+Upstream-Status: Pending
+
+Signed-off-by: Marius Vlad <marius.vlad@collabora.com>
+Signed-off-by: Damian Hobson-Garcia <dhobsong@igel.co.jp>
+Signed-off-by: Naoto Yamaguchi <naoto.yamaguchi@aisin.co.jp>
+---
+ frontend/drm-lease.c        | 51 +++++++++++++++++++++++++++++++++++++
+ frontend/drm-lease.h        | 40 +++++++++++++++++++++++++++++
+ frontend/main.c             |  9 +++++++
+ frontend/meson.build        |  6 +++++
+ libweston/backend-drm/drm.c |  1 +
+ meson_options.txt           |  7 +++++
+ 6 files changed, 114 insertions(+)
+ create mode 100644 frontend/drm-lease.c
+ create mode 100644 frontend/drm-lease.h
+
+diff --git a/frontend/drm-lease.c b/frontend/drm-lease.c
+new file mode 100644
+index 0000000..11ee2e4
+--- /dev/null
++++ b/frontend/drm-lease.c
+@@ -0,0 +1,51 @@
++/*
++ * Copyright © 2021 IGEL Co., Ltd.
++ *
++ * Permission is hereby granted, free of charge, to any person obtaining
++ * a copy of this software and associated documentation files (the
++ * "Software"), to deal in the Software without restriction, including
++ * without limitation the rights to use, copy, modify, merge, publish,
++ * distribute, sublicense, and/or sell copies of the Software, and to
++ * permit persons to whom the Software is furnished to do so, subject to
++ * the following conditions:
++ *
++ * The above copyright notice and this permission notice (including the
++ * next paragraph) shall be included in all copies or substantial
++ * portions of the Software.
++ *
++ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
++ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
++ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
++ * NONINFRINGEMENT.  IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
++ * BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
++ * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
++ * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
++ * SOFTWARE.
++ */
++
++#include "drm-lease.h"
++
++#include <libweston/libweston.h>
++
++int get_drm_lease(struct dlm_lease **drm_lease, const char *drm_lease_name) {
++	if (!drm_lease_name)
++		return -1;
++
++	int drm_fd;
++	struct dlm_lease *lease = dlm_get_lease(drm_lease_name);
++	if (lease) {
++		drm_fd = dlm_lease_fd(lease);
++		if (drm_fd < 0)
++			dlm_release_lease(lease);
++	}
++	if (drm_fd < 0)
++		weston_log("Could not get DRM lease %s\n", drm_lease_name);
++
++	*drm_lease = lease;
++	return drm_fd;
++}
++
++void release_drm_lease(struct dlm_lease *lease) {
++	if (lease)
++		dlm_release_lease(lease);
++}
+diff --git a/frontend/drm-lease.h b/frontend/drm-lease.h
+new file mode 100644
+index 0000000..a102e4c
+--- /dev/null
++++ b/frontend/drm-lease.h
+@@ -0,0 +1,40 @@
++/*
++ * Copyright © 2021 IGEL Co., Ltd.
++ *
++ * Permission is hereby granted, free of charge, to any person obtaining
++ * a copy of this software and associated documentation files (the
++ * "Software"), to deal in the Software without restriction, including
++ * without limitation the rights to use, copy, modify, merge, publish,
++ * distribute, sublicense, and/or sell copies of the Software, and to
++ * permit persons to whom the Software is furnished to do so, subject to
++ * the following conditions:
++ *
++ * The above copyright notice and this permission notice (including the
++ * next paragraph) shall be included in all copies or substantial
++ * portions of the Software.
++ *
++ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
++ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
++ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
++ * NONINFRINGEMENT.  IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
++ * BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
++ * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
++ * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
++ * SOFTWARE.
++ */
++
++#include "config.h"
++
++#ifdef BUILD_DRM_LEASE_CLIENT
++#include <dlmclient.h>
++int get_drm_lease(struct dlm_lease **drm_lease, const char *drm_lease_name);
++void release_drm_lease(struct dlm_lease *drm_lease);
++#else
++struct dlm_lease;
++int get_drm_lease(struct dlm_lease **drm_lease, const char *drm_lease_name) {
++	return -1;
++}
++void release_drm_lease(struct dlm_lease *drm_lease) {
++}
++
++#endif
+diff --git a/frontend/main.c b/frontend/main.c
+index 9293355..11641da 100644
+--- a/frontend/main.c
++++ b/frontend/main.c
+@@ -60,6 +60,7 @@
+ #include <libweston/version.h>
+ #include "weston.h"
+ #include "weston-private.h"
++#include "drm-lease.h"
+ 
+ #include <libweston/backend-drm.h>
+ #include <libweston/backend-headless.h>
+@@ -158,6 +159,7 @@ struct wet_compositor {
+ 	struct wl_listener screenshot_auth;
+ 	struct wl_listener output_created_listener;
+ 	enum require_outputs require_outputs;
++	struct dlm_lease *drm_lease;
+ };
+ 
+ static FILE *weston_logfile = NULL;
+@@ -753,6 +755,9 @@ usage(int error_code)
+ 		"  --drm-device=CARD\tThe DRM device to use for rendering and output, e.g. \"card0\".\n"
+ 		"  --additional-devices=CARD\tSecondary DRM devices to use for output only, e.g. \"card1,card2\".\n"
+ 		"  --use-pixman\t\tUse the pixman (CPU) renderer (deprecated alias for --renderer=pixman)\n"
++#ifdef BUILD_DRM_LEASE_CLIENT
++		"  --drm-lease=lease\tUse the specified DRM lease. e.g \"card0-HDMI-A-1\"\n"
++#endif
+ 		"  --current-mode\tPrefer current KMS mode over EDID preferred mode\n"
+ 		"  --continue-without-input\tAllow the compositor to start without input devices\n\n");
+ #endif
+@@ -4200,6 +4205,7 @@ load_drm_backend(struct weston_compositor *c, int *argc, char **argv,
+ 	bool without_input = false;
+ 	bool force_pixman = false;
+ 	bool offload_blend_to_output = false;
++	char *drm_lease_name = NULL;
+ 
+ 	wet->drm_use_current_mode = false;
+ 
+@@ -4211,6 +4217,7 @@ load_drm_backend(struct weston_compositor *c, int *argc, char **argv,
+ 	const struct weston_option options[] = {
+ 		{ WESTON_OPTION_STRING, "seat", 0, &config.seat_id },
+ 		{ WESTON_OPTION_STRING, "drm-device", 0, &config.specific_device },
++		{ WESTON_OPTION_STRING, "drm-lease", 0, &drm_lease_name },
+ 		{ WESTON_OPTION_STRING, "additional-devices", 0, &config.additional_devices},
+ 		{ WESTON_OPTION_BOOLEAN, "current-mode", 0, &wet->drm_use_current_mode },
+ 		{ WESTON_OPTION_BOOLEAN, "use-pixman", 0, &force_pixman },
+@@ -4249,6 +4256,7 @@ load_drm_backend(struct weston_compositor *c, int *argc, char **argv,
+ 	config.base.struct_version = WESTON_DRM_BACKEND_CONFIG_VERSION;
+ 	config.base.struct_size = sizeof(struct weston_drm_backend_config);
+ 	config.configure_device = configure_input_device;
++	config.device_fd = get_drm_lease(&wet->drm_lease, drm_lease_name);
+ 
+ 	warn_possible_tty();
+ 
+@@ -4264,6 +4272,7 @@ load_drm_backend(struct weston_compositor *c, int *argc, char **argv,
+ 	free(config.gbm_format);
+ 	free(config.seat_id);
+ 	free(config.specific_device);
++	free(drm_lease_name);
+ 
+ 	return 0;
+ }
+diff --git a/frontend/meson.build b/frontend/meson.build
+index 7313417..8997c28 100644
+--- a/frontend/meson.build
++++ b/frontend/meson.build
+@@ -26,6 +26,12 @@ if get_option('xwayland')
+ 	config_h.set_quoted('XSERVER_PATH', get_option('xwayland-path'))
+ endif
+ 
++if get_option('drm-lease')
++	deps_weston += dependency('libdlmclient')
++	srcs_weston += 'drm-lease.c'
++	config_h.set('BUILD_DRM_LEASE_CLIENT', '1')
++endif
++
+ libexec_weston = shared_library(
+ 	'exec_weston',
+ 	sources: srcs_weston,
+diff --git a/libweston/backend-drm/drm.c b/libweston/backend-drm/drm.c
+index 8e1e4a0..84c7318 100644
+--- a/libweston/backend-drm/drm.c
++++ b/libweston/backend-drm/drm.c
+@@ -4889,6 +4889,7 @@ config_init_to_defaults(struct weston_drm_backend_config *config)
+ {
+ 	config->renderer = WESTON_RENDERER_AUTO;
+ 	config->use_pixman_shadow = true;
++	config->device_fd = -1;
+ }
+ 
+ WL_EXPORT int
+diff --git a/meson_options.txt b/meson_options.txt
+index 0ef9f0c..cc0369f 100644
+--- a/meson_options.txt
++++ b/meson_options.txt
+@@ -112,6 +112,13 @@ option(
+ 	description: 'Virtual remote output with Pipewire on DRM backend'
+ )
+ 
++option(
++        'drm-lease',
++        type: 'boolean',
++        value: false,
++        description: 'Support for running weston with a leased DRM Master'
++)
++
+ option(
+ 	'shell-desktop',
+ 	type: 'boolean',
+-- 
+2.53.0
+

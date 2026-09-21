@@ -1,0 +1,5 @@
+[Match]
+Name=can*
+
+[CAN]
+RestartSec=0.1

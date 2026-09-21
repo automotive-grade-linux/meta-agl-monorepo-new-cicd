@@ -1,0 +1,2 @@
+Build guide:
+https://docs.automotivelinux.org/en/master/#01_Getting_Started/02_Building_AGL_Image/01_Build_Process_Overview/

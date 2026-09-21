@@ -1,0 +1,30 @@
+From d1c5ce79938b56d4ba19a86536e46f0112b45a4c Mon Sep 17 00:00:00 2001
+From: Scott Murray <scott.murray@konsulko.com>
+Date: Mon, 16 Jun 2025 10:05:27 -0400
+Subject: [PATCH 2/2] Fix AGL shell activation area logging
+
+Pull in waypp.h in configuration.cc so ENABLE_AGL_SHELL_CLIENT is
+available for the conditional around the activation area logging
+code.
+
+Upstream-Status: Pending
+Signed-off-by: Scott Murray <scott.murray@konsulko.com>
+---
+ shell/configuration/configuration.cc | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/shell/configuration/configuration.cc b/shell/configuration/configuration.cc
+index a2d8ba9..1dbfc19 100644
+--- a/shell/configuration/configuration.cc
++++ b/shell/configuration/configuration.cc
+@@ -18,6 +18,7 @@
+ #include <filesystem>
+ 
+ #include "config/common.h"
++#include <waypp/waypp.h>
+ #include "cxxopts/include/cxxopts.hpp"
+ #include "utils.h"
+ 
+-- 
+2.49.0
+

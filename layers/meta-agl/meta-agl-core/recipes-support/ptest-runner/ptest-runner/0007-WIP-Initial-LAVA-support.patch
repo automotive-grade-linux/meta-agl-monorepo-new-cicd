@@ -1,0 +1,160 @@
+From 44ab7f7e609ce2cac3fd46aad98225b204bc2faf Mon Sep 17 00:00:00 2001
+From: Tim Orling <timothy.t.orling@linux.intel.com>
+Date: Mon, 15 Oct 2018 18:30:42 -0700
+Subject: [PATCH] Initial LAVA support
+
+Linaro Automated Validation Architecture (LAVA) launches a test suite
+on the target but thereafter only observes stdout.
+
+LAVA knows that a test case has started or ended based on signals
+emitted to stdout:
+(setup)
+<LAVA_SIGNAL_STARTTC test_case_name>
+(teardown)
+<LAVA_SIGNAL_ENDTC test_case_name>
+<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=test_case_name RESULT=pass|fail \
+  [[ MEASUREMENT=numeric_measurement ][ UNITS=units_string]]>
+
+It is valid to have a measurement without units, but not units without a measurement.
+
+Upstream-Status: Pending
+
+Signed-off-by: Tim Orling <timothy.t.orling@linux.intel.com>
+[updated for ptest-runner 2.3.2]
+[updated for ptest-runner 2.4.1]
+[updated for ptest-runner 2.4.2]
+[updated for ptest-runner 2.4.4]
+Signed-off-by: Scott Murray <scott.murray@konsulko.com>
+---
+ flags.h | 10 ++++++++++
+ main.c  |  9 ++++++++-
+ utils.c | 20 +++++++++++++++++++-
+ utils.h |  2 +-
+ 4 files changed, 38 insertions(+), 3 deletions(-)
+ create mode 100644 flags.h
+
+diff --git a/flags.h b/flags.h
+new file mode 100644
+index 0000000..0dac223
+--- /dev/null
++++ b/flags.h
+@@ -0,0 +1,10 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++
++/* Flag bit definitions */
++
++#ifndef __FLAGS_H__
++#define __FLAGS_H__
++
++#define LAVA_SIGNAL_ENABLE	(0x0001)
++
++#endif				/* __FLAGS_H__ */
+diff --git a/main.c b/main.c
+index 3d5b0d4..4da2e3b 100644
+--- a/main.c
++++ b/main.c
+@@ -38,6 +38,7 @@
+ #endif
+ 
+ #include "utils.h"
++#include "flags.h"
+ 
+ #ifndef DEFAULT_DIRECTORY
+ #define DEFAULT_DIRECTORY "/usr/lib"
+@@ -150,8 +151,9 @@ main(int argc, char *argv[])
+ 	opts.timeout = DEFAULT_TIMEOUT;
+ 	opts.ptests = NULL;
+ 	opts.xml_filename = NULL;
++	opts.flags = 0;
+ 
+-	while ((opt = getopt(argc, argv, "d:e:lt:x:h")) != -1) {
++	while ((opt = getopt(argc, argv, "d:e:lt:x:Lh")) != -1) {
+ 		switch (opt) {
+ 			case 'd':
+ 				free(opts.dirs[0]);
+@@ -176,6 +178,11 @@ main(int argc, char *argv[])
+ 				opts.xml_filename = strdup(optarg);
+ 				CHECK_ALLOCATION(opts.xml_filename, 1, 1);
+ 			break;
++			case 'L':
++				// set LAVA signal mode
++				opts.flags |= LAVA_SIGNAL_ENABLE;
++				fprintf(stdout, "LAVA_SIGNAL_ENABLE == %d\n", opts.flags);
++			break;
+ 			default:
+ 				print_usage(stdout, argv[0]);
+ 				exit(1);
+diff --git a/utils.c b/utils.c
+index 227ee7d..8dbbd28 100644
+--- a/utils.c
++++ b/utils.c
+@@ -49,6 +49,7 @@
+ 
+ #include "ptest_list.h"
+ #include "utils.h"
++#include "flags.h"
+ 
+ #define GET_STIME_BUF_SIZE 1024
+ #define WAIT_CHILD_BUF_MAX_SIZE 1024
+@@ -375,6 +376,9 @@ run_ptests(struct ptest_list *head, const struct ptest_options opts,
+ 			}
+ 			ptest_dir = dirname(ptest_dir_tmp);
+ 
++			char *ptest = strdup(p->ptest);
++			CHECK_ALLOCATION(ptest, 1, 1);
++
+ 			if (pipe2(pipefd_stdout, 0) == -1) {
+ 				fprintf(fp, "ERROR: pipe2() failed with: %s.\n", strerror(errno));
+ 				rc = -1;
+@@ -431,7 +435,10 @@ run_ptests(struct ptest_list *head, const struct ptest_options opts,
+ 				do_close(&pipefd_stdout[PIPE_WRITE]);
+ 				do_close(&pipefd_stderr[PIPE_WRITE]);
+ 
+-				time_t start_time= time(NULL);
++				if (opts.flags & LAVA_SIGNAL_ENABLE) {
++					fprintf(stdout, "<LAVA_SIGNAL_STARTTC %s>\n", ptest);
++				}
++				time_t start_time = time(NULL);
+ 				fprintf(fp, "%s\n", get_stime(stime, GET_STIME_BUF_SIZE, start_time));
+ 				fprintf(fp, "BEGIN: %s\n", ptest_dir);
+ 
+@@ -551,6 +558,16 @@ run_ptests(struct ptest_list *head, const struct ptest_options opts,
+ 
+ 				fprintf(fp, "END: %s\n", ptest_dir);
+ 				fprintf(fp, "%s\n", get_stime(stime, GET_STIME_BUF_SIZE, end_time));
++				if (opts.flags & LAVA_SIGNAL_ENABLE) {
++					char result[5]; // pass\0, fail\0, skip\0
++
++					if (status)
++						sprintf(result, "fail");
++					else
++						sprintf(result, "pass");
++					fprintf(stdout, "<LAVA_SIGNAL_ENDTC %s>\n", ptest);
++					fprintf(stdout, "<LAVA_SIGNAL_TESTCASE TEST_CASE_ID=%s RESULT=%s>\n", ptest, result);
++				}
+ 			}
+ 
+ ptest_list_fail4:
+@@ -565,6 +582,7 @@ ptest_list_fail2:
+ 			do_close(&pipefd_stdout[PIPE_WRITE]);
+ 
+ ptest_list_fail1:
++			free(ptest);
+ 			fflush(fp);
+ 			fflush(fp_stderr);
+ 
+diff --git a/utils.h b/utils.h
+index 04fc666..ad702d8 100644
+--- a/utils.h
++++ b/utils.h
+@@ -42,9 +42,9 @@ struct ptest_options {
+ 	unsigned int timeout;
+ 	char **ptests;
+ 	char *xml_filename;
++	unsigned int flags;
+ };
+ 
+-
+ extern void check_allocation1(void *, size_t, char *, int, int);
+ extern struct ptest_list *get_available_ptests(const char *);
+ extern int print_ptests(struct ptest_list *, FILE *);

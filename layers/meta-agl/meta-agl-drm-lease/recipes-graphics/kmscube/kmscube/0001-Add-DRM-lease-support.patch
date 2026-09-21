@@ -1,0 +1,248 @@
+From 35d9eab43bd7bee493c42abee99d351d93d27d4a Mon Sep 17 00:00:00 2001
+From: Damian Hobson-Garcia <dhobsong@igel.co.jp>
+Date: Thu, 20 Mar 2025 10:51:58 +0530
+Subject: [PATCH] Add DRM lease support
+
+Upstream-Status: Backport
+
+Signed-off-by: Saalim Quadri <danascape@gmail.com>
+---
+ drm-atomic.c      |  4 ++--
+ drm-common.c      | 21 +++++++++++++++++++--
+ drm-common.h      |  9 ++++++---
+ drm-legacy.c      |  4 ++--
+ kmscube.c         | 19 ++++++++++++++-----
+ meson.build       |  5 +++++
+ meson_options.txt |  5 +++++
+ texturator.c      |  2 +-
+ 8 files changed, 54 insertions(+), 15 deletions(-)
+
+diff --git a/drm-atomic.c b/drm-atomic.c
+index 02771db..8d5e44d 100644
+--- a/drm-atomic.c
++++ b/drm-atomic.c
+@@ -392,12 +392,12 @@ static int get_plane_id(void)
+ }
+ 
+ const struct drm * init_drm_atomic(const char *device, const char *mode_str,
+-		int connector_id, unsigned int vrefresh, unsigned int count)
++		int connector_id, unsigned int vrefresh, unsigned int count, int lease)
+ {
+ 	uint32_t plane_id;
+ 	int ret;
+ 
+-	ret = init_drm(&drm, device, mode_str, connector_id, vrefresh, count);
++	ret = init_drm(&drm, device, mode_str, connector_id, vrefresh, count, lease);
+ 	if (ret)
+ 		return NULL;
+ 
+diff --git a/drm-common.c b/drm-common.c
+index 40f7112..d7c7bd5 100644
+--- a/drm-common.c
++++ b/drm-common.c
+@@ -32,6 +32,10 @@
+ #include "common.h"
+ #include "drm-common.h"
+ 
++#ifdef HAVE_DRM_LEASE
++#include "dlmclient.h"
++#endif
++
+ WEAK union gbm_bo_handle
+ gbm_bo_get_handle_for_plane(struct gbm_bo *bo, int plane);
+ 
+@@ -173,6 +177,19 @@ static int get_resources(int fd, drmModeRes **resources)
+ 	return 0;
+ }
+ 
++static int open_device(struct drm *drm, const char *device, int lease)
++{
++	if (!lease)
++		return open(device, O_RDWR);
++
++#ifdef HAVE_DRM_LEASE
++	drm->lease = dlm_get_lease(device);
++	if (drm->lease)
++		return dlm_lease_fd(drm->lease);
++#endif
++	return -1;
++}
++
+ #define MAX_DRM_DEVICES 64
+ 
+ static int find_drm_render_device(void)
+@@ -270,7 +287,7 @@ static drmModeConnector * find_drm_connector(int fd, drmModeRes *resources,
+ }
+ 
+ int init_drm(struct drm *drm, const char *device, const char *mode_str,
+-		int connector_id, unsigned int vrefresh, unsigned int count)
++		int connector_id, unsigned int vrefresh, unsigned int count, int lease)
+ {
+ 	drmModeRes *resources;
+ 	drmModeConnector *connector = NULL;
+@@ -278,7 +295,7 @@ int init_drm(struct drm *drm, const char *device, const char *mode_str,
+ 	int i, ret, area;
+ 
+ 	if (device) {
+-		drm->fd = open(device, O_RDWR);
++		drm->fd = open(device, O_RDWR, lease);
+ 		ret = get_resources(drm->fd, &resources);
+ 		if (ret < 0 && errno == EOPNOTSUPP)
+ 			printf("%s does not look like a modeset device\n", device);
+diff --git a/drm-common.h b/drm-common.h
+index 4a4f9be..3ef77e2 100644
+--- a/drm-common.h
++++ b/drm-common.h
+@@ -51,6 +51,9 @@ struct connector {
+ struct drm {
+ 	int fd;
+ 
++	/* only used for DRM lease */
++	struct dlm_lease *lease;
++
+ 	/* only used for atomic: */
+ 	struct plane *plane;
+ 	struct crtc *crtc;
+@@ -76,10 +79,10 @@ struct drm_fb {
+ 
+ struct drm_fb * drm_fb_get_from_bo(struct gbm_bo *bo);
+ 
+-int init_drm(struct drm *drm, const char *device, const char *mode_str, int connector_id, unsigned int vrefresh, unsigned int count);
++int init_drm(struct drm *drm, const char *device, const char *mode_str, int connector_id, unsigned int vrefresh, unsigned int count, int lease);
+ int init_drm_render(struct drm *drm, const char *device, const char *mode_str, unsigned int count);
+-const struct drm * init_drm_legacy(const char *device, const char *mode_str, int connector_id, unsigned int vrefresh, unsigned int count);
+-const struct drm * init_drm_atomic(const char *device, const char *mode_str, int connector_id, unsigned int vrefresh, unsigned int count);
++const struct drm * init_drm_legacy(const char *device, const char *mode_str, int connector_id, unsigned int vrefresh, unsigned int count, int lease);
++const struct drm * init_drm_atomic(const char *device, const char *mode_str, int connector_id, unsigned int vrefresh, unsigned int count, int lease);
+ const struct drm * init_drm_offscreen(const char *device, const char *mode_str, unsigned int count);
+ 
+ #endif /* _DRM_COMMON_H */
+diff --git a/drm-legacy.c b/drm-legacy.c
+index e60ea7d..4e6dd47 100644
+--- a/drm-legacy.c
++++ b/drm-legacy.c
+@@ -170,11 +170,11 @@ static int legacy_run(const struct gbm *gbm, const struct egl *egl)
+ }
+ 
+ const struct drm * init_drm_legacy(const char *device, const char *mode_str,
+-		int connector_id, unsigned int vrefresh, unsigned int count)
++		int connector_id, unsigned int vrefresh, unsigned int count, int lease)
+ {
+ 	int ret;
+ 
+-	ret = init_drm(&drm, device, mode_str, connector_id, vrefresh, count);
++	ret = init_drm(&drm, device, mode_str, connector_id, vrefresh, count, lease);
+ 	if (ret)
+ 		return NULL;
+ 
+diff --git a/kmscube.c b/kmscube.c
+index e8a47a9..12b69f9 100644
+--- a/kmscube.c
++++ b/kmscube.c
+@@ -41,7 +41,7 @@ static const struct egl *egl;
+ static const struct gbm *gbm;
+ static const struct drm *drm;
+ 
+-static const char *shortopts = "Ac:D:f:gM:m:n:Op:S:s:V:v:x";
++static const char *shortopts = "Ac:D:f:gL:M:m:n:Op:S:s:V:v:x";
+ 
+ static const struct option longopts[] = {
+ 	{"atomic", no_argument,       0, 'A'},
+@@ -49,6 +49,7 @@ static const struct option longopts[] = {
+ 	{"device", required_argument, 0, 'D'},
+ 	{"format", required_argument, 0, 'f'},
+ 	{"gears",  no_argument,       0, 'g'},
++	{"drm-lease", no_argument, 0, 'L'},
+ 	{"mode",   required_argument, 0, 'M'},
+ 	{"modifier", required_argument, 0, 'm'},
+ 	{"connector_id", required_argument, 0, 'n'},
+@@ -69,6 +70,9 @@ static void usage(const char *name)
+ 			"    -A, --atomic             use atomic modesetting and fencing\n"
+ 			"    -c, --count=N            run for the specified number of frames\n"
+ 			"    -D, --device=DEVICE      use the given device\n"
++#ifdef HAVE_DRM_LEASE
++			"    -L, --drm-lease          the given device is the name of a DRM lease:\n"
++#endif
+ 			"    -f, --format=FOURCC      framebuffer format\n"
+ 			"    -g, --gears              render gears on each cube face\n"
+ 			"    -M, --mode=MODE          specify mode, one of:\n"
+@@ -104,8 +108,8 @@ int main(int argc, char *argv[])
+ 	uint32_t format = DRM_FORMAT_XRGB8888;
+ 	uint64_t modifier = DRM_FORMAT_MOD_LINEAR;
+ 	int samples = 0;
+-	int atomic = 0;
+-	int gears = 0;
++	int atomic = 0;	int gears = 0;
++	int lease = 0;
+ 	int offscreen = 0;
+ 	int connector_id = -1;
+ 	int opt;
+@@ -148,6 +152,11 @@ int main(int argc, char *argv[])
+ 		case 'g':
+ 			gears = 1;
+ 			break;
++#ifdef HAVE_DRM_LEASE
++		case 'L':
++			lease = 1;
++			break;
++#endif
+ 		case 'M':
+ 			if (strcmp(optarg, "smooth") == 0) {
+ 				mode = SMOOTH;
+@@ -216,9 +225,9 @@ int main(int argc, char *argv[])
+ 	if (offscreen)
+ 		drm = init_drm_offscreen(device, mode_str, count);
+ 	else if (atomic)
+-		drm = init_drm_atomic(device, mode_str, connector_id, vrefresh, count);
++		drm = init_drm_atomic(device, mode_str, connector_id, vrefresh, count, lease);
+ 	else
+-		drm = init_drm_legacy(device, mode_str, connector_id, vrefresh, count);
++		drm = init_drm_legacy(device, mode_str, connector_id, vrefresh, count, lease);
+ 	if (!drm) {
+ 		printf("failed to initialize %s DRM\n",
+ 		       offscreen ? "offscreen" :
+diff --git a/meson.build b/meson.build
+index 2b962a9..6ba9a2c 100644
+--- a/meson.build
++++ b/meson.build
+@@ -104,6 +104,11 @@ else
+   message('Building without gstreamer support')
+ endif
+ 
++if get_option('drm_lease').enabled()
++  dep_common += dependency('libdlmclient')
++  add_project_arguments('-DHAVE_DRM_LEASE', language : 'c')
++endif
++
+ executable('kmscube', sources, dependencies : dep_common, install : true)
+ 
+ if with_gles3
+diff --git a/meson_options.txt b/meson_options.txt
+index 1ed8abc..d932a1c 100644
+--- a/meson_options.txt
++++ b/meson_options.txt
+@@ -3,3 +3,8 @@ option(
+   type : 'feature',
+   description : 'Enable support for gstreamer and cube-video'
+ )
++option(
++  'drm_lease',
++  type : 'feature',
++  description : 'Enable support for running as a DRM lease client'
++)
+diff --git a/texturator.c b/texturator.c
+index 7aa34ee..4d5c887 100644
+--- a/texturator.c
++++ b/texturator.c
+@@ -950,7 +950,7 @@ int main(int argc, char *argv[])
+ 	print_summary();
+ 
+ 	/* no real need for atomic here: */
+-	drm = init_drm_legacy(device, mode_str, -1, vrefresh, ~0);
++	drm = init_drm_legacy(device, mode_str, -1, vrefresh, ~0, 0);
+ 	if (!drm) {
+ 		printf("failed to initialize DRM\n");
+ 		return -1;
+-- 
+2.34.1
+

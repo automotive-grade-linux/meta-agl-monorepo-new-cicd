@@ -1,0 +1,30 @@
+From 658e9bbe4daee17844cd5b5bf5014bca9ec76ba4 Mon Sep 17 00:00:00 2001
+From: George Kiagiadakis <george.kiagiadakis@collabora.com>
+Date: Fri, 13 Dec 2024 11:58:24 +0200
+Subject: [PATCH] linking: reset link when moving target
+
+This ensures that the real pipewire links will be
+destroyed, since the link may not be fully activated yet.
+This fix is not entirely correct, because it will likely
+leak the si-standard-link, but it will get audio working.
+
+Upstream-Status: Inappropriate [not entirely correct]
+---
+ src/scripts/linking/prepare-link.lua | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/src/scripts/linking/prepare-link.lua b/src/scripts/linking/prepare-link.lua
+index 69da939c..38fee98f 100644
+--- a/src/scripts/linking/prepare-link.lua
++++ b/src/scripts/linking/prepare-link.lua
+@@ -57,6 +57,7 @@ SimpleEventHook {
+             log:warning (link, "Link was not activated before removing")
+           end
+           si_flags.peer_id = nil
++          link:reset ()
+           link:remove ()
+           log:info (si, "... moving to new target")
+         end
+-- 
+2.45.2
+

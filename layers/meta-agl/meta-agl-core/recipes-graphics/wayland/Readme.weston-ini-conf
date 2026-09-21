@@ -1,0 +1,43 @@
+##Generate a weston.ini file:
+
+To modify any of the default sections (core, shell), add a
+do_configure() function to your bbappend, using machine (e.g. h3ulcb)
+overrides (i.e. use the MACHINE name where "machine" is used below):
+
+'''
+do_configure:machine() {
+    echo repaint-window=34 >> ${UNPACKDIR}/core.cfg
+
+    echo transition-duration=300 >> ${UNPACKDIR}/ivishell.cfg
+    echo cursor-theme=default >> ${UNPACKDIR}/ivishell.cfg
+}
+'''
+or:
+'''
+do_configure:machine() {
+    sed -i -e 's/drm-backend/fbdev-backend/' ${UNPACKDIR}/core.cfg
+}
+'''
+
+To add new non-display sections, just list them in SRC_URI and WESTON_FRAGMENTS:
+'''
+FILESEXTRAPATHS:prepend:machine := "${THISDIR}/${PN}:"
+
+SRC_URI:append:machine = " file://foo.cfg"
+WESTON_FRAGMENTS:append:machine = " foo"
+
+'''
+
+To change the display, for example from the default assumption of an
+HDMI-1-A connected screen that needs to be rotated 270 degrees to one
+that is rotated 90 degrees, redefine the WESTON_DISPLAYS variable:
+
+'''
+WESTON_DISPLAYS:machine = "hdmi-a-1-90"
+'''
+
+Note that the weston-ini-conf recipe automatically generates a landscape
+orientation version of weston.ini by replacing 90/270 degree rotation
+fragments for HDMI-A-1 and the virtual output into 180 and 0 degrees,
+respectively.  This landscape configuration can be used in an image by
+pulling in weston-ini-conf-landscape instead of weston-ini-conf.

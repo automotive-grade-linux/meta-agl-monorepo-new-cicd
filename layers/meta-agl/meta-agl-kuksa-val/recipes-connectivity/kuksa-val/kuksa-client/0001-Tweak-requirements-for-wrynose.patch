@@ -1,0 +1,32 @@
+From ef0622cfad572e7368cb6f7a27b50424985cf3ea Mon Sep 17 00:00:00 2001
+From: Scott Murray <scott.murray@konsulko.com>
+Date: Thu, 5 Jun 2025 16:03:47 -0400
+Subject: [PATCH] Tweak requirements for wrynose
+
+Lower protobuf requirement to 6.33.6 and grpcio-tools requirement to
+1.76.0 so building on YP wrynose is possible.
+
+Upstream-Status: Inappropriate
+Signed-off-by: Scott Murray <scott.murray@konsulko.com>
+---
+ kuksa-client/pyproject.toml | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/kuksa-client/pyproject.toml b/kuksa-client/pyproject.toml
+index 7b8d3f0..cb6368f 100644
+--- a/kuksa-client/pyproject.toml
++++ b/kuksa-client/pyproject.toml
+@@ -1,8 +1,8 @@
+ [build-system]
+ requires = [
+     # Make sure to use the same exact version criteria in setup.cfg and update requirements.txt after changing
+-    "grpcio-tools==1.82.1",
+-    "protobuf>=7.35.1,<8.0.0",
++    "grpcio-tools==1.76.0",
++    "protobuf>=6.33.6,<8.0.0",
+     "setuptools>=77",
+     "setuptools-git-versioning",
+     "wheel",
+-- 
+2.55.0
+

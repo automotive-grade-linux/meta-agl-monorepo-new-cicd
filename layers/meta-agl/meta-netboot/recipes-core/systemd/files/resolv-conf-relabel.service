@@ -1,0 +1,14 @@
+[Unit]
+Description=SELinux resolv.conf relabeling
+DefaultDependencies=no
+ConditionKernelCommandLine=ip
+ConditionKernelCommandLine=nbd.server
+After=local-fs.target
+Before=sysinit.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/sbin/restorecon -Fi /etc/resolv.conf
+
+[Install]
+WantedBy=sysinit.target

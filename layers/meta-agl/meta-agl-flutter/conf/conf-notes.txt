@@ -1,0 +1,3 @@
+- meta-agl-flutter:
+  * agl-image-flutter.bb          (example/test minimal Flutter image)
+  * agl-image-flutter-debug.bb    (above with debugging support)

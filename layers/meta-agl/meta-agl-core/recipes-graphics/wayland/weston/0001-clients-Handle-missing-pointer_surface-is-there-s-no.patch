@@ -1,0 +1,30 @@
+From 4c2d4b464e0234a2c5d58b864e547a3d13cf5701 Mon Sep 17 00:00:00 2001
+From: Marius Vlad <marius.vlad@collabora.com>
+Date: Thu, 5 Oct 2023 16:27:34 +0300
+Subject: [PATCH] clients: Handle missing pointer_surface is there's no pointer
+ event
+
+Upstream-Status: Pending
+
+Bug-AGL: SPEC-4916
+Signed-off-by: Marius Vlad <marius.vlad@collabora.com>
+---
+ clients/window.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/clients/window.c b/clients/window.c
+index acc6667..7579ca2 100644
+--- a/clients/window.c
++++ b/clients/window.c
+@@ -4023,7 +4023,7 @@ pointer_surface_frame_callback(void *data, struct wl_callback *callback,
+ 		force_frame = false;
+ 	}
+ 
+-	if (!input->pointer)
++	if (!input->pointer || !input->pointer_surface)
+ 		return;
+ 
+ 	if (input_set_pointer_special(input))
+-- 
+2.53.0
+
