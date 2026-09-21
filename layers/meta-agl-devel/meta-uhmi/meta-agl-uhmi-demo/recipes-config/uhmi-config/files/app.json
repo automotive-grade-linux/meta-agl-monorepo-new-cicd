@@ -1,0 +1,32 @@
+{
+  "format_v1": {
+    "command_type": "remote_virtio_gpu",
+    "appli_name": "glmark2-es2-wayland",
+    "sender": {
+      "launcher": "agl-host0",
+      "command": "ucl-virtio-gpu-wl-send",
+      "frontend_params": {
+        "scanout_x": 0,
+        "scanout_y": 0,
+        "scanout_w": 1080,
+        "scanout_h": 1712
+      },
+      "appli": "/usr/bin/glmark2-es2-wayland -s 1080x1712 -b desktop:blur-radius=5:effect=blur:passes=1:separable=true:windows=4 --run-forever",
+      "env": "LD_LIBRARY_PATH=/usr/lib/mesa-virtio"
+    },
+    "receivers": [
+      {
+        "launcher": "agl-host0",
+        "backend_params": {
+          "listen_port": 36000
+        }
+      },
+      {
+        "launcher": "agl-host1",
+        "backend_params": {
+          "listen_port": 36001
+        }
+      }
+    ]
+  }
+}

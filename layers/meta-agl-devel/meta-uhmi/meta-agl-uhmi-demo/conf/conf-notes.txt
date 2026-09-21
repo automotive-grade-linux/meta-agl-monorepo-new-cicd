@@ -1,0 +1,5 @@
+- meta-agl-uhmi-demo:
+  * agl-uhmi-demo-preconfigured-sender
+  * agl-uhmi-demo-preconfigured-receiver
+  * agl-uhmi-demo-preconfigured-sender-agl
+  * agl-uhmi-demo-preconfigured-receiver-agl

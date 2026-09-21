@@ -1,0 +1,16 @@
+[Unit]
+Description=ucl-lifecycle-manager
+
+[Service]
+Type=simple
+User=agl-driver
+EnvironmentFile=-/etc/default/ucl-lifecycle-manager
+ExecStart=/usr/bin/ucl-lifecycle-manager
+TimeoutStopSec=10
+Restart=always
+RestartSec=2
+StartLimitIntervalSec=10
+StartLimitBurst=3
+
+[Install]
+WantedBy=multi-user.target

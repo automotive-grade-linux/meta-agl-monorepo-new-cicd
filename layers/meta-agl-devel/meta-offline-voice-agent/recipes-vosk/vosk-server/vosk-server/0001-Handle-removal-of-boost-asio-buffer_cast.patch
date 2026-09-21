@@ -1,0 +1,31 @@
+From bb054d366d2f87a9db7f5785f57a2820c86f0ed7 Mon Sep 17 00:00:00 2001
+From: Scott Murray <scott.murray@konsulko.com>
+Date: Wed, 17 Jun 2026 14:24:25 -0400
+Subject: [PATCH] Handle removal of boost::asio::buffer_cast
+
+Replace boost::asio::buffer_cast usage with reinterpret_cast
+of the underlying data member.
+
+Upstream-Status: Inappropriate [AGL specific]
+
+Signed-off-by: Scott Murray <scott.murray@konsulko.com>
+---
+ websocket-cpp/asr_server.cpp | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/websocket-cpp/asr_server.cpp b/websocket-cpp/asr_server.cpp
+index 9a36835..543e224 100644
+--- a/websocket-cpp/asr_server.cpp
++++ b/websocket-cpp/asr_server.cpp
+@@ -172,7 +172,7 @@ public:
+             return;
+         }
+ 
+-        const char *buf = boost::asio::buffer_cast<const char *>(buffer_.cdata());
++        const char *buf = reinterpret_cast<const char*>(buffer_.cdata().data());
+         int len = static_cast<int>(buffer_.size());
+         chunk_ = process_chunk(buf, len);
+ 
+-- 
+2.54.0
+

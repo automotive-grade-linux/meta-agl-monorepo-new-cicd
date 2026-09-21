@@ -1,0 +1,33 @@
+# =====================================================================
+# DomU guest configuration
+# =====================================================================
+
+# seclabel='system_u:system_r:domU_t'
+
+# Guest name
+name = "DomU-1"
+
+# Kernel image to boot
+kernel = "/boot/dom/domu-1/@KERNEL@"
+
+extra = "root=/dev/xvda1 rw rootwait console=hvc0"
+
+# Initial memory allocation (MB)
+memory = 1024
+
+# Number of VCPUS
+vcpus = 2
+
+on_crash = 'preserve'
+
+#
+# Xen PV devices
+#
+
+# Disk
+
+# NOTE: target= must be last!
+disk = [ 'backend=0, vdev=xvda1, target=@PARTITION@' ]
+
+# Network
+vif = [ 'mac=00:16:3E:74:34:32' ]

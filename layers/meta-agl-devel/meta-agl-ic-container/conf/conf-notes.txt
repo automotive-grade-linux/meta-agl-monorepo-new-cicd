@@ -1,0 +1,5 @@
+- meta-agl-ic-container:
+  * agl-instrument-cluster-container-demo
+
+  More details:
+  https://docs.automotivelinux.org/en/master/#01_Getting_Started/03_Build_and_Boot_guide_Profile/01_Instrument_Cluster_%28IC-IVI_with_Container_isolation%29
