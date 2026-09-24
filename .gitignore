@@ -1,0 +1,15 @@
+# External layers fetched by kas at build/CI time (not vendored, not committed).
+# layers/meta-agl, layers/meta-agl-demo, layers/meta-agl-devel ARE vendored and tracked.
+/layers/external/
+/layers/bsp/
+
+# kas / bitbake build output
+/build/
+/tmp/
+/sstate-cache/
+/downloads/
+/.config.yaml
+
+# Python
+__pycache__/
+*.pyc
