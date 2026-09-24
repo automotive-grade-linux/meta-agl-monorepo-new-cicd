@@ -1,0 +1,355 @@
+# SPDX-License-Identifier: MIT
+# One entry per bitbake target ("image"), with the list of machines it's curated to build on.
+# Schema (see ci/scripts/_matrix.py for the loader/expander every consumer shares):
+#
+#   machine_eula: {<machine>: true}
+#     Machines needing EULA_<MACHINE>=1 acceptance to build AT ALL (proprietary/license-gated
+#     BSP bits) - a pure property of the machine, same for every image, so it's listed once
+#     here instead of repeated per image.
+#
+#   images:
+#     - target: <bitbake target>
+#       features: [<aglsetup-style feature name>, ...]
+#         No conflict-checking happens automatically (aglsetup.sh itself never did this either -
+#         purely additive). Known mutually-incompatible feature pairs (e.g. agl-kvm + agl-xen -
+#         two hypervisor backends can't coexist on one image) are enforced separately by
+#         INCOMPATIBLE_FEATURES in ci/scripts/_matrix.py, checked by `make validate` and CI.
+#       sdk: bool
+#       tiers: [...]          <- DEFAULT tiers for every machine below, unless overridden
+#       machines:
+#         - <machine name>                          <- uses the image's default tiers above
+#         - <machine name>: {tiers: [<override>]}   <- per-machine tier override
+#
+# tiers: which trigger types build this entry.
+#   push-pr  -> push, PR/MR (fast feedback subset)
+#   nightly  -> nightly schedule
+#   release  -> tag/release builds
+#   dispatch -> always available via manual workflow_dispatch
+#   []       -> never built by CI (still buildable locally via `make build MACHINE=...`).
+#
+# No `combo:` field: ci/scripts/_compose_kasfiles.py computes the colon-joined kas file list
+# directly from machine+features (ci/kas/base.yml:ci/kas/machine/<m>.yml:ci/kas/feature/<f>.yml:
+# ...:ci/kas/pins.yml). External-repo commit pins live in one consolidated ci/kas/pins.yml,
+# always appended last - no per-combination lockfile. See docs/setup.md.
+#
+# agl-devel (passwordless login for HIL testing) and AGL's agl-ci tuning are NOT a `features:`
+# entry - every CI build gets them automatically via ci/kas/ci-only.yml (see setup.sh). A local
+# developer who wants agl-devel adds it themselves: `make build ... EXTRA_FEATURES=agl-devel`.
+#
+# Per-machine demo-image curation (decision #17, resolved): see WIP.md "round 8" for the full
+# image -> features -> machines table and its provenance.
+
+machine_eula:
+  h3ulcb: true
+  h3ulcb-kf: true
+  h3ulcb-nogfx: true
+  m3ulcb: true
+  m3ulcb-kf: true
+  m3ulcb-nogfx: true
+  s4sk: true
+
+images:
+  - target: agl-image-minimal
+    features: []
+    sdk: false
+    tiers: [nightly, release, dispatch]
+    machines:
+      - qemux86-64: {tiers: [push-pr, nightly, release, dispatch]}
+      - qemuarm64
+      - raspberrypi4
+      - raspberrypi5
+      - h3ulcb: {tiers: []}
+      - h3ulcb-kf: {tiers: []}
+      - h3ulcb-nogfx
+      - m3ulcb: {tiers: []}
+      - m3ulcb-kf: {tiers: []}
+      - m3ulcb-nogfx
+      - s4sk
+      - sparrow-hawk
+      - jetson-agx-orin-devkit
+      - nanopc-t6
+      - rock-5b
+      - beaglebone-ai64
+      - beagleplay
+      - visionfive2
+      - aws-ec2-arm64
+      - aws-ec2-x86-64
+      - qemuriscv64
+
+  - target: agl-ivi-demo-flutter
+    features: [agl-demo]
+    sdk: false
+    tiers: [dispatch]
+    machines:
+      - qemux86-64: {tiers: [push-pr, nightly, release, dispatch]}
+      - qemuarm64
+      - raspberrypi4
+      - raspberrypi5
+      - h3ulcb-nogfx
+      - m3ulcb-nogfx
+      - s4sk
+      - sparrow-hawk
+      - jetson-agx-orin-devkit
+      - nanopc-t6
+      - rock-5b
+      - beaglebone-ai64
+      - beagleplay
+      - visionfive2
+      - aws-ec2-arm64
+      - aws-ec2-x86-64
+      - qemuriscv64
+      - h3ulcb: {tiers: []}
+      - h3ulcb-kf: {tiers: []}
+      - m3ulcb: {tiers: []}
+      - m3ulcb-kf: {tiers: []}
+
+  - target: agl-ivi-demo-qt
+    features: [agl-demo]
+    sdk: false
+    tiers: [dispatch]
+    machines:
+      - qemux86-64: {tiers: [nightly, release, dispatch]}
+      - qemuarm64
+      - raspberrypi4
+      - raspberrypi5
+      - h3ulcb-nogfx
+      - m3ulcb-nogfx
+      - s4sk
+      - sparrow-hawk
+      - jetson-agx-orin-devkit
+      - nanopc-t6
+      - rock-5b
+      - beaglebone-ai64
+      - beagleplay
+      - visionfive2
+      - aws-ec2-arm64
+      - aws-ec2-x86-64
+      - qemuriscv64
+      - h3ulcb: {tiers: []}
+      - h3ulcb-kf: {tiers: []}
+      - m3ulcb: {tiers: []}
+      - m3ulcb-kf: {tiers: []}
+
+  - target: agl-cluster-demo-flutter
+    features: [agl-demo]
+    sdk: false
+    tiers: [dispatch]
+    machines:
+      - qemux86-64: {tiers: [nightly, release, dispatch]}
+      - qemuarm64
+      - raspberrypi4
+      - raspberrypi5
+      - h3ulcb-nogfx
+      - m3ulcb-nogfx
+      - s4sk
+      - sparrow-hawk
+      - jetson-agx-orin-devkit
+      - nanopc-t6
+      - rock-5b
+      - beaglebone-ai64
+      - beagleplay
+      - visionfive2
+      - aws-ec2-arm64
+      - aws-ec2-x86-64
+      - qemuriscv64
+      - h3ulcb: {tiers: []}
+      - h3ulcb-kf: {tiers: []}
+      - m3ulcb: {tiers: []}
+      - m3ulcb-kf: {tiers: []}
+
+  - target: agl-cluster-demo-qt
+    features: [agl-demo]
+    sdk: false
+    tiers: [dispatch]
+    machines:
+      - qemux86-64
+      - qemuarm64
+      - raspberrypi4
+      - raspberrypi5
+      - h3ulcb-nogfx
+      - m3ulcb-nogfx
+      - s4sk
+      - sparrow-hawk
+      - jetson-agx-orin-devkit
+      - nanopc-t6
+      - rock-5b
+      - beaglebone-ai64
+      - beagleplay
+      - visionfive2
+      - aws-ec2-arm64
+      - aws-ec2-x86-64
+      - qemuriscv64
+      - h3ulcb: {tiers: []}
+      - h3ulcb-kf: {tiers: []}
+      - m3ulcb: {tiers: []}
+      - m3ulcb-kf: {tiers: []}
+
+  - target: agl-gateway-demo
+    features: [agl-demo]
+    sdk: false
+    tiers: [dispatch]
+    machines:
+      - qemux86-64
+      - qemuarm64
+      - raspberrypi4
+      - raspberrypi5
+      - h3ulcb-nogfx
+      - m3ulcb-nogfx
+      - s4sk
+      - sparrow-hawk
+      - jetson-agx-orin-devkit
+      - nanopc-t6
+      - rock-5b
+      - beaglebone-ai64
+      - beagleplay
+      - visionfive2
+      - aws-ec2-arm64
+      - aws-ec2-x86-64
+      - qemuriscv64
+      - h3ulcb: {tiers: []}
+      - h3ulcb-kf: {tiers: []}
+      - m3ulcb: {tiers: []}
+      - m3ulcb-kf: {tiers: []}
+
+  - target: agl-kvm-demo
+    features: [agl-demo, agl-kvm]
+    sdk: true
+    tiers: [push-pr, nightly, release, dispatch]
+    machines:
+      - qemux86-64
+
+  - target: agl-image-flutter
+    features: [agl-flutter]
+    sdk: false
+    tiers: [dispatch]
+    machines:
+      - qemux86-64
+      - qemuarm64
+      - raspberrypi4
+      - raspberrypi5
+      - h3ulcb-nogfx
+      - m3ulcb-nogfx
+      - s4sk
+      - sparrow-hawk
+      - jetson-agx-orin-devkit
+      - nanopc-t6
+      - rock-5b
+      - beaglebone-ai64
+      - beagleplay
+      - visionfive2
+      - aws-ec2-arm64
+      - aws-ec2-x86-64
+      - qemuriscv64
+      - h3ulcb: {tiers: []}
+      - h3ulcb-kf: {tiers: []}
+      - m3ulcb: {tiers: []}
+      - m3ulcb-kf: {tiers: []}
+
+  - target: agl-image-flutter-debug
+    features: [agl-flutter]
+    sdk: false
+    tiers: [dispatch]
+    machines:
+      - qemux86-64
+      - qemuarm64
+      - raspberrypi4
+      - raspberrypi5
+      - h3ulcb-nogfx
+      - m3ulcb-nogfx
+      - s4sk
+      - sparrow-hawk
+      - jetson-agx-orin-devkit
+      - nanopc-t6
+      - rock-5b
+      - beaglebone-ai64
+      - beagleplay
+      - visionfive2
+      - aws-ec2-arm64
+      - aws-ec2-x86-64
+      - qemuriscv64
+      - h3ulcb: {tiers: []}
+      - h3ulcb-kf: {tiers: []}
+      - m3ulcb: {tiers: []}
+      - m3ulcb-kf: {tiers: []}
+
+  - target: agl-uhmi-demo-ivi-demo-flutter
+    features: [agl-demo, agl-uhmi]
+    sdk: false
+    tiers: []
+    machines:
+      - qemux86-64: {tiers: [dispatch]}
+      - h3ulcb
+      - h3ulcb-kf
+      - m3ulcb
+      - m3ulcb-kf
+      - raspberrypi5
+
+  - target: lxc-host-image-minimal
+    features: [agl-drm-lease, agl-ic, agl-pipewire, agl-selinux]
+    sdk: false
+    tiers: [dispatch]
+    machines:
+      - qemux86-64
+      - raspberrypi4
+      - raspberrypi5
+      - h3ulcb: {tiers: []}
+      - m3ulcb: {tiers: []}
+
+  - target: agl-host-image-drm-lease-test
+    features: [agl-drm-lease, agl-ic, agl-pipewire, agl-selinux]
+    sdk: false
+    tiers: [dispatch]
+    machines:
+      - qemux86-64
+      - raspberrypi4
+      - raspberrypi5
+      - h3ulcb: {tiers: []}
+      - m3ulcb: {tiers: []}
+
+  - target: agl-instrument-cluster-container-demo
+    features: [agl-drm-lease, agl-ic, agl-pipewire, agl-selinux]
+    sdk: false
+    tiers: [dispatch]
+    machines:
+      - qemux86-64
+      - raspberrypi4
+      - raspberrypi5
+      - h3ulcb: {tiers: []}
+      - m3ulcb: {tiers: []}
+
+  - target: agl-xen-image-test
+    features: [agl-xen]
+    sdk: false
+    tiers: [dispatch]
+    machines:
+      - qemux86-64
+      - raspberrypi4
+      - raspberrypi5
+      - sparrow-hawk
+
+  - target: agl-instrument-cluster-standalone-demo
+    features: [agl-ic]
+    sdk: false
+    tiers: [dispatch]
+    machines:
+      - nanopc-t6
+      - raspberrypi4
+      - raspberrypi5
+      - sparrow-hawk
+
+  - target: agl-instrument-cluster-standalone-demo-slint
+    features: [agl-ic, agl-ic-slint]
+    sdk: false
+    tiers: [dispatch]
+    machines:
+      - nanopc-t6
+      - raspberrypi4
+      - raspberrypi5
+      - sparrow-hawk
+
+# generic-arm64 deliberately excluded: its MACHINE has no conf/machine/generic-arm64.conf
+# anywhere in AGL's manifest-pinned meta-arm (wrynose branch) - "require
+# conf/distro/include/INVALID-tune.inc" fails identically under aglsetup.sh, this is a
+# pre-existing upstream gap discovered during kas validation, not a migration bug. See
+# WIP.md "Implementation status" for detail. ci/kas/machine/generic-arm64.yml exists but
+# is not wired into this file.
