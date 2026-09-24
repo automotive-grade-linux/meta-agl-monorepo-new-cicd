@@ -1,0 +1,30 @@
+# SPDX-License-Identifier: MIT
+header:
+  version: 23
+  includes:
+    - ci/kas/feature/agl-pipewire.yml
+    - ci/kas/feature/agl-app-framework.yml
+    - ci/kas/feature/agl-selinux.yml
+    - ci/kas/feature/agl-kuksa-val.yml
+    - ci/kas/feature/agl-flutter.yml
+
+repos:
+  meta-agl-demo:
+    path: layers/meta-agl-demo
+    layers:
+      "":
+      meta-agl-demo-shared:
+  meta-qt6:
+    url: https://code.qt.io/yocto/meta-qt6
+    path: layers/external/meta-qt6
+    branch: "6.12"
+  meta-openembedded:
+    layers:
+      meta-filesystems:
+      meta-multimedia:
+      meta-networking:
+      meta-python:
+
+local_conf_header:
+  agl-demo: |
+    require conf/include/agl-demo.inc

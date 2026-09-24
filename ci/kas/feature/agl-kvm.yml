@@ -1,0 +1,23 @@
+# SPDX-License-Identifier: MIT
+header:
+  version: 23
+  includes:
+    - ci/kas/feature/agl-demo.yml
+
+repos:
+  meta-agl-demo:
+    layers:
+      meta-agl-kvm-demo:
+  meta-virtualization:
+    url: https://git.yoctoproject.org/meta-virtualization
+    path: layers/external/meta-virtualization
+    branch: wrynose
+  meta-openembedded:
+    layers:
+      meta-python:
+      meta-networking:
+      meta-filesystems:
+
+local_conf_header:
+  agl-kvm: |
+    require meta-agl-kvm-demo/conf/include/agl-kvm.inc

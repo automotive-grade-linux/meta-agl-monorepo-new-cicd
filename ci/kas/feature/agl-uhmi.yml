@@ -1,0 +1,10 @@
+# SPDX-License-Identifier: MIT
+header:
+  version: 23
+
+# Just the meta-uhmi layer - no local_conf_header content upstream and no included.dep.
+repos:
+  meta-agl-devel:
+    path: layers/meta-agl-devel
+    layers:
+      meta-uhmi:
