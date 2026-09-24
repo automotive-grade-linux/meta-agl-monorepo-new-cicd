@@ -1,0 +1,30 @@
+# SPDX-License-Identifier: MIT
+variables:
+  AGL_CI_IMAGE: "${CI_REGISTRY_IMAGE}/agl-ci-builder:${CI_COMMIT_SHA}"
+
+build-image:
+  stage: build-image
+  image: docker:latest
+  services: [docker:dind]
+  rules:
+    - if: $CI_MERGE_REQUEST_ID
+      when: manual
+      allow_failure: false
+    - when: on_success
+  script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
+    - docker build -f ci/docker/Dockerfile -t "$AGL_CI_IMAGE" -t "${CI_REGISTRY_IMAGE}/agl-ci-builder:latest" .
+    - docker push "$AGL_CI_IMAGE"
+    - docker push "${CI_REGISTRY_IMAGE}/agl-ci-builder:latest"
+
+trigger-build:
+  stage: build
+  needs:
+    - job: generate-matrix
+      artifacts: true
+    - job: build-image
+  trigger:
+    include:
+      - artifact: matrix-pipeline.yml
+        job: generate-matrix
+    strategy: depend

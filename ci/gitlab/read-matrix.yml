@@ -1,0 +1,59 @@
+# SPDX-License-Identifier: MIT
+# GitLab's parallel:matrix: needs static YAML - it can't consume a dynamic list computed
+# in an earlier job the way GitHub Actions' fromJson(needs.x.outputs.y) can. So this job
+# generates a full CHILD PIPELINE YAML file (including the build job with its
+# parallel:matrix: already filled in) as an artifact, which ci/gitlab/build.yml's
+# trigger-build job then runs via `trigger: include: artifact:`.
+generate-matrix:
+  stage: .pre
+  image: python:3-slim
+  before_script:
+    - pip install --quiet pyyaml
+  script:
+    - |
+      if [ -n "$CI_COMMIT_TAG" ]; then TIER=release
+      elif [ "$CI_PIPELINE_SOURCE" = "schedule" ]; then TIER=nightly
+      elif [ "$CI_PIPELINE_SOURCE" = "merge_request_event" ] || [ "$CI_PIPELINE_SOURCE" = "push" ]; then TIER=push-pr
+      else TIER=dispatch
+      fi
+      python3 - "$TIER" <<'EOF' > matrix-pipeline.yml
+      import sys, yaml
+      sys.path.insert(0, "ci/scripts")
+      from _matrix import expand_entries
+      tier = sys.argv[1]
+      sdk_allowed = "true" if tier == "release" else "false"
+      entries = [e for e in expand_entries() if tier in e.get("tiers", [])]
+
+      pipeline = {
+          "build-entry": {
+              "image": "${AGL_CI_IMAGE}",
+              "variables": {"CI": "true"},
+              "script": [
+                  "make validate MACHINE=$MACHINE FEATURES=\"$FEATURES\" TARGET=\"$TARGET\"",
+                  f"make build MACHINE=$MACHINE FEATURES=\"$FEATURES\" TARGET=\"$TARGET\" SDK_ALLOWED={sdk_allowed}",
+              ],
+              "cache": [
+                  {"key": "sstate-$MACHINE", "paths": ["build/sstate-cache"]},
+                  {"key": "downloads", "paths": ["build/downloads"]},
+              ],
+              "artifacts": {
+                  "when": "always",
+                  "paths": ["build/artifacts/", "build/validate-results/"],
+                  "expire_in": "7 days" if tier == "push-pr" else ("30 days" if tier == "nightly" else "90 days"),
+              },
+              "parallel": {
+                  "matrix": [
+                      {"MACHINE": e["machine"], "FEATURES": ",".join(e.get("features", [])),
+                       "TARGET": e["target"]}
+                      for e in entries
+                  ]
+              },
+          }
+      }
+      yaml.safe_dump(pipeline, open("matrix-pipeline.yml", "w"), default_flow_style=False)
+      EOF
+      echo "Generated $(python3 -c "import yaml;print(len(yaml.safe_load(open('matrix-pipeline.yml'))['build-entry']['parallel']['matrix']))") matrix entries for tier=$TIER"
+  artifacts:
+    paths:
+      - matrix-pipeline.yml
+    expire_in: 1 hour

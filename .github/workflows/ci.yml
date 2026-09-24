@@ -1,0 +1,159 @@
+# SPDX-License-Identifier: MIT
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  schedule:
+    - cron: "0 2 * * *"   # nightly, full 22-machine matrix
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      tier:
+        description: "Matrix tier to build"
+        type: choice
+        options: [push-pr, nightly, release, dispatch]
+        default: dispatch
+
+env:
+  REGISTRY_IMAGE: ghcr.io/${{ github.repository }}/agl-ci-builder
+
+jobs:
+  read-matrix:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.gen.outputs.matrix }}
+      tier: ${{ steps.gen.outputs.tier }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: gen
+        run: |
+          case "${{ github.event_name }}" in
+            pull_request|push) tier=push-pr ;;
+            schedule) tier=nightly ;;
+            release) tier=release ;;
+            workflow_dispatch) tier="${{ inputs.tier }}" ;;
+          esac
+          echo "tier=$tier" >> "$GITHUB_OUTPUT"
+          python3 -m pip install --quiet pyyaml
+          matrix=$(python3 - <<EOF
+          import json, sys
+          sys.path.insert(0, "ci/scripts")
+          from _matrix import expand_entries
+          entries = [e for e in expand_entries() if "$tier" in e.get("tiers", [])]
+          print(json.dumps({"include": entries}))
+          EOF
+          )
+          echo "matrix=$matrix" >> "$GITHUB_OUTPUT"
+
+  # Gate on maintainer approval before the heavy build job runs on PRs, via a required-
+  # reviewer GitHub Environment. Configure the "agl-ci-build" environment's required
+  # reviewers in repo settings. Push/schedule/release/dispatch runs are not gated.
+  approve:
+    needs: read-matrix
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    environment: agl-ci-build
+    steps:
+      - run: echo "approved"
+
+  build-image:
+    needs: [read-matrix]
+    if: always() && (needs.approve.result == 'success' || needs.approve.result == 'skipped')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    outputs:
+      image: ${{ steps.tag.outputs.image }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/setup-buildx-action@v3
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - id: tag
+        run: echo "image=${REGISTRY_IMAGE}:${{ github.sha }}" >> "$GITHUB_OUTPUT"
+      - uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ci/docker/Dockerfile
+          push: true
+          tags: ${{ steps.tag.outputs.image }},${{ env.REGISTRY_IMAGE }}:latest
+          cache-from: type=registry,ref=${{ env.REGISTRY_IMAGE }}:buildcache
+          cache-to: type=registry,ref=${{ env.REGISTRY_IMAGE }}:buildcache,mode=max
+
+  build:
+    needs: [read-matrix, build-image]
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJson(needs.read-matrix.outputs.matrix) }}
+    env:
+      CI: "true"
+      KAS_CONTAINER_IMAGE: ${{ needs.build-image.outputs.image }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Cache sstate
+        uses: actions/cache@v4
+        with:
+          path: build/sstate-cache
+          key: sstate-${{ runner.os }}-${{ matrix.machine }}-${{ hashFiles('ci/kas/pins.yml') }}
+          restore-keys: |
+            sstate-${{ runner.os }}-${{ matrix.machine }}-
+            sstate-${{ runner.os }}-
+
+      - name: Cache downloads
+        uses: actions/cache@v4
+        with:
+          path: build/downloads
+          key: downloads-${{ hashFiles('ci/kas/pins.yml') }}
+          restore-keys: downloads-
+
+      - name: Validate
+        run: make validate MACHINE=${{ matrix.machine }} FEATURES=${{ join(matrix.features, ',') }} TARGET=${{ matrix.target }}
+
+      - name: Build
+        run: |
+          sdk_allowed=false
+          if [ "${{ needs.read-matrix.outputs.tier }}" = "release" ]; then sdk_allowed=true; fi
+          make build MACHINE=${{ matrix.machine }} FEATURES=${{ join(matrix.features, ',') }} TARGET=${{ matrix.target }} SDK_ALLOWED=$sdk_allowed
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ${{ matrix.machine }}-${{ matrix.target }}
+          path: |
+            build/artifacts/**
+            build/validate-results/**
+          retention-days: ${{ needs.read-matrix.outputs.tier == 'push-pr' && 7 || needs.read-matrix.outputs.tier == 'nightly' && 30 || 90 }}
+
+  report:
+    needs: [read-matrix, build]
+    if: always() && github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: results
+      - uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const dirs = fs.existsSync('results') ? fs.readdirSync('results') : [];
+            const rows = dirs.map(d => `| ${d} | see artifact |`).join('\n');
+            const body = `### AGL CI build summary\n\n| Entry | Result |\n|---|---|\n${rows || '_no entries ran_'}`;
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner, repo: context.repo.repo, issue_number: context.issue.number,
+            });
+            const mine = comments.find(c => c.user.type === 'Bot' && c.body.startsWith('### AGL CI build summary'));
+            if (mine) {
+              await github.rest.issues.updateComment({ owner: context.repo.owner, repo: context.repo.repo, comment_id: mine.id, body });
+            } else {
+              await github.rest.issues.createComment({ owner: context.repo.owner, repo: context.repo.repo, issue_number: context.issue.number, body });
+            }

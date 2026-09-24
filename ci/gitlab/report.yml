@@ -1,0 +1,25 @@
+# SPDX-License-Identifier: MIT
+report:
+  stage: report
+  image: python:3-slim
+  needs:
+    - job: trigger-build
+  rules:
+    - if: $CI_MERGE_REQUEST_ID
+  before_script:
+    - pip install --quiet python-gitlab
+  script:
+    - |
+      python3 - <<'EOF'
+      import os, gitlab
+      gl = gitlab.Gitlab(os.environ["CI_SERVER_URL"], private_token=os.environ.get("GITLAB_BOT_TOKEN", ""))
+      project = gl.projects.get(os.environ["CI_PROJECT_ID"])
+      mr = project.mergerequests.get(os.environ["CI_MERGE_REQUEST_IID"])
+      body = "### AGL CI build summary\n\nSee the [pipeline](%s) for the full matrix results table." % os.environ["CI_PIPELINE_URL"]
+      existing = [n for n in mr.notes.list(all=True) if n.body.startswith("### AGL CI build summary")]
+      if existing:
+          existing[0].body = body
+          existing[0].save()
+      else:
+          mr.notes.create({"body": body})
+      EOF
