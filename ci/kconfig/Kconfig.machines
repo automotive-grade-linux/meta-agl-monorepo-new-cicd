@@ -1,0 +1,45 @@
+# SPDX-License-Identifier: MIT
+# Machine choice. Each MACHINE_* option pairs with a KAS_INCLUDE_MACHINE_* string
+# holding the actual kas fragment path, per kas menu's KAS_INCLUDE_<name> convention
+# (see: kas menu --help / docs/userguide/plugins.rst).
+
+choice
+    prompt "Target machine"
+    default MACHINE_QEMUX86_64
+
+config MACHINE_QEMUX86_64
+    bool "qemux86-64 (QEMU x86-64)"
+
+config MACHINE_QEMUARM64
+    bool "qemuarm64 (QEMU arm64)"
+
+config MACHINE_RASPBERRYPI4
+    bool "raspberrypi4"
+
+config MACHINE_RASPBERRYPI5
+    bool "raspberrypi5"
+
+config MACHINE_H3ULCB
+    bool "h3ulcb (Renesas R-Car H3 Starter Kit)"
+
+endchoice
+
+config KAS_INCLUDE_MACHINE_QEMUX86_64
+    string
+    default "ci/kas/machine/qemux86-64.yml" if MACHINE_QEMUX86_64
+
+config KAS_INCLUDE_MACHINE_QEMUARM64
+    string
+    default "ci/kas/machine/qemuarm64.yml" if MACHINE_QEMUARM64
+
+config KAS_INCLUDE_MACHINE_RASPBERRYPI4
+    string
+    default "ci/kas/machine/raspberrypi4.yml" if MACHINE_RASPBERRYPI4
+
+config KAS_INCLUDE_MACHINE_RASPBERRYPI5
+    string
+    default "ci/kas/machine/raspberrypi5.yml" if MACHINE_RASPBERRYPI5
+
+config KAS_INCLUDE_MACHINE_H3ULCB
+    string
+    default "ci/kas/machine/h3ulcb.yml" if MACHINE_H3ULCB

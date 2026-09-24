@@ -1,0 +1,97 @@
+# SPDX-License-Identifier: MIT
+# Feature options mirroring aglsetup.sh's included.dep transitive-pull-in graph via
+# `select` (see WIP.md's "aglsetup.sh findings" section for the source table). Each
+# AGL_* bool pairs with a KAS_INCLUDE_* string holding the kas fragment path.
+# NOTE: ci/kas/feature/agl-demo.yml etc. already express included.dep via their own
+# header.includes:, so selecting just the top-level feature here is enough - the
+# `select`s below exist so the *menu UI* reflects the same pull-in graph, not because
+# kas itself needs the extra includes (it doesn't; they're harmless duplicates).
+
+config KAS_INCLUDE_BASE
+    string
+    default "ci/kas/base.yml"
+
+menu "Features"
+
+config AGL_PIPEWIRE
+    bool "agl-pipewire"
+
+config AGL_APP_FRAMEWORK
+    bool "agl-app-framework"
+
+config AGL_SELINUX
+    bool "agl-selinux"
+
+config AGL_KUKSA_VAL
+    bool "agl-kuksa-val"
+
+config AGL_FLUTTER
+    bool "agl-flutter"
+    select AGL_PIPEWIRE
+    select AGL_APP_FRAMEWORK
+
+config AGL_DEMO
+    bool "agl-demo"
+    select AGL_PIPEWIRE
+    select AGL_APP_FRAMEWORK
+    select AGL_SELINUX
+    select AGL_KUKSA_VAL
+    select AGL_FLUTTER
+
+config AGL_PACKAGE_MANAGEMENT
+    bool "agl-package-management"
+
+config AGL_DEVEL
+    bool "agl-devel"
+    select AGL_PACKAGE_MANAGEMENT
+
+config AGL_KVM
+    bool "agl-kvm (KVM+QEMU demo platform)"
+    select AGL_DEMO
+    depends on MACHINE_QEMUX86_64
+    help
+      Only qemux86-64 is validated for the KVM demo (agl-kvm-demo target). This
+      depends-on is an AGL CI convention, not an upstream aglsetup.sh restriction -
+      aglsetup.sh itself has no conflict/incompatibility checking at all.
+
+endmenu
+
+config KAS_INCLUDE_AGL_PIPEWIRE
+    string
+    default "ci/kas/feature/agl-pipewire.yml" if AGL_PIPEWIRE
+
+config KAS_INCLUDE_AGL_APP_FRAMEWORK
+    string
+    default "ci/kas/feature/agl-app-framework.yml" if AGL_APP_FRAMEWORK
+
+config KAS_INCLUDE_AGL_SELINUX
+    string
+    default "ci/kas/feature/agl-selinux.yml" if AGL_SELINUX
+
+config KAS_INCLUDE_AGL_KUKSA_VAL
+    string
+    default "ci/kas/feature/agl-kuksa-val.yml" if AGL_KUKSA_VAL
+
+config KAS_INCLUDE_AGL_FLUTTER
+    string
+    default "ci/kas/feature/agl-flutter.yml" if AGL_FLUTTER
+
+config KAS_INCLUDE_AGL_DEMO
+    string
+    default "ci/kas/feature/agl-demo.yml" if AGL_DEMO
+
+config KAS_INCLUDE_AGL_PACKAGE_MANAGEMENT
+    string
+    default "ci/kas/feature/agl-package-management.yml" if AGL_PACKAGE_MANAGEMENT
+
+config KAS_INCLUDE_AGL_DEVEL
+    string
+    default "ci/kas/feature/agl-devel.yml" if AGL_DEVEL
+
+config KAS_INCLUDE_AGL_KVM
+    string
+    default "ci/kas/feature/agl-kvm.yml" if AGL_KVM
+
+config KAS_TARGET_IMAGE
+    string "Bitbake target to build"
+    default "agl-image-minimal"
