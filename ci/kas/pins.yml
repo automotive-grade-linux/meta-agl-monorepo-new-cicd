@@ -1,0 +1,67 @@
+# SPDX-License-Identifier: MIT
+header:
+  version: 23
+
+# Single consolidated source of truth for every external (non-vendored) repo's pinned commit,
+# across every machine/feature fragment. Always colon-joined last by ci/scripts/_compose_kasfiles.py
+# - no per-combo lockfiles, no per-fragment overrides. Regenerate entries here with `make lock`
+# when deliberately bumping a repo; review the diff before committing.
+overrides:
+  repos:
+    # base.yml
+    bitbake:
+      commit: 84a8d046593840df460c1312365031c817eb8918
+    openembedded-core:
+      commit: 883075157987ca300af59185b903d6d1977234c3
+    meta-lts-mixins-rust:
+      commit: e575397f478a51fccf17b72459bb4d5c68a853c7
+    meta-openembedded:
+      commit: 47d7dbdd10890bbd429bc0cccbe14435c37e5af1
+    # feature/agl-demo.yml
+    meta-qt6:
+      commit: 9684b65275100c579000083eec3ce75f40b32528
+    # feature/agl-flutter.yml
+    meta-flutter:
+      commit: cfe9887dcd2e25bb6e3dc5e4fbd6467bcee27151
+    # feature/agl-selinux.yml
+    meta-selinux:
+      commit: 1c3a699f363167571ab39fecb0fe6f56691a4e20
+    # feature/agl-kvm.yml, feature/agl-xen.yml, machine/aws-ec2-*.yml
+    meta-virtualization:
+      commit: a07bf78dab0d46099a7e6ca8b2aadb07535efc13
+    # feature/agl-ic-slint.yml
+    meta-rust-bin:
+      commit: e37fbb11787164952f089f14580672dc65aa0418
+    meta-slint:
+      commit: c11b3d6b89ab3f33f7763dd93196b45155e4a6f6
+    # machine/raspberrypi4.yml, machine/raspberrypi5.yml
+    meta-raspberrypi:
+      commit: f62c67921474370829d24a4fa01ef88543f3906b
+    # machine/h3ulcb*.yml, machine/m3ulcb*.yml, machine/s4sk.yml
+    meta-renesas:
+      commit: 522989b6d8f9496a2f256e502e8d51fdca681470
+    # machine/h3ulcb*.yml, machine/m3ulcb*.yml, machine/s4sk.yml, machine/sparrow-hawk.yml
+    meta-yocto:
+      commit: ddeeba423ff0565b8f1192f16072b5993d5ea6a0
+    # machine/sparrow-hawk.yml
+    meta-sparrow-hawk:
+      commit: a45dbc05ca63f900014d7dc4aa9255e8868d655a
+    # machine/jetson-agx-orin-devkit.yml
+    meta-tegra:
+      commit: 2e37d1673d25fb92440bcf6db8dcf1076e822037
+    # machine/nanopc-t6.yml, machine/rock-5b.yml, machine/beaglebone-ai64.yml,
+    # machine/beagleplay.yml, machine/generic-arm64.yml
+    meta-arm:
+      commit: 673e8d7c5dcd14de58092eb73e6ecc5eee5c1735
+    # machine/nanopc-t6.yml, machine/rock-5b.yml
+    meta-rockchip:
+      commit: 9d02575bfd9ca5e87c394f593f2bbdbdee914d4e
+    # machine/beaglebone-ai64.yml, machine/beagleplay.yml
+    meta-ti:
+      commit: f14ecb71de5c05d717fe0cecd47fea69f26d5306
+    # machine/visionfive2.yml
+    meta-riscv:
+      commit: 50941215124f126229ad3702bedabd87dec130c9
+    # machine/aws-ec2-arm64.yml, machine/aws-ec2-x86-64.yml
+    meta-aws:
+      commit: 3f110301bef871c552a3424f447de59a55db71c8
