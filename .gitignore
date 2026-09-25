@@ -13,3 +13,7 @@
 # Python
 __pycache__/
 *.pyc
+
+# Local working notes, not part of the tracked project history.
+/WIP.md
+.claude
