@@ -35,7 +35,19 @@ RUN echo 'vm.max_map_count = 4048576' >> /etc/sysctl.conf
 # temp dir - a --user install under ~/.local/bin would be invisible there. System-wide
 # lands these in /usr/local/bin, which survives the prune. Debian stable marks system
 # Python as externally-managed (PEP 668); --break-system-packages is required.
-RUN python3 -m pip install --break-system-packages --no-cache-dir kas oelint-adv
+#
+# Pinned, not left to "whatever's latest at image-build time": this repo's ci/kas/*.yml
+# files declare `header: version: 23`, a kas config-schema version kas only understands
+# from 5.4 onward (5.3's schema caps at 22 - confirmed by inspecting kas's own
+# schema-kas.json across releases). An unpinned `pip install kas` silently bakes in
+# whatever was on PyPI the day someone (re)built this image locally - if that happened
+# before a compatible kas release existed, or their pip resolved an older cached wheel,
+# `kas` fails with "23 is not valid under any of the given schemas" despite everything
+# else being correct (seen on a real developer workstation, see WIP.md "round 13"). Same
+# reproducibility argument applies to oelint-adv (validate.sh's recipe-lint check
+# shouldn't silently vary by whichever version happened to be latest at build time
+# either) - pinned to what this project has actually been validated against.
+RUN python3 -m pip install --break-system-packages --no-cache-dir kas==5.5 oelint-adv==9.11.2
 
 RUN useradd --create-home --uid 1000 --shell /bin/bash ci
 WORKDIR /home/ci

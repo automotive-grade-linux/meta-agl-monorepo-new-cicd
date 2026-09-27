@@ -102,6 +102,19 @@ path.
   Fixed in `ci/scripts/_kas_runtime_args.sh`'s `kas_runtime_args()`, which now always adds
   `--security-opt label=disable` itself regardless of engine - harmless no-op on non-SELinux Docker
   and a harmless duplicate on podman (which already gets it from `kas-container`).
+- **`kas` fails with `"23 is not valid under any of the given schemas"`** (config file validation
+  error on `ci/kas/base.yml` or any other fragment): the image being used has an older `kas` baked
+  in than this repo's `header: version: 23` config files need - kas only understands schema
+  version 23 from release 5.4 onward (5.3's schema caps at 22, confirmed by inspecting kas's own
+  `schema-kas.json` across PyPI releases). Root cause was `ci/docker/Dockerfile`'s
+  `pip install kas oelint-adv` being unpinned, so a locally-built image silently baked in whatever
+  was latest on PyPI the day it was built - if that predates kas 5.4 (or pip resolved an older
+  cached wheel), this is what you get, and it looks nothing like a version problem from the error
+  text alone. Now pinned (`kas==5.5 oelint-adv==9.11.2`, the versions this project has actually
+  been validated against). **Only affects locally-built developer images** - CI always rebuilds and
+  pushes a fresh image on every run (see "CI-specific operational notes" below), so it was never at
+  risk here. Anyone with a pre-existing local `agl-ci-builder` image needs to rebuild it once:
+  `docker build -f ci/docker/Dockerfile -t agl-ci-builder:dev .` (see `setup.md`).
 
 ## CI-specific operational notes
 
