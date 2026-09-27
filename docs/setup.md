@@ -50,6 +50,23 @@ hypervisor backends can't coexist on one image) - `aglsetup.sh` itself never che
 (purely additive), so this repo does instead. `make validate`/CI run it as the `matrix-validate`
 check, and it's runnable standalone: `python3 ci/scripts/_matrix.py`.
 
+`make validate`'s `yocto-check-layer` sub-check only validates `layers/meta-agl/meta-agl-core` by
+default - checking every vendored sublayer (`meta-agl-bsp`, `meta-pipewire`,
+`meta-agl-demo-shared`, ...) is slow and most of them aren't what's actively being changed here.
+Run the full curated set with `make validate CHECK_LAYERS=all`, or a specific subset with
+`make validate CHECK_LAYERS="layers/meta-agl/meta-agl-core layers/meta-agl-demo"` (space-separated
+paths) - `CHECK_LAYERS` (in the `Makefile`) only selects *which* curated layers run this time.
+
+The curated set itself, and each layer's `yocto-check-layer` dependencies, live in
+`ci/build-matrix.yaml`'s `check_layers:` key: `dependency_roots:` is a shared list of directories
+recursively scanned to resolve each layer's declared `LAYERDEPENDS_<name>` automatically (true for
+most AGL sublayers - no per-layer data needed); `layers:` is the curated list itself, where a bare
+path relies on that auto-resolution alone and a `{path: {additional_layers: [...]}}` entry
+force-adds layers for the handful that declare no `LAYERDEPENDS` at all
+(`meta-agl-bsp`/`meta-agl-rdp`/`meta-agl-ros2`/`meta-agl-test`/`meta-uhmi` - real gaps in their own
+metadata, not something CI config can discover on its own). Add a newly-vendored layer to
+`ci/build-matrix.yaml`'s `check_layers.layers`, not the Makefile.
+
 `agl-devel` (passwordless login, useful at your desk) is deliberately **not** part of any matrix
 entry's `FEATURES` - add it yourself on top of any matrix entry with `EXTRA_FEATURES=agl-devel`,
 e.g. `make build MACHINE=qemux86-64 FEATURES=agl-demo TARGET=agl-ivi-demo-flutter

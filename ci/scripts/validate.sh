@@ -46,16 +46,34 @@ run_host_check "matrix-validate" python3 ci/scripts/_matrix.py
 
 run_check "bitbake-parse" "$KASFILES" "bitbake -p"
 
-# yocto-check-layer needs actual bitbake layer roots (dirs with their own conf/layer.conf),
-# not the meta-agl/meta-agl-demo/meta-agl-devel container repo roots - those hold many
-# sublayers (meta-agl-core, meta-pipewire, etc.) but aren't layers themselves. Paths are
-# hardcoded to /work (kas-container's fixed mount point for the repo root - $KAS_WORK_DIR
-# is NOT propagated into the bitbake-sourced shell env, confirmed empty there) since
-# `kas shell -c` runs from /work/build, not the repo root. Runs against the bare
-# _validate-base combo (no AGL layers pre-loaded) since yocto-check-layer manages its own
-# layer-under-test additions and errors on duplicate BBFILE_COLLECTIONS otherwise.
+# yocto-check-layer needs actual bitbake layer roots (dirs with their own conf/layer.conf) -
+# ci/build-matrix.yaml's check_layers.layers names them exactly, so CHECK_LAYERS entries are
+# used directly, no more searching for them. Paths are hardcoded to /work (kas-container's
+# fixed mount point for the repo root - $KAS_WORK_DIR is NOT propagated into the
+# bitbake-sourced shell env, confirmed empty there) since `kas shell -c` runs from
+# /work/build, not the repo root. Runs against the bare _validate-base combo (no AGL layers
+# pre-loaded) since yocto-check-layer manages its own layer-under-test additions and errors
+# on duplicate BBFILE_COLLECTIONS otherwise.
+#
+# CHECK_LAYERS (space-separated paths matching ci/build-matrix.yaml's check_layers.layers;
+# set via `make validate CHECK_LAYERS="..."` - see Makefile) defaults to just meta-agl-core:
+# checking every vendored sublayer is slow and most of them aren't what's actively being
+# changed here. `CHECK_LAYERS=all` checks every curated layer. Each layer's dependencies
+# (yocto-check-layer's --dependency/--additional-layers) come from
+# ci/build-matrix.yaml's check_layers: key via _matrix.py - add a newly-vendored layer's
+# dependency info there, not here.
+CHECK_LAYERS="${CHECK_LAYERS:-layers/meta-agl/meta-agl-core}"
+if [ "$CHECK_LAYERS" = "all" ]; then
+  CHECK_LAYERS="$(python3 ci/scripts/_matrix.py --list-check-layers | tr '\n' ' ')"
+fi
+# shellcheck disable=SC2086
+CHECK_LAYER_ARGS="$(python3 ci/scripts/_matrix.py --check-layer-args $CHECK_LAYERS)"
+CHECK_LAYER_PATHS=""
+for l in $CHECK_LAYERS; do
+  CHECK_LAYER_PATHS="$CHECK_LAYER_PATHS /work/$l"
+done
 run_check "yocto-check-layer" "ci/kas/_validate-base.yml:ci/kas/pins.yml" \
-  'yocto-check-layer $(find /work/layers/meta-agl /work/layers/meta-agl-demo /work/layers/meta-agl-devel -maxdepth 3 -name layer.conf -path "*/conf/*" | sed "s#/conf/layer.conf##")'
+  "yocto-check-layer$CHECK_LAYER_PATHS $CHECK_LAYER_ARGS"
 
 run_check "license-manifest" "$KASFILES" \
   "bitbake -e $(python3 ci/scripts/_compose_kasfiles.py --machine "$MACHINE" --features "$FEATURES" --target "$MATRIX_TARGET" --field target) | grep -E '^LICENSE='"

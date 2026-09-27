@@ -14,15 +14,24 @@ ci/build-matrix.yaml schema:
       machines:
         - <machine name>                          - uses the image's default tiers
         - <machine name>: {tiers: [<override>]}   - per-machine tier override
+  check_layers:                     - make validate's yocto-check-layer sub-check, see
+                                       load_check_layers()
+    dependency_roots: [<dir>, ...]  - recursively scanned for yocto-check-layer's --dependency
+    layers:
+      - <layer path>                             - LAYERDEPENDS-based auto-resolution alone
+      - <layer path>: {additional_layers: [...]} - force-adds layers with no LAYERDEPENDS at all
 
-expand_entries() flattens this into the historical one-row-per-(machine,features,target) shape
-(dicts with machine/features/target/sdk/eula/tiers keys) that every consumer actually wants to
-filter/lookup against.
+expand_entries() flattens images:/machines: into the historical one-row-per-(machine,features,
+target) shape (dicts with machine/features/target/sdk/eula/tiers keys) that every consumer
+actually wants to filter/lookup against. load_check_layers() does the equivalent for
+check_layers:.
 
 Run directly (`python3 ci/scripts/_matrix.py`) to validate ci/build-matrix.yaml: checks for
 INCOMPATIBLE_FEATURES violations and duplicate (machine, features, target) rows. Also run by
-`make validate` / CI.
+`make validate` / CI. `--list-check-layers` and `--check-layer-args` are query modes for
+ci/scripts/validate.sh's yocto-check-layer invocation - see their docstrings below.
 """
+import argparse
 import sys
 from pathlib import Path
 
@@ -80,7 +89,25 @@ def expand_entries(data=None):
     return entries
 
 
-def main():
+def load_check_layers(data=None):
+    """Returns (dependency_roots, layers) from check_layers: - dependency_roots is the shared
+    list of dirs yocto-check-layer's --dependency recursively scans; layers maps each checkable
+    path to its additional_layers list (empty when LAYERDEPENDS-based auto-resolution via
+    --dependency alone is sufficient - true for most AGL sublayers)."""
+    data = data if data is not None else load_matrix()
+    cl = data.get("check_layers", {})
+    dependency_roots = cl.get("dependency_roots", [])
+    layers = {}
+    for entry in cl.get("layers", []):
+        if isinstance(entry, str):
+            layers[entry] = []
+        else:
+            (path, opts), = entry.items()
+            layers[path] = opts.get("additional_layers", [])
+    return dependency_roots, layers
+
+
+def validate_matrix():
     try:
         entries = expand_entries()
     except ValueError as exc:
@@ -98,6 +125,44 @@ def main():
 
     print(f"ci/build-matrix.yaml: {len(entries)} expanded entries, {dupes} duplicate(s)")
     sys.exit(1 if dupes else 0)
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument(
+        "--list-check-layers", action="store_true",
+        help="print every check_layers.layers path, one per line (resolves CHECK_LAYERS=all)",
+    )
+    ap.add_argument(
+        "--check-layer-args", nargs="+", metavar="LAYER",
+        help="print the yocto-check-layer --dependency/--additional-layers clause for the "
+             "given layer path(s) (paths as they appear in check_layers.layers), as one line "
+             "ready to splice into the invocation - --dependency roots are always included, "
+             "--additional-layers is the deduplicated union across all given layers, omitted "
+             "entirely if none apply",
+    )
+    args = ap.parse_args()
+
+    if args.list_check_layers:
+        _, layers = load_check_layers()
+        for path in layers:
+            print(path)
+        return
+
+    if args.check_layer_args:
+        roots, layers = load_check_layers()
+        additional = []
+        for l in args.check_layer_args:
+            for a in layers.get(l, []):
+                if a not in additional:
+                    additional.append(a)
+        parts = ["--dependency"] + [f"/work/{r}" for r in roots]
+        if additional:
+            parts += ["--additional-layers"] + [f"/work/{a}" for a in additional]
+        print(" ".join(parts))
+        return
+
+    validate_matrix()
 
 
 if __name__ == "__main__":
