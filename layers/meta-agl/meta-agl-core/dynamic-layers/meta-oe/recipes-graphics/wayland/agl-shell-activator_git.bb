@@ -10,6 +10,9 @@ LIC_FILES_CHKSUM = "file://COPYING;md5=e978448a0d41d826d73890d9c22caf75"
 
 DEPENDS = "wayland wayland-protocols wayland-native agl-compositor grpc grpc-native"
 
+# Reuse include file from upstream weston since we have the same requirements
+require recipes-graphics/wayland/required-distro-features.inc
+
 SRC_URI = "git://gerrit.automotivelinux.org/gerrit/src/agl-shell-activator.git;protocol=https;branch=${AGL_BRANCH}"
 SRCREV = "027d6f814f3d1f2e6b4b4071365b28dadec34109"
 
