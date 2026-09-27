@@ -62,6 +62,15 @@ def check_incompatible(features):
     return None
 
 
+def _name_and_opts(entry):
+    """Unpacks a build-matrix.yaml list item that's either a bare string or a single-key
+    {name: {opts}} dict - the shape shared by images[].machines and check_layers.layers."""
+    if isinstance(entry, str):
+        return entry, {}
+    (name, opts), = entry.items()
+    return name, opts
+
+
 def expand_entries(data=None):
     data = data if data is not None else load_matrix()
     machine_eula = data.get("machine_eula", {})
@@ -74,10 +83,7 @@ def expand_entries(data=None):
                 f"features {sorted(bad)} - see INCOMPATIBLE_FEATURES in ci/scripts/_matrix.py"
             )
         for m in img["machines"]:
-            if isinstance(m, str):
-                name, overrides = m, {}
-            else:
-                (name, overrides), = m.items()
+            name, overrides = _name_and_opts(m)
             entries.append({
                 "machine": name,
                 "features": img["features"],
@@ -99,11 +105,8 @@ def load_check_layers(data=None):
     dependency_roots = cl.get("dependency_roots", [])
     layers = {}
     for entry in cl.get("layers", []):
-        if isinstance(entry, str):
-            layers[entry] = []
-        else:
-            (path, opts), = entry.items()
-            layers[path] = opts.get("additional_layers", [])
+        path, opts = _name_and_opts(entry)
+        layers[path] = opts.get("additional_layers", [])
     return dependency_roots, layers
 
 
