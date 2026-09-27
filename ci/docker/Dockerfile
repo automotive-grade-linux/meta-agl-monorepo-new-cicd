@@ -24,11 +24,6 @@ ENV LANG=en_US.UTF-8
 RUN echo "dash dash/sh boolean false" | debconf-set-selections \
     && dpkg-reconfigure dash
 
-# Documented for parity with reference Yocto CI containers; has no effect unless this
-# container is run with elevated privileges (--privileged / --sysctl). Set on the CI
-# runner/host instead - see docs/ci-setup.md.
-RUN echo 'vm.max_map_count = 4048576' >> /etc/sysctl.conf
-
 # kas/oelint-adv via pip, system-wide (not --user): once `kas shell`/`kas build` sources
 # bitbake's build environment, PATH gets reset to a curated minimal set
 # (oe-core/bitbake scripts + /usr/sbin:/usr/bin:/sbin:/bin) and HOME is redirected to a
