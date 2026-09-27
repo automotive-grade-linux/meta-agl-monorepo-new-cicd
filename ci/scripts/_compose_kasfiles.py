@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: MIT
 """Resolve a (machine, features[, target]) triple against ci/build-matrix.yaml and print
-either the colon-joined kas file list (default) or a single requested field (--field NAME),
-for consumption by the shell scripts in ci/scripts/ and by the Makefile.
+either the colon-joined kas file list (default) or one or more requested fields
+(--fields NAME[,NAME...]), for consumption by the shell scripts in ci/scripts/ and by the
+Makefile.
 
 No per-combination kas file exists: the list is computed directly as
 ci/kas/base.yml:ci/kas/machine/<machine>.yml:ci/kas/feature/<f1>.yml:...:ci/kas/pins.yml -
@@ -49,13 +50,33 @@ def find_entries(machine, features):
     ]
 
 
+def _kasfiles_list(machine, features, extra_features):
+    """Builds the colon-joined kas file list and checks every fragment actually exists."""
+    kasfiles = ["ci/kas/base.yml", f"ci/kas/machine/{machine}.yml"]
+    kasfiles += [f"ci/kas/feature/{f}.yml" for f in features]
+    kasfiles += [f"ci/kas/feature/{f}.yml" for f in extra_features]
+    kasfiles.append("ci/kas/floating.yml" if os.environ.get("AGL_FLOATING") else "ci/kas/pins.yml")
+    for f in kasfiles:
+        if not (REPO_ROOT / f).exists():
+            print(f"error: {f} does not exist", file=sys.stderr)
+            sys.exit(1)
+    return ":".join(kasfiles)
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--machine", required=True)
     ap.add_argument("--features", default="", help="comma-separated feature list")
     ap.add_argument("--target", help="disambiguate when several images share the same machine+features")
     ap.add_argument("--extra-features", default="", help="comma-separated local-only extra features (e.g. agl-devel), not matrix-curated")
-    ap.add_argument("--field", help="print a single matrix entry field instead of the kas file list")
+    ap.add_argument(
+        "--fields",
+        help="comma-separated field name(s) to print, one per line, instead of the kas file "
+             "list. Each name is either a matrix entry field (target/sdk/eula/...) or the "
+             "literal 'kasfiles' for the composed file list - lets a caller needing several "
+             "fields (e.g. build.sh's target+sdk) make one matrix lookup instead of one "
+             "invocation per field.",
+    )
     args = ap.parse_args()
 
     features = [f for f in args.features.split(",") if f]
@@ -84,19 +105,15 @@ def main():
         sys.exit(1)
     entry = matches[0]
 
-    if args.field:
-        print(entry.get(args.field, ""))
+    if args.fields:
+        for name in args.fields.split(","):
+            if name == "kasfiles":
+                print(_kasfiles_list(args.machine, features, extra_features))
+            else:
+                print(entry.get(name, ""))
         return
 
-    kasfiles = ["ci/kas/base.yml", f"ci/kas/machine/{args.machine}.yml"]
-    kasfiles += [f"ci/kas/feature/{f}.yml" for f in features]
-    kasfiles += [f"ci/kas/feature/{f}.yml" for f in extra_features]
-    kasfiles.append("ci/kas/floating.yml" if os.environ.get("AGL_FLOATING") else "ci/kas/pins.yml")
-    for f in kasfiles:
-        if not (REPO_ROOT / f).exists():
-            print(f"error: {f} does not exist", file=sys.stderr)
-            sys.exit(1)
-    print(":".join(kasfiles))
+    print(_kasfiles_list(args.machine, features, extra_features))
 
 
 if __name__ == "__main__":

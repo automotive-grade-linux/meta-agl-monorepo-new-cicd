@@ -11,9 +11,10 @@ source ci/scripts/_kas_runtime_args.sh
 
 parse_common_args "$@"
 
-KASFILES="$(python3 ci/scripts/_compose_kasfiles.py --machine "$MACHINE" --features "$FEATURES" --target "$MATRIX_TARGET" --extra-features "$EXTRA_FEATURES")$(kas_extra_includes)$(kas_ci_includes)"
-TARGET="$(python3 ci/scripts/_compose_kasfiles.py --machine "$MACHINE" --features "$FEATURES" --target "$MATRIX_TARGET" --field target)"
-ENTRY_SDK="$(python3 ci/scripts/_compose_kasfiles.py --machine "$MACHINE" --features "$FEATURES" --target "$MATRIX_TARGET" --field sdk)"
+matrix_fields kasfiles,target,sdk
+KASFILES="${_MATRIX_FIELDS[0]}$(kas_extra_includes)$(kas_ci_includes)"
+TARGET="${_MATRIX_FIELDS[1]}"
+ENTRY_SDK="${_MATRIX_FIELDS[2]}"
 
 echo "build.sh: kas build $KASFILES (target=$TARGET)"
 # shellcheck disable=SC2046

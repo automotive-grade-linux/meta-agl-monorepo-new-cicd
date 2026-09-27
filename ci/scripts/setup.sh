@@ -11,11 +11,12 @@ source ci/scripts/_kas_runtime_args.sh
 
 parse_common_args "$@"
 
-KASFILES="$(python3 ci/scripts/_compose_kasfiles.py --machine "$MACHINE" --features "$FEATURES" --target "$MATRIX_TARGET" --extra-features "$EXTRA_FEATURES")$(kas_extra_includes)$(kas_ci_includes)"
+matrix_fields kasfiles,eula
+KASFILES="${_MATRIX_FIELDS[0]}$(kas_extra_includes)$(kas_ci_includes)"
 
 # EULA (decision: CI auto-accepts, local dev keeps the interactive prompt unless it
 # already set the env var itself).
-if [ "$(python3 ci/scripts/_compose_kasfiles.py --machine "$MACHINE" --features "$FEATURES" --target "$MATRIX_TARGET" --field eula)" = "True" ] \
+if [ "${_MATRIX_FIELDS[1]}" = "True" ] \
    && [ "${CI:-}" = "true" ]; then
   MACHINE_UPPER="$(echo "$MACHINE" | tr 'a-z-' 'A-Z_')"
   export "EULA_${MACHINE_UPPER}=1"

@@ -11,7 +11,9 @@ source ci/scripts/_kas_runtime_args.sh
 
 parse_common_args "$@"
 
-KASFILES="$(python3 ci/scripts/_compose_kasfiles.py --machine "$MACHINE" --features "$FEATURES" --target "$MATRIX_TARGET" --extra-features "$EXTRA_FEATURES")$(kas_extra_includes)$(kas_ci_includes)"
+matrix_fields kasfiles,target
+KASFILES="${_MATRIX_FIELDS[0]}$(kas_extra_includes)$(kas_ci_includes)"
+MATRIX_ENTRY_TARGET="${_MATRIX_FIELDS[1]}"
 RESULTS_DIR="${RESULTS_DIR:-$REPO_ROOT/build/validate-results}"
 mkdir -p "$RESULTS_DIR"
 
@@ -76,7 +78,7 @@ run_check "yocto-check-layer" "ci/kas/_validate-base.yml:ci/kas/pins.yml" \
   "yocto-check-layer$CHECK_LAYER_PATHS $CHECK_LAYER_ARGS"
 
 run_check "license-manifest" "$KASFILES" \
-  "bitbake -e $(python3 ci/scripts/_compose_kasfiles.py --machine "$MACHINE" --features "$FEATURES" --target "$MATRIX_TARGET" --field target) | grep -E '^LICENSE='"
+  "bitbake -e $MATRIX_ENTRY_TARGET | grep -E '^LICENSE='"
 
 # patchtest needs the separate patchtest-oe metadata/results-parser wired up against a
 # concrete PR diff range - not yet set up (TODO, see WIP.md deferred items). Skipped for

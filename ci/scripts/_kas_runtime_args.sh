@@ -1,11 +1,15 @@
 # SPDX-License-Identifier: MIT
-# Sourced by setup.sh/build.sh/validate.sh (and the Makefile's shell/lock targets). Two things
-# live here:
+# Sourced by setup.sh/build.sh/validate.sh (and the Makefile's shell/lock targets). Three
+# things live here:
 #
 # 1. parse_common_args() - the --machine/--features/--target/--extra-features/--sdk-allowed
 #    CLI parsing shared verbatim by all three scripts (was duplicated 3x before, see WIP.md
 #    "round 11").
-# 2. kas_extra_includes()/kas_ci_includes()/kas_runtime_args() - support two optional,
+# 2. matrix_fields() - the "look up one or more ci/build-matrix.yaml fields for the current
+#    MACHINE/FEATURES/MATRIX_TARGET/EXTRA_FEATURES" call, shared by all three scripts (each
+#    wants a different field set: setup.sh needs kasfiles+eula, build.sh needs
+#    kasfiles+target+sdk, validate.sh needs kasfiles+target).
+# 3. kas_extra_includes()/kas_ci_includes()/kas_runtime_args() - support two optional,
 #    independent local-developer conveniences, never used in CI unless these env vars are
 #    explicitly set there too:
 #
@@ -32,7 +36,7 @@
 #   echo "$MACHINE $FEATURES $MATRIX_TARGET"   # -> qemux86-64 agl-demo agl-ivi-demo-flutter
 # --sdk-allowed is only read by build.sh; setup.sh/validate.sh just never look at $SDK_ALLOWED.
 # --target sets MATRIX_TARGET, not TARGET, because build.sh separately computes the actual
-# resolved bitbake target name (via `_compose_kasfiles.py --field target`) into a variable
+# resolved bitbake target name (via `_compose_kasfiles.py --fields target`) into a variable
 # called TARGET - two different things, kept apart on purpose.
 parse_common_args() {
   MACHINE=""
@@ -51,6 +55,18 @@ parse_common_args() {
     esac
   done
   [ -n "$MACHINE" ] || { echo "$(basename "$0"): --machine is required" >&2; exit 2; }
+}
+
+# Looks up "$1" (comma-separated ci/scripts/_compose_kasfiles.py --fields names, e.g.
+# "kasfiles,target,sdk") against MACHINE/FEATURES/MATRIX_TARGET/EXTRA_FEATURES, one matrix
+# lookup instead of one call per field, and fills the _MATRIX_FIELDS array (index 0 = first
+# requested field, etc). Uses a plain variable + here-string (not `mapfile -t arr < <(cmd)`
+# directly) so a lookup failure (e.g. no matching matrix entry) still triggers the caller's
+# `set -e`, which process substitution's exit status would not.
+matrix_fields() {
+  local _raw
+  _raw="$(python3 ci/scripts/_compose_kasfiles.py --machine "$MACHINE" --features "$FEATURES" --target "$MATRIX_TARGET" --extra-features "$EXTRA_FEATURES" --fields "$1")"
+  mapfile -t _MATRIX_FIELDS <<< "$_raw"
 }
 
 kas_extra_includes() {
