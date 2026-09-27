@@ -18,21 +18,7 @@ RESULTS_DIR="${RESULTS_DIR:-$REPO_ROOT/build/validate-results}"
 mkdir -p "$RESULTS_DIR"
 
 status=0
-run_check() {
-  local name="$1" kasfiles="$2"; shift 2
-  echo "validate.sh: running $name"
-  # shellcheck disable=SC2046
-  if kas-container $(kas_runtime_args) shell "$kasfiles" -c "$*" >"$RESULTS_DIR/$name.log" 2>&1; then
-    echo "validate.sh: $name PASSED"
-  else
-    echo "validate.sh: $name FAILED (see $RESULTS_DIR/$name.log)"
-    status=1
-  fi
-}
-
-# Host-side check, no container needed: catches build-matrix.yaml authoring mistakes
-# (INCOMPATIBLE_FEATURES violations, duplicate (machine, features, target) rows) before
-# spending any container/bitbake time.
+# Runs "$@" as the check named $1, logs to $RESULTS_DIR/$name.log, and records PASSED/FAILED.
 run_host_check() {
   local name="$1"; shift
   echo "validate.sh: running $name"
@@ -42,6 +28,14 @@ run_host_check() {
     echo "validate.sh: $name FAILED (see $RESULTS_DIR/$name.log)"
     status=1
   fi
+}
+
+# In-container check: same PASSED/FAILED bookkeeping as run_host_check, just run inside
+# kas-container instead of directly on the host.
+run_check() {
+  local name="$1" kasfiles="$2"; shift 2
+  # shellcheck disable=SC2046
+  run_host_check "$name" kas-container $(kas_runtime_args) shell "$kasfiles" -c "$*"
 }
 
 run_host_check "matrix-validate" python3 ci/scripts/_matrix.py
