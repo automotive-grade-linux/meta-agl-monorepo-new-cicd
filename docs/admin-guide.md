@@ -92,6 +92,16 @@ path.
   separate container invocations (e.g. after a worker restart mid-build); a normal single-invocation
   CI job is not expected to hit this. If it does show up in CI, it indicates the job's container was
   restarted mid-build (worth investigating why), not a code regression.
+- **`PermissionError: [Errno 13] Permission denied: '/work/build'` from `kas` on Docker hosts with
+  SELinux enabled** (`"selinux-enabled": true` in `/etc/docker/daemon.json` - seen on a real
+  developer workstation, not hypothetical): `kas-container`'s own script only adds
+  `--security-opt label=disable` for the podman engine, never for docker - so with SELinux
+  enforcing, the kernel denies the container's bind-mounted access to `/work` even though Unix
+  owner/group/mode all look correct, which is easy to misdiagnose as a UID mismatch (it isn't -
+  `USER_ID`/`GROUP_ID` passthrough and `ci/docker/entrypoint.sh`'s remap both work correctly here).
+  Fixed in `ci/scripts/_kas_runtime_args.sh`'s `kas_runtime_args()`, which now always adds
+  `--security-opt label=disable` itself regardless of engine - harmless no-op on non-SELinux Docker
+  and a harmless duplicate on podman (which already gets it from `kas-container`).
 
 ## CI-specific operational notes
 

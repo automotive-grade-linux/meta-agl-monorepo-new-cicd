@@ -75,6 +75,19 @@ kas_runtime_args() {
   # VALUE here must itself be one word (no spaces) since callers expand
   # $(kas_runtime_args) unquoted - an embedded space inside VALUE would get word-split
   # too, breaking the `-v host:container` pairing into a 3rd/4th stray argv entry.
+
+  # kas-container's own script only adds `--security-opt label=disable` for the podman
+  # engine (see its `case "${KAS_CONTAINER_ENGINE}"` block) - never for docker, even when
+  # the Docker daemon itself has SELinux enabled (`"selinux-enabled": true` in
+  # /etc/docker/daemon.json - a real, seen-in-practice workstation config, not hypothetical,
+  # see WIP.md "round 12"). Without it, SELinux denies the container's bind-mounted access
+  # to /work at the kernel level, surfacing as a plain `PermissionError: [Errno 13]
+  # Permission denied: '/work/build'` from kas - Unix owner/group/mode all look fine, so
+  # this is easy to misdiagnose as a UID mismatch. Harmless no-op everywhere else (plain
+  # Docker without SELinux ignores it; podman already gets it from kas-container itself, so
+  # this is just a redundant duplicate there, not a conflict) - always emitted.
+  printf -- '--runtime-args --security-opt --runtime-args label=disable '
+
   if [ -n "${AGL_SSTATE_DIR:-}" ]; then
     mkdir -p "${AGL_SSTATE_DIR}"
     # kas-container only forwards a fixed explicit set of env vars into the container
