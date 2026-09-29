@@ -18,7 +18,7 @@ ENTRY_SDK="${_MATRIX_FIELDS[2]}"
 
 echo "build.sh: kas build $KASFILES (target=$TARGET)"
 # shellcheck disable=SC2046
-KAS_WORK_DIR="$REPO_ROOT" kas-container $(kas_runtime_args) build "$KASFILES"
+KAS_TARGET="$TARGET" KAS_WORK_DIR="$REPO_ROOT" kas-container $(kas_runtime_args) build "$KASFILES"
 
 if [ "$ENTRY_SDK" = "True" ] && [ "$SDK_ALLOWED" = "true" ]; then
   echo "build.sh: populating SDK for $TARGET"
