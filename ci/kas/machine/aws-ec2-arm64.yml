@@ -7,11 +7,11 @@ machine: aws-ec2-arm64
 repos:
   meta-aws:
     url: https://github.com/aws4embeddedlinux/meta-aws
-    path: layers/bsp/meta-aws
+    path: bsp/meta-aws
     branch: wrynose
   meta-virtualization:
     url: https://git.yoctoproject.org/meta-virtualization
-    path: layers/external/meta-virtualization
+    path: external/meta-virtualization
     branch: wrynose
   meta-openembedded:
     layers:

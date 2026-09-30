@@ -5,7 +5,7 @@ header:
 repos:
   meta-selinux:
     url: https://git.yoctoproject.org/meta-selinux
-    path: layers/external/meta-selinux
+    path: external/meta-selinux
     branch: wrynose
   meta-openembedded:
     layers:

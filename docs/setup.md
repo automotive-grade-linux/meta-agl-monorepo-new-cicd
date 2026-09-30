@@ -103,7 +103,7 @@ To build the non-`-nogfx` variants yourself:
    than aborting `make build` outright) - the actual bitbake build will then fail with its own
    missing-proprietary-recipe errors, which is expected until the zips are in place.
 
-This step is idempotent - once extracted to `layers/binary-tmp/`, reruns skip straight past it
+This step is idempotent - once extracted to `binary-tmp/`, reruns skip straight past it
 (delete that directory to force re-extraction, e.g. after downloading updated packages).
 
 ## Floating on branch tips instead of pinned commits
@@ -224,7 +224,7 @@ See [`WIP.md`](../WIP.md) at the repo root for the full architecture decision lo
 ## Adding a new feature
 
 1. Add `ci/kas/feature/<name>.yml`, mirroring the matching
-   `layers/*/templates/feature/<name>/50_local.conf.inc`+`50_bblayers.conf.inc` (`header.includes:`
+   `{meta-agl,meta-agl-demo,meta-agl-devel}/templates/feature/<name>/50_local.conf.inc`+`50_bblayers.conf.inc` (`header.includes:`
    whatever that feature's `included.dep` lists as other `ci/kas/feature/*.yml` files).
 2. If it introduces a new external (non-vendored) repo, `make lock` and hand-copy the resolved
    commit into `ci/kas/pins.yml`, same as adding a machine.

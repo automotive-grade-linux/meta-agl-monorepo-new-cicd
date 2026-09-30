@@ -1,7 +1,7 @@
 # External layers fetched by kas at build/CI time (not vendored, not committed).
 # meta-agl, meta-agl-demo, meta-agl-devel (repo root) ARE vendored and tracked separately.
-/layers/external/
-/layers/bsp/
+/external/
+/bsp/
 
 # kas / bitbake build output
 /build/

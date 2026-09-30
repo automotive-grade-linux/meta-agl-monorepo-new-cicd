@@ -24,6 +24,7 @@ SOFTWARE.
 
 This license covers this repository's own CI tooling (the `ci/`, `docs/`,
 `Makefile`, `.github/`, `.gitlab-ci.yml` files, `WIP.md`) - not the vendored
-AGL layers under `layers/`, which retain their own original licensing
-(predominantly Apache-2.0, plus per-file exceptions noted in each layer's own
-LICENSE files). See each vendored layer's own `LICENSE*` files for details.
+AGL layers (`meta-agl`, `meta-agl-demo`, `meta-agl-devel`), which retain their
+own original licensing (predominantly Apache-2.0, plus per-file exceptions
+noted in each layer's own LICENSE files). See each vendored layer's own
+`LICENSE*` files for details.

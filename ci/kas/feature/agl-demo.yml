@@ -16,7 +16,7 @@ repos:
       meta-agl-demo-shared:
   meta-qt6:
     url: https://code.qt.io/yocto/meta-qt6
-    path: layers/external/meta-qt6
+    path: external/meta-qt6
     branch: "6.12"
   meta-openembedded:
     layers:

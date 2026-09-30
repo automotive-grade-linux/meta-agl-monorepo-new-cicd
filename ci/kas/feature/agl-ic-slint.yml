@@ -8,9 +8,9 @@ header:
 repos:
   meta-rust-bin:
     url: https://github.com/rust-embedded/meta-rust-bin
-    path: layers/external/meta-rust-bin
+    path: external/meta-rust-bin
     branch: master
   meta-slint:
     url: https://github.com/slint-ui/meta-slint
-    path: layers/external/meta-slint
+    path: external/meta-slint
     branch: main

@@ -7,12 +7,12 @@ machine: nanopc-t6
 repos:
   meta-arm:
     url: https://git.yoctoproject.org/meta-arm
-    path: layers/bsp/meta-arm
+    path: bsp/meta-arm
     branch: wrynose
     layers:
       meta-arm:
       meta-arm-toolchain:
   meta-rockchip:
     url: https://git.yoctoproject.org/meta-rockchip
-    path: layers/bsp/meta-rockchip
+    path: bsp/meta-rockchip
     branch: wrynose

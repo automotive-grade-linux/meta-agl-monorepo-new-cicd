@@ -9,7 +9,7 @@ repos:
       meta-agl-xen:
   meta-virtualization:
     url: https://git.yoctoproject.org/meta-virtualization
-    path: layers/external/meta-virtualization
+    path: external/meta-virtualization
     branch: wrynose
   meta-openembedded:
     layers:

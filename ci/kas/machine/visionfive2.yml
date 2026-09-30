@@ -7,5 +7,5 @@ machine: visionfive2
 repos:
   meta-riscv:
     url: https://github.com/riscv/meta-riscv
-    path: layers/bsp/meta-riscv
+    path: bsp/meta-riscv
     branch: wrynose

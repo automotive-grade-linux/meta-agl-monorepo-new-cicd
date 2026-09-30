@@ -7,14 +7,14 @@ machine: beaglebone-ai64
 repos:
   meta-arm:
     url: https://git.yoctoproject.org/meta-arm
-    path: layers/bsp/meta-arm
+    path: bsp/meta-arm
     branch: wrynose
     layers:
       meta-arm:
       meta-arm-toolchain:
   meta-ti:
     url: https://git.yoctoproject.org/meta-ti
-    path: layers/bsp/meta-ti
+    path: bsp/meta-ti
     branch: wrynose
     layers:
       meta-ti-bsp:

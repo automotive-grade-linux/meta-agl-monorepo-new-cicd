@@ -7,11 +7,11 @@ machine: sparrow-hawk
 repos:
   meta-sparrow-hawk:
     url: https://github.com/rcar-community/meta-sparrow-hawk
-    path: layers/bsp/meta-sparrow-hawk
+    path: bsp/meta-sparrow-hawk
     branch: wrynose-dev
   meta-yocto:
     url: https://git.yoctoproject.org/meta-yocto
-    path: layers/external/meta-yocto
+    path: external/meta-yocto
     branch: wrynose
     layers:
       meta-yocto-bsp:

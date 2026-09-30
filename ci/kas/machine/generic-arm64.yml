@@ -7,7 +7,7 @@ machine: generic-arm64
 repos:
   meta-arm:
     url: https://git.yoctoproject.org/meta-arm
-    path: layers/bsp/meta-arm
+    path: bsp/meta-arm
     branch: wrynose
     layers:
       meta-arm:

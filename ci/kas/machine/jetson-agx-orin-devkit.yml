@@ -7,5 +7,5 @@ machine: jetson-agx-orin-devkit
 repos:
   meta-tegra:
     url: https://github.com/OE4T/meta-tegra
-    path: layers/bsp/meta-tegra
+    path: bsp/meta-tegra
     branch: wrynose

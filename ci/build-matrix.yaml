@@ -367,11 +367,11 @@ check_layers:
     - meta-agl
     - meta-agl-demo
     - meta-agl-devel
-    - layers/external/openembedded-core
-    - layers/external/meta-openembedded
-    - layers/external/meta-qt6
-    - layers/external/meta-flutter
-    - layers/external/meta-virtualization
+    - external/openembedded-core
+    - external/meta-openembedded
+    - external/meta-qt6
+    - external/meta-flutter
+    - external/meta-virtualization
 
   # Same list-item shape as images:/machines: above - a bare path relies on LAYERDEPENDS-based
   # auto-resolution (via dependency_roots) alone; a {path: {additional_layers: [...]}} entry

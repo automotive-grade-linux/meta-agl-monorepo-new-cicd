@@ -7,5 +7,5 @@ machine: raspberrypi4
 repos:
   meta-raspberrypi:
     url: https://git.yoctoproject.org/meta-raspberrypi
-    path: layers/bsp/meta-raspberrypi
+    path: bsp/meta-raspberrypi
     branch: wrynose
