@@ -2,7 +2,7 @@
 header:
   version: 23
   includes:
-    - ci/kas/feature/agl-demo.yml
+    - kas/feature/agl-demo.yml
 
 repos:
   meta-agl-demo:

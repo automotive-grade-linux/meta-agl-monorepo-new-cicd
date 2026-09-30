@@ -66,7 +66,7 @@ stack):
 | Wall-clock time (this build) | ~3 hours on 8 cores capped to `BB_NUMBER_THREADS=4`/`PARALLEL_MAKE=-j 4`; a from-scratch build with no sstate reuse will take substantially longer (this run reused sstate for setup/toolchain-adjacent tasks across resumed attempts) |
 | Task count | ~12,300 bitbake tasks for this one image target |
 
-**Parallelism**: `ci/kas/base.yml` hardcodes `BB_NUMBER_THREADS ?= "4"` / `PARALLEL_MAKE ?= "-j 4"`
+**Parallelism**: `kas/base.yml` hardcodes `BB_NUMBER_THREADS ?= "4"` / `PARALLEL_MAKE ?= "-j 4"`
 rather than scaling to host core count - this was a deliberate choice to avoid overloading shared
 build infrastructure. **Raise this for dedicated build workers** with more headroom (edit those two
 lines directly; there's no separate override knob yet - add one via kas's `env:` passthrough
@@ -86,7 +86,7 @@ path.
   valid). Fixed via `meta-agl/meta-agl-core/recipes-devtools/grpc/grpc_%.bbappend`
   (`nobranch=1`). If a future `meta-openembedded` bump moves off this SRCREV, this bbappend becomes a
   no-op (harmless) or needs its own SRCREV bump to match - check it if grpc-related fetch failures
-  reappear after updating `ci/kas/pins.yml`.
+  reappear after updating `kas/pins.yml`.
 - **Flutter pub-cache task signature instability across resumed builds**: see the "Known gotcha" in
   [`setup.md`](setup.md#verified-building-a-full-demo-image). Only affects builds resumed across
   separate container invocations (e.g. after a worker restart mid-build); a normal single-invocation
@@ -103,7 +103,7 @@ path.
   `--security-opt label=disable` itself regardless of engine - harmless no-op on non-SELinux Docker
   and a harmless duplicate on podman (which already gets it from `kas-container`).
 - **`kas` fails with `"23 is not valid under any of the given schemas"`** (config file validation
-  error on `ci/kas/base.yml` or any other fragment): the image being used has an older `kas` baked
+  error on `kas/base.yml` or any other fragment): the image being used has an older `kas` baked
   in than this repo's `header: version: 23` config files need - kas only understands schema
   version 23 from release 5.4 onward (5.3's schema caps at 22, confirmed by inspecting kas's own
   `schema-kas.json` across PyPI releases). Root cause was `ci/docker/Dockerfile`'s

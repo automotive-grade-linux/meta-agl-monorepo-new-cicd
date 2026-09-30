@@ -28,12 +28,12 @@
 #   []       -> never built by CI (still buildable locally via `make build MACHINE=...`).
 #
 # No `combo:` field: ci/scripts/_compose_kasfiles.py computes the colon-joined kas file list
-# directly from machine+features (ci/kas/base.yml:ci/kas/machine/<m>.yml:ci/kas/feature/<f>.yml:
-# ...:ci/kas/pins.yml). External-repo commit pins live in one consolidated ci/kas/pins.yml,
+# directly from machine+features (kas/base.yml:kas/machine/<m>.yml:kas/feature/<f>.yml:
+# ...:kas/pins.yml). External-repo commit pins live in one consolidated kas/pins.yml,
 # always appended last - no per-combination lockfile. See docs/setup.md.
 #
 # agl-devel (passwordless login for HIL testing) and AGL's agl-ci tuning are NOT a `features:`
-# entry - every CI build gets them automatically via ci/kas/ci-only.yml (see setup.sh). A local
+# entry - every CI build gets them automatically via kas/ci-only.yml (see setup.sh). A local
 # developer who wants agl-devel adds it themselves: `make build ... EXTRA_FEATURES=agl-devel`.
 #
 # Per-machine demo-image curation (decision #17, resolved): see WIP.md "round 8" for the full
@@ -351,7 +351,7 @@ images:
 # anywhere in AGL's manifest-pinned meta-arm (wrynose branch) - "require
 # conf/distro/include/INVALID-tune.inc" fails identically under aglsetup.sh, this is a
 # pre-existing upstream gap discovered during kas validation, not a migration bug. See
-# WIP.md "Implementation status" for detail. ci/kas/machine/generic-arm64.yml exists but
+# WIP.md "Implementation status" for detail. kas/machine/generic-arm64.yml exists but
 # is not wired into this file.
 
 # `make validate`'s yocto-check-layer sub-check (see ci/scripts/_matrix.py's

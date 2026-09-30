@@ -16,7 +16,7 @@
 #   AGL_SSTATE_DIR   - a persistent SSTATE_DIR shared across checkouts/machines/features,
 #                       e.g. `export AGL_SSTATE_DIR=$HOME/.yocto/sstate-cache`. Bind-mounted
 #                       into the container at the same path and wired into kas via the
-#                       ci/kas/local/sstate-shared.yml fragment. Left unset, SSTATE_DIR
+#                       kas/local/sstate-shared.yml fragment. Left unset, SSTATE_DIR
 #                       falls back to oe-core's own default (build/sstate-cache, inside the
 #                       repo work dir) - which is exactly what the GitHub Actions/GitLab CI
 #                       cache configs already target, so CI needs no changes.
@@ -71,16 +71,16 @@ matrix_fields() {
 
 kas_extra_includes() {
   if [ -n "${AGL_SSTATE_DIR:-}" ]; then
-    printf ':ci/kas/local/sstate-shared.yml'
+    printf ':kas/local/sstate-shared.yml'
   fi
 }
 
-# ci/kas/ci-only.yml carries agl-devel (passwordless login, needed for hardware-in-the-loop
+# kas/ci-only.yml carries agl-devel (passwordless login, needed for hardware-in-the-loop
 # testing) plus AGL's agl-ci build tuning. Colon-joined whenever CI=true - never part of
 # ci/build-matrix.yaml's features: column, never part of a plain local build.
 kas_ci_includes() {
   if [ "${CI:-}" = "true" ]; then
-    printf ':ci/kas/ci-only.yml'
+    printf ':kas/ci-only.yml'
   fi
 }
 

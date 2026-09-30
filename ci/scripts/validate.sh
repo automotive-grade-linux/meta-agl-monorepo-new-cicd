@@ -68,7 +68,7 @@ CHECK_LAYER_PATHS=""
 for l in $CHECK_LAYERS; do
   CHECK_LAYER_PATHS="$CHECK_LAYER_PATHS /work/$l"
 done
-run_check "yocto-check-layer" "ci/kas/_validate-base.yml:ci/kas/pins.yml" \
+run_check "yocto-check-layer" "kas/_validate-base.yml:kas/pins.yml" \
   "yocto-check-layer$CHECK_LAYER_PATHS $CHECK_LAYER_ARGS"
 
 run_check "license-manifest" "$KASFILES" \

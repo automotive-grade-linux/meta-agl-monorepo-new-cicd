@@ -26,20 +26,20 @@ endchoice
 
 config KAS_INCLUDE_MACHINE_QEMUX86_64
     string
-    default "ci/kas/machine/qemux86-64.yml" if MACHINE_QEMUX86_64
+    default "kas/machine/qemux86-64.yml" if MACHINE_QEMUX86_64
 
 config KAS_INCLUDE_MACHINE_QEMUARM64
     string
-    default "ci/kas/machine/qemuarm64.yml" if MACHINE_QEMUARM64
+    default "kas/machine/qemuarm64.yml" if MACHINE_QEMUARM64
 
 config KAS_INCLUDE_MACHINE_RASPBERRYPI4
     string
-    default "ci/kas/machine/raspberrypi4.yml" if MACHINE_RASPBERRYPI4
+    default "kas/machine/raspberrypi4.yml" if MACHINE_RASPBERRYPI4
 
 config KAS_INCLUDE_MACHINE_RASPBERRYPI5
     string
-    default "ci/kas/machine/raspberrypi5.yml" if MACHINE_RASPBERRYPI5
+    default "kas/machine/raspberrypi5.yml" if MACHINE_RASPBERRYPI5
 
 config KAS_INCLUDE_MACHINE_H3ULCB
     string
-    default "ci/kas/machine/h3ulcb.yml" if MACHINE_H3ULCB
+    default "kas/machine/h3ulcb.yml" if MACHINE_H3ULCB

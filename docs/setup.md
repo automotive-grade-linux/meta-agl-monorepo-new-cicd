@@ -4,7 +4,7 @@
 
 - Docker or rootless Podman (for `kas-container`)
 - `pip install kas==5.5` (for `make lock`/`make pin-update`, or to run `kas`/`kas-container`
-  directly) - pinned, not just `pip install kas`: this repo's `ci/kas/*.yml` files declare
+  directly) - pinned, not just `pip install kas`: this repo's `kas/*.yml` files declare
   `header: version: 23`, a config-schema version kas only understands from 5.4 onward (5.3's
   schema caps at 22). An unpinned install can silently resolve to whatever was on PyPI that day.
 - A local `agl-ci-builder` image built from `ci/docker/Dockerfile` (see below) - it bakes in the
@@ -37,8 +37,8 @@ Dockerfile at `ci/docker/Dockerfile` (set `KAS_CONTAINER_IMAGE` to point at a lo
 published image; see `ci/docker/Dockerfile`).
 
 There's no per-combination kas file: `ci/scripts/_compose_kasfiles.py` computes the colon-joined
-list directly from `MACHINE`+`FEATURES` (`ci/kas/base.yml:ci/kas/machine/<m>.yml:
-ci/kas/feature/<f>.yml:...:ci/kas/pins.yml`). `ci/kas/pins.yml` is one consolidated file pinning
+list directly from `MACHINE`+`FEATURES` (`kas/base.yml:kas/machine/<m>.yml:
+kas/feature/<f>.yml:...:kas/pins.yml`). `kas/pins.yml` is one consolidated file pinning
 every external repo's commit - no per-machine/per-feature lockfile to keep in sync.
 
 `ci/build-matrix.yaml` itself is keyed by image (`images:`, one entry per bitbake `target:`, each
@@ -71,12 +71,12 @@ metadata, not something CI config can discover on its own). Add a newly-vendored
 entry's `FEATURES` - add it yourself on top of any matrix entry with `EXTRA_FEATURES=agl-devel`,
 e.g. `make build MACHINE=qemux86-64 FEATURES=agl-demo TARGET=agl-ivi-demo-flutter
 EXTRA_FEATURES=agl-devel`. CI builds get the equivalent automatically (hardware-in-the-loop
-testing needs it every time) via `ci/kas/ci-only.yml`, colon-joined whenever `CI=true` - you never
+testing needs it every time) via `kas/ci-only.yml`, colon-joined whenever `CI=true` - you never
 need to (and shouldn't) set that yourself.
 
 Other targets: `make validate` (the layer QA suite), `make shell` (interactive kas-container
 shell), `make lock` (resolve latest upstream commits so you can hand-copy bumps into
-`ci/kas/pins.yml`), `make clean`.
+`kas/pins.yml`), `make clean`.
 
 ## h3ulcb/m3ulcb: proprietary R-Car packages (local build only, not CI)
 
@@ -108,18 +108,18 @@ This step is idempotent - once extracted to `binary-tmp/`, reruns skip straight 
 
 ## Floating on branch tips instead of pinned commits
 
-By default every build uses `ci/kas/pins.yml` (fixed commits). To float on the tip of each
+By default every build uses `kas/pins.yml` (fixed commits). To float on the tip of each
 repo's declared branch instead (useful for testing against upstream HEAD), set:
 
 ```sh
 export AGL_FLOATING=1
 ```
 
-before `make setup`/`make build`/`make validate`/`make shell`. This swaps in `ci/kas/floating.yml`
-(no commit overrides) instead of `ci/kas/pins.yml` - CI never sets this, so CI builds always stay
+before `make setup`/`make build`/`make validate`/`make shell`. This swaps in `kas/floating.yml`
+(no commit overrides) instead of `kas/pins.yml` - CI never sets this, so CI builds always stay
 reproducible.
 
-To actually bump `ci/kas/pins.yml` itself (resolve every repo's current tip and write the new
+To actually bump `kas/pins.yml` itself (resolve every repo's current tip and write the new
 commits in, preserving the file's comments/grouping):
 
 ```sh
@@ -127,7 +127,7 @@ make pin-update
 ```
 
 This runs `kas lock --update` against every machine+feature fragment at once (via
-`ci/kas/floating.yml`), then `ci/scripts/pin-update-helper.py` does the targeted in-place update
+`kas/floating.yml`), then `ci/scripts/pin-update-helper.py` does the targeted in-place update
 and prints a summary of what changed. **Review the diff before committing** - like any dependency
 bump, it can pull in real upstream breakage.
 
@@ -142,7 +142,7 @@ export AGL_SSTATE_DIR=$HOME/.yocto/sstate-cache
 ```
 
 before `make setup`/`make build`/`make validate`/`make shell`. It's bind-mounted into the
-container and wired into kas via `ci/kas/local/sstate-shared.yml` (only included when this env
+container and wired into kas via `kas/local/sstate-shared.yml` (only included when this env
 var is set - CI is unaffected).
 
 If you already keep a personal `site.conf` (e.g. with your own `SSTATE_DIR`, mirrors, or other
@@ -175,7 +175,7 @@ list.)
 
 **What to expect:**
 - A full image build (not just a minimal one) is CPU/RAM/disk heavy: several hours even on a modern
-  multi-core host, more on a constrained one. `ci/kas/base.yml` caps `BB_NUMBER_THREADS`/
+  multi-core host, more on a constrained one. `kas/base.yml` caps `BB_NUMBER_THREADS`/
   `PARALLEL_MAKE` at 4 by default — raise it (edit the two lines directly, no config knob exists yet)
   if your host has cores to spare and isn't shared with anything else.
 - The build is fully resumable: if it's interrupted (container killed, host reboot, `docker` daemon
@@ -212,10 +212,10 @@ See [`WIP.md`](../WIP.md) at the repo root for the full architecture decision lo
 
 ## Adding a new machine
 
-1. Add `ci/kas/machine/<name>.yml` (see existing ones for the `path:`-only vendored vs.
+1. Add `kas/machine/<name>.yml` (see existing ones for the `path:`-only vendored vs.
    `url:`+`branch:` external-repo pattern).
 2. `make lock MACHINE=<name>` to resolve its new repo(s)' latest commits, then hand-copy them
-   into `ci/kas/pins.yml`. If it needs EULA acceptance to build (proprietary/license-gated BSP
+   into `kas/pins.yml`. If it needs EULA acceptance to build (proprietary/license-gated BSP
    bits), add it to `ci/build-matrix.yaml`'s `machine_eula:` table.
 3. Add `<name>` to the `machines:` list of every `images:` entry it should build (a bare string
    to use that image's default `tiers:`, or `<name>: {tiers: [...]}` to override).
@@ -223,11 +223,11 @@ See [`WIP.md`](../WIP.md) at the repo root for the full architecture decision lo
 
 ## Adding a new feature
 
-1. Add `ci/kas/feature/<name>.yml`, mirroring the matching
+1. Add `kas/feature/<name>.yml`, mirroring the matching
    `{meta-agl,meta-agl-demo,meta-agl-devel}/templates/feature/<name>/50_local.conf.inc`+`50_bblayers.conf.inc` (`header.includes:`
-   whatever that feature's `included.dep` lists as other `ci/kas/feature/*.yml` files).
+   whatever that feature's `included.dep` lists as other `kas/feature/*.yml` files).
 2. If it introduces a new external (non-vendored) repo, `make lock` and hand-copy the resolved
-   commit into `ci/kas/pins.yml`, same as adding a machine.
+   commit into `kas/pins.yml`, same as adding a machine.
 3. If it's mutually exclusive with an existing feature (e.g. two backends that can't coexist on
    one image, like `agl-kvm`/`agl-xen`), add the pair to `INCOMPATIBLE_FEATURES` in
    `ci/scripts/_matrix.py` - `aglsetup.sh` never checked this itself, so nothing else will.

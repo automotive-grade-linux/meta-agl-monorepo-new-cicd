@@ -2,7 +2,7 @@
 header:
   version: 23
   includes:
-    - ci/kas/feature/agl-package-management.yml
+    - kas/feature/agl-package-management.yml
 
 local_conf_header:
   agl-devel: |

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: MIT
-"""Takes a kas-generated lockfile (resolved against ci/kas/floating.yml - i.e. every repo's
-current branch-tip commit, see `make pin-update`) and updates ci/kas/pins.yml in place with
+"""Takes a kas-generated lockfile (resolved against kas/floating.yml - i.e. every repo's
+current branch-tip commit, see `make pin-update`) and updates kas/pins.yml in place with
 whatever changed, via targeted text substitution (keeps pins.yml's existing comments/grouping
 intact - no full YAML round-trip, which would lose them). Prints a summary of what changed.
 
@@ -15,7 +15,7 @@ from pathlib import Path
 import yaml
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
-PINS_FILE = REPO_ROOT / "ci" / "kas" / "pins.yml"
+PINS_FILE = REPO_ROOT / "kas" / "pins.yml"
 
 
 def main():
@@ -61,7 +61,7 @@ def main():
         print(f"  {repo}: {old} -> {new}")
 
     if args.dry_run:
-        print("(--dry-run: ci/kas/pins.yml NOT written)")
+        print("(--dry-run: kas/pins.yml NOT written)")
     else:
         PINS_FILE.write_text(pins_text)
         print(f"pin-update-helper: wrote {PINS_FILE.relative_to(REPO_ROOT)} - review the diff, then commit.")

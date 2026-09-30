@@ -6,19 +6,19 @@ either the colon-joined kas file list (default) or one or more requested fields
 Makefile.
 
 No per-combination kas file exists: the list is computed directly as
-ci/kas/base.yml:ci/kas/machine/<machine>.yml:ci/kas/feature/<f1>.yml:...:ci/kas/pins.yml -
-ci/kas/pins.yml (a single consolidated file pinning every external repo's commit) is always
+kas/base.yml:kas/machine/<machine>.yml:kas/feature/<f1>.yml:...:kas/pins.yml -
+kas/pins.yml (a single consolidated file pinning every external repo's commit) is always
 appended last, so it never needs a per-combination lockfile.
 
-If the AGL_FLOATING env var is set, ci/kas/floating.yml (no commit overrides - every repo floats
-to the tip of its declared branch) is appended instead of ci/kas/pins.yml. Local-only; CI never
+If the AGL_FLOATING env var is set, kas/floating.yml (no commit overrides - every repo floats
+to the tip of its declared branch) is appended instead of kas/pins.yml. Local-only; CI never
 sets this.
 
 --target disambiguates when several images share the same (machine, features) - e.g. all 5
 agl-demo images on one machine. It's required whenever more than one matrix entry matches;
 omit it when only one does (unambiguous, matches pre-existing single-image usage).
 
---extra-features appends extra ci/kas/feature/*.yml fragments on top of a matched matrix
+--extra-features appends extra kas/feature/*.yml fragments on top of a matched matrix
 entry's own features, WITHOUT affecting the matrix lookup itself - for local-only additions
 like agl-devel (passwordless login) that are deliberately not part of any curated matrix
 entry. Never used in CI.
@@ -52,10 +52,10 @@ def find_entries(machine, features):
 
 def _kasfiles_list(machine, features, extra_features):
     """Builds the colon-joined kas file list and checks every fragment actually exists."""
-    kasfiles = ["ci/kas/base.yml", f"ci/kas/machine/{machine}.yml"]
-    kasfiles += [f"ci/kas/feature/{f}.yml" for f in features]
-    kasfiles += [f"ci/kas/feature/{f}.yml" for f in extra_features]
-    kasfiles.append("ci/kas/floating.yml" if os.environ.get("AGL_FLOATING") else "ci/kas/pins.yml")
+    kasfiles = ["kas/base.yml", f"kas/machine/{machine}.yml"]
+    kasfiles += [f"kas/feature/{f}.yml" for f in features]
+    kasfiles += [f"kas/feature/{f}.yml" for f in extra_features]
+    kasfiles.append("kas/floating.yml" if os.environ.get("AGL_FLOATING") else "kas/pins.yml")
     for f in kasfiles:
         if not (REPO_ROOT / f).exists():
             print(f"error: {f} does not exist", file=sys.stderr)
@@ -90,7 +90,7 @@ def main():
             f"error: no ci/build-matrix.yaml entry for machine={args.machine} "
             f"features={features!r}"
             + (f" target={args.target}" if args.target else "")
-            + " - add one to ci/build-matrix.yaml (and any missing ci/kas/feature/*.yml "
+            + " - add one to ci/build-matrix.yaml (and any missing kas/feature/*.yml "
             "fragment) before building this combination.",
             file=sys.stderr,
         )

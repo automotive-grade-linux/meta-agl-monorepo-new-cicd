@@ -31,7 +31,7 @@ RUN echo "dash dash/sh boolean false" | debconf-set-selections \
 # lands these in /usr/local/bin, which survives the prune. Debian stable marks system
 # Python as externally-managed (PEP 668); --break-system-packages is required.
 #
-# Pinned, not left to "whatever's latest at image-build time": this repo's ci/kas/*.yml
+# Pinned, not left to "whatever's latest at image-build time": this repo's kas/*.yml
 # files declare `header: version: 23`, a kas config-schema version kas only understands
 # from 5.4 onward (5.3's schema caps at 22 - confirmed by inspecting kas's own
 # schema-kas.json across releases). An unpinned `pip install kas` silently bakes in

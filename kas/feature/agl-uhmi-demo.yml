@@ -2,8 +2,8 @@
 header:
   version: 23
   includes:
-    - ci/kas/feature/agl-demo.yml
-    - ci/kas/feature/agl-uhmi.yml
+    - kas/feature/agl-demo.yml
+    - kas/feature/agl-uhmi.yml
 
 repos:
   meta-agl-devel:

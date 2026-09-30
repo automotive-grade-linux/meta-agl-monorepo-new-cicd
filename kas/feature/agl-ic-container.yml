@@ -2,10 +2,10 @@
 header:
   version: 23
   includes:
-    - ci/kas/feature/agl-drm-lease.yml
-    - ci/kas/feature/agl-ic.yml
-    - ci/kas/feature/agl-pipewire.yml
-    - ci/kas/feature/agl-selinux.yml
+    - kas/feature/agl-drm-lease.yml
+    - kas/feature/agl-ic.yml
+    - kas/feature/agl-pipewire.yml
+    - kas/feature/agl-selinux.yml
 
 repos:
   meta-agl-devel:

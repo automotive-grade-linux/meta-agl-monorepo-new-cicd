@@ -103,7 +103,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: build/sstate-cache
-          key: sstate-${{ runner.os }}-${{ matrix.machine }}-${{ hashFiles('ci/kas/pins.yml') }}
+          key: sstate-${{ runner.os }}-${{ matrix.machine }}-${{ hashFiles('kas/pins.yml') }}
           restore-keys: |
             sstate-${{ runner.os }}-${{ matrix.machine }}-
             sstate-${{ runner.os }}-
@@ -112,7 +112,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: build/downloads
-          key: downloads-${{ hashFiles('ci/kas/pins.yml') }}
+          key: downloads-${{ hashFiles('kas/pins.yml') }}
           restore-keys: downloads-
 
       - name: Validate

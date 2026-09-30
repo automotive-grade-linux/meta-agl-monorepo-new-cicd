@@ -2,7 +2,7 @@
 header:
   version: 23
   includes:
-    - ci/kas/feature/agl-devel.yml
+    - kas/feature/agl-devel.yml
 
 # Colon-joined automatically whenever CI=true (see ci/scripts/setup.sh/build.sh/validate.sh's
 # kas_ci_includes helper) - never appears in ci/build-matrix.yaml's features: column, never

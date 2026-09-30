@@ -2,11 +2,11 @@
 header:
   version: 23
   includes:
-    - ci/kas/feature/agl-pipewire.yml
-    - ci/kas/feature/agl-app-framework.yml
-    - ci/kas/feature/agl-selinux.yml
-    - ci/kas/feature/agl-kuksa-val.yml
-    - ci/kas/feature/agl-flutter.yml
+    - kas/feature/agl-pipewire.yml
+    - kas/feature/agl-app-framework.yml
+    - kas/feature/agl-selinux.yml
+    - kas/feature/agl-kuksa-val.yml
+    - kas/feature/agl-flutter.yml
 
 repos:
   meta-agl-demo:

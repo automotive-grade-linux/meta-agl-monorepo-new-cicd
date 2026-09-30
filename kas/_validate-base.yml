@@ -7,7 +7,7 @@ header:
 # auto-dependency resolution) and must NOT be run against a config that has any AGL layer
 # pre-loaded - that causes a duplicate BBFILE_COLLECTIONS conflict (found during
 # validation, see WIP.md "Implementation status"). Deliberately does NOT include
-# ci/kas/base.yml (which pre-loads meta-agl-core/meta-agl-bsp) or set DISTRO=agl (whose
+# kas/base.yml (which pre-loads meta-agl-core/meta-agl-bsp) or set DISTRO=agl (whose
 # base-agl.inc lives inside meta-agl-core).
 machine: qemux86-64
 
