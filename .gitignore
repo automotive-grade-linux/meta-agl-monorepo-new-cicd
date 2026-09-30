@@ -1,5 +1,5 @@
 # External layers fetched by kas at build/CI time (not vendored, not committed).
-# layers/meta-agl, layers/meta-agl-demo, layers/meta-agl-devel ARE vendored and tracked.
+# meta-agl, meta-agl-demo, meta-agl-devel (repo root) ARE vendored and tracked separately.
 /layers/external/
 /layers/bsp/
 

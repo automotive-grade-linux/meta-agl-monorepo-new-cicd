@@ -6,7 +6,7 @@ distro: agl
 
 repos:
   meta-agl:
-    path: layers/meta-agl
+    path: meta-agl
     layers:
       meta-agl-core:
       meta-agl-bsp:

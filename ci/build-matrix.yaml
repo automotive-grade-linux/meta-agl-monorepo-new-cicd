@@ -356,7 +356,7 @@ images:
 
 # `make validate`'s yocto-check-layer sub-check (see ci/scripts/_matrix.py's
 # load_check_layers() and ci/scripts/validate.sh). Defaults to checking just
-# layers/meta-agl/meta-agl-core (CHECK_LAYERS in the Makefile); `make validate
+# meta-agl/meta-agl-core (CHECK_LAYERS in the Makefile); `make validate
 # CHECK_LAYERS=all` checks every layer listed here.
 check_layers:
   # Recursively scanned for conf/layer.conf files so yocto-check-layer's --dependency flag can
@@ -364,9 +364,9 @@ check_layers:
   # below, not per-layer (most AGL sublayers declare LAYERDEPENDS correctly and need nothing
   # more than this to check cleanly).
   dependency_roots:
-    - layers/meta-agl
-    - layers/meta-agl-demo
-    - layers/meta-agl-devel
+    - meta-agl
+    - meta-agl-demo
+    - meta-agl-devel
     - layers/external/openembedded-core
     - layers/external/meta-openembedded
     - layers/external/meta-qt6
@@ -378,27 +378,27 @@ check_layers:
   # force-adds layers for the few that declare no LAYERDEPENDS at all despite clearly needing
   # other layers (confirmed by reading their conf/layer.conf: zero LAYERDEPENDS_<name>, despite
   # dozens of .bbappend files targeting recipes elsewhere). For those,
-  # `additional_layers: [layers/meta-agl/meta-agl-core]` is a best-effort guess, not a verified
+  # `additional_layers: [meta-agl/meta-agl-core]` is a best-effort guess, not a verified
   # fact - nothing anywhere declares what they actually need. Adjust here (not in code) if
   # `make validate CHECK_LAYERS=all` still errors on one of them for a genuinely missing layer.
   layers:
-    - layers/meta-agl/meta-agl-core
-    - layers/meta-agl/meta-agl-bsp: {additional_layers: [layers/meta-agl/meta-agl-core]}
-    - layers/meta-agl/meta-pipewire
-    - layers/meta-agl/meta-app-framework
-    - layers/meta-agl/meta-agl-kuksa-val
-    - layers/meta-agl/meta-agl-flutter
-    - layers/meta-agl/meta-agl-ic
-    - layers/meta-agl/meta-agl-drm-lease
-    - layers/meta-agl/meta-netboot
-    - layers/meta-agl-demo
-    - layers/meta-agl-demo/meta-agl-demo-shared
-    - layers/meta-agl-demo/meta-agl-kvm-demo
-    - layers/meta-agl-devel/meta-agl-ic-container
-    - layers/meta-agl-devel/meta-agl-xen
-    - layers/meta-agl-devel/meta-uhmi: {additional_layers: [layers/meta-agl/meta-agl-core]}
-    - layers/meta-agl-devel/meta-agl-rdp: {additional_layers: [layers/meta-agl/meta-agl-core]}
-    - layers/meta-agl-devel/meta-agl-ros2: {additional_layers: [layers/meta-agl/meta-agl-core]}
-    - layers/meta-agl-devel/meta-agl-test: {additional_layers: [layers/meta-agl/meta-agl-core]}
-    - layers/meta-agl-devel/meta-offline-voice-agent
-    - layers/meta-agl-devel/meta-virtio
+    - meta-agl/meta-agl-core
+    - meta-agl/meta-agl-bsp: {additional_layers: [meta-agl/meta-agl-core]}
+    - meta-agl/meta-pipewire
+    - meta-agl/meta-app-framework
+    - meta-agl/meta-agl-kuksa-val
+    - meta-agl/meta-agl-flutter
+    - meta-agl/meta-agl-ic
+    - meta-agl/meta-agl-drm-lease
+    - meta-agl/meta-netboot
+    - meta-agl-demo
+    - meta-agl-demo/meta-agl-demo-shared
+    - meta-agl-demo/meta-agl-kvm-demo
+    - meta-agl-devel/meta-agl-ic-container
+    - meta-agl-devel/meta-agl-xen
+    - meta-agl-devel/meta-uhmi: {additional_layers: [meta-agl/meta-agl-core]}
+    - meta-agl-devel/meta-agl-rdp: {additional_layers: [meta-agl/meta-agl-core]}
+    - meta-agl-devel/meta-agl-ros2: {additional_layers: [meta-agl/meta-agl-core]}
+    - meta-agl-devel/meta-agl-test: {additional_layers: [meta-agl/meta-agl-core]}
+    - meta-agl-devel/meta-offline-voice-agent
+    - meta-agl-devel/meta-virtio

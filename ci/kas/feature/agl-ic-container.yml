@@ -9,11 +9,11 @@ header:
 
 repos:
   meta-agl-devel:
-    path: layers/meta-agl-devel
+    path: meta-agl-devel
     layers:
       meta-agl-ic-container:
   meta-agl-demo:
-    path: layers/meta-agl-demo
+    path: meta-agl-demo
     layers:
       meta-agl-demo-shared:
 

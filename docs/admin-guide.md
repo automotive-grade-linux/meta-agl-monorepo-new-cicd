@@ -83,7 +83,7 @@ path.
 
 - **`grpc_1.80.0.bb` (meta-openembedded) branch-pin breakage**: upstream `grpc/grpc`'s `v1.80.x`
   branch was force-pushed past the commit meta-openembedded pins (the tag `v1.80.0` itself is still
-  valid). Fixed via `layers/meta-agl/meta-agl-core/recipes-devtools/grpc/grpc_%.bbappend`
+  valid). Fixed via `meta-agl/meta-agl-core/recipes-devtools/grpc/grpc_%.bbappend`
   (`nobranch=1`). If a future `meta-openembedded` bump moves off this SRCREV, this bbappend becomes a
   no-op (harmless) or needs its own SRCREV bump to match - check it if grpc-related fetch failures
   reappear after updating `ci/kas/pins.yml`.

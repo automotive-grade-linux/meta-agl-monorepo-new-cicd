@@ -50,11 +50,11 @@ hypervisor backends can't coexist on one image) - `aglsetup.sh` itself never che
 (purely additive), so this repo does instead. `make validate`/CI run it as the `matrix-validate`
 check, and it's runnable standalone: `python3 ci/scripts/_matrix.py`.
 
-`make validate`'s `yocto-check-layer` sub-check only validates `layers/meta-agl/meta-agl-core` by
+`make validate`'s `yocto-check-layer` sub-check only validates `meta-agl/meta-agl-core` by
 default - checking every vendored sublayer (`meta-agl-bsp`, `meta-pipewire`,
 `meta-agl-demo-shared`, ...) is slow and most of them aren't what's actively being changed here.
 Run the full curated set with `make validate CHECK_LAYERS=all`, or a specific subset with
-`make validate CHECK_LAYERS="layers/meta-agl/meta-agl-core layers/meta-agl-demo"` (space-separated
+`make validate CHECK_LAYERS="meta-agl/meta-agl-core meta-agl-demo"` (space-separated
 paths) - `CHECK_LAYERS` (in the `Makefile`) only selects *which* curated layers run this time.
 
 The curated set itself, and each layer's `yocto-check-layer` dependencies, live in
@@ -97,7 +97,7 @@ To build the non-`-nogfx` variants yourself:
    XDG user dirs) - the same convention `aglsetup.sh` always used, nothing kas-specific here.
 3. `make build MACHINE=h3ulcb` (or `h3ulcb-kf`/`m3ulcb`/`m3ulcb-kf`) - `setup.sh` detects these
    machines and runs the extraction/install step (`copy_mm_packages`, sourced from
-   `layers/meta-agl/meta-agl-bsp/meta-rcar-gen3/scripts/setup_mm_packages.sh`) automatically
+   `meta-agl/meta-agl-bsp/meta-rcar-gen3/scripts/setup_mm_packages.sh`) automatically
    before the build, on your host (not inside the container) so it can see your real `~/Downloads`.
    If the zips aren't found it prints exactly which files/URL are missing and continues (rather
    than aborting `make build` outright) - the actual bitbake build will then fail with its own
@@ -193,7 +193,7 @@ list.)
   `grpc_1.80.0.bb` pins a commit that GitHub's `grpc/grpc` `v1.80.x` branch has since been force-pushed
   past (the tag itself is still valid, just no longer reachable from that branch name, which bitbake's
   git fetcher requires by default). Fixed via a bbappend at
-  `layers/meta-agl/meta-agl-core/recipes-devtools/grpc/grpc_%.bbappend` adding `nobranch=1`. Nothing
+  `meta-agl/meta-agl-core/recipes-devtools/grpc/grpc_%.bbappend` adding `nobranch=1`. Nothing
   you need to do - already in the vendored tree.
 
 ## Exploring machine/feature combinations interactively

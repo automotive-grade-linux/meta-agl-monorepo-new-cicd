@@ -10,7 +10,7 @@ header:
 
 repos:
   meta-agl-demo:
-    path: layers/meta-agl-demo
+    path: meta-agl-demo
     layers:
       "":
       meta-agl-demo-shared:

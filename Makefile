@@ -10,13 +10,13 @@ SDK_ALLOWED ?= false
 # Which layers `make validate`'s yocto-check-layer sub-check validates THIS run (space-separated
 # paths, or "all"). Trimmed to just meta-agl-core by default - checking every vendored sublayer
 # is slow and most of them aren't what's actively being changed here.
-#   make validate CHECK_LAYERS="layers/meta-agl/meta-agl-core layers/meta-agl-demo"
+#   make validate CHECK_LAYERS="meta-agl/meta-agl-core meta-agl-demo"
 #   make validate CHECK_LAYERS=all
 # This variable only selects WHICH curated layers run this time - the curated list itself, plus
 # each layer's yocto-check-layer dependencies (--dependency/--additional-layers), live in
 # ci/build-matrix.yaml's check_layers: key (see ci/scripts/_matrix.py's load_check_layers()) -
 # add a newly-vendored layer's dependency info there, not here.
-CHECK_LAYERS ?= layers/meta-agl/meta-agl-core
+CHECK_LAYERS ?= meta-agl/meta-agl-core
 export CHECK_LAYERS
 
 help:
@@ -37,7 +37,7 @@ help:
 	@echo "AGL_FLOATING=1 make build/setup/shell ... swaps ci/kas/pins.yml for ci/kas/floating.yml"
 	@echo "(no commit overrides - every repo floats to the tip of its declared branch). Local-only."
 	@echo ""
-	@echo "CHECK_LAYERS=\"layers/... layers/...\" or CHECK_LAYERS=all make validate ... expands"
+	@echo "CHECK_LAYERS=\"meta-agl/... meta-agl-demo\" or CHECK_LAYERS=all make validate ... expands"
 	@echo "which layers yocto-check-layer validates beyond the default (meta-agl-core only) -"
 	@echo "the curated set + each layer's dependencies live in ci/build-matrix.yaml's check_layers:."
 

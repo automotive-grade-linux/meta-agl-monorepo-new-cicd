@@ -58,7 +58,7 @@ run_check "bitbake-parse" "$KASFILES" "bitbake -p"
 # (yocto-check-layer's --dependency/--additional-layers) come from
 # ci/build-matrix.yaml's check_layers: key via _matrix.py - add a newly-vendored layer's
 # dependency info there, not here.
-CHECK_LAYERS="${CHECK_LAYERS:-layers/meta-agl/meta-agl-core}"
+CHECK_LAYERS="${CHECK_LAYERS:-meta-agl/meta-agl-core}"
 if [ "$CHECK_LAYERS" = "all" ]; then
   CHECK_LAYERS="$(python3 ci/scripts/_matrix.py --list-check-layers | tr '\n' ' ')"
 fi
@@ -78,12 +78,12 @@ run_check "license-manifest" "$KASFILES" \
 # concrete PR diff range - not yet set up (TODO, see WIP.md deferred items). Skipped for
 # now rather than faked as passing.
 if [ "${SKIP_PATCHTEST:-1}" != "1" ]; then
-  run_check "patchtest" "$KASFILES" "patchtest --repo layers/meta-agl --base-ref ${PATCHTEST_BASE_REF:-HEAD~20}"
+  run_check "patchtest" "$KASFILES" "patchtest --repo meta-agl --base-ref ${PATCHTEST_BASE_REF:-HEAD~20}"
 fi
 
 # /usr/local/bin (where pip --break-system-packages installs system-wide) is pruned from
 # PATH once bitbake's build environment is sourced (only /usr/{,s}bin and /{,s}bin survive)
 # - call oelint-adv by absolute path rather than relying on PATH resolution.
-run_check "recipe-lint" "$KASFILES" '/usr/local/bin/oelint-adv /work/layers/meta-agl /work/layers/meta-agl-demo /work/layers/meta-agl-devel'
+run_check "recipe-lint" "$KASFILES" '/usr/local/bin/oelint-adv /work/meta-agl /work/meta-agl-demo /work/meta-agl-devel'
 
 exit $status

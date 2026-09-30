@@ -31,14 +31,14 @@ fi
 # `make build MACHINE=h3ulcb` etc. runs.
 case "$MACHINE" in
   h3ulcb|h3ulcb-kf|m3ulcb|m3ulcb-kf)
-    HOOK="layers/meta-agl/meta-agl-bsp/meta-rcar-gen3/scripts/setup_mm_packages.sh"
+    HOOK="meta-agl/meta-agl-bsp/meta-rcar-gen3/scripts/setup_mm_packages.sh"
     if [ -f "$HOOK" ]; then
       echo "setup.sh: running proprietary R-Car package hook for $MACHINE"
       # setup_mm_packages.sh only defines copy_mm_packages(), the caller must source it
       # and invoke the function (matches meta-agl/templates/machine/h3ulcb/50_setup.sh).
       # Subshell: the function cd's around and we don't want that to affect setup.sh.
       (
-        export METADIR="$REPO_ROOT/layers"
+        export METADIR="$REPO_ROOT"
         # shellcheck source=/dev/null
         source "$HOOK"
         copy_mm_packages
