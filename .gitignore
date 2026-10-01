@@ -16,6 +16,10 @@ __pycache__/
 
 # Local working notes, not part of the tracked project history.
 /WIP.md
-.claude
+# .claude/ itself stays ignored (session notes, local settings) EXCEPT skills/, which is
+# committed so Claude Code skills (e.g. kas-operations) travel with the repo for every
+# teammate instead of staying stuck on one local checkout.
+.claude/*
+!.claude/skills/
 /.presentation/
 .kas_shell_history
