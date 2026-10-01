@@ -20,3 +20,7 @@ repos:
       meta-multimedia:
       meta-networking:
       meta-python:
+
+local_conf_header:
+  sparrow-hawk: |
+    require conf/include/agl_sparrow-hawk.inc

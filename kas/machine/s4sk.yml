@@ -21,3 +21,7 @@ repos:
   meta-openembedded:
     layers:
       meta-python:
+
+local_conf_header:
+  s4sk: |
+    require conf/include/agl_s4sk.inc

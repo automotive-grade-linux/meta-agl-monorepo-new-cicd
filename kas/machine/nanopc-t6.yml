@@ -16,3 +16,7 @@ repos:
     url: https://git.yoctoproject.org/meta-rockchip
     path: bsp/meta-rockchip
     branch: wrynose
+
+local_conf_header:
+  nanopc-t6: |
+    require conf/include/agl_rk3588.inc

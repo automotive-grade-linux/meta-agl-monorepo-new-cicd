@@ -9,3 +9,7 @@ repos:
     url: https://github.com/OE4T/meta-tegra
     path: bsp/meta-tegra
     branch: wrynose
+
+local_conf_header:
+  jetson-agx-orin-devkit: |
+    require conf/include/agl_jetson-agx-orin-devkit.inc

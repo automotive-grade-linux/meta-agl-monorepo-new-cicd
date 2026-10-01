@@ -24,3 +24,8 @@ repos:
   meta-openembedded:
     layers:
       meta-python:
+
+local_conf_header:
+  h3ulcb-kf: |
+    require conf/include/agl_h3ulcb.inc
+    require conf/include/rcar-gen3-adas.inc

@@ -3,3 +3,7 @@ header:
   version: 23
 
 machine: qemuarm64
+
+local_conf_header:
+  qemuarm64: |
+    require conf/include/agl_qemuarm64.inc

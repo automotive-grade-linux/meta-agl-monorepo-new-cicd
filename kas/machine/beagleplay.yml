@@ -19,3 +19,7 @@ repos:
     layers:
       meta-ti-bsp:
       meta-beagle:
+
+local_conf_header:
+  beagleplay: |
+    require conf/include/agl_beagleplay.inc

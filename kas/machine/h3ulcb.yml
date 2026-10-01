@@ -27,3 +27,7 @@ repos:
 # handled by ci/scripts/setup.sh as a pre-build step wrapping the existing
 # meta-agl-bsp/meta-rcar-gen3/scripts/setup_mm_packages.sh logic, and via EULA_H3ULCB=1
 # set from ci/build-matrix.yaml's eula: flag. See ci/scripts/setup.sh.
+
+local_conf_header:
+  h3ulcb: |
+    require conf/include/agl_h3ulcb.inc

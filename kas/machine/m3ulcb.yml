@@ -21,3 +21,7 @@ repos:
   meta-openembedded:
     layers:
       meta-python:
+
+local_conf_header:
+  m3ulcb: |
+    require conf/include/agl_m3ulcb.inc
