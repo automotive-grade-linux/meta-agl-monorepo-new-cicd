@@ -50,3 +50,20 @@ deliberately leaves out to stay short.
   the repo root is the free-form/local-exploration front door. Keep that separation when adding
   new tooling.
 - Only commit when explicitly asked.
+
+## Attribution
+
+AGL tracks AI involvement in commits. Any commit an AI tool contributed to must carry a trailer:
+
+```
+Assisted-by: AGENT_NAME:MODEL_VERSION [TOOL1] [TOOL2]
+```
+
+`AGENT_NAME` is the AI tool/framework, `MODEL_VERSION` the specific model used, and `[TOOL1]
+[TOOL2]` are optional specialized analysis tools involved (e.g. `coccinelle`, `sparse`, `smatch`,
+`clang-tidy`) — omit basic dev tools (git, gcc, make, editors). Example used throughout this
+repo's history: `Assisted-by: Claude Code:claude-sonnet-5`.
+
+
+## General
+Be concise. Use https://raw.githubusercontent.com/DietrichGebert/ponytail/refs/heads/main/AGENTS.md .
