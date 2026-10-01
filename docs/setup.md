@@ -205,6 +205,27 @@ CI never uses it. Once you've found a combination worth keeping, add it as a new
 `ci/build-matrix.yaml` (no new kas file needed - see "Adding a new machine" below for the one
 case that does, a genuinely new machine's BSP layers).
 
+## aglsetup.sh-style quick shell
+
+`scripts/aglsetup.sh -m <machine> <feature> [<feature> ...]` is the non-interactive,
+muscle-memory-friendly sibling of `kas menu` above - same local-only, bypasses-the-matrix
+philosophy, but scriptable instead of a TUI, and it drops you straight into an interactive
+`kas-container shell` instead of editing a `.config.yaml`. For example:
+
+```sh
+scripts/aglsetup.sh -m qemux86-64 agl-demo agl-devel
+```
+
+No `ci/build-matrix.yaml` entry is required - any machine with a `kas/machine/<name>.yml` and any
+features each with a `kas/feature/<name>.yml` work, in any combination. Feature dependencies
+(classic `aglsetup.sh`'s `included.dep`, e.g. `agl-demo` pulling in `agl-pipewire`) are resolved
+by kas itself via each fragment's own `header.includes:` - nothing extra to pass. `-b|--builddir
+<dir>` picks a separate kas build directory (`KAS_BUILD_DIR`) instead of the shared `build/`, so
+different machine/feature combos don't collide. Once inside the shell, run `bitbake <target>`
+yourself (e.g. `bitbake agl-image-minimal`), same as any kas shell. `-h|--help` lists the current
+machine/feature catalogs. As with `kas menu`, once you've found a combination worth keeping for
+CI, add it as a new entry in `ci/build-matrix.yaml`.
+
 ## Repository layout
 
 See [`WIP.md`](../WIP.md) at the repo root for the full architecture decision log, the

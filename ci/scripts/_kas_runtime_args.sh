@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: MIT
-# Sourced by setup.sh/build.sh/validate.sh (and the Makefile's shell/lock targets). Three
-# things live here:
+# Sourced by setup.sh/build.sh/validate.sh/scripts/aglsetup.sh (and the Makefile's shell/lock
+# targets). Four things live here:
 #
 # 1. parse_common_args() - the --machine/--features/--target/--extra-features/--sdk-allowed
 #    CLI parsing shared verbatim by all three scripts (was duplicated 3x before, see WIP.md
@@ -9,7 +9,10 @@
 #    MACHINE/FEATURES/MATRIX_TARGET/EXTRA_FEATURES" call, shared by all three scripts (each
 #    wants a different field set: setup.sh needs kasfiles+eula, build.sh needs
 #    kasfiles+target+sdk, validate.sh needs kasfiles+target).
-# 3. kas_extra_includes()/kas_ci_includes()/kas_runtime_args() - support two optional,
+# 3. run_machine_setup_hooks() - the machine-keyed EULA-accept and h3ulcb/m3ulcb proprietary
+#    package hook, shared by setup.sh (matrix-backed) and scripts/aglsetup.sh (matrix-free) -
+#    both just need the machine name, nothing matrix-entry-specific.
+# 4. kas_extra_includes()/kas_ci_includes()/kas_runtime_args() - support two optional,
 #    independent local-developer conveniences, never used in CI unless these env vars are
 #    explicitly set there too:
 #
@@ -67,6 +70,52 @@ matrix_fields() {
   local _raw
   _raw="$(python3 ci/scripts/_compose_kasfiles.py --machine "$MACHINE" --features "$FEATURES" --target "$MATRIX_TARGET" --extra-features "$EXTRA_FEATURES" --fields "$1")"
   mapfile -t _MATRIX_FIELDS <<< "$_raw"
+}
+
+# Machine-keyed setup hooks shared by setup.sh and scripts/aglsetup.sh: EULA auto-accept
+# (CI only) and the h3ulcb/m3ulcb proprietary R-Car package copy. Takes $1=machine. Assumes
+# cwd is already the repo root (every caller cd's there before sourcing this file). Looks up
+# EULA via `_matrix.py --machine-eula` (a flat machine-keyed table, independent of any
+# (machine, features) matrix row) rather than matrix_fields(), so this works identically
+# whether the caller is matrix-backed or matrix-free.
+run_machine_setup_hooks() {
+  local machine="$1" eula
+  eula="$(python3 ci/scripts/_matrix.py --machine-eula "$machine")"
+
+  # EULA (decision: CI auto-accepts, local dev keeps the interactive prompt unless it
+  # already set the env var itself).
+  if [ "$eula" = "True" ] && [ "${CI:-}" = "true" ]; then
+    local machine_upper
+    machine_upper="$(echo "$machine" | tr 'a-z-' 'A-Z_')"
+    export "EULA_${machine_upper}=1"
+    echo "$(basename "$0"): CI run, auto-accepting EULA via EULA_${machine_upper}=1"
+  fi
+
+  # h3ulcb/m3ulcb proprietary R-Car gfx/multimedia package copy (aglsetup.sh's 50_setup.sh
+  # equivalent - imperative, no kas mechanism for this). Applies to h3ulcb, h3ulcb-kf,
+  # m3ulcb, m3ulcb-kf only, not the -nogfx variants. CI never has the proprietary zips
+  # (no credentials/redistribution rights - see docs/setup.md) and never builds these 4
+  # machines (ci/build-matrix.yaml gives them tiers: []); this only matters for local use.
+  case "$machine" in
+    h3ulcb|h3ulcb-kf|m3ulcb|m3ulcb-kf)
+      local hook="meta-agl/meta-agl-bsp/meta-rcar-gen3/scripts/setup_mm_packages.sh"
+      if [ -f "$hook" ]; then
+        echo "$(basename "$0"): running proprietary R-Car package hook for $machine"
+        # setup_mm_packages.sh only defines copy_mm_packages(), the caller must source it
+        # and invoke the function (matches meta-agl/templates/machine/h3ulcb/50_setup.sh).
+        # Subshell: the function cd's around and we don't want that to affect the caller.
+        (
+          export METADIR="$PWD"
+          # shellcheck source=/dev/null
+          source "$hook"
+          copy_mm_packages
+        ) || echo "$(basename "$0"): WARNING: proprietary package setup failed/incomplete" \
+                  "for $machine - see docs/setup.md for what's required on your workstation" >&2
+      else
+        echo "$(basename "$0"): WARNING: $hook not found, skipping proprietary package setup for $machine" >&2
+      fi
+      ;;
+  esac
 }
 
 kas_extra_includes() {

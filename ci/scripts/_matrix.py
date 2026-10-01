@@ -144,7 +144,17 @@ def main():
              "--additional-layers is the deduplicated union across all given layers, omitted "
              "entirely if none apply",
     )
+    ap.add_argument(
+        "--machine-eula", metavar="MACHINE",
+        help="print whether MACHINE is in the machine_eula: table (True/False) - a flat "
+             "machine-keyed lookup, independent of any (machine, features) matrix row, for "
+             "callers (e.g. scripts/aglsetup.sh) that don't go through a matrix match at all",
+    )
     args = ap.parse_args()
+
+    if args.machine_eula:
+        print(load_matrix().get("machine_eula", {}).get(args.machine_eula, False))
+        return
 
     if args.list_check_layers:
         _, layers = load_check_layers()

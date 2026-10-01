@@ -22,6 +22,12 @@ omit it when only one does (unambiguous, matches pre-existing single-image usage
 entry's own features, WITHOUT affecting the matrix lookup itself - for local-only additions
 like agl-devel (passwordless login) that are deliberately not part of any curated matrix
 entry. Never used in CI.
+
+--no-matrix skips the ci/build-matrix.yaml lookup entirely and just prints the kasfiles list
+for whatever --machine/--features/--extra-features were given, with no requirement that the
+combination match any curated entry (every fragment file must still exist). For
+scripts/aglsetup.sh's free-form local exploration - never used by make build/validate/setup,
+which stay matrix-gated.
 """
 import argparse
 import os
@@ -77,10 +83,21 @@ def main():
              "fields (e.g. build.sh's target+sdk) make one matrix lookup instead of one "
              "invocation per field.",
     )
+    ap.add_argument(
+        "--no-matrix", action="store_true",
+        help="skip the ci/build-matrix.yaml lookup, print the kasfiles list for whatever "
+             "--machine/--features/--extra-features were given regardless of whether it "
+             "matches any curated entry",
+    )
     args = ap.parse_args()
 
     features = [f for f in args.features.split(",") if f]
     extra_features = [f for f in args.extra_features.split(",") if f]
+
+    if args.no_matrix:
+        print(_kasfiles_list(args.machine, features, extra_features))
+        return
+
     matches = find_entries(args.machine, features)
     if args.target:
         matches = [e for e in matches if e.get("target") == args.target]
