@@ -30,7 +30,7 @@ and `ci/scripts/_matrix.py` for the schema. If several images share the same `MA
 error message lists the candidates. `make build` runs `setup` (kas checkout, EULA handling, the
 h3ulcb/m3ulcb proprietary-package hook) then the actual build via the container, using the
 Dockerfile at `ci/docker/Dockerfile` (set `AGL_CONTAINER_IMAGE` to point at a locally built or
-published image; `KAS_CONTAINER_IMAGE` is still honoured as a fallback; `AGL_CONTAINER_ENGINE=
+published image; `KAS_CONTAINER_IMAGE` is ignored; `AGL_CONTAINER_ENGINE=
 podman` selects podman).
 
 The layout after `make setup MACHINE=m FEATURES=f` is bitbake-setup's, rooted at `build/`:

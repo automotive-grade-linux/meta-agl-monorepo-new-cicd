@@ -32,7 +32,7 @@
 # Both can be set together; if your site.conf also sets SSTATE_DIR, keep the two in sync
 # yourself.
 #
-# Other knobs: AGL_CONTAINER_IMAGE (default $KAS_CONTAINER_IMAGE or agl-ci-builder:dev),
+# Other knobs: AGL_CONTAINER_IMAGE (default agl-ci-builder:dev; KAS_CONTAINER_IMAGE is ignored),
 # AGL_CONTAINER_ENGINE (docker|podman, default: docker if present), BITBAKE_SETUP (path to an
 # already-installed bitbake-setup, skips the pinned-bitbake bootstrap - host path, only
 # useful with AGL_NO_CONTAINER=1), AGL_NO_CONTAINER=1 (run on the host directly; /work is
@@ -140,7 +140,19 @@ agl_container() {
   if [ -z "$engine" ]; then
     if command -v docker >/dev/null 2>&1; then engine=docker; else engine=podman; fi
   fi
-  local image="${AGL_CONTAINER_IMAGE:-${KAS_CONTAINER_IMAGE:-agl-ci-builder:dev}}"
+  # Not KAS_CONTAINER_IMAGE: that variable (documented for the kas era) usually still points
+  # at a kas-entrypoint image, which fails with "kas: error: argument cmd: invalid choice".
+  local image="${AGL_CONTAINER_IMAGE:-agl-ci-builder:dev}"
+  if [ -z "${_AGL_IMAGE_CHECKED:-}" ]; then
+    # The image's entrypoint must exec the given command, not kas (stale pre-bitbake-setup image).
+    if ! "$engine" run --rm --entrypoint grep "$image" -q 'exec "\$@"' /entrypoint.sh </dev/null 2>/dev/null; then
+      echo "error: container image '$image' is missing or has the old kas entrypoint." >&2
+      echo "       rebuild it: docker build -f ci/docker/Dockerfile -t $image ." >&2
+      echo "       (set AGL_CONTAINER_IMAGE to use another tag; KAS_CONTAINER_IMAGE is ignored)" >&2
+      return 1
+    fi
+    _AGL_IMAGE_CHECKED=1
+  fi
   local -a args=(run --rm --init --log-driver=none --user=root
                  -v "$REPO_ROOT:/work:rw" --workdir /work
                  -e "USER_ID=$(id -u)" -e "GROUP_ID=$(id -g)"
