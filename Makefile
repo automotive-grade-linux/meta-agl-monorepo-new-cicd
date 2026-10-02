@@ -65,7 +65,7 @@ shell: setup
 # a disposable scratch file instead).
 lock:
 	@mkdir -p build
-	@printf 'header:\n  version: 23\n' > build/.lock-scratch.yml
+	@printf 'header:\n  version: 22\n' > build/.lock-scratch.yml
 	KAS_WORK_DIR="$(CURDIR)" kas-container lock --update --sort \
 	    "build/.lock-scratch.yml:$$(python3 ci/scripts/_compose_kasfiles.py --machine "$(MACHINE)" --features "$(FEATURES)" --target "$(TARGET)")"
 	@echo ""
@@ -83,7 +83,7 @@ lock:
 # before committing - this can pull in real upstream breakage, same as any dependency bump.
 pin-update:
 	@mkdir -p build
-	@printf 'header:\n  version: 23\n' > build/.pin-update-scratch.yml
+	@printf 'header:\n  version: 22\n' > build/.pin-update-scratch.yml
 	KAS_WORK_DIR="$(CURDIR)" kas-container lock --update --sort \
 	    "build/.pin-update-scratch.yml:kas/base.yml:$$(find kas/machine kas/feature -name '*.yml' | sort | paste -sd: -):kas/floating.yml"
 	python3 ci/scripts/pin-update-helper.py build/.pin-update-scratch.lock.yml

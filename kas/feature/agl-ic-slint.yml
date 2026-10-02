@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: MIT
 header:
-  version: 23
+  version: 22
 
 # Adds the Rust/Slint toolchain layers for the -slint variant of the standalone instrument
 # cluster demo. No local_conf_header content upstream (aglsetup.sh's agl-ic-slint template

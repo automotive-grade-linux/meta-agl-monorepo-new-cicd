@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: MIT
 header:
-  version: 23
+  version: 22
 
 # Local-only alternative to kas/pins.yml: NO commit overrides, so every repo resolves to the
 # tip of whatever branch its machine/feature fragment declares. Swapped in for pins.yml when

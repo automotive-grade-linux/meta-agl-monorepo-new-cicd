@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: MIT
 header:
-  version: 23
+  version: 22
 
 # Single consolidated source of truth for every external (non-vendored) repo's pinned commit,
 # across every machine/feature fragment. Always colon-joined last by ci/scripts/_compose_kasfiles.py

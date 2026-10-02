@@ -102,11 +102,11 @@ path.
   Fixed in `ci/scripts/_kas_runtime_args.sh`'s `kas_runtime_args()`, which now always adds
   `--security-opt label=disable` itself regardless of engine - harmless no-op on non-SELinux Docker
   and a harmless duplicate on podman (which already gets it from `kas-container`).
-- **`kas` fails with `"23 is not valid under any of the given schemas"`** (config file validation
+- **`kas` fails with `"22 is not valid under any of the given schemas"`** (config file validation
   error on `kas/base.yml` or any other fragment): the image being used has an older `kas` baked
-  in than this repo's `header: version: 23` config files need - kas only understands schema
-  version 23 from release 5.4 onward (5.3's schema caps at 22, confirmed by inspecting kas's own
-  `schema-kas.json` across PyPI releases). Root cause was `ci/docker/Dockerfile`'s
+  in than this repo's `header: version: 22` config files need - kas only understands schema
+  version 22 from release 5.3 onward (confirmed by inspecting kas's own `schema-kas.json` across
+  PyPI releases). Root cause was `ci/docker/Dockerfile`'s
   `pip install kas oelint-adv` being unpinned, so a locally-built image silently baked in whatever
   was latest on PyPI the day it was built - if that predates kas 5.4 (or pip resolved an older
   cached wheel), this is what you get, and it looks nothing like a version problem from the error

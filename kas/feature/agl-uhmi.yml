@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: MIT
 header:
-  version: 23
+  version: 22
 
 # Just the meta-uhmi layer - no local_conf_header content upstream and no included.dep.
 repos:

@@ -5,8 +5,8 @@
 - Docker or rootless Podman (for `kas-container`)
 - `pip install kas==5.5` (for `make lock`/`make pin-update`, or to run `kas`/`kas-container`
   directly) - pinned, not just `pip install kas`: this repo's `kas/*.yml` files declare
-  `header: version: 23`, a config-schema version kas only understands from 5.4 onward (5.3's
-  schema caps at 22). An unpinned install can silently resolve to whatever was on PyPI that day.
+  `header: version: 22`, a config-schema version kas understands from 5.3 onward. An unpinned
+  install can silently resolve to whatever was on PyPI that day.
 - A local `agl-ci-builder` image built from `ci/docker/Dockerfile` (see below) - it bakes in the
   same pinned `kas==5.5` for the same reason, since that's what actually parses these files once
   a container build starts.
@@ -23,7 +23,7 @@ make build MACHINE=qemux86-64 FEATURES=agl-demo
 Rebuild the image (same `docker build` command) whenever `ci/docker/Dockerfile` changes - Docker
 won't do it for you. If you already have an `agl-ci-builder:dev` image built before this repo
 pinned `kas`/`oelint-adv` versions, it has stale, unpinned versions baked in and needs rebuilding
-too - a symptom like `kas` failing with `"23 is not valid under any of the given schemas"` despite
+too - a symptom like `kas` failing with `"22 is not valid under any of the given schemas"` despite
 everything else (permissions, UID mapping, mounts) working correctly means this (see
 [`admin-guide.md`](admin-guide.md) for the full story).
 

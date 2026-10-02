@@ -32,12 +32,12 @@ RUN echo "dash dash/sh boolean false" | debconf-set-selections \
 # Python as externally-managed (PEP 668); --break-system-packages is required.
 #
 # Pinned, not left to "whatever's latest at image-build time": this repo's kas/*.yml
-# files declare `header: version: 23`, a kas config-schema version kas only understands
-# from 5.4 onward (5.3's schema caps at 22 - confirmed by inspecting kas's own
-# schema-kas.json across releases). An unpinned `pip install kas` silently bakes in
+# files declare `header: version: 22`, a kas config-schema version kas understands
+# from 5.3 onward (confirmed by inspecting kas's own schema-kas.json across releases).
+# An unpinned `pip install kas` silently bakes in
 # whatever was on PyPI the day someone (re)built this image locally - if that happened
 # before a compatible kas release existed, or their pip resolved an older cached wheel,
-# `kas` fails with "23 is not valid under any of the given schemas" despite everything
+# `kas` fails with "22 is not valid under any of the given schemas" despite everything
 # else being correct (seen on a real developer workstation, see WIP.md "round 13"). Same
 # reproducibility argument applies to oelint-adv (validate.sh's recipe-lint check
 # shouldn't silently vary by whichever version happened to be latest at build time

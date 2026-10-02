@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: MIT
 header:
-  version: 23
+  version: 22
 
 # Bare oe-core, used ONLY by validate.sh's yocto-check-layer check. yocto-check-layer
 # manages its own layer-under-test additions (including meta-agl-core itself, via
