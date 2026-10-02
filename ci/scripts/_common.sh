@@ -145,10 +145,17 @@ agl_container() {
   local image="${AGL_CONTAINER_IMAGE:-agl-ci-builder:dev}"
   if [ -z "${_AGL_IMAGE_CHECKED:-}" ]; then
     # The image's entrypoint must exec the given command, not kas (stale pre-bitbake-setup image).
-    if ! "$engine" run --rm --entrypoint grep "$image" -q 'exec "\$@"' /entrypoint.sh </dev/null 2>/dev/null; then
-      echo "error: container image '$image' is missing or has the old kas entrypoint." >&2
+    local entry
+    if ! entry="$("$engine" run --rm --entrypoint cat "$image" /entrypoint.sh </dev/null 2>&1)"; then
+      echo "error: cannot run container image '$image' with $engine:" >&2
+      echo "$entry" | tail -n 5 | sed 's/^/       /' >&2
+      echo "       (not built yet? docker build -f ci/docker/Dockerfile -t $image .  -  permission" >&2
+      echo "        errors: stale docker group, retry via sg docker -c '...'; set AGL_CONTAINER_IMAGE for another tag)" >&2
+      return 1
+    fi
+    if ! grep -q 'exec "\$@"' <<<"$entry"; then
+      echo "error: container image '$image' has the old kas entrypoint (its /entrypoint.sh runs kas)." >&2
       echo "       rebuild it: docker build -f ci/docker/Dockerfile -t $image ." >&2
-      echo "       (set AGL_CONTAINER_IMAGE to use another tag; KAS_CONTAINER_IMAGE is ignored)" >&2
       return 1
     fi
     _AGL_IMAGE_CHECKED=1
