@@ -31,7 +31,17 @@ header:
 env:
   AGL_SSTATE_DIR:
 
+#
+# BB_HASHSERVE_DB_DIR = "${SSTATE_DIR}" moves the hash-equivalence database alongside the
+# now-shared sstate cache instead of leaving it at its own default (private per checkout,
+# inside TOPDIR) - oe-core's sanity.bbclass has a dedicated check for exactly this split
+# ("Check that when SSTATE_DIR is shared between builds, hashserve database is not private to
+# a build"), which would otherwise warn. Referencing ${SSTATE_DIR} here is safe without the
+# AGL_SSTATE_DIR_RESOLVED := trick above - by this point SSTATE_DIR is itself a normal
+# conf-assigned bitbake variable, not an OS-environment-passthrough one, so the nesting bug
+# described above doesn't apply to it.
 local_conf_header:
   sstate-shared: |
     AGL_SSTATE_DIR_RESOLVED := "${AGL_SSTATE_DIR}"
     SSTATE_DIR = "${AGL_SSTATE_DIR_RESOLVED}/${DEFAULTTUNE}"
+    BB_HASHSERVE_DB_DIR = "${SSTATE_DIR}"
