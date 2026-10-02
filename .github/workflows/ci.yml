@@ -95,7 +95,7 @@ jobs:
       matrix: ${{ fromJson(needs.read-matrix.outputs.matrix) }}
     env:
       CI: "true"
-      KAS_CONTAINER_IMAGE: ${{ needs.build-image.outputs.image }}
+      AGL_CONTAINER_IMAGE: ${{ needs.build-image.outputs.image }}
     steps:
       - uses: actions/checkout@v4
 

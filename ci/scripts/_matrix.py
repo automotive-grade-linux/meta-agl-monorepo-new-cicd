@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: MIT
-"""Shared ci/build-matrix.yaml loader/expander, used by ci/scripts/_compose_kasfiles.py, the
+"""Shared ci/build-matrix.yaml loader/expander, used by ci/scripts/_compose_setup.py, the
 GitHub Actions read-matrix job, and ci/gitlab/read-matrix.yml - so the images:/machines:
 expansion logic (and the incompatible-feature check) exists exactly once.
 

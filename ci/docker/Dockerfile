@@ -24,25 +24,19 @@ ENV LANG=en_US.UTF-8
 RUN echo "dash dash/sh boolean false" | debconf-set-selections \
     && dpkg-reconfigure dash
 
-# kas/oelint-adv via pip, system-wide (not --user): once `kas shell`/`kas build` sources
-# bitbake's build environment, PATH gets reset to a curated minimal set
-# (oe-core/bitbake scripts + /usr/sbin:/usr/bin:/sbin:/bin) and HOME is redirected to a
-# temp dir - a --user install under ~/.local/bin would be invisible there. System-wide
-# lands these in /usr/local/bin, which survives the prune. Debian stable marks system
-# Python as externally-managed (PEP 668); --break-system-packages is required.
+# oelint-adv via pip, system-wide (not --user): once bitbake's build environment is sourced
+# (init-build-env), PATH gets reset to a curated minimal set (oe-core/bitbake scripts +
+# /usr/sbin:/usr/bin:/sbin:/bin) and HOME may be redirected - a --user install under
+# ~/.local/bin would be invisible there. System-wide lands in /usr/local/bin, which survives
+# the prune. Debian stable marks system Python as externally-managed (PEP 668);
+# --break-system-packages is required.
 #
-# Pinned, not left to "whatever's latest at image-build time": this repo's kas/*.yml
-# files declare `header: version: 23`, a kas config-schema version kas only understands
-# from 5.4 onward (5.3's schema caps at 22 - confirmed by inspecting kas's own
-# schema-kas.json across releases). An unpinned `pip install kas` silently bakes in
-# whatever was on PyPI the day someone (re)built this image locally - if that happened
-# before a compatible kas release existed, or their pip resolved an older cached wheel,
-# `kas` fails with "23 is not valid under any of the given schemas" despite everything
-# else being correct (seen on a real developer workstation, see WIP.md "round 13"). Same
-# reproducibility argument applies to oelint-adv (validate.sh's recipe-lint check
-# shouldn't silently vary by whichever version happened to be latest at build time
-# either) - pinned to what this project has actually been validated against.
-RUN python3 -m pip install --break-system-packages --no-cache-dir kas==5.5 oelint-adv==9.11.2
+# Pinned, not left to "whatever's latest at image-build time": validate.sh's recipe-lint
+# check shouldn't silently vary by whichever version happened to be latest when someone
+# (re)built this image - pinned to what this project has actually been validated against.
+# (bitbake-setup needs no install: it ships inside the bitbake checkout that
+# ci/scripts/_common.sh bootstraps at the revision pinned in kas/pins.yml.)
+RUN python3 -m pip install --break-system-packages --no-cache-dir oelint-adv==9.11.2
 
 RUN useradd --create-home --uid 1000 --shell /bin/bash ci
 WORKDIR /home/ci
@@ -50,9 +44,7 @@ WORKDIR /home/ci
 COPY ci/docker/entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
-# kas-container's own docker run invocation always passes --user=root and relies on the
-# entrypoint to drop privileges (see entrypoint.sh) - this ENTRYPOINT is required for
-# `kas-container checkout/build/shell <file>` to work, since it invokes the image as
-# `<image> checkout <file>` expecting `kas` itself as entrypoint, not a full command line.
+# agl_container() in ci/scripts/_common.sh starts the image as root and relies on the
+# entrypoint to drop privileges (see entrypoint.sh) before exec'ing the requested command.
 ENTRYPOINT ["/entrypoint.sh"]
-CMD ["--help"]
+CMD ["bash"]

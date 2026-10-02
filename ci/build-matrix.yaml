@@ -27,10 +27,10 @@
 #   dispatch -> always available via manual workflow_dispatch
 #   []       -> never built by CI (still buildable locally via `make build MACHINE=...`).
 #
-# No `combo:` field: ci/scripts/_compose_kasfiles.py computes the colon-joined kas file list
-# directly from machine+features (kas/base.yml:kas/machine/<m>.yml:kas/feature/<f>.yml:
-# ...:kas/pins.yml). External-repo commit pins live in one consolidated kas/pins.yml,
-# always appended last - no per-combination lockfile. See docs/setup.md.
+# No `combo:` field: ci/scripts/_compose_setup.py merges kas/base.yml + kas/machine/<m>.yml +
+# kas/feature/<f>.yml ... + kas/pins.yml directly from machine+features and renders the result as
+# a bitbake-setup configuration. External-repo commit pins live in one consolidated
+# kas/pins.yml, always merged last - no per-combination lockfile. See docs/setup.md.
 #
 # agl-devel (passwordless login for HIL testing) and AGL's agl-ci tuning are NOT a `features:`
 # entry - every CI build gets them automatically via kas/ci-only.yml (see setup.sh). A local

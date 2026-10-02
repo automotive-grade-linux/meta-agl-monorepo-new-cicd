@@ -1,9 +1,9 @@
 #!/bin/bash
 # SPDX-License-Identifier: MIT
-# kas-container starts this image as root and passes the desired host UID/GID via
-# USER_ID/GROUP_ID env vars (see `kas-container`'s own docker run invocation) - remap the
-# `ci` user to match, so files written into the bind-mounted repo/work dirs are owned by
-# the calling host user, not root, then drop privileges and exec kas.
+# ci/scripts/_common.sh's agl_container() starts this image as root and passes the desired
+# host UID/GID via USER_ID/GROUP_ID env vars - remap the `ci` user to match, so files written
+# into the bind-mounted repo/work dirs are owned by the calling host user, not root, then drop
+# privileges and exec the given command.
 set -e
 
 if [ "$(id -u)" = "0" ]; then
@@ -14,7 +14,7 @@ if [ "$(id -u)" = "0" ]; then
     groupmod -o -g "${GROUP_ID}" ci
   fi
   chown -R ci:ci /home/ci
-  exec runuser -u ci -- kas "$@"
+  exec runuser -u ci -- "$@"
 else
-  exec kas "$@"
+  exec "$@"
 fi

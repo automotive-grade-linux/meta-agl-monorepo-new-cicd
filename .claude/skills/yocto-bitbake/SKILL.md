@@ -1,12 +1,12 @@
 ---
 name: yocto-bitbake
-description: Hard-won Yocto/bitbake operational knowledge - layer/recipe conventions, what bitbake task signatures actually depend on (why moving a layer or recipe triggers a rebuild), yocto-check-layer's exact requirements, reading bitbake's task-log output and the sstate summary line, recovering from a build interrupted mid-compile, and the standalone bitbake CLI incantations this repo's scripts use (bitbake -e for a single variable, -S lockedsigs for a dry signature dump, -c clean, bitbake-layers). Consult this whenever interpreting a bitbake/yocto-check-layer log, debugging a recipe do_compile/do_fetch failure, explaining why a build suddenly needs to rebuild more than expected, or working with layer.conf/LAYERDEPENDS/BBFILE_COLLECTIONS. This is about Yocto/bitbake itself; see the kas-operations skill for the kas-container wrapper mechanics (env vars, command grammar) layered on top of it in this repo.
+description: Hard-won Yocto/bitbake operational knowledge - layer/recipe conventions, what bitbake task signatures actually depend on (why moving a layer or recipe triggers a rebuild), yocto-check-layer's exact requirements, reading bitbake's task-log output and the sstate summary line, recovering from a build interrupted mid-compile, and the standalone bitbake CLI incantations this repo's scripts use (bitbake -e for a single variable, -S lockedsigs for a dry signature dump, -c clean, bitbake-layers). Consult this whenever interpreting a bitbake/yocto-check-layer log, debugging a recipe do_compile/do_fetch failure, explaining why a build suddenly needs to rebuild more than expected, or working with layer.conf/LAYERDEPENDS/BBFILE_COLLECTIONS. This is about Yocto/bitbake itself; see the bitbake-setup-operations skill for the bitbake-setup/container wrapper mechanics (env vars, layout, fragments) layered on top of it in this repo.
 ---
 
 # Yocto / bitbake operational knowledge (this repo)
 
 Fast-lookup reference, not a tutorial. Verified firsthand against this repo's actual bitbake
-behavior. Pairs with the `kas-operations` skill, which covers the `kas`/`kas-container` wrapper
+behavior. Pairs with the `bitbake-setup-operations` skill, which covers the `bitbake-setup`/container wrapper
 layered on top of everything here - this skill is about bitbake/Yocto itself.
 
 ## 1. Layer and recipe conventions
@@ -35,9 +35,9 @@ Easy to under-estimate how much goes into a task's signature. Confirmed causes o
 
 | Change | Effect |
 |---|---|
-| Moving the directory holding the outermost kas config file | Changes `BBPATH` (kas derives it from that file's location) - `BBPATH` feeds into the base configuration hash shared by virtually every task, so this invalidates nearly all signatures at once. One `Sstate summary: ... 0% match, 0% complete` rebuild, not a bug. |
+| Moving a layer or the setup/checkout directory (e.g. `build/<setup>/layers`, or the repo itself) | Changes `BBPATH`/`FILE` paths - `BBPATH` feeds into the base configuration hash shared by virtually every task, so this invalidates nearly all signatures at once. One `Sstate summary: ... 0% match, 0% complete` rebuild, not a bug. |
 | Moving a layer or recipe to a different path | A recipe's own file path (`FILE`, and layer-relative variables derived from it) is a signature input for that recipe's tasks - relocating a layer costs at least a partial rebuild of everything in it, even with file *contents* unchanged. |
-| Changing which kas YAML fragments are loaded (different `kas/feature/*.yml` combo) | Can change `DISTRO_FEATURES`/`IMAGE_FEATURES`/layer set, each of which flows into dependent recipes' signatures - expect more rebuild the further upstream (toolchain-level) the change reaches. |
+| Changing which kas YAML fragments are rendered into the setup (different `kas/feature/*.yml` combo) | Can change `DISTRO_FEATURES`/`IMAGE_FEATURES`/layer set, each of which flows into dependent recipes' signatures - expect more rebuild the further upstream (toolchain-level) the change reaches. |
 
 **Reading the tell**: `Sstate summary: Wanted N Local 0 Mirrors 0 Missed N Current 0 (0% match, 0%
 complete)` near the top of a build log means "full rebuild incoming" - set expectations (and
@@ -53,7 +53,7 @@ patience) before committing to babysit a long build. A normal incremental build 
 - **Must run against a "bare" config** - no AGL/distro-specific layers pre-loaded beyond what's
   under test - because `yocto-check-layer` manages its own layer-under-test additions internally;
   running it against a config that already has the same layer loaded causes a duplicate
-  `BBFILE_COLLECTIONS` conflict. This repo's `kas/_validate-base.yml` exists specifically to be
+  `BBFILE_COLLECTIONS` conflict. This repo's `kas/_validate-base.yml` (-> the `validate-base` setup) exists specifically to be
   this bare base (deliberately omits `kas/base.yml`, which pre-loads `meta-agl-core`/`meta-agl-bsp`,
   and never sets `DISTRO=agl`).
 - Internally runs a **full world-parse signature dump** (`bitbake -S lockedsigs world`, then a
@@ -83,7 +83,7 @@ right after an interruption):
    affected recipe(s) - cheap, since it reuses everything else's sstate.
 2. For a corrupted git mirror specifically: `rm -rf build/downloads/git2/<corrupted-mirror>` to
    force a fresh re-clone on the next `do_fetch`.
-3. See the `kas-operations` skill for how to launch the *next* attempt detached from the
+3. See the `bitbake-setup-operations` skill for how to launch the *next* attempt detached from the
    invoking session so this doesn't recur.
 
 ## 5. Standalone bitbake CLI patterns used by this repo's scripts
@@ -95,7 +95,7 @@ right after an interruption):
 | `bitbake -p` | Parse all recipes without building - catches syntax/parse errors fast, the `bitbake-parse` check in `make validate`. |
 | `bitbake -c clean <recipe>` | Clean one recipe's build state (not sstate-wide) - the standard recovery step for a corrupted/stale single-recipe build (§4). |
 | `bitbake -c populate_sdk <target>` | Build the SDK for a target - gated in `ci/scripts/build.sh` by both the matrix entry's `sdk:` flag and `SDK_ALLOWED`. |
-| `bitbake-layers show-layers` | List every loaded layer with its path and priority - fast way to confirm a kas config change actually loaded the layers you expect (run via `kas-container shell KASFILE -c "bitbake-layers show-layers"` for a non-interactive check). |
+| `bitbake-layers show-layers` | List every loaded layer with its path and priority - fast way to confirm a kas/*.yml change actually loaded the layers you expect (non-interactively: `bbsetup_run <setup> "bitbake-layers show-layers"` after sourcing `ci/scripts/_common.sh`). |
 
 ## 6. Misc real gotchas worth remembering
 
@@ -106,7 +106,7 @@ right after an interruption):
   `SRC_URI` (seen in this repo: `meta-openembedded`'s `grpc_1.80.0.bb`, fixed via
   `meta-agl/meta-agl-core/recipes-devtools/grpc/grpc_%.bbappend`).
 - **`oe-init-build-env`/`TEMPLATECONF`**: the stock Yocto build-dir bootstrap (sourced by classic
-  `aglsetup.sh`, not used directly by this repo's kas-based flow, but worth knowing if you ever
+  `aglsetup.sh`, not used directly by this repo's bitbake-setup flow, but worth knowing if you ever
   touch anything derived from classic AGL tooling) - copies `local.conf.sample`/
   `bblayers.conf.sample` into a new build dir's `conf/` on first run, no-ops (just `cd`s in) if
   `conf/local.conf` already exists.

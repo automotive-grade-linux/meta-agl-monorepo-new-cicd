@@ -20,11 +20,11 @@ CHECK_LAYERS ?= meta-agl/meta-agl-core
 export CHECK_LAYERS
 
 help:
-	@echo "make setup    MACHINE=... FEATURES=a,b [TARGET=...] [EXTRA_FEATURES=...] - checkout kas repos"
+	@echo "make setup    MACHINE=... FEATURES=a,b [TARGET=...] [EXTRA_FEATURES=...] - create/refresh the bitbake-setup setup"
 	@echo "make validate MACHINE=... FEATURES=a,b [TARGET=...] [EXTRA_FEATURES=...] - run the layer QA suite"
 	@echo "make build    MACHINE=... FEATURES=a,b [TARGET=...] [EXTRA_FEATURES=...] - build the matrix entry's target"
-	@echo "make shell    MACHINE=... FEATURES=a,b [TARGET=...] [EXTRA_FEATURES=...] - interactive kas-container shell"
-	@echo "make lock     MACHINE=... FEATURES=a,b [TARGET=...]                      - resolve latest commits for one config"
+	@echo "make shell    MACHINE=... FEATURES=a,b [TARGET=...] [EXTRA_FEATURES=...] - interactive shell in the setup (bitbake env sourced)"
+	@echo "make lock     MACHINE=... FEATURES=a,b [TARGET=...]                      - show latest upstream commits for one config"
 	@echo "make pin-update                                                          - resolve+write EVERY repo's latest tip into kas/pins.yml"
 	@echo "make clean                                                               - remove build/ output"
 	@echo ""
@@ -51,42 +51,20 @@ build: setup
 	./ci/scripts/build.sh --machine "$(MACHINE)" --features "$(FEATURES)" --target "$(TARGET)" --extra-features "$(EXTRA_FEATURES)" --sdk-allowed "$(SDK_ALLOWED)"
 
 shell: setup
-	. ci/scripts/_kas_runtime_args.sh && \
-	KAS_WORK_DIR="$(CURDIR)" kas-container $$(kas_runtime_args) shell \
-	    "$$(python3 ci/scripts/_compose_kasfiles.py --machine "$(MACHINE)" --features "$(FEATURES)" --target "$(TARGET)" --extra-features "$(EXTRA_FEATURES)")$$(kas_extra_includes)"
+	./ci/scripts/shell.sh --machine "$(MACHINE)" --features "$(FEATURES)" --target "$(TARGET)" --extra-features "$(EXTRA_FEATURES)"
 
-# kas/pins.yml is one consolidated file, hand-maintained (not auto-discovered by kas -
-# it's just another entry colon-joined at the end of every build). This target resolves each
-# repo's *latest* commit on its declared branch so you can review and hand-copy any bumps you
-# want into kas/pins.yml; it does not edit that file itself (kas has no "write pins into an
-# arbitrary existing file" mode - only auto-naming a lockfile after the first input file, which
-# would silently shadow pins.yml on every future build if used here, so we route around it via
-# a disposable scratch file instead).
+# kas/pins.yml is one consolidated file, hand-maintained. `lock` resolves each repo's *latest*
+# commit on its declared branch (git ls-remote) for one MACHINE+FEATURES combination and prints
+# the bumps so you can hand-copy the ones you want into kas/pins.yml; it never writes the file.
 lock:
-	@mkdir -p build
-	@printf 'header:\n  version: 23\n' > build/.lock-scratch.yml
-	KAS_WORK_DIR="$(CURDIR)" kas-container lock --update --sort \
-	    "build/.lock-scratch.yml:$$(python3 ci/scripts/_compose_kasfiles.py --machine "$(MACHINE)" --features "$(FEATURES)" --target "$(TARGET)")"
-	@echo ""
-	@echo "Freshly resolved commits (build/.lock-scratch.lock.yml):"
-	@cat build/.lock-scratch.lock.yml
-	@echo ""
-	@echo "Hand-copy any repo(s) you want to bump into kas/pins.yml, then:"
-	@echo "  rm -f build/.lock-scratch.yml build/.lock-scratch.lock.yml"
+	python3 ci/scripts/pin-update-helper.py --machine "$(MACHINE)" --features "$(FEATURES)"
 
-
-# Resolves EVERY repo declared across every machine+feature fragment to its current branch-tip
-# commit (against kas/floating.yml, i.e. unpinned) in one pass, then updates kas/pins.yml
-# in place via ci/scripts/pin-update-helper.py (targeted text substitution - keeps pins.yml's
-# existing comments/grouping, doesn't need a full YAML round-trip). Review the resulting diff
-# before committing - this can pull in real upstream breakage, same as any dependency bump.
+# Same resolution for EVERY repo declared across every machine+feature fragment, then updates
+# kas/pins.yml in place (targeted text substitution - keeps its comments/grouping). Review the
+# resulting diff before committing - this can pull in real upstream breakage, same as any
+# dependency bump.
 pin-update:
-	@mkdir -p build
-	@printf 'header:\n  version: 23\n' > build/.pin-update-scratch.yml
-	KAS_WORK_DIR="$(CURDIR)" kas-container lock --update --sort \
-	    "build/.pin-update-scratch.yml:kas/base.yml:$$(find kas/machine kas/feature -name '*.yml' | sort | paste -sd: -):kas/floating.yml"
-	python3 ci/scripts/pin-update-helper.py build/.pin-update-scratch.lock.yml
-	@rm -f build/.pin-update-scratch.yml build/.pin-update-scratch.lock.yml
+	python3 ci/scripts/pin-update-helper.py
 
 clean:
-	rm -rf build/
+	rm -rf build/ .bbsetup-*.conf.json

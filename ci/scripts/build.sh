@@ -6,29 +6,27 @@ set -euo pipefail
 
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 cd "$REPO_ROOT"
-# shellcheck source=./_kas_runtime_args.sh
-source ci/scripts/_kas_runtime_args.sh
+# shellcheck source=./_common.sh
+source ci/scripts/_common.sh
 
 parse_common_args "$@"
 
-matrix_fields kasfiles,target,sdk
-KASFILES="${_MATRIX_FIELDS[0]}$(kas_extra_includes)$(kas_ci_includes)"
+matrix_fields setup-name,target,sdk
+SETUP_NAME="${_MATRIX_FIELDS[0]}"
 TARGET="${_MATRIX_FIELDS[1]}"
 ENTRY_SDK="${_MATRIX_FIELDS[2]}"
 
-echo "build.sh: kas build $KASFILES (target=$TARGET)"
-# shellcheck disable=SC2046
-KAS_TARGET="$TARGET" KAS_WORK_DIR="$REPO_ROOT" kas-container $(kas_runtime_args) build "$KASFILES"
+echo "build.sh: bitbake $TARGET in setup $SETUP_NAME"
+bbsetup_run "$SETUP_NAME" "bitbake $TARGET"
 
 if [ "$ENTRY_SDK" = "True" ] && [ "$SDK_ALLOWED" = "true" ]; then
   echo "build.sh: populating SDK for $TARGET"
-  # shellcheck disable=SC2046
-  KAS_WORK_DIR="$REPO_ROOT" kas-container $(kas_runtime_args) shell "$KASFILES" -c "bitbake -c populate_sdk $TARGET"
+  bbsetup_run "$SETUP_NAME" "bitbake -c populate_sdk $TARGET"
 fi
 
 ARTIFACT_DIR="${ARTIFACT_DIR:-$REPO_ROOT/build/artifacts/$MACHINE-$TARGET}"
 mkdir -p "$ARTIFACT_DIR"
-DEPLOY_DIR="$REPO_ROOT/build/tmp/deploy"
+DEPLOY_DIR="$REPO_ROOT/build/$SETUP_NAME/build/tmp/deploy"
 [ -d "$DEPLOY_DIR/images/$MACHINE" ] && cp -a "$DEPLOY_DIR/images/$MACHINE/." "$ARTIFACT_DIR/" || true
 [ -d "$DEPLOY_DIR/sdk" ] && cp -a "$DEPLOY_DIR/sdk/." "$ARTIFACT_DIR/sdk/" || true
 echo "build.sh: artifacts in $ARTIFACT_DIR"

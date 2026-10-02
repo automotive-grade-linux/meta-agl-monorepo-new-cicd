@@ -6,9 +6,9 @@ distinct from [`setup.md`](setup.md), which is developer-facing. Architecture ra
 
 ## Container runtime requirements
 
-The build container (`ci/docker/Dockerfile`) is built and run via [`kas-container`](
-https://kas.readthedocs.io/en/latest/userguide/kas-container.html), which wraps Docker or rootless
-Podman. Whatever host/CI runner runs this needs a **fully functional container runtime with real
+The build container (`ci/docker/Dockerfile`) is run by `agl_container()` in
+`ci/scripts/_common.sh` (plain `docker run`, or `podman run` with `AGL_CONTAINER_ENGINE=podman`);
+`bitbake-setup` runs inside it. Whatever host/CI runner runs this needs a **fully functional container runtime with real
 image-layer extraction rights** — this was validated the hard way in a restricted sandbox and is
 worth stating explicitly:
 
@@ -28,16 +28,16 @@ worth stating explicitly:
 - **iptables/NAT**: `dockerd`'s default bridge networking needs `iptables --wait -t nat -N DOCKER`,
   which needs real root/`CAP_NET_ADMIN`. If that's unavailable (again, common in nested/sandboxed
   runners), start with `--iptables=false --bridge=none` — containers then have no outbound network
-  of their own via the bridge; not a problem here since `kas-container` publishes no ports and the
+  of their own via the bridge; not a problem here since `agl_container()` publishes no ports and the
   build container only needs outbound HTTPS (git/pip/apt), which still works via the daemon's own
   host networking for image pulls, but **verify build-time network egress inside the container**
   (`docker run --rm <image> curl -sI https://github.com`) before relying on this in production -
   bridgeless networking has different implications for containers that need their own egress, which
   ordinary `docker build`/`docker run` (not just image pulls) does.
 - The build container runs as **root inside, dropping to a non-root `ci` user via
-  `ci/docker/entrypoint.sh`**, which reads `USER_ID`/`GROUP_ID` env vars that `kas-container` sets
-  automatically from the *calling host user* — files written into the bind-mounted repo end up
-  owned by whichever host user invoked `kas-container`, not root. No manual `chown` should ever be
+  `ci/docker/entrypoint.sh`**, which reads `USER_ID`/`GROUP_ID` env vars that `agl_container()` sets
+  from the *calling host user* — files written into the bind-mounted repo end up
+  owned by whichever host user invoked `make`, not root. No manual `chown` should ever be
   needed after a build; if you see root-owned files under `build/`, the entrypoint isn't being
   invoked correctly (check `docker inspect <image> | grep Entrypoint` - it must be
   `["/entrypoint.sh"]`, not absent/overridden).
@@ -66,12 +66,13 @@ stack):
 | Wall-clock time (this build) | ~3 hours on 8 cores capped to `BB_NUMBER_THREADS=4`/`PARALLEL_MAKE=-j 4`; a from-scratch build with no sstate reuse will take substantially longer (this run reused sstate for setup/toolchain-adjacent tasks across resumed attempts) |
 | Task count | ~12,300 bitbake tasks for this one image target |
 
-**Parallelism**: `kas/base.yml` hardcodes `BB_NUMBER_THREADS ?= "4"` / `PARALLEL_MAKE ?= "-j 4"`
+**Parallelism**: `kas/base.yml` (rendered into the `agl-setup/agl/ci` fragment) hardcodes `BB_NUMBER_THREADS ?= "4"` / `PARALLEL_MAKE ?= "-j 4"`
 rather than scaling to host core count - this was a deliberate choice to avoid overloading shared
 build infrastructure. **Raise this for dedicated build workers** with more headroom (edit those two
-lines directly; there's no separate override knob yet - add one via kas's `env:` passthrough
-mechanism, same pattern as `AGL_SSTATE_DIR` in `ci/scripts/_kas_runtime_args.sh`, if per-worker
-tuning becomes a real need).
+lines in `kas/base.yml`, then `python3 ci/scripts/_compose_setup.py --write-fragments`. They are `?=`
+assignments, so `BB_NUMBER_THREADS`/`PARALLEL_MAKE` set in the worker's environment (forwarded into the
+container by `agl_container()`, but only effective if listed in `BB_ENV_PASSTHROUGH_ADDITIONS`) or in
+`AGL_SITE_CONF` take precedence).
 
 **Shared sstate for a fleet of workers**: see `AGL_SSTATE_DIR`/`AGL_SITE_CONF` in
 [`setup.md`](setup.md#sharing-sstate-cache--a-personal-siteconf-across-builds) - the same mechanism
@@ -92,29 +93,24 @@ path.
   separate container invocations (e.g. after a worker restart mid-build); a normal single-invocation
   CI job is not expected to hit this. If it does show up in CI, it indicates the job's container was
   restarted mid-build (worth investigating why), not a code regression.
-- **`PermissionError: [Errno 13] Permission denied: '/work/build'` from `kas` on Docker hosts with
+- **`PermissionError: [Errno 13] Permission denied: '/work/build'` on Docker hosts with
   SELinux enabled** (`"selinux-enabled": true` in `/etc/docker/daemon.json` - seen on a real
   developer workstation, not hypothetical): `kas-container`'s own script only adds
   `--security-opt label=disable` for the podman engine, never for docker - so with SELinux
   enforcing, the kernel denies the container's bind-mounted access to `/work` even though Unix
   owner/group/mode all look correct, which is easy to misdiagnose as a UID mismatch (it isn't -
   `USER_ID`/`GROUP_ID` passthrough and `ci/docker/entrypoint.sh`'s remap both work correctly here).
-  Fixed in `ci/scripts/_kas_runtime_args.sh`'s `kas_runtime_args()`, which now always adds
-  `--security-opt label=disable` itself regardless of engine - harmless no-op on non-SELinux Docker
-  and a harmless duplicate on podman (which already gets it from `kas-container`).
-- **`kas` fails with `"23 is not valid under any of the given schemas"`** (config file validation
-  error on `kas/base.yml` or any other fragment): the image being used has an older `kas` baked
-  in than this repo's `header: version: 23` config files need - kas only understands schema
-  version 23 from release 5.4 onward (5.3's schema caps at 22, confirmed by inspecting kas's own
-  `schema-kas.json` across PyPI releases). Root cause was `ci/docker/Dockerfile`'s
-  `pip install kas oelint-adv` being unpinned, so a locally-built image silently baked in whatever
-  was latest on PyPI the day it was built - if that predates kas 5.4 (or pip resolved an older
-  cached wheel), this is what you get, and it looks nothing like a version problem from the error
-  text alone. Now pinned (`kas==5.5 oelint-adv==9.11.2`, the versions this project has actually
-  been validated against). **Only affects locally-built developer images** - CI always rebuilds and
-  pushes a fresh image on every run (see "CI-specific operational notes" below), so it was never at
-  risk here. Anyone with a pre-existing local `agl-ci-builder` image needs to rebuild it once:
-  `docker build -f ci/docker/Dockerfile -t agl-ci-builder:dev .` (see `setup.md`).
+  Fixed in `ci/scripts/_common.sh`'s `agl_container()`, which always adds
+  `--security-opt label=disable` regardless of engine - harmless no-op on non-SELinux Docker.
+- **`runuser: failed to execute shell: No such file or directory`** when running any `make`
+  target: the local `agl-ci-builder` image predates the kas -> bitbake-setup move and still has the
+  old kas entrypoint. Rebuild it: `docker build -f ci/docker/Dockerfile -t agl-ci-builder:dev .`
+  (`ci/docker/Dockerfile` pins `oelint-adv==9.11.2`; kas is no longer installed).
+- **`ERROR: Fragment ... does not exist` / `Could not include required file ...` from
+  `bitbake-config-build enable-fragment`** while a setup is created: bitbake-setup enables fragments
+  by running `bitbake-config-build`, which parses *every* fragment of *every* layer standalone and
+  names them `<BBFILE_COLLECTION>/<subdir>/<file>` (so `agl-setup/agl/<block>`, not
+  `agl-setup/<block>`). Generated fragments therefore use `include`, never `require`.
 
 ## CI-specific operational notes
 

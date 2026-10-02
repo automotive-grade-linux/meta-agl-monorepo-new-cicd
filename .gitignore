@@ -5,6 +5,7 @@
 
 # kas / bitbake build output
 /build/
+/.bbsetup-*.conf.json
 /tmp/
 /sstate-cache/
 /downloads/

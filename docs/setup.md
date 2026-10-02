@@ -2,44 +2,69 @@
 
 ## Prerequisites
 
-- Docker or rootless Podman (for `kas-container`)
-- `pip install kas==5.5` (for `make lock`/`make pin-update`, or to run `kas`/`kas-container`
-  directly) - pinned, not just `pip install kas`: this repo's `kas/*.yml` files declare
-  `header: version: 23`, a config-schema version kas only understands from 5.4 onward (5.3's
-  schema caps at 22). An unpinned install can silently resolve to whatever was on PyPI that day.
-- A local `agl-ci-builder` image built from `ci/docker/Dockerfile` (see below) - it bakes in the
-  same pinned `kas==5.5` for the same reason, since that's what actually parses these files once
-  a container build starts.
+- Docker or rootless Podman (builds run in the `agl-ci-builder` container, repo mounted at `/work`)
+- Python 3 with PyYAML on the host (`ci/scripts/_compose_setup.py` renders `kas/*.yml` into a
+  bitbake-setup configuration; no `kas` install is needed to build)
+- A local `agl-ci-builder` image built from `ci/docker/Dockerfile` (see below). `bitbake-setup`
+  itself needs no install: it ships inside bitbake, and `ci/scripts/_common.sh` clones the bitbake
+  revision pinned in `kas/pins.yml` into `build/.bitbake-setup-tool` on first use.
+- `git`, to fetch layers (done by bitbake-setup inside the container).
 
 ## Building locally
 
 ```sh
 docker build -f ci/docker/Dockerfile -t agl-ci-builder:dev .
-export KAS_CONTAINER_IMAGE=agl-ci-builder:dev
+export AGL_CONTAINER_IMAGE=agl-ci-builder:dev   # this is also the default
 make help
 make build MACHINE=qemux86-64 FEATURES=agl-demo
 ```
 
 Rebuild the image (same `docker build` command) whenever `ci/docker/Dockerfile` changes - Docker
-won't do it for you. If you already have an `agl-ci-builder:dev` image built before this repo
-pinned `kas`/`oelint-adv` versions, it has stale, unpinned versions baked in and needs rebuilding
-too - a symptom like `kas` failing with `"23 is not valid under any of the given schemas"` despite
-everything else (permissions, UID mapping, mounts) working correctly means this (see
-[`admin-guide.md`](admin-guide.md) for the full story).
+won't do it for you. An `agl-ci-builder:dev` image built before the move from kas to bitbake-setup
+still has the old kas entrypoint and fails with `runuser: failed to execute shell` - rebuild it.
 
 `MACHINE`/`FEATURES` must match one of `ci/build-matrix.yaml`'s curated `(target, features,
 machines)` entries (comma-separated feature list) - see [`ci/build-matrix.yaml`](../ci/build-matrix.yaml)
 and `ci/scripts/_matrix.py` for the schema. If several images share the same `MACHINE`+`FEATURES`
 (e.g. the `agl-demo` group's 5 images on one machine), add `TARGET=<image>` to disambiguate - the
 error message lists the candidates. `make build` runs `setup` (kas checkout, EULA handling, the
-h3ulcb/m3ulcb proprietary-package hook) then the actual build via `kas-container`, using the
-Dockerfile at `ci/docker/Dockerfile` (set `KAS_CONTAINER_IMAGE` to point at a locally built or
-published image; see `ci/docker/Dockerfile`).
+h3ulcb/m3ulcb proprietary-package hook) then the actual build via the container, using the
+Dockerfile at `ci/docker/Dockerfile` (set `AGL_CONTAINER_IMAGE` to point at a locally built or
+published image; `KAS_CONTAINER_IMAGE` is still honoured as a fallback; `AGL_CONTAINER_ENGINE=
+podman` selects podman).
 
-There's no per-combination kas file: `ci/scripts/_compose_kasfiles.py` computes the colon-joined
-list directly from `MACHINE`+`FEATURES` (`kas/base.yml:kas/machine/<m>.yml:
-kas/feature/<f>.yml:...:kas/pins.yml`). `kas/pins.yml` is one consolidated file pinning
-every external repo's commit - no per-machine/per-feature lockfile to keep in sync.
+The layout after `make setup MACHINE=m FEATURES=f` is bitbake-setup's, rooted at `build/`:
+
+```
+build/site.conf                  shared DL_DIR=build/downloads, SSTATE_DIR=build/sstate-cache
+build/<setup>/layers/            fetched repos (external/, bsp/ paths as in kas/*.yml) + symlinks
+                                 to the in-repo layers (meta-agl, ...) and meta-agl-setup
+build/<setup>/build/             the bitbake build dir (conf/, tmp/, tmp/deploy/images/<machine>)
+build/<setup>/config/            bitbake-setup's copy of the configuration + sources-fixed-revisions.json
+```
+
+`<setup>` is `<machine>[-<feature>...]` (e.g. `qemux86-64-agl-demo`). Re-running `make setup`/`build`
+re-syncs an existing setup (`bitbake-setup update`) with the freshly generated configuration, so
+changed pins/features/`CI=true` are picked up like kas did on every run.
+
+`kas/*.yml` remain this repo's data format (repos, layers, `header.includes:` feature
+dependencies, `local_conf_header` blocks). `ci/scripts/_compose_setup.py` merges
+`kas/base.yml`, `kas/machine/<m>.yml`, `kas/feature/<f>.yml`..., and `kas/pins.yml` exactly like kas
+did (includes first, later files win, `bblayers.conf` sorted by layer priority/repo/layer name,
+`local.conf` blocks sorted by key) and renders a bitbake-setup configuration
+(`.bbsetup-<setup>.conf.json`, git-ignored): every repo as a source (pinned `rev`), `bb-layers`
+in kas order, and `oe-fragments` (`machine/<m>`, `distro/agl`, one `agl-setup/agl/<block>` per
+`local_conf_header` block). Those fragments live in the `meta-agl-setup` layer
+(`meta-agl-setup/conf/fragments/agl/*.conf`) and are *generated* from the kas files
+(`python3 ci/scripts/_compose_setup.py --write-fragments`; `make validate` fails if they drift).
+`kas/pins.yml` is one consolidated file pinning every external repo's commit.
+
+Deliberate differences from kas: no `LCONF_VERSION` (bitbake-setup writes none; oe-core's
+sanity check accepts that), `require` -> `include` inside generated fragments (bitbake-setup parses
+every fragment of every layer standalone, including features whose layer is not in the setup;
+`--check-fragments` verifies the included files exist), and the paths layers live under
+(`build/<setup>/layers/...` instead of `/work/...`) - so expect one full rebuild (sstate 0%) the first
+time.
 
 `ci/build-matrix.yaml` itself is keyed by image (`images:`, one entry per bitbake `target:`, each
 with a `machines:` list - not one row per `(machine, target)` pair) - `ci/scripts/_matrix.py`'s
@@ -74,9 +99,9 @@ EXTRA_FEATURES=agl-devel`. CI builds get the equivalent automatically (hardware-
 testing needs it every time) via `kas/ci-only.yml`, colon-joined whenever `CI=true` - you never
 need to (and shouldn't) set that yourself.
 
-Other targets: `make validate` (the layer QA suite), `make shell` (interactive kas-container
-shell), `make lock` (resolve latest upstream commits so you can hand-copy bumps into
-`kas/pins.yml`), `make clean`.
+Other targets: `make validate` (the layer QA suite), `make shell` (interactive shell in the
+setup with the bitbake environment sourced), `make lock` (show latest upstream commits so you can
+hand-copy bumps into `kas/pins.yml`), `make clean`.
 
 ## h3ulcb/m3ulcb: proprietary R-Car packages (local build only, not CI)
 
@@ -126,8 +151,8 @@ commits in, preserving the file's comments/grouping):
 make pin-update
 ```
 
-This runs `kas lock --update` against every machine+feature fragment at once (via
-`kas/floating.yml`), then `ci/scripts/pin-update-helper.py` does the targeted in-place update
+This resolves every repo declared in any machine/feature fragment to its current branch tip
+(`git ls-remote`), then `ci/scripts/pin-update-helper.py` does the targeted in-place update
 and prints a summary of what changed. **Review the diff before committing** - like any dependency
 bump, it can pull in real upstream breakage.
 
@@ -142,19 +167,20 @@ export AGL_SSTATE_DIR=$HOME/.yocto/sstate-cache
 ```
 
 before `make setup`/`make build`/`make validate`/`make shell`. It's bind-mounted into the
-container and wired into kas via `kas/local/sstate-shared.yml` (only included when this env
+container and wired into bitbake via `kas/local/sstate-shared.yml` (only included when this env
 var is set - CI is unaffected).
 
 If you already keep a personal `site.conf` (e.g. with your own `SSTATE_DIR`, mirrors, or other
-site-local tuning), bitbake auto-includes `conf/site.conf` from the build dir with no kas config
-changes needed — just bind-mount your file in:
+site-local tuning), point `AGL_SITE_CONF` at it. Its content is appended to the shared
+`build/site.conf` that bitbake-setup symlinks into every setup's `conf/site.conf` (after the
+`DL_DIR`/`SSTATE_DIR` defaults, so plain `=` assignments in your file win):
 
 ```sh
 export AGL_SITE_CONF=$HOME/.yocto/site.conf
 ```
 
 Both can be set together; if your `site.conf` also sets `SSTATE_DIR`, keep it consistent with
-`AGL_SSTATE_DIR` yourself — the mount is verbatim, nothing here parses `site.conf`.
+`AGL_SSTATE_DIR` yourself — nothing here parses `site.conf`.
 
 ## Verified: building a full demo image
 
@@ -162,16 +188,15 @@ This exact flow has been run end-to-end successfully (`qemux86-64`, `agl-demo`+`
 target `agl-ivi-demo-flutter`):
 
 ```sh
-export KAS_CONTAINER_IMAGE=agl-ci-builder:dev   # or your published image
+export AGL_CONTAINER_IMAGE=agl-ci-builder:dev   # or your published image
 make build MACHINE=qemux86-64 FEATURES=agl-demo TARGET=agl-ivi-demo-flutter EXTRA_FEATURES=agl-devel
 ```
 
 (`agl-ivi-demo-flutter` is unambiguous for `qemux86-64`+`agl-demo` today since it's the only entry
 with `push-pr` in its tiers, but `TARGET=` is still recommended for clarity - the other 4
 `agl-demo`-group images on `qemux86-64` need it to disambiguate. To try a target ad hoc without a
-matrix entry at all, invoke `kas-container shell <kasfiles> -c "bitbake <target>"` directly -
-`ci/scripts/_compose_kasfiles.py --machine ... --features ... --target ...` prints the `<kasfiles>`
-list.)
+matrix entry at all, use `scripts/aglsetup.sh -m <machine> <features...>` (see below) and run
+`bitbake <target>` inside.)
 
 **What to expect:**
 - A full image build (not just a minimal one) is CPU/RAM/disk heavy: several hours even on a modern
@@ -181,13 +206,14 @@ list.)
 - The build is fully resumable: if it's interrupted (container killed, host reboot, `docker` daemon
   restarted), just rerun the same `make build` command. `sstate-cache` means only genuinely
   incomplete/invalidated tasks get redone.
-- **Known gotcha**: if you resume a build across *separate* `kas-container`/`docker` invocations
+- **Known gotcha**: if you resume a build across *separate* container invocations
   (rather than one continuous run), you may see spurious `ERROR: ... basehash value changed ...
   metadata is not deterministic` failures from Flutter's `do_archive_pub_cache`/`do_restore_pub_cache`
   tasks, even though the actual image gets built fine (check `build/tmp/deploy/images/<machine>/` -
   the `.ext4`/manifest/SPDX files will be there with fresh timestamps regardless). This traces to
-  `kas-container` randomizing `$HOME` per invocation, which some Flutter/Dart pub-cache tooling paths
-  key off; a single uninterrupted `bitbake` run doesn't hit it. If you see this, just rerun once more,
+  the container's `$HOME` differing between invocations (it was `kas-container` randomizing it; with
+  the plain container used now this is expected to be rarer - not re-verified), which some
+  Flutter/Dart pub-cache tooling paths key off; a single uninterrupted `bitbake` run doesn't hit it. If you see this, just rerun once more,
   uninterrupted — it clears immediately since almost everything is already in sstate.
 - A pre-existing upstream issue was found and fixed while validating this: `meta-openembedded`'s
   `grpc_1.80.0.bb` pins a commit that GitHub's `grpc/grpc` `v1.80.x` branch has since been force-pushed
@@ -198,7 +224,9 @@ list.)
 
 ## Exploring machine/feature combinations interactively
 
-`kas menu ci/kconfig/Kconfig` opens an interactive Kconfig-style menu (machine choice + AGL
+`kas menu ci/kconfig/Kconfig` (needs `pip install kas`; the only remaining use of the kas tool;
+its output is a kas `.config.yaml`, not consumed by the bitbake-setup flow - read the selection and
+pass it to `scripts/aglsetup.sh`/`make`) opens an interactive Kconfig-style menu (machine choice + AGL
 feature toggles, mirroring `aglsetup.sh`'s old `included.dep` pull-in graph via `select`, and the
 `agl-kvm` → `qemux86-64`-only constraint via `depends on`). This is for local exploration only —
 CI never uses it. Once you've found a combination worth keeping, add it as a new entry in
@@ -210,7 +238,7 @@ case that does, a genuinely new machine's BSP layers).
 `scripts/aglsetup.sh -m <machine> <feature> [<feature> ...]` is the non-interactive,
 muscle-memory-friendly sibling of `kas menu` above - same local-only, bypasses-the-matrix
 philosophy, but scriptable instead of a TUI, and it drops you straight into an interactive
-`kas-container shell` instead of editing a `.config.yaml`. For example:
+container shell in a bitbake-setup setup instead of editing a `.config.yaml`. For example:
 
 ```sh
 scripts/aglsetup.sh -m qemux86-64 agl-demo agl-devel
@@ -219,10 +247,9 @@ scripts/aglsetup.sh -m qemux86-64 agl-demo agl-devel
 No `ci/build-matrix.yaml` entry is required - any machine with a `kas/machine/<name>.yml` and any
 features each with a `kas/feature/<name>.yml` work, in any combination. Feature dependencies
 (classic `aglsetup.sh`'s `included.dep`, e.g. `agl-demo` pulling in `agl-pipewire`) are resolved
-by kas itself via each fragment's own `header.includes:` - nothing extra to pass. `-b|--builddir
-<dir>` picks a separate kas build directory (`KAS_BUILD_DIR`) instead of the shared `build/`, so
-different machine/feature combos don't collide. Once inside the shell, run `bitbake <target>`
-yourself (e.g. `bitbake agl-image-minimal`), same as any kas shell. `-h|--help` lists the current
+by `_compose_setup.py` via each fragment's own `header.includes:` - nothing extra to pass. `-b|--builddir
+<dir>` picks a separate bitbake-setup top directory (inside the repo checkout) instead of the shared
+`build/`. Once inside the shell, run `bitbake <target>` yourself (e.g. `bitbake agl-image-minimal`). `-h|--help` lists the current
 machine/feature catalogs. As with `kas menu`, once you've found a combination worth keeping for
 CI, add it as a new entry in `ci/build-matrix.yaml`.
 
@@ -235,7 +262,7 @@ See [`WIP.md`](../WIP.md) at the repo root for the full architecture decision lo
 
 1. Add `kas/machine/<name>.yml` (see existing ones for the `path:`-only vendored vs.
    `url:`+`branch:` external-repo pattern).
-2. `make lock MACHINE=<name>` to resolve its new repo(s)' latest commits, then hand-copy them
+2. `make lock MACHINE=<name>` to show its new repo(s)' latest commits, then hand-copy them
    into `kas/pins.yml`. If it needs EULA acceptance to build (proprietary/license-gated BSP
    bits), add it to `ci/build-matrix.yaml`'s `machine_eula:` table.
 3. Add `<name>` to the `machines:` list of every `images:` entry it should build (a bare string
@@ -244,7 +271,9 @@ See [`WIP.md`](../WIP.md) at the repo root for the full architecture decision lo
 
 ## Adding a new feature
 
-1. Add `kas/feature/<name>.yml`, mirroring the matching
+1. Add `kas/feature/<name>.yml` (if it has a `local_conf_header:` block, run
+   `python3 ci/scripts/_compose_setup.py --write-fragments` and commit the new
+   `meta-agl-setup/conf/fragments/agl/<block>.conf`), mirroring the matching
    `{meta-agl,meta-agl-demo,meta-agl-devel}/templates/feature/<name>/50_local.conf.inc`+`50_bblayers.conf.inc` (`header.includes:`
    whatever that feature's `included.dep` lists as other `kas/feature/*.yml` files).
 2. If it introduces a new external (non-vendored) repo, `make lock` and hand-copy the resolved
