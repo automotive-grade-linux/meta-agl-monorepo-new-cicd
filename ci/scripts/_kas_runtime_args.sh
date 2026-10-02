@@ -12,7 +12,7 @@
 # 3. run_machine_setup_hooks() - the machine-keyed EULA-accept and h3ulcb/m3ulcb proprietary
 #    package hook, shared by setup.sh (matrix-backed) and scripts/aglsetup.sh (matrix-free) -
 #    both just need the machine name, nothing matrix-entry-specific.
-# 4. kas_extra_includes()/kas_ci_includes()/kas_runtime_args() - support two optional,
+# 4. kas_extra_includes()/kas_ci_includes()/kas_runtime_args() - support three optional,
 #    independent local-developer conveniences, never used in CI unless these env vars are
 #    explicitly set there too:
 #
@@ -23,15 +23,22 @@
 #                       falls back to oe-core's own default (build/sstate-cache, inside the
 #                       repo work dir) - which is exactly what the GitHub Actions/GitLab CI
 #                       cache configs already target, so CI needs no changes.
+#   AGL_DL_DIR       - the same idea for DL_DIR (bitbake's fetched-source download cache),
+#                       e.g. `export AGL_DL_DIR=$HOME/.yocto/downloads`. Bind-mounted and
+#                       wired into kas via kas/local/dl-shared.yml, same pattern as
+#                       AGL_SSTATE_DIR, independent of it (set either, both, or neither).
 #   AGL_SITE_CONF    - path to a personal site.conf, e.g. `export AGL_SITE_CONF=$HOME/.yocto/site.conf`.
 #                       bitbake auto-includes conf/site.conf from the build dir with no kas
 #                       config changes needed - this just bind-mounts the file into place
 #                       (read-only) at /work/build/conf/site.conf, kas-container's fixed
-#                       mount point for the repo/work dir.
+#                       mount point for the repo/work dir. It does NOT auto-mount any
+#                       directories your site.conf itself references - if it sets its own
+#                       SSTATE_DIR/DL_DIR, use AGL_SSTATE_DIR/AGL_DL_DIR (set to the same
+#                       paths) to get those directories into the container too.
 #
-# Both can be set together; if your site.conf also sets SSTATE_DIR, keep the two in sync
-# yourself (this script mounts the directory named by AGL_SSTATE_DIR verbatim, it doesn't
-# parse site.conf to discover it).
+# All three can be set together; if your site.conf also sets SSTATE_DIR/DL_DIR, keep them
+# consistent with AGL_SSTATE_DIR/AGL_DL_DIR yourself (this script mounts the directories
+# named by those two env vars verbatim, it doesn't parse site.conf to discover them).
 
 # Sets MACHINE/FEATURES/MATRIX_TARGET/EXTRA_FEATURES/SDK_ALLOWED as globals from "$@". Example:
 #   MACHINE="" FEATURES="" MATRIX_TARGET="" EXTRA_FEATURES="" SDK_ALLOWED=""
@@ -122,6 +129,9 @@ kas_extra_includes() {
   if [ -n "${AGL_SSTATE_DIR:-}" ]; then
     printf ':kas/local/sstate-shared.yml'
   fi
+  if [ -n "${AGL_DL_DIR:-}" ]; then
+    printf ':kas/local/dl-shared.yml'
+  fi
 }
 
 # kas/ci-only.yml carries agl-devel (passwordless login, needed for hardware-in-the-loop
@@ -162,6 +172,11 @@ kas_runtime_args() {
     # whether the value reaches the container process at all).
     printf -- '--runtime-args -v --runtime-args %s:%s --runtime-args -e --runtime-args AGL_SSTATE_DIR=%s ' \
       "${AGL_SSTATE_DIR}" "${AGL_SSTATE_DIR}" "${AGL_SSTATE_DIR}"
+  fi
+  if [ -n "${AGL_DL_DIR:-}" ]; then
+    mkdir -p "${AGL_DL_DIR}"
+    printf -- '--runtime-args -v --runtime-args %s:%s --runtime-args -e --runtime-args AGL_DL_DIR=%s ' \
+      "${AGL_DL_DIR}" "${AGL_DL_DIR}" "${AGL_DL_DIR}"
   fi
   if [ -n "${AGL_SITE_CONF:-}" ]; then
     printf -- '--runtime-args -v --runtime-args %s:/work/build/conf/site.conf:ro ' "${AGL_SITE_CONF}"

@@ -33,7 +33,8 @@ repo's actual `kas`/`kas-container` behavior - quote the relevant section back w
 above. **Anything else needs `--runtime-args -e --runtime-args VAR=value` - two separate
 `--runtime-args` occurrences**, not one `--runtime-args "-e VAR=value"` (its parser consumes
 exactly one following word per `--runtime-args` flag). See `ci/scripts/_kas_runtime_args.sh`'s
-`kas_runtime_args()` for the established pattern (e.g. how `AGL_SSTATE_DIR` is wired through).
+`kas_runtime_args()` for the established pattern (e.g. how `AGL_SSTATE_DIR`/`AGL_DL_DIR` are
+wired through).
 
 ## 3. How this repo composes its kas YAML
 

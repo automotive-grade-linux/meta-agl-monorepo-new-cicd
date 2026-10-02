@@ -131,30 +131,37 @@ This runs `kas lock --update` against every machine+feature fragment at once (vi
 and prints a summary of what changed. **Review the diff before committing** - like any dependency
 bump, it can pull in real upstream breakage.
 
-## Sharing sstate-cache / a personal site.conf across builds
+## Sharing sstate-cache / downloads / a personal site.conf across builds
 
-By default `SSTATE_DIR` is per-checkout (`build/sstate-cache`), matching what the CI cache
-actions target. To reuse a persistent sstate cache across machines/features/checkouts on your
-own workstation instead, set:
+By default `SSTATE_DIR`/`DL_DIR` are per-checkout (`build/sstate-cache`/`build/downloads`),
+matching what the CI cache actions target. To reuse a persistent sstate cache and/or download
+cache across machines/features/checkouts on your own workstation instead, set either or both:
 
 ```sh
 export AGL_SSTATE_DIR=$HOME/.yocto/sstate-cache
+export AGL_DL_DIR=$HOME/.yocto/downloads
 ```
 
-before `make setup`/`make build`/`make validate`/`make shell`. It's bind-mounted into the
-container and wired into kas via `kas/local/sstate-shared.yml` (only included when this env
-var is set - CI is unaffected).
+before `make setup`/`make build`/`make validate`/`make shell`. Each is bind-mounted into the
+container and wired into kas via its own fragment (`kas/local/sstate-shared.yml`/
+`kas/local/dl-shared.yml`, each only included when its env var is set - CI is unaffected).
+`AGL_SSTATE_DIR` only needs to name the base directory - the actual `SSTATE_DIR` kas wires up is
+`${AGL_SSTATE_DIR}/${DEFAULTTUNE}` (partitioned by tune, so one shared cache across
+machines/features with different tunes doesn't become one giant flat, slow-to-list directory);
+Docker's bind-mount is recursive, so that subdirectory is visible in the container automatically.
 
-If you already keep a personal `site.conf` (e.g. with your own `SSTATE_DIR`, mirrors, or other
-site-local tuning), bitbake auto-includes `conf/site.conf` from the build dir with no kas config
-changes needed — just bind-mount your file in:
+If you already keep a personal `site.conf` (e.g. with your own `SSTATE_DIR`/`DL_DIR`, mirrors,
+or other site-local tuning), bitbake auto-includes `conf/site.conf` from the build dir with no
+kas config changes needed — just bind-mount your file in:
 
 ```sh
 export AGL_SITE_CONF=$HOME/.yocto/site.conf
 ```
 
-Both can be set together; if your `site.conf` also sets `SSTATE_DIR`, keep it consistent with
-`AGL_SSTATE_DIR` yourself — the mount is verbatim, nothing here parses `site.conf`.
+This only mounts the *file* - it doesn't parse it, so any directories `site.conf` itself
+references (its own `SSTATE_DIR`/`DL_DIR` paths) still need `AGL_SSTATE_DIR`/`AGL_DL_DIR` set
+to the same paths to actually be mounted into the container. All three can be set together;
+just keep them consistent with each other yourself.
 
 ## Verified: building a full demo image
 

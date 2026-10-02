@@ -62,7 +62,7 @@ stack):
 | `build/downloads` | ~36 GB |
 | `build/tmp` (work area) | ~295 GB |
 | **`build/` total (measured)** | **348 GB** for this one image target |
-| **Total recommended free disk** | **400+ GB** per concurrent build to leave headroom; `build/tmp` dominates and is safe to `make clean` between unrelated builds (unlike `sstate-cache`/`downloads`, which are worth keeping). A full 22-machine matrix run needs proportionally more unless `AGL_SSTATE_DIR`/shared downloads mitigate it - `build/tmp` itself isn't shareable across machines/targets. |
+| **Total recommended free disk** | **400+ GB** per concurrent build to leave headroom; `build/tmp` dominates and is safe to `make clean` between unrelated builds (unlike `sstate-cache`/`downloads`, which are worth keeping). A full 22-machine matrix run needs proportionally more unless `AGL_SSTATE_DIR`/`AGL_DL_DIR` mitigate it - `build/tmp` itself isn't shareable across machines/targets. |
 | Wall-clock time (this build) | ~3 hours on 8 cores capped to `BB_NUMBER_THREADS=4`/`PARALLEL_MAKE=-j 4`; a from-scratch build with no sstate reuse will take substantially longer (this run reused sstate for setup/toolchain-adjacent tasks across resumed attempts) |
 | Task count | ~12,300 bitbake tasks for this one image target |
 
@@ -73,11 +73,12 @@ lines directly; there's no separate override knob yet - add one via kas's `env:`
 mechanism, same pattern as `AGL_SSTATE_DIR` in `ci/scripts/_kas_runtime_args.sh`, if per-worker
 tuning becomes a real need).
 
-**Shared sstate for a fleet of workers**: see `AGL_SSTATE_DIR`/`AGL_SITE_CONF` in
-[`setup.md`](setup.md#sharing-sstate-cache--a-personal-siteconf-across-builds) - the same mechanism
-works for a shared NFS-mounted or otherwise centralized sstate directory across a build farm, not
-just a single developer's workstation. Point every worker's `AGL_SSTATE_DIR` at the same shared
-path.
+**Shared sstate/downloads for a fleet of workers**: see `AGL_SSTATE_DIR`/`AGL_DL_DIR`/
+`AGL_SITE_CONF` in
+[`setup.md`](setup.md#sharing-sstate-cache--downloads--a-personal-siteconf-across-builds) - the
+same mechanism works for a shared NFS-mounted or otherwise centralized sstate/download directory
+across a build farm, not just a single developer's workstation. Point every worker's
+`AGL_SSTATE_DIR`/`AGL_DL_DIR` at the same shared paths.
 
 ## Known upstream issues and fixes already applied
 
