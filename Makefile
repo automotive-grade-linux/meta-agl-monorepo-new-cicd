@@ -52,6 +52,7 @@ build: setup
 
 shell: setup
 	. ci/scripts/_kas_runtime_args.sh && \
+	KAS_TARGET="$$(python3 ci/scripts/_compose_kasfiles.py --machine "$(MACHINE)" --features "$(FEATURES)" --target "$(TARGET)" --extra-features "$(EXTRA_FEATURES)" --fields target)" \
 	KAS_WORK_DIR="$(CURDIR)" kas-container $$(kas_runtime_args) shell \
 	    "$$(python3 ci/scripts/_compose_kasfiles.py --machine "$(MACHINE)" --features "$(FEATURES)" --target "$(TARGET)" --extra-features "$(EXTRA_FEATURES)")$$(kas_extra_includes)"
 

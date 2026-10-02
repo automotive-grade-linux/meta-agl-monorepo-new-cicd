@@ -14,6 +14,11 @@ parse_common_args "$@"
 matrix_fields kasfiles,target
 KASFILES="${_MATRIX_FIELDS[0]}$(kas_extra_includes)$(kas_ci_includes)"
 MATRIX_ENTRY_TARGET="${_MATRIX_FIELDS[1]}"
+# So every run_check's `kas-container shell` call below reports the real target in its own
+# "To start the default build, run: ..." message, instead of kas's generic schema default -
+# these logs are captured to $RESULTS_DIR, not shown live, but should still be accurate if
+# anyone greps them later.
+export KAS_TARGET="$MATRIX_ENTRY_TARGET"
 RESULTS_DIR="${RESULTS_DIR:-$REPO_ROOT/build/validate-results}"
 mkdir -p "$RESULTS_DIR"
 

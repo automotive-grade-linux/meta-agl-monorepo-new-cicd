@@ -23,7 +23,7 @@ KAS_TARGET="$TARGET" KAS_WORK_DIR="$REPO_ROOT" kas-container $(kas_runtime_args)
 if [ "$ENTRY_SDK" = "True" ] && [ "$SDK_ALLOWED" = "true" ]; then
   echo "build.sh: populating SDK for $TARGET"
   # shellcheck disable=SC2046
-  KAS_WORK_DIR="$REPO_ROOT" kas-container $(kas_runtime_args) shell "$KASFILES" -c "bitbake -c populate_sdk $TARGET"
+  KAS_TARGET="$TARGET" KAS_WORK_DIR="$REPO_ROOT" kas-container $(kas_runtime_args) shell "$KASFILES" -c "bitbake -c populate_sdk $TARGET"
 fi
 
 ARTIFACT_DIR="${ARTIFACT_DIR:-$REPO_ROOT/build/artifacts/$MACHINE-$TARGET}"

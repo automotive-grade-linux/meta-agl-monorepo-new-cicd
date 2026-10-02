@@ -73,5 +73,10 @@ fi
 echo "aglsetup.sh: kas shell $KASFILES"
 echo "aglsetup.sh: common targets once inside: agl-image-boot, agl-image-minimal," \
      "agl-image-weston, agl-image-compositor"
+# No ci/build-matrix.yaml entry to resolve a target from (matrix-free, see above) - default
+# KAS_TARGET to the same image Makefile's own TARGET default builds, just so kas's own
+# "To start the default build, run: ..." suggestion names an AGL image instead of oe-core's
+# generic core-image-minimal. A hint only: pick any bitbake target you like once inside.
 # shellcheck disable=SC2046
-KAS_WORK_DIR="$REPO_ROOT" exec kas-container $(kas_runtime_args) shell "$KASFILES"
+KAS_TARGET="${KAS_TARGET:-agl-image-minimal}" KAS_WORK_DIR="$REPO_ROOT" \
+  exec kas-container $(kas_runtime_args) shell "$KASFILES"
