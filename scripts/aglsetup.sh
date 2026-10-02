@@ -12,9 +12,12 @@
 # resolved by _compose_setup.py via each fragment's own header.includes: - nothing to do here.
 #
 # Unlike the real aglsetup.sh (which sources into and mutates the CURRENT shell's env via
-# oe-init-build-env, never spawning a subshell), this execs into an interactive
-# container shell in the bitbake-setup setup - the equivalent of "you now have a configured,
-# ready-to-build environment": run `bitbake <target>` once inside, `exit`/Ctrl-D to leave.
+# oe-init-build-env, never spawning a subshell), this creates/refreshes the bitbake-setup
+# setup build/<machine>[-<feature>...] and then opens an interactive shell for it in the
+# agl-ci-builder container (build/init-build-env already sourced) - the equivalent of "you
+# now have a configured, ready-to-build environment": run `bitbake <target>` once inside,
+# `exit`/Ctrl-D to leave. Re-running with the same machine/features re-syncs the existing
+# setup (bitbake-setup update) instead of starting over.
 set -euo pipefail
 
 # readlink -f (not just dirname "${BASH_SOURCE[0]}") because this script is also reached via
@@ -29,9 +32,11 @@ usage() {
   cat <<EOF
 Usage: $(basename "$0") [-m|--machine MACHINE] [-b|--builddir DIR] [feature [feature ...]]
 
-Drops you into an interactive shell in a bitbake-setup setup for MACHINE plus the given features (no
-ci/build-matrix.yaml entry required - any combination of what's listed below works). Run
-bitbake yourself once inside, e.g. \`bitbake agl-image-minimal\`.
+Creates (or re-syncs) a bitbake-setup setup for MACHINE plus the given features and drops you
+into an interactive container shell in it (no ci/build-matrix.yaml entry required - any
+combination of what's listed below works). Run bitbake yourself once inside, e.g.
+\`bitbake agl-image-minimal\`. Env: AGL_CONTAINER_IMAGE, AGL_SSTATE_DIR, AGL_SITE_CONF,
+AGL_FLOATING, CI (see docs/setup.md).
 
   -m, --machine MACHINE   default: qemux86-64
   -b, --builddir DIR      use DIR as the bitbake-setup top directory instead of the shared
