@@ -5,6 +5,7 @@
 
 # kas / bitbake build output
 /build/
+/build*/
 /tmp/
 /sstate-cache/
 /downloads/
